@@ -1252,10 +1252,10 @@ const GUARD_CFG = {
   symbol: 'GUARD',
   rpcs: [
     'https://proton.eosusa.io',
-    'https://proton.greymass.com',
     'https://api.protonnz.com',
     'https://proton.cryptolions.io',
-    'https://proton.eosphere.io'
+    'https://api-xprnetwork-main.saltant.io',
+    'https://proton.eosphere.io',
   ],
 };
 
@@ -1623,12 +1623,12 @@ if (/Android/i.test(navigator.userAgent)) {
 const DAPP_CONFIG = {
   appName: 'Metallicus Guardian',
   requestAccount: 'scubasteve44',
-  chainId: '384da888112027f0321850a169f737c33e8f27a0db95f8f1505cf1b9f9a571e', // XPR mainnet
+  chainId: '384da888112027f0321850a169f737c33e53b388aad48b5adace4bab97f437e0', // XPR mainnet — verified
   endpoints: [
     'https://proton.eosusa.io',
-    'https://proton.greymass.com',
     'https://api.protonnz.com',
     'https://proton.cryptolions.io',
+    'https://api-xprnetwork-main.saltant.io',
   ],
 };
 
@@ -1658,7 +1658,7 @@ async function walletConnect() {
       },
       selectorOptions: {
         appName: DAPP_CONFIG.appName,
-        appLogo: 'https://standguard.pages.dev/img_coin.jpg',
+        appLogo: 'https://metallicus-guardian-guard.pages.dev/img_coin.jpg',
         enabledWalletTypes: ['webauth', 'proton'],
         customStyleOptions: {
           modalBackgroundColor: '#0d0f1a',
