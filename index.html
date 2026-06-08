@@ -789,6 +789,10 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
     <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>Can I sell GUARD?</span><span class="acc-icon">+</span></div><div class="acc-a">Yes. GUARD has graduated past its bonding curve to a live XPR/GUARD liquidity pool, so you can trade it any time on <a href="https://simpledex.fun/token/172" target="_blank">SimpleDEX</a>.</div></div>
     <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>What are the risks of holding GUARD?</span><span class="acc-icon">+</span></div><div class="acc-a">GUARD is a speculative meme token. Price is driven entirely by community demand and can rise or fall sharply. Never invest more than you can afford to lose. This is not financial advice.</div></div>
     <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>Why does this site exist?</span><span class="acc-icon">+</span></div><div class="acc-a">To give newcomers a friendly, plain-English starting point for the XPR Network ecosystem — and to point them to the official sources for the full detail. It's a community resource, not an official one.</div></div>
+    <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>What is XPR Network?</span><span class="acc-icon">+</span></div><div class="acc-a">XPR Network is a Layer 1 proof-of-stake blockchain built by Metallicus. It offers instant transactions, zero gas fees, on-chain identity verification, and human-readable @usernames. It powers WebAuth Wallet, Metal X, SimpleDEX, and dozens of community projects.</div></div>
+    <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>What is a WebAuth Wallet and how do I create one?</span><span class="acc-icon">+</span></div><div class="acc-a">WebAuth Wallet is a free, non-custodial crypto wallet built by Metallicus on XPR Network. It uses biometrics (fingerprint/face ID) instead of passwords — no seed phrase needed. To create one: go to <a href="https://webauth.com" target="_blank">webauth.com</a>, tap Sign Up, choose your @username, and verify with biometrics. It takes under 2 minutes and is completely free.</div></div>
+    <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>What are Guardian ranks and how do I unlock them?</span><span class="acc-icon">+</span></div><div class="acc-a">Guardian ranks are based on how much GUARD you hold in your WebAuth wallet. Connect your wallet on the Shields tab to automatically unlock your rank. There are 7 ranks: Cryptide (0), Riftforge (100+), Helion (500+), Nebulon (2,000+), Protonis (10,000+), Keystone (50,000+), and Aegis (200,000+ GUARD).</div></div>
+    <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>Where do I buy GUARD?</span><span class="acc-icon">+</span></div><div class="acc-a">GUARD trades on SimpleDEX at <a href="https://simpledex.fun/token/172" target="_blank">simpledex.fun/token/172</a>. You need a WebAuth wallet with some XPR to trade. You can get XPR on Metal Pay, KuCoin, or other exchanges that support XPR Network.</div></div>
 
     <div class="div-g"></div>
     <div class="sec-label">Ecosystem Questions?</div>
@@ -815,47 +819,76 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
     <p class="page-sub">The XPR Network ecosystem is built by its community. These are the people, projects, and spaces making it what it is.</p>
     <div class="disc mb4"><span>ℹ</span><div>GUARD is inspired by and part of this community — not a representative of it. Communities listed below are independent. GUARD does not speak for them.</div></div>
 
-    <div class="sec-label">Where to Connect</div>
-    <h2 class="sec-title mb3">Communities</h2>
-    <div class="grid grid-auto mb4">
-      <a href="https://snipverse.com" target="_blank" class="comm-card" style="text-decoration:none;">
-        <img class="char-avi" src="./icon_snipverse.jpg?v=2" alt="Snipverse">
-        <div><div class="comm-name">Snipverse</div><div class="comm-role">Social Platform · XPR Network Native</div><div class="comm-desc">A decentralized social platform built on XPR Network for creators, thinkers, and builders. Snipverse 2.0 launched in 2025. It's the Web3 social home where the KSTO and broader XPR community gathers — streaks, snips, and cashtags.</div><span class="badge bb" style="display:inline-flex;margin-top:.6rem;">Visit Snipverse →</span></div>
-      </a>
-      <a href="https://keepsnipping.com" target="_blank" class="comm-card" style="text-decoration:none;">
-        <img class="char-avi" src="./icon_ksto.jpg?v=2" alt="KSTO">
-        <div><div class="comm-name">KSTO — Keep Snipping</div><div class="comm-role">Community Token ($KSTO) · Snipverse</div><div class="comm-desc">A community-driven movement on XPR Network built around the $KSTO token — transparent, DAO-driven, and powered by real builders. Home of Snippy the Guardian. "Authenticity is our currency."</div><span class="badge bp" style="display:inline-flex;margin-top:.6rem;">keepsnipping.com →</span></div>
-      </a>
-      <div class="comm-card">
-        <img class="char-avi" src="./char_funky.jpg?v=2" alt="Funky">
-        <div><div class="comm-name">FunkyVerse <span style="font-size:.62rem;color:var(--text3);font-weight:500;">· within KSTO</span></div><div class="comm-role">NFT Collection · a project inside the KSTO Community</div><div class="comm-desc">A vibrant, character-driven NFT collection on XPR Network — its own distinct project that lives within the KSTO (Keep Snipping) community. Created by Funky. Full of personality and color, part of the growing NFT culture in the XPR ecosystem.</div></div>
+    <!-- ── SECTION 1: KSTO & Snippy ── -->
+    <div style="background:rgba(201,146,42,0.04);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:1.75rem 2rem 1.5rem;margin-bottom:2rem;">
+      <div class="sec-label">Community Hub</div>
+      <h2 class="sec-title">🦊 KSTO &amp; Snippy</h2>
+      <p style="font-size:.88rem;color:var(--text2);margin-bottom:1.5rem;max-width:680px;line-height:1.65;">The home community of XPR Network. KSTO (Keep Snipping) is where builders, traders, educators, and holders gather. Snippy is the beloved fox mascot recognized across the ecosystem.</p>
+      <div class="grid grid-auto mb3">
+        <a href="https://keepsnipping.com" target="_blank" class="comm-card" style="text-decoration:none;">
+          <img class="char-avi" src="./icon_ksto.jpg?v=2" alt="KSTO">
+          <div><div class="comm-name">KSTO — Keep Snipping</div><div class="comm-role">Community Token ($KSTO) · Snipverse</div><div class="comm-desc">A community-driven movement on XPR Network built around the $KSTO token — transparent, DAO-driven, and powered by real builders. Home of Snippy the Guardian. "Authenticity is our currency."</div><span class="badge bp" style="display:inline-flex;margin-top:.6rem;">keepsnipping.com →</span></div>
+        </a>
+        <a href="https://snipverse.com" target="_blank" class="comm-card" style="text-decoration:none;">
+          <img class="char-avi" src="./icon_snipverse.jpg?v=2" alt="Snipverse">
+          <div><div class="comm-name">Snipverse</div><div class="comm-role">Social Platform · XPR Network Native</div><div class="comm-desc">A decentralized social platform built on XPR Network for creators, thinkers, and builders. Snipverse 2.0 launched in 2025. It's the Web3 social home where the KSTO and broader XPR community gathers — streaks, snips, and cashtags.</div><span class="badge bb" style="display:inline-flex;margin-top:.6rem;">Visit Snipverse →</span></div>
+        </a>
+        <div class="comm-card">
+          <img class="char-avi" src="./char_snippy.jpg?v=2" alt="Snippy">
+          <div><div class="comm-name">Snippy the Guardian</div><div class="comm-role">Official Mascot of KSTO / Snipverse</div><div class="comm-desc">Snippy is the official mascot of the Keep Snipping ($KSTO) community — a fox character representing protection, fun, and the spirit of the Snipverse. Snippy the Guardian shares the protective spirit that inspired GUARD, the Metallicus Guardian.</div><a href="https://keepsnipping.com/about.html" target="_blank" class="badge bg" style="display:inline-flex;margin-top:.6rem;text-decoration:none;">About Snippy →</a></div>
+        </div>
       </div>
-      <a href="https://cyphergang.com" target="_blank" class="comm-card" style="text-decoration:none;">
-        <img class="char-avi" src="./icon_cyphergang.jpg?v=2" alt="Cypher Gang">
-        <div><div class="comm-name">Cypher Gang</div><div class="comm-role">OG NFT Project (2021) · XPR Network</div><div class="comm-desc">An original hand-crafted collection of 1,777 unique NFTs on XPR Network, live since 2021. Founded by ProtonPunk. Stack Cypher Gang NFTs to earn passive $CYPHR plus monthly holder rewards. Built on the Atomic Assets standard — a community Tim is part of.</div><span class="badge bp" style="display:inline-flex;margin-top:.6rem;">cyphergang.com →</span></div>
-      </a>
-    </div>
-
-    <div class="div"></div>
-    <div class="sec-label mt4">Community Characters</div>
-    <h2 class="sec-title mb3">Ecosystem Mascots & Projects</h2>
-    <div class="grid grid-auto mb4">
-      <div class="comm-card">
-        <img class="char-avi" src="./char_snippy.jpg?v=2" alt="Snippy">
-        <div><div class="comm-name">Snippy the Guardian</div><div class="comm-role">Official Mascot of KSTO / Snipverse</div><div class="comm-desc">Snippy is the official mascot of the Keep Snipping ($KSTO) community — a fox character representing protection, fun, and the spirit of the Snipverse. Snippy the Guardian shares the protective spirit that inspired GUARD, the Metallicus Guardian.</div><a href="https://keepsnipping.com/about.html" target="_blank" class="badge bg" style="display:inline-flex;margin-top:.6rem;text-decoration:none;">About Snippy →</a></div>
-      </div>
-      <div class="comm-card">
-        <img class="char-avi" src="./icon_cypherbrawls.jpg?v=2" alt="Cypher Brawls">
-        <div><div class="comm-name">Cypher Brawls NFTs</div><div class="comm-role">Play-to-Earn Game · XPR Network</div><div class="comm-desc">A play-to-earn game built on XPR Network where your Cypher Gang NFT is your fighter. Battle and earn $CYPHR through gameplay. Connect your WebAuth wallet to play; NFTs can be bought on soon.market or AtomicHub.</div><div class="flex gap-sm wrap" style="margin-top:.6rem;"><a href="https://app.cypherbrawls.com" target="_blank" class="badge bp" style="display:inline-flex;text-decoration:none;">Play Cypher Brawls →</a><a href="https://soon.market/collection/zvapir55jvu4" target="_blank" class="badge bb" style="display:inline-flex;text-decoration:none;">Buy NFTs →</a></div></div>
-      </div>
-      <div class="comm-card">
-        <img class="comm-avi" src="./img_coin.jpg?v=2" alt="GUARD">
-        <div><div class="comm-name">Metallicus Guardian (GUARD)</div><div class="comm-role">Community Token · SimpleDEX</div><div class="comm-desc">Community meme token created by Tim Rangel. An armored warrior wielding a golden key and cosmic Guardian shield — forged in the fires of XPR Network. Not official Metallicus.</div><a href="https://simpledex.fun/token/172" target="_blank" class="badge bg mt1" style="display:inline-flex;margin-top:.6rem;text-decoration:none;">Buy on SimpleDEX →</a></div>
+      <div class="flex gap-sm wrap">
+        <a href="https://t.me/KSTOX/1" target="_blank" class="btn btn-o" style="font-size:.78rem;">✈ KSTO Telegram</a>
+        <a href="https://snipverse.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">✦ Snipverse</a>
+        <a href="https://x.com/Keep_Snipping" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @Keep_Snipping</a>
       </div>
     </div>
-    <p style="font-size:.8rem;color:var(--text3);text-align:center;font-style:italic;margin-bottom:1rem;">…and many more characters, mascots, and projects across these communities. This is just a glimpse.</p>
 
-    <div class="div"></div>
+    <div class="div-g"></div>
+
+    <!-- ── SECTION 2: CypherGang & CypherBrawls ── -->
+    <div style="background:rgba(124,58,237,0.04);border:1px solid rgba(124,58,237,0.25);border-radius:var(--radius-lg);padding:1.75rem 2rem 1.5rem;margin-bottom:2rem;">
+      <div class="sec-label">OG NFT Project · Since 2021</div>
+      <h2 class="sec-title">⚔ CypherGang &amp; CypherBrawls</h2>
+      <p style="font-size:.88rem;color:var(--text2);margin-bottom:1.5rem;max-width:680px;line-height:1.65;">One of XPR Network's OG NFT projects since 2021. 1,777 hand-crafted NFTs built by ProtonPunk. Your NFT is your fighter in CypherBrawls — the tactical on-chain battle game.</p>
+      <div class="grid grid-auto mb3">
+        <a href="https://cyphergang.com" target="_blank" class="comm-card" style="text-decoration:none;">
+          <img class="char-avi" src="./icon_cyphergang.jpg?v=2" alt="Cypher Gang">
+          <div><div class="comm-name">Cypher Gang</div><div class="comm-role">OG NFT Project (2021) · XPR Network</div><div class="comm-desc">An original hand-crafted collection of 1,777 unique NFTs on XPR Network, live since 2021. Founded by ProtonPunk. Stack Cypher Gang NFTs to earn passive $CYPHR plus monthly holder rewards. Built on the Atomic Assets standard.</div><span class="badge bp" style="display:inline-flex;margin-top:.6rem;">cyphergang.com →</span></div>
+        </a>
+        <div class="comm-card">
+          <img class="char-avi" src="./icon_cypherbrawls.jpg?v=2" alt="Cypher Brawls">
+          <div><div class="comm-name">Cypher Brawls</div><div class="comm-role">Play-to-Earn Game · XPR Network</div><div class="comm-desc">A play-to-earn game built on XPR Network where your Cypher Gang NFT is your fighter. Battle and earn $CYPHR through gameplay. Connect your WebAuth wallet to play; NFTs can be bought on soon.market or AtomicHub.</div><div class="flex gap-sm wrap" style="margin-top:.6rem;"><a href="https://app.cypherbrawls.com" target="_blank" class="badge bp" style="display:inline-flex;text-decoration:none;">Play CypherBrawls →</a></div></div>
+        </div>
+      </div>
+      <div class="flex gap-sm wrap">
+        <a href="https://cyphergang.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">🔗 cyphergang.com</a>
+        <a href="https://soon.market/collection/zvapir55jvu4" target="_blank" class="btn btn-o" style="font-size:.78rem;">🛒 Buy NFTs on soon.market</a>
+        <a href="https://t.me/CypherGang" target="_blank" class="btn btn-o" style="font-size:.78rem;">✈ CypherGang Telegram</a>
+      </div>
+    </div>
+
+    <div class="div-g"></div>
+
+    <!-- ── SECTION 3: Funkyverse ── -->
+    <div style="background:rgba(56,189,248,0.04);border:1px solid rgba(56,189,248,0.2);border-radius:var(--radius-lg);padding:1.75rem 2rem 1.5rem;margin-bottom:2rem;">
+      <div class="sec-label">Creative Project</div>
+      <h2 class="sec-title">🎨 Funkyverse</h2>
+      <p style="font-size:.88rem;color:var(--text2);margin-bottom:1.5rem;max-width:680px;line-height:1.65;">A creative community project in the XPR Network ecosystem. Follow their journey on X.</p>
+      <div class="grid grid-auto mb3">
+        <div class="comm-card">
+          <img class="char-avi" src="./char_funky.jpg?v=2" alt="Funky">
+          <div><div class="comm-name">FunkyVerse</div><div class="comm-role">Creative NFT Project · XPR Network</div><div class="comm-desc">A vibrant, character-driven NFT collection on XPR Network. Created by Funky. Full of personality and color, part of the growing NFT culture in the XPR ecosystem.</div><a href="https://x.com/funkyfVerse" target="_blank" class="badge bb" style="display:inline-flex;margin-top:.6rem;text-decoration:none;">@funkyfVerse on X →</a></div>
+        </div>
+      </div>
+      <div class="flex gap-sm wrap">
+        <a href="https://x.com/funkyfVerse" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @funkyfVerse on X</a>
+      </div>
+    </div>
+
+    <div class="div-g"></div>
+
     <div class="sec-label mt4">Leaders, Creators & Builders</div>
     <h2 class="sec-title mb3">The People Behind It</h2>
     <div class="grid grid-auto">
