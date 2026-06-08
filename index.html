@@ -1677,6 +1677,7 @@ async function walletConnect() {
     walletSession = session;
     walletActor = session.auth.actor;
 
+    localStorage.removeItem('wallet_explicitly_disconnected');
     onWalletConnected(walletActor);
     await fetchGuardBalance(walletActor);
 
@@ -1686,6 +1687,7 @@ async function walletConnect() {
 }
 
 async function walletDisconnect() {
+  localStorage.setItem('wallet_explicitly_disconnected', 'true');
   try {
     if (walletLink) await walletLink.disconnect();
   } catch(e) {}
@@ -1696,6 +1698,7 @@ async function walletDisconnect() {
 }
 
 async function walletRestore() {
+  if (localStorage.getItem('wallet_explicitly_disconnected') === 'true') return;
   try {
     const ProtonWebSDK = window.ProtonWebSDK || window.protonWebSdk || window['@proton/web-sdk'];
     if (!ProtonWebSDK) return;
