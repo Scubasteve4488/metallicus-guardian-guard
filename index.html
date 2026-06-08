@@ -1163,6 +1163,20 @@ function resetRank(){ guardianRank=0; saveRank(); renderShield(); }
 
 loadRank();
 
+// ===== ANDROID DEEP LINK FIX =====
+// Android Chrome blocks window.open() for custom URI schemes (webauth://, wc://).
+// Intercept those calls and redirect via window.location.href instead.
+if (/Android/i.test(navigator.userAgent)) {
+  const _open = window.open.bind(window);
+  window.open = function(url, ...args) {
+    if (typeof url === 'string' && /^(webauth|wc|proton):\/\//i.test(url)) {
+      window.location.href = url;
+      return null;
+    }
+    return _open(url, ...args);
+  };
+}
+
 // ===== WEBAUTH WALLET INTEGRATION =====
 const DAPP_CONFIG = {
   appName: 'Metallicus Guardian',
