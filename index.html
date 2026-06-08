@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Metallicus Guardian — A community-built educational resource for the Metallicus and XPR Network ecosystem.">
-<title>Metallicus Guardian | XPR Network Education Hub</title>
+<title>Metallicus Guardian | XPR Network</title>
 <!-- Social share preview (OpenGraph + Twitter) -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Metallicus Guardian (GUARD) — XPR Network">
@@ -924,6 +924,9 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
       </div>
     </div>
     <p style="text-align:center;font-size:.75rem;color:var(--text3);margin-top:1rem;max-width:460px;margin-left:auto;margin-right:auto;">This is a community identity for fun and belonging — a journey you choose, not a verified credential. Screenshot your card to share it.</p>
+    <div style="text-align:center;margin-top:1.25rem;">
+      <button onclick="shareGuardianCard()" style="background:#1d9bf0;border:none;color:#fff;padding:.7rem 1.75rem;border-radius:9px;font-size:.9rem;cursor:pointer;font-weight:600;letter-spacing:.02em;font-family:inherit;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">🐦 Share on X</button>
+    </div>
 
     <!-- S8: DISCLAIMER -->
     <div class="div mt4"></div>
@@ -1568,6 +1571,12 @@ function renderCard(){
   const h = document.getElementById('guardian-handle').value.trim();
   document.getElementById('card-handle').textContent = h ? (h.startsWith('@')?h:'@'+h) : '@yourhandle';
   try{ if(h) window.storage.set('guardian_handle', h); }catch(e){}
+}
+function shareGuardianCard(){
+  const s = SHIELDS[guardianRank];
+  const handle = walletActor ? ' (@' + walletActor + ')' : '';
+  const txt = 'I am a ' + s.name + ' Guardian' + handle + '. Stand GUARD. ⚡🛡 #GUARD #XPRNetwork #MetallicusGuardian metallicus-guardian-guard.pages.dev';
+  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(txt), '_blank');
 }
 function resetRank(){ guardianRank=0; saveRank(); renderShield(); renderProgress(guardianBalance); }
 function jumpRank(i){ if(i<=guardianRank){ guardianRank=i; saveRank(); renderShield(); } }
