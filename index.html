@@ -270,12 +270,62 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
   .foot-top{grid-template-columns:1fr;}
   .tab-btn{padding:.5rem .7rem;font-size:.76rem;}
 }
+
+/* ── SHIELD TIMELINE ── */
+.shield-timeline{display:flex;gap:.65rem;overflow-x:auto;padding:.5rem 0 1.25rem;scrollbar-width:none;}
+.shield-timeline::-webkit-scrollbar{display:none;}
+.rank-node{flex-shrink:0;width:108px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.85rem .5rem .7rem;text-align:center;transition:all .3s;}
+.rank-node.done{border-color:var(--border-gold);background:rgba(201,146,42,0.05);}
+.rank-node.active{border-color:var(--gold);background:rgba(201,146,42,0.1);box-shadow:0 0 22px rgba(201,146,42,0.18);}
+.rank-node.locked img{filter:grayscale(1) brightness(.3);opacity:.4;}
+.rank-node.active img{filter:drop-shadow(0 0 10px rgba(201,146,42,0.55));}
+.rank-node.done img{filter:drop-shadow(0 0 5px rgba(201,146,42,0.25));}
+.rn-num{font-size:.58rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:.3rem;}
+.rn-name{font-family:'Cinzel',serif;font-size:.62rem;margin:.25rem 0 .1rem;}
+.rank-node.active .rn-name{color:var(--gold-l);}
+.rank-node.done .rn-name{color:var(--gold);}
+.rank-node.locked .rn-name{color:var(--text3);}
+.rn-title{font-size:.58rem;color:var(--text3);}
+.rank-node.active .rn-title{color:var(--text2);}
+.rn-check{font-size:.85rem;display:block;margin-top:.35rem;}
+/* ── PROGRESS ── */
+.progress-track{background:var(--bg4);border-radius:8px;height:7px;overflow:hidden;margin:.35rem 0;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--pur),var(--pur-l));border-radius:8px;transition:width .7s ease;}
+/* ── REQUIREMENTS PANEL ── */
+.req-item{display:flex;align-items:flex-start;gap:.75rem;padding:.7rem 1rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.45rem;}
+.req-status{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;flex-shrink:0;margin-top:.1rem;}
+.req-met{background:rgba(34,197,94,0.12);color:var(--green);border:1px solid rgba(34,197,94,0.3);}
+.req-unmet{background:rgba(100,116,139,0.08);color:var(--text3);border:1px solid var(--border);}
+.req-soon{background:rgba(124,58,237,0.08);color:var(--pur-g);border:1px solid rgba(124,58,237,0.2);}
+/* ── ACHIEVEMENTS ── */
+.ach-cat{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:.65rem;}
+.ach-cat-hdr{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1.2rem;cursor:pointer;background:var(--bg2);user-select:none;transition:background .2s;}
+.ach-cat-hdr:hover{background:var(--bg3);}
+.ach-cat-hdr h4{font-size:.84rem;font-weight:600;color:var(--text);margin:0;}
+.ach-count{font-size:.72rem;color:var(--text3);}
+.ach-cat-body{display:none;padding:.65rem;background:var(--bg);border-top:1px solid var(--border);}
+.ach-cat-body.open{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:.45rem;}
+.ach-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.75rem .85rem;transition:all .2s;}
+.ach-card.unlocked{border-color:var(--border-gold);background:rgba(201,146,42,0.05);}
+.ach-card.coming{opacity:.5;}
+.ach-icon{font-size:1.25rem;margin-bottom:.25rem;}
+.ach-label{font-size:.78rem;font-weight:600;color:var(--text2);margin-bottom:.12rem;}
+.ach-card.unlocked .ach-label{color:var(--gold-l);}
+.ach-desc{font-size:.69rem;color:var(--text3);line-height:1.4;}
+.ach-badge{font-size:.6rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:.3rem;display:inline-block;}
+.ach-badge.done{color:var(--green);}
+.ach-badge.soon{color:var(--text3);}
+.ach-badge.locked-lbl{color:var(--text3);}
+/* ── RANK CARD ── */
+.gs-card{background:linear-gradient(145deg,rgba(124,58,237,0.07),rgba(201,146,42,0.05));border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:1.5rem;max-width:560px;margin:0 auto;}
+@keyframes rankGlow{0%,100%{box-shadow:0 0 18px rgba(201,146,42,0.18);}50%{box-shadow:0 0 38px rgba(201,146,42,0.38),0 0 55px rgba(124,58,237,0.15);}}
+.gs-card{animation:rankGlow 3.5s ease-in-out infinite;}
 </style>
   <!-- WebAuth / Proton Web SDK -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
 </head>
 <body>
-<!-- build: 2026-06-08-v5 -->
+<!-- build: 2026-06-08-v6 -->
 
 <!-- NAV -->
 <nav id="nav">
@@ -774,71 +824,111 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 <div id="page-shields" class="page" style="padding-top:88px;">
 <div class="container">
   <div class="section">
-    <div class="sec-label">Choose Your Shield</div>
-    <h1 class="page-title">The Path of the Guardian</h1>
-    <p class="page-sub">Every Guardian begins as a Recruit and climbs the ranks — from the first awakening of power to the eternal Aegis. Connect your WebAuth wallet to unlock your rank based on your GUARD holdings.</p>
 
-    <!-- WALLET CONNECT PROMPT -->
-    <div id="shield-wallet-prompt" style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.3);border-radius:12px;padding:1.5rem;text-align:center;max-width:480px;margin:1.5rem auto;">
-      <div style="font-size:2rem;margin-bottom:.5rem;">⚡</div>
-      <h3 style="font-family:'Cinzel',serif;color:var(--gold-l);margin-bottom:.5rem;">Connect Your WebAuth Wallet</h3>
-      <p style="font-size:.85rem;color:var(--text2);margin-bottom:1rem;">Connect to automatically unlock your Guardian rank based on your GUARD token balance.</p>
-      <button onclick="walletConnect()" class="btn btn-g" style="width:100%;justify-content:center;">⚡ Connect WebAuth Wallet</button>
-      <p style="font-size:.72rem;color:var(--text3);margin-top:.75rem;">Or advance manually below without connecting.</p>
-    </div>
+    <!-- S1: HERO -->
+    <div style="text-align:center;margin-bottom:2rem;">
+      <div class="sec-label">Choose Your Shield</div>
+      <h1 class="page-title">The Path of the Guardian</h1>
+      <p class="page-sub" style="text-align:center;margin:0 auto 2rem;">Earn your rank. Build your legacy. Stand GUARD.</p>
 
-    <!-- WALLET RANK INFO (shown when connected) -->
-    <div id="shield-wallet-info" style="display:none;background:rgba(201,146,42,0.08);border:1px solid var(--border-gold);border-radius:12px;padding:1rem 1.5rem;text-align:center;max-width:480px;margin:1.5rem auto;">
-      <div style="font-size:.78rem;color:var(--text3);font-family:'Cinzel',serif;letter-spacing:.1em;">CONNECTED AS</div>
-      <div id="shield-wallet-actor" style="font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold-l);margin:.25rem 0;"></div>
-      <div style="font-size:.82rem;color:var(--text2);">GUARD Balance: <span id="shield-guard-bal" style="color:var(--pur-g);font-weight:600;">checking...</span></div>
-      <div id="shield-rank-unlock" style="font-size:.78rem;color:var(--green);margin-top:.35rem;"></div>
-      <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-o" style="margin-top:.75rem;font-size:.78rem;display:inline-flex;">🛒 Buy More GUARD on SimpleDEX →</a>
-    </div>
-
-    <!-- CURRENT SHIELD CARD -->
-    <div id="shield-stage" style="max-width:540px;margin:1.5rem auto 0;text-align:center;">
-      <div class="shield-glow" id="shield-glow">
-        <img id="shield-img" src="" alt="Your Shield" style="width:240px;height:240px;object-fit:contain;max-width:70%;filter:drop-shadow(0 10px 30px rgba(124,58,237,0.45));">
+      <!-- Connect prompt — hidden when wallet connected -->
+      <div id="shield-wallet-prompt" style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.3);border-radius:var(--radius-lg);padding:1.75rem;text-align:center;max-width:460px;margin:0 auto;">
+        <div style="font-size:2.5rem;margin-bottom:.75rem;">⚡</div>
+        <h3 style="font-family:'Cinzel',serif;color:var(--gold-l);margin-bottom:.5rem;">Connect Your WebAuth Wallet</h3>
+        <p style="font-size:.85rem;color:var(--text2);margin-bottom:1.25rem;">Connect to automatically determine your Guardian rank based on your GUARD balance and unlock achievements.</p>
+        <button onclick="walletConnect()" class="btn btn-g" style="width:100%;justify-content:center;">⚡ Connect WebAuth Wallet</button>
       </div>
-      <div id="shield-rank-badge" style="font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-top:1rem;">Rank 1 of 7</div>
-      <h2 id="shield-name" class="guard-wordmark" style="font-size:clamp(2rem,7vw,3rem);margin:.3rem 0;">Cryptide</h2>
-      <div id="shield-title" style="font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold-l);letter-spacing:.08em;text-transform:uppercase;">Recruit</div>
-      <p id="shield-lore" style="font-size:.92rem;color:var(--text2);line-height:1.7;margin:1rem auto;max-width:440px;"></p>
-
-      <div class="flex gap-sm wrap" style="justify-content:center;margin-top:1rem;">
-        <button id="btn-advance" class="btn btn-g" onclick="advanceRank()">⚔ Advance to next rank →</button>
-        <button id="btn-reset" class="btn btn-o" style="font-size:.8rem;" onclick="resetRank()">↺ Restart journey</button>
-      </div>
-      <p id="shield-maxed" style="display:none;font-family:'Cinzel',serif;color:var(--gold-l);margin-top:1rem;letter-spacing:.05em;">⛨ You have reached Aegis — the eternal Guardian. The path is complete.</p>
     </div>
 
-    <!-- PROGRESS LADDER -->
-    <div class="div-g" style="margin:2.5rem 0 1.5rem;"></div>
-    <div class="sec-label" style="justify-content:center;text-align:center;">The Seven Ranks</div>
-    <h2 class="sec-title" style="text-align:center;">Your Ascent</h2>
-    <div id="rank-ladder" class="shield-ladder"></div>
+    <!-- S2: CURRENT RANK CARD — shown when connected -->
+    <div id="shield-rank-display" style="display:none;margin-bottom:2rem;">
+      <!-- wallet info bar -->
+      <div id="shield-wallet-info" style="background:rgba(201,146,42,0.06);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:.85rem 1.5rem;text-align:center;max-width:560px;margin:0 auto 1.25rem;">
+        <div style="font-size:.65rem;color:var(--text3);font-family:'Cinzel',serif;letter-spacing:.14em;margin-bottom:.2rem;">CONNECTED AS</div>
+        <div id="shield-wallet-actor" style="font-family:'Cinzel',serif;font-size:1.05rem;color:var(--gold-l);margin-bottom:.2rem;"></div>
+        <div style="font-size:.82rem;color:var(--text2);">GUARD Balance: <span id="shield-guard-bal" style="color:var(--pur-g);font-weight:600;">checking…</span></div>
+        <div id="shield-rank-unlock" style="font-size:.75rem;color:var(--green);margin-top:.2rem;min-height:.9rem;"></div>
+      </div>
+      <!-- rank card -->
+      <div id="shield-stage" class="gs-card" style="text-align:center;">
+        <div id="shield-rank-badge" style="font-size:.65rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--text3);margin-bottom:.9rem;">RANK 1 OF 7</div>
+        <div id="shield-glow" style="display:inline-block;padding:.75rem;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.15),transparent 70%);margin-bottom:.5rem;">
+          <img id="shield-img" src="./shield_cryptide.png" alt="Your Shield" style="width:140px;height:140px;object-fit:contain;filter:drop-shadow(0 8px 28px rgba(124,58,237,0.5));">
+        </div>
+        <h2 id="shield-name" class="guard-wordmark" style="font-size:clamp(1.7rem,5vw,2.4rem);margin:.2rem 0;">Cryptide</h2>
+        <div id="shield-title" style="font-family:'Cinzel',serif;font-size:.95rem;color:var(--gold-l);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.65rem;">🌊 Initiate</div>
+        <p id="shield-lore" style="font-size:.83rem;color:var(--text2);line-height:1.65;max-width:420px;margin:0 auto 1.1rem;"></p>
+        <!-- guardian score -->
+        <div style="background:rgba(0,0,0,0.25);border-radius:var(--radius);padding:.8rem 1rem;margin-bottom:1rem;text-align:left;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem;">
+            <span style="font-size:.68rem;color:var(--text3);font-weight:600;letter-spacing:.1em;text-transform:uppercase;">Progress to Next Rank</span>
+            <span id="gs-score" style="font-family:'Cinzel',serif;font-size:.84rem;color:var(--gold-l);">0%</span>
+          </div>
+          <div class="progress-track"><div id="gs-fill" class="progress-fill" style="width:0%"></div></div>
+          <div id="gs-next" style="font-size:.68rem;color:var(--text3);margin-top:.3rem;"></div>
+        </div>
+        <div class="flex gap-sm wrap" style="justify-content:center;">
+          <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g" style="font-size:.78rem;">🛒 Buy More GUARD →</a>
+          <button id="btn-reset" class="btn btn-o" style="font-size:.78rem;" onclick="resetRank()">↺ Reset</button>
+        </div>
+        <p id="shield-maxed" style="display:none;font-family:'Cinzel',serif;color:var(--gold-l);margin-top:1rem;letter-spacing:.05em;font-size:.88rem;">⛨ Aegis — the eternal Guardian. The path is complete.</p>
+      </div>
+    </div>
 
-    <!-- PROFILE CARD -->
-    <div class="div-g" style="margin:2.5rem 0 1.5rem;"></div>
-    <div class="sec-label" style="justify-content:center;text-align:center;">Your Guardian Card</div>
+    <!-- S3: SHIELD PROGRESSION TIMELINE -->
+    <div class="div-g" style="margin:2rem 0 1.5rem;"></div>
+    <div class="sec-label" style="text-align:center;">The Seven Ranks</div>
+    <h2 class="sec-title" style="text-align:center;">Shield Progression</h2>
+    <p style="text-align:center;font-size:.83rem;color:var(--text2);margin-bottom:1.25rem;max-width:540px;margin-left:auto;margin-right:auto;">Connect your wallet to unlock your rank automatically. Your GUARD balance determines how far you've ascended.</p>
+    <div id="shield-timeline" class="shield-timeline"></div>
+    <div id="rank-ladder" style="display:none;"></div><!-- legacy compat -->
+
+    <!-- S4: REQUIREMENTS PANEL -->
+    <div class="div-g" style="margin:2rem 0 1.5rem;"></div>
+    <div class="sec-label">Rank Requirements</div>
+    <h2 class="sec-title">Path to the Next Shield</h2>
+    <p style="font-size:.83rem;color:var(--text2);margin-bottom:1.25rem;max-width:600px;">Each rank requires completing a minimum number of conditions. LP positions and time-held tracking are on-chain features in development.</p>
+    <div id="req-panel"><div style="font-size:.85rem;color:var(--text3);padding:.5rem 0;">Connect your wallet to see your rank requirements.</div></div>
+
+    <!-- S5: ACHIEVEMENTS -->
+    <div class="div-g" style="margin:2rem 0 1.5rem;"></div>
+    <div class="sec-label">Achievements</div>
+    <h2 class="sec-title">Guardian Achievements</h2>
+    <p style="font-size:.83rem;color:var(--text2);margin-bottom:1.25rem;max-width:600px;">Track your journey through the XPR Network ecosystem. Holding achievements unlock automatically when your wallet is connected. Community, LP, and loyalty achievements are coming soon.</p>
+    <div id="ach-container"></div>
+
+    <!-- S6: COMMUNITY BONUS -->
+    <div class="div-g" style="margin:2rem 0 1.5rem;"></div>
+    <div class="sec-label">Community</div>
+    <h2 class="sec-title">Community Bonus</h2>
+    <div class="card" style="max-width:700px;">
+      <p style="font-size:.88rem;color:var(--text2);line-height:1.75;margin:0;">GUARD progression rewards more than holdings. KSTO, Snippy, Funkyverse, CypherGang, and CypherBrawls participation can strengthen your Guardian Score. Community achievements are optional bonuses — you can reach any rank without them, but they help accelerate your progression.</p>
+    </div>
+
+    <!-- S7: GUARDIAN CARD -->
+    <div class="div-g" style="margin:2rem 0 1.5rem;"></div>
+    <div class="sec-label" style="text-align:center;">Your Guardian Card</div>
     <h2 class="sec-title" style="text-align:center;">Claim Your Identity</h2>
-    <p style="text-align:center;font-size:.88rem;color:var(--text2);max-width:480px;margin:0 auto 1.5rem;">Enter your name or handle to forge your Guardian Card — then screenshot it and share it with the community. Stand GUARD.</p>
+    <p style="text-align:center;font-size:.88rem;color:var(--text2);max-width:480px;margin:0 auto 1.5rem;">Enter your name or handle to forge your Guardian Card — then screenshot it and share with the community. Stand GUARD.</p>
     <div style="max-width:420px;margin:0 auto;">
       <input id="guardian-handle" type="text" placeholder="@yourhandle" maxlength="24" oninput="renderCard()" style="width:100%;padding:.8rem 1rem;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);font-size:1rem;text-align:center;font-family:'Cinzel',serif;">
     </div>
-
     <div id="guardian-card" style="max-width:480px;margin:1.5rem auto 0;border-radius:16px;overflow:hidden;border:1px solid var(--border-gold);background:linear-gradient(160deg,#0b0e16,#16101f);position:relative;">
       <div style="padding:1.5rem;text-align:center;position:relative;z-index:2;">
         <div style="font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);">Metallicus Guardian · GUARD</div>
-        <img id="card-shield" src="" alt="" style="width:150px;height:150px;object-fit:contain;margin:1rem auto .5rem;filter:drop-shadow(0 8px 24px rgba(124,58,237,0.5));">
-        <div id="card-rank" style="font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);">Rank 1 · Recruit</div>
+        <img id="card-shield" src="./shield_cryptide.png" alt="" style="width:150px;height:150px;object-fit:contain;margin:1rem auto .5rem;filter:drop-shadow(0 8px 24px rgba(124,58,237,0.5));">
+        <div id="card-rank" style="font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);">Rank 1 · Initiate</div>
         <h3 id="card-name" class="guard-wordmark" style="font-size:2rem;margin:.2rem 0;">Cryptide</h3>
         <div id="card-handle" style="font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold-l);margin-top:.3rem;">@yourhandle</div>
         <div style="font-size:.7rem;color:var(--text3);margin-top:1rem;letter-spacing:.1em;">⚡ XPR NETWORK · STAND GUARD ⚡</div>
       </div>
     </div>
     <p style="text-align:center;font-size:.75rem;color:var(--text3);margin-top:1rem;max-width:460px;margin-left:auto;margin-right:auto;">This is a community identity for fun and belonging — a journey you choose, not a verified credential. Screenshot your card to share it.</p>
+
+    <!-- S8: DISCLAIMER -->
+    <div class="div mt4"></div>
+    <div class="disc"><span>ℹ</span><div>This progression system is community-built and for GUARD ecosystem engagement only. Requirements and thresholds may evolve as GUARD grows. Not financial advice.</div></div>
+
   </div>
 </div>
 </div>
@@ -1103,6 +1193,7 @@ function go(id){
   if(tb)tb.classList.add('active');
   window.scrollTo({top:0,behavior:'instant'});
   rev();
+  if(typeof trackPageVisit==='function') trackPageVisit(id);
 }
 
 function toggleMenu(){document.getElementById('mob').classList.toggle('open');}
@@ -1194,15 +1285,248 @@ loadLiveData();
 
 // ===== SHIELDS — THE PATH OF THE GUARDIAN =====
 const SHIELDS = [
-  {name:'Cryptide', title:'Recruit', emoji:'🌊', img:'./shield_cryptide.png', lore:'New to the ecosystem. A stable foundation and a defensive footing — learning the way. Every Guardian begins here.'},
-  {name:'Riftforge', title:'Defender', emoji:'🌋', img:'./shield_riftforge.png', lore:'The first awakening of power — raw and uncontrolled. Bold and eye-catching, stepping up to defend the community.'},
-  {name:'Helion', title:'Protector', emoji:'☀️', img:'./shield_helion.png', lore:'Power under control. Light, guidance, and standing watch — actively protecting others, not just yourself.'},
-  {name:'Nebulon', title:'Ascendant', emoji:'🌌', img:'./shield_nebulon.png', lore:'Cosmic scale begins. Mysterious and advanced — risen beyond the basic defender into something greater.'},
-  {name:'Protonis', title:'Architect', emoji:'⚛️', img:'./shield_protonis.png', lore:'The shield most tied to XPR Network and Metallicus. Technological and intentional — elite ecosystem knowledge and status.'},
-  {name:'Keystone', title:'Gatekeeper', emoji:'🔑', img:'./shield_keystone.png', lore:'Near-final form. Custodian energy — keeper of access, protector of keys, guardian of the gate.'},
-  {name:'Aegis', title:'Guardian', emoji:'🛡️', img:'./shield_aegis.png', lore:'God-tier. The final evolution — vault, protection, security, eternity. The fusion of all shields before it. To bear Aegis is to BE the Guardian.'}
+  {name:'Cryptide',  title:'Initiate',   emoji:'🌊', img:'./shield_cryptide.png',  req:0,          lore:'New to the ecosystem. A stable foundation and a defensive footing — learning the way. Every Guardian begins here.'},
+  {name:'Riftforge', title:'Defender',   emoji:'🌋', img:'./shield_riftforge.png', req:25000,      lore:'The first awakening of power — bold and uncontrolled. Stepping forward to defend the community for the first time.'},
+  {name:'Helion',    title:'Sentinel',   emoji:'☀️', img:'./shield_helion.png',    req:150000,     lore:'Power under control. Light, guidance, and standing watch — actively protecting others, not just yourself.'},
+  {name:'Nebulon',   title:'Ascendant',  emoji:'🌌', img:'./shield_nebulon.png',   req:750000,     lore:'Cosmic scale begins. Mysterious and advanced — risen beyond the basic defender into something far greater.'},
+  {name:'Protonis',  title:'Architect',  emoji:'⚛️', img:'./shield_protonis.png',  req:2500000,    lore:'The shield most tied to XPR Network. Technological and intentional — elite ecosystem knowledge and standing.'},
+  {name:'Keystone',  title:'Gatekeeper', emoji:'🔑', img:'./shield_keystone.png',  req:7500000,    lore:'Near-final form. Custodian energy — keeper of access, protector of keys, guardian of the gate.'},
+  {name:'Aegis',     title:'Guardian',   emoji:'🛡️', img:'./shield_aegis.png',     req:15000000,   lore:'God-tier. The final evolution — vault, protection, eternity. The fusion of all shields. To bear Aegis is to BE the Guardian.'},
 ];
-let guardianRank = 0; // index of current (highest attained) rank
+const RANK_THRESHOLDS = SHIELDS.map(s => s.req);
+let guardianRank = 0;
+let guardianBalance = 0;
+
+// ----- Achievements -----
+const ACH_CATS = [
+  { id:'site', label:'Site Achievements', icon:'🏛',
+    items:[
+      {id:'first_steps',     label:'First Steps',      desc:'Connect your WebAuth wallet',    icon:'⚡'},
+      {id:'shielded',        label:'Shielded',          desc:'Complete profile setup',         icon:'🛡'},
+      {id:'lorekeeper',      label:'Lorekeeper',        desc:'Read the GUARD lore',            icon:'📜'},
+      {id:'ecosystem_scout', label:'Ecosystem Scout',   desc:'Complete Start Here',            icon:'🧭'},
+      {id:'shield_chosen',   label:'Shield Chosen',     desc:'Select a Guardian shield',       icon:'🔱'},
+      {id:'explorer',        label:'Explorer',          desc:'Visit all major pages',          icon:'🗺'},
+    ]
+  },
+  { id:'holding', label:'Holding Achievements', icon:'🪙',
+    items:[
+      {id:'holder_1', label:'Holder I',   desc:'Hold 25,000 GUARD',     icon:'🪙', req:25000},
+      {id:'holder_2', label:'Holder II',  desc:'Hold 150,000 GUARD',    icon:'🪙', req:150000},
+      {id:'holder_3', label:'Holder III', desc:'Hold 750,000 GUARD',    icon:'🪙', req:750000},
+      {id:'holder_4', label:'Holder IV',  desc:'Hold 2,500,000 GUARD',  icon:'🪙', req:2500000},
+      {id:'holder_5', label:'Holder V',   desc:'Hold 7,500,000 GUARD',  icon:'🪙', req:7500000},
+      {id:'holder_6', label:'Holder VI',  desc:'Hold 15,000,000 GUARD', icon:'🪙', req:15000000},
+    ]
+  },
+  { id:'lp', label:'LP Achievements', icon:'💧', comingSoon:true,
+    items:[
+      {id:'lp_1', label:'Liquidity Added',  desc:'First LP position',          icon:'💧'},
+      {id:'lp_2', label:'Market Maker',     desc:'100 XPR LP equivalent',      icon:'💧'},
+      {id:'lp_3', label:'Depth Provider',   desc:'500 XPR LP equivalent',      icon:'💧'},
+      {id:'lp_4', label:'Guardian Pool',    desc:'2,000 XPR LP equivalent',    icon:'💧'},
+      {id:'lp_5', label:'Liquidity Pillar', desc:'5,000 XPR LP equivalent',    icon:'💧'},
+    ]
+  },
+  { id:'loyalty', label:'Loyalty Achievements', icon:'⏳', comingSoon:true,
+    items:[
+      {id:'loy_7',   label:'7 Days',   desc:'Standing GUARD for 7 days',   icon:'⏳'},
+      {id:'loy_30',  label:'30 Days',  desc:'Standing GUARD for 30 days',  icon:'⏳'},
+      {id:'loy_90',  label:'90 Days',  desc:'Standing GUARD for 90 days',  icon:'⏳'},
+      {id:'loy_180', label:'180 Days', desc:'Standing GUARD for 180 days', icon:'⏳'},
+      {id:'loy_365', label:'365 Days', desc:'Standing GUARD for 365 days', icon:'⏳'},
+    ]
+  },
+  { id:'community', label:'Community Achievements', icon:'👥', comingSoon:true,
+    items:[
+      {id:'com_ksto1', label:'KSTO Member',         desc:'Join KSTO community',             icon:'🦊'},
+      {id:'com_ksto2', label:'KSTO Supporter',      desc:'Active KSTO participant',         icon:'🦊'},
+      {id:'com_sn1',   label:'Snippy Holder',       desc:'Hold 1 Snippy NFT',              icon:'🦊'},
+      {id:'com_sn2',   label:'Snippy Collector',    desc:'Hold multiple Snippy NFTs',       icon:'🦊'},
+      {id:'com_fn1',   label:'Funky Holder',        desc:'Hold 1 Funky NFT',               icon:'🎨'},
+      {id:'com_fn2',   label:'Funky Collector',     desc:'Hold multiple Funky NFTs',        icon:'🎨'},
+      {id:'com_cg1',   label:'CypherGang Initiate', desc:'Hold 1 CypherGang NFT',          icon:'⚔'},
+      {id:'com_cg2',   label:'Cypher Veteran',      desc:'Hold multiple CypherGang NFTs',   icon:'⚔'},
+    ]
+  },
+  { id:'brawls', label:'CypherBrawls Achievements', icon:'⚔', comingSoon:true,
+    items:[
+      {id:'brl_1', label:'First Deployment',    desc:'Complete your first mission',  icon:'⚔'},
+      {id:'brl_2', label:'Battle Tested',       desc:'Complete 10 missions',         icon:'⚔'},
+      {id:'brl_3', label:'Frontline Operative', desc:'Complete 25 missions',         icon:'⚔'},
+      {id:'brl_4', label:'Brawl Veteran',       desc:'Complete 100 missions',        icon:'⚔'},
+      {id:'brl_5', label:'Legendary Combatant', desc:'Rare high-rank achievement',   icon:'🏆'},
+    ]
+  },
+];
+
+function getUnlockedAchs(){
+  try{ return JSON.parse(localStorage.getItem('guard_achievements')||'[]'); }catch(e){ return []; }
+}
+function saveUnlockedAchs(arr){
+  try{ localStorage.setItem('guard_achievements', JSON.stringify(arr)); }catch(e){}
+}
+function unlockAch(id){
+  const arr = getUnlockedAchs();
+  if(!arr.includes(id)){ arr.push(id); saveUnlockedAchs(arr); renderAchievements(); }
+}
+function updateHoldingAchs(bal){
+  ACH_CATS.find(c=>c.id==='holding').items.forEach(a=>{ if(bal >= a.req) unlockAch(a.id); });
+}
+function trackPageVisit(pid){
+  try{
+    const v = JSON.parse(localStorage.getItem('guard_pages_visited')||'[]');
+    if(!v.includes(pid)){ v.push(pid); localStorage.setItem('guard_pages_visited', JSON.stringify(v)); }
+    const major = ['home','guard','start','ecosystem','learn','shields','faq','community'];
+    if(major.every(p => v.includes(p))) unlockAch('explorer');
+  }catch(e){}
+}
+
+function renderTimeline(){
+  const tl = document.getElementById('shield-timeline');
+  if(!tl) return;
+  tl.innerHTML = SHIELDS.map((s,i)=>{
+    const cls = i < guardianRank ? 'done' : i === guardianRank ? 'active' : 'locked';
+    const check = i < guardianRank
+      ? '<span class="rn-check" style="color:var(--green);">✓</span>'
+      : i === guardianRank
+        ? '<span class="rn-check" style="color:var(--gold);">★</span>'
+        : '<span class="rn-check" style="opacity:.25;">○</span>';
+    const name = i <= guardianRank ? s.name : '???';
+    const title = i <= guardianRank ? s.title : '?';
+    return `<div class="rank-node ${cls}">
+      <div class="rn-num">RANK ${i+1}</div>
+      <img src="${s.img}" alt="${s.name}" style="width:60px;height:60px;object-fit:contain;display:block;margin:0 auto .35rem;">
+      <div class="rn-name">${name}</div>
+      <div class="rn-title">${title}</div>
+      ${check}
+    </div>`;
+  }).join('');
+}
+
+function renderProgress(bal){
+  const panel = document.getElementById('req-panel');
+  if(!panel) return;
+  const cur = SHIELDS[guardianRank];
+  const next = guardianRank < 6 ? SHIELDS[guardianRank+1] : null;
+
+  // Progress bar
+  let pct = 0;
+  if(guardianRank >= 6){
+    pct = 100;
+  } else if(next){
+    const range = next.req - cur.req;
+    pct = range > 0 ? Math.min(100, Math.max(0, Math.round(((bal - cur.req) / range) * 100))) : 100;
+  }
+  const scoreEl = document.getElementById('gs-score');
+  const fillEl  = document.getElementById('gs-fill');
+  const nextEl  = document.getElementById('gs-next');
+  if(scoreEl) scoreEl.textContent = pct + '%';
+  if(fillEl)  fillEl.style.width  = pct + '%';
+  if(nextEl && next) nextEl.textContent = next.req.toLocaleString() + ' GUARD needed for ' + next.name;
+  else if(nextEl)    nextEl.textContent = 'Maximum rank achieved — you are the eternal Guardian';
+
+  // Requirements
+  const anyOf = [null,1,2,2,3,3,4];
+  let html = '';
+  if(next){
+    html += `<div class="sec-label" style="margin-bottom:.4rem;">Current: Rank ${guardianRank+1} · ${cur.name} (${cur.title})</div>`;
+    html += `<div class="sec-label" style="color:var(--gold-l);margin-bottom:.75rem;">Next: Rank ${guardianRank+2} · ${next.name} (${next.title}) — complete ANY ${anyOf[guardianRank+1]} of:</div>`;
+    getRankReqs(guardianRank+1, bal).forEach(r=>{
+      const cls  = r.met ? 'req-met' : r.soon ? 'req-soon' : 'req-unmet';
+      const icon = r.met ? '✓' : r.soon ? '◷' : '○';
+      const bar  = r.progress!=null && !r.soon
+        ? `<div class="progress-track" style="margin-top:.3rem;"><div class="progress-fill" style="width:${r.progress}%"></div></div>`
+        : '';
+      html += `<div class="req-item">
+        <div class="req-status ${cls}">${icon}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:.84rem;color:var(--text);font-weight:500;">${r.label}</div>
+          <div style="font-size:.72rem;color:var(--text3);margin-top:.1rem;">${r.detail}</div>
+          ${bar}
+        </div>
+      </div>`;
+    });
+  } else {
+    html = `<div class="req-item"><div class="req-status req-met">✓</div><div><div style="font-size:.88rem;color:var(--gold-l);font-weight:600;">Aegis achieved — you are the eternal Guardian.</div></div></div>`;
+  }
+  panel.innerHTML = html;
+}
+
+function getRankReqs(rankIdx, bal){
+  const threshold = SHIELDS[rankIdx].req;
+  const guardPct  = threshold > 0 ? Math.min(100, Math.round((bal / threshold) * 100)) : 100;
+  const guardMet  = bal >= threshold;
+  const cs = 'Coming Soon — on-chain tracking in development';
+  const map = {
+    1:[
+      {label:'Hold 25,000 GUARD',      detail: guardMet ? bal.toLocaleString()+' GUARD held ✓' : bal.toLocaleString()+' / 25,000',    met:guardMet, progress:guardPct},
+      {label:'LP 25 XPR equivalent',   detail:cs, met:false, soon:true},
+      {label:'Hold for 7 days',        detail:cs, met:false, soon:true},
+    ],
+    2:[
+      {label:'Hold 150,000 GUARD',     detail: bal>=150000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 150,000',      met:bal>=150000,  progress:Math.min(100,Math.round(bal/1500))},
+      {label:'LP 100 XPR equivalent',  detail:cs, met:false, soon:true},
+      {label:'Hold for 14 days',       detail:cs, met:false, soon:true},
+      {label:'Complete profile setup', detail:cs, met:false, soon:true},
+    ],
+    3:[
+      {label:'Hold 750,000 GUARD',     detail: bal>=750000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 750,000',      met:bal>=750000,  progress:Math.min(100,Math.round(bal/7500))},
+      {label:'LP 250 XPR equivalent',  detail:cs, met:false, soon:true},
+      {label:'Hold for 45 days',       detail:cs, met:false, soon:true},
+      {label:'Complete Start Here tutorial', detail:cs, met:false, soon:true},
+    ],
+    4:[
+      {label:'Hold 2,500,000 GUARD',   detail: bal>=2500000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 2,500,000',   met:bal>=2500000, progress:Math.min(100,Math.round(bal/25000))},
+      {label:'LP 750 XPR equivalent',  detail:cs, met:false, soon:true},
+      {label:'Hold for 90 days',       detail:cs, met:false, soon:true},
+      {label:'Complete 3 site missions',detail:cs, met:false, soon:true},
+    ],
+    5:[
+      {label:'Hold 7,500,000 GUARD',   detail: bal>=7500000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 7,500,000',   met:bal>=7500000, progress:Math.min(100,Math.round(bal/75000))},
+      {label:'LP 2,000 XPR equivalent',detail:cs, met:false, soon:true},
+      {label:'Hold for 180 days',      detail:cs, met:false, soon:true},
+      {label:'Earn 5 achievements',    detail:cs, met:false, soon:true},
+    ],
+    6:[
+      {label:'Hold 15,000,000 GUARD',  detail: bal>=15000000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 15,000,000', met:bal>=15000000,progress:Math.min(100,Math.round(bal/150000))},
+      {label:'LP 5,000 XPR equivalent',detail:cs, met:false, soon:true},
+      {label:'Hold for 365 days',      detail:cs, met:false, soon:true},
+      {label:'Complete all shield quests', detail:cs, met:false, soon:true},
+      {label:'Earn 10 achievements',   detail:cs, met:false, soon:true},
+      {label:'Maintain Rank 6 for 90+ days', detail:cs, met:false, soon:true},
+    ],
+  };
+  return map[rankIdx] || [];
+}
+
+function renderAchievements(){
+  const c = document.getElementById('ach-container');
+  if(!c) return;
+  const unlocked = getUnlockedAchs();
+  c.innerHTML = ACH_CATS.map(cat=>{
+    const n = cat.items.filter(a=>unlocked.includes(a.id)).length;
+    const soon = cat.comingSoon || false;
+    const cards = cat.items.map(a=>{
+      const isOn = unlocked.includes(a.id);
+      return `<div class="ach-card${isOn?' unlocked':''}${soon&&!isOn?' coming':''}">
+        <div class="ach-icon">${a.icon}</div>
+        <div class="ach-label">${a.label}</div>
+        <div class="ach-desc">${a.desc}</div>
+        <span class="ach-badge ${isOn?'done':soon?'soon':'locked-lbl'}">${isOn?'✓ Unlocked':soon?'Coming Soon':'Locked'}</span>
+      </div>`;
+    }).join('');
+    return `<div class="ach-cat">
+      <div class="ach-cat-hdr" onclick="toggleAchCat(this)">
+        <h4>${cat.icon} ${cat.label}</h4>
+        <span class="ach-count">${n}/${cat.items.length}${soon?' · Coming Soon':''} ▾</span>
+      </div>
+      <div class="ach-cat-body">${cards}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleAchCat(hdr){ hdr.nextElementSibling.classList.toggle('open'); }
 
 async function loadRank(){
   try{
@@ -1214,46 +1538,39 @@ async function loadRank(){
     if(h && h.value){ const el=document.getElementById('guardian-handle'); if(el) el.value=h.value; }
   }catch(e){}
   renderShield();
+  renderTimeline();
+  renderAchievements();
 }
 async function saveRank(){ try{ await window.storage.set('guardian_rank', String(guardianRank)); }catch(e){} }
 
 function renderShield(){
   const s = SHIELDS[guardianRank];
-  if(!document.getElementById('shield-img')) return;
-  document.getElementById('shield-img').src = s.img;
-  document.getElementById('shield-rank-badge').textContent = 'Rank '+(guardianRank+1)+' of 7';
+  const imgEl = document.getElementById('shield-img');
+  if(!imgEl) return;
+  imgEl.src = s.img;
+  document.getElementById('shield-rank-badge').textContent = 'RANK '+(guardianRank+1)+' OF 7';
   document.getElementById('shield-name').textContent = s.name;
   document.getElementById('shield-title').textContent = s.emoji+' '+s.title;
   document.getElementById('shield-lore').textContent = s.lore;
-  const adv = document.getElementById('btn-advance');
   const maxed = document.getElementById('shield-maxed');
-  if(guardianRank>=6){ adv.style.display='none'; maxed.style.display='block'; }
-  else { adv.style.display=''; maxed.style.display='none'; adv.textContent='⚔ Advance to '+SHIELDS[guardianRank+1].title+' →'; }
-  renderLadder();
+  if(maxed) maxed.style.display = guardianRank >= 6 ? 'block' : 'none';
+  renderTimeline();
   renderCard();
 }
-function renderLadder(){
-  const lad = document.getElementById('rank-ladder');
-  if(!lad) return;
-  lad.innerHTML = SHIELDS.map((s,i)=>{
-    const locked = i>guardianRank ? 'locked' : '';
-    const cur = i===guardianRank ? 'current' : '';
-    return '<div class="ladder-item '+locked+' '+cur+'" onclick="jumpRank('+i+')"><img src="'+s.img+'" alt="'+s.name+'"><div class="ladder-rank">R'+(i+1)+'</div><div class="ladder-name">'+(i<=guardianRank?s.name:'???')+'</div></div>';
-  }).join('');
-}
+function renderLadder(){ /* replaced by renderTimeline */ }
 function renderCard(){
   const s = SHIELDS[guardianRank];
-  if(!document.getElementById('card-shield')) return;
-  document.getElementById('card-shield').src = s.img;
+  const cs = document.getElementById('card-shield');
+  if(!cs) return;
+  cs.src = s.img;
   document.getElementById('card-rank').textContent = 'Rank '+(guardianRank+1)+' · '+s.title;
   document.getElementById('card-name').textContent = s.name;
   const h = document.getElementById('guardian-handle').value.trim();
   document.getElementById('card-handle').textContent = h ? (h.startsWith('@')?h:'@'+h) : '@yourhandle';
   try{ if(h) window.storage.set('guardian_handle', h); }catch(e){}
 }
-function advanceRank(){ if(guardianRank<6){ guardianRank++; saveRank(); renderShield(); window.scrollTo({top:document.getElementById('shield-stage').offsetTop-90,behavior:'smooth'}); } }
+function resetRank(){ guardianRank=0; saveRank(); renderShield(); renderProgress(guardianBalance); }
 function jumpRank(i){ if(i<=guardianRank){ guardianRank=i; saveRank(); renderShield(); } }
-function resetRank(){ guardianRank=0; saveRank(); renderShield(); }
 
 loadRank();
 
@@ -1424,15 +1741,19 @@ function onWalletConnected(actor) {
 
   // Shields page
   const prompt = document.getElementById('shield-wallet-prompt');
-  const info = document.getElementById('shield-wallet-info');
+  const rankDisplay = document.getElementById('shield-rank-display');
   const actorShield = document.getElementById('shield-wallet-actor');
   if (prompt) prompt.style.display = 'none';
-  if (info) info.style.display = 'block';
+  if (rankDisplay) rankDisplay.style.display = 'block';
   if (actorShield) actorShield.textContent = '@' + actor;
+
+  // Unlock first steps achievement
+  if (typeof unlockAch === 'function') unlockAch('first_steps');
 }
 
 function onGuardBalanceLoaded(actor, bal) {
   const fmtBal = bal.toLocaleString() + ' GUARD';
+  guardianBalance = bal;
 
   // Wallet bar balance
   const barBal = document.getElementById('wallet-guard-balance');
@@ -1450,11 +1771,11 @@ function onGuardBalanceLoaded(actor, bal) {
     guardianRank = unlockedRank;
     saveRank();
     renderShield();
-    if (rankUnlockEl) rankUnlockEl.textContent = '🎉 Rank unlocked: ' + SHIELDS[unlockedRank].title + ' (' + SHIELDS[unlockedRank].name + ')';
+    if (rankUnlockEl) rankUnlockEl.textContent = '🎉 Rank unlocked: ' + SHIELDS[unlockedRank].title + ' — ' + SHIELDS[unlockedRank].name;
   } else if (unlockedRank === guardianRank) {
-    if (rankUnlockEl) rankUnlockEl.textContent = '✅ Your rank: ' + SHIELDS[unlockedRank].title + ' · ' + (unlockedRank < 6 ? 'Hold ' + RANK_THRESHOLDS[unlockedRank+1].toLocaleString() + ' GUARD to advance' : 'Maximum rank reached!');
+    if (rankUnlockEl) rankUnlockEl.textContent = '✅ ' + SHIELDS[unlockedRank].name + ' · ' + SHIELDS[unlockedRank].title + (unlockedRank < 6 ? ' — hold ' + RANK_THRESHOLDS[unlockedRank+1].toLocaleString() + ' GUARD to advance' : ' — maximum rank!');
   } else {
-    if (rankUnlockEl) rankUnlockEl.textContent = '✅ Rank ' + (unlockedRank+1) + ' unlocked · ' + (unlockedRank < 6 ? 'Hold ' + RANK_THRESHOLDS[unlockedRank+1].toLocaleString() + ' GUARD to advance' : '');
+    if (rankUnlockEl) rankUnlockEl.textContent = '✅ Rank ' + (unlockedRank+1) + ' · ' + SHIELDS[unlockedRank].name + (unlockedRank < 6 ? ' — hold ' + RANK_THRESHOLDS[unlockedRank+1].toLocaleString() + ' GUARD to advance' : '');
   }
 
   // Update Guardian card handle with wallet name if empty
@@ -1463,6 +1784,11 @@ function onGuardBalanceLoaded(actor, bal) {
     handleInput.value = '@' + actor;
     renderCard();
   }
+
+  // Update new systems
+  updateHoldingAchs(bal);
+  renderTimeline();
+  renderProgress(bal);
 }
 
 function onWalletDisconnected() {
