@@ -62,9 +62,8 @@ button{cursor:pointer;font-family:'Inter',sans-serif;}
 .mobile-nav-btn:hover,.mobile-nav-btn.active{color:var(--gold-l);background:var(--bg3);}
 
 /* PAGES */
-.page{display:none;min-height:100vh;padding-top:60px;}
+.page{display:none;min-height:100vh;padding-top:134px;}
 .page.active{display:block;}
-body.wallet-active .page{padding-top:134px!important;}
 .container{max-width:1100px;margin:0 auto;padding:0 1.5rem;}
 .section{padding:4rem 0;}
 .section-sm{padding:2rem 0;}
@@ -262,6 +261,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
   .lore-grid{grid-template-columns:1fr;}
   .foot-top{grid-template-columns:1fr 1fr;}
   .nav-links{display:none;}.hamburger{display:flex;}
+  #wallet-btn{display:none;}
   .nav-brand span{font-size:.78rem;}
   #nav{padding:0 1rem;gap:.5rem;}
   .nav-cta{font-size:.7rem;padding:.4rem .7rem;}
@@ -373,15 +373,21 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
   <p style="font-size:.72rem;color:var(--text3);">⚠ Community educational resource — not affiliated with or officially endorsed by Metallicus or XPR Network.</p>
 </div>
 
-<!-- WALLET BAR — shown when connected -->
-<div id="wallet-bar" style="display:none;position:fixed;top:97px;left:0;right:0;z-index:997;background:rgba(10,12,20,0.97);border-bottom:1px solid var(--border-gold);padding:.4rem 1.5rem;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap;">
-  <span style="font-size:.78rem;color:var(--gold-l);font-family:'Cinzel',serif;">⚡ <span id="wallet-actor"></span></span>
-  <span id="wallet-guard-balance" style="font-size:.75rem;color:var(--pur-g);"></span>
-  <button onclick="walletDisconnect()" style="font-size:.72rem;color:var(--text3);background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:5px;padding:.2rem .65rem;cursor:pointer;line-height:1.4;">Disconnect</button>
+<!-- WALLET BAR — always visible, toggles between connect / connected state -->
+<div id="wallet-bar" style="position:fixed;top:97px;left:0;right:0;z-index:997;background:rgba(10,12,20,0.97);border-bottom:1px solid var(--border-gold);padding:.4rem 1.5rem;display:flex;align-items:center;justify-content:center;gap:.65rem;flex-wrap:wrap;">
+  <div id="wbar-connect" style="display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;justify-content:center;">
+    <span style="font-size:.74rem;color:var(--text3);">Connect your WebAuth wallet to check your Guardian rank</span>
+    <button onclick="walletConnect()" style="font-size:.72rem;color:var(--gold-l);background:rgba(201,146,42,0.1);border:1px solid var(--border-gold);border-radius:5px;padding:.25rem .75rem;cursor:pointer;line-height:1.4;white-space:nowrap;">⚡ Connect Wallet</button>
+  </div>
+  <div id="wbar-connected" style="display:none;align-items:center;gap:.65rem;flex-wrap:wrap;justify-content:center;">
+    <span style="font-size:.78rem;color:var(--gold-l);font-family:'Cinzel',serif;">⚡ <span id="wallet-actor"></span></span>
+    <span id="wallet-guard-balance" style="font-size:.75rem;color:var(--pur-g);"></span>
+    <button onclick="walletDisconnect()" style="font-size:.72rem;color:var(--text3);background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:5px;padding:.2rem .65rem;cursor:pointer;line-height:1.4;">Disconnect</button>
+  </div>
 </div>
 
 <!-- ═══════ PAGE: HOME ═══════ -->
-<div id="page-home" class="page active" style="padding-top:88px;">
+<div id="page-home" class="page active">
 <div class="hero">
   <div class="container">
     <div class="hero-inner">
@@ -522,7 +528,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 </div>
 
 <!-- ═══════ PAGE: GUARD ═══════ -->
-<div id="page-guard" class="page" style="padding-top:88px;">
+<div id="page-guard" class="page">
 <div class="container">
   <div class="section" style="padding-bottom:2rem;text-align:center;">
     <img src="./g_token.jpg?v=2" alt="GUARD Token" style="width:220px;max-width:65%;border-radius:16px;box-shadow:0 0 50px rgba(124,58,237,0.5);margin-bottom:1.5rem;object-fit:contain;">
@@ -649,7 +655,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 </div>
 
 <!-- ═══════ PAGE: START HERE ═══════ -->
-<div id="page-start" class="page" style="padding-top:88px;">
+<div id="page-start" class="page">
 <div class="container">
   <div class="section">
     <div class="sec-label">Onboarding</div>
@@ -737,7 +743,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 </div>
 
 <!-- ═══════ PAGE: ECOSYSTEM ═══════ -->
-<div id="page-ecosystem" class="page" style="padding-top:88px;">
+<div id="page-ecosystem" class="page">
 <div class="container">
   <div class="section">
     <div class="sec-label">Ecosystem</div>
@@ -808,7 +814,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 <!-- ═══════ PAGE: GUIDES ═══════ -->
 
 <!-- ═══════ PAGE: VIDEOS ═══════ -->
-<div id="page-learn" class="page" style="padding-top:88px;">
+<div id="page-learn" class="page">
 <div class="container">
   <div class="section">
     <div class="sec-label">Learn</div>
@@ -834,7 +840,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 </div>
 
 <!-- ═══════ PAGE: SHIELDS ═══════ -->
-<div id="page-shields" class="page" style="padding-top:88px;">
+<div id="page-shields" class="page">
 <div class="container">
   <div class="section">
 
@@ -953,7 +959,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 </div>
 
 <!-- ═══════ PAGE: FAQ ═══════ -->
-<div id="page-faq" class="page" style="padding-top:88px;">
+<div id="page-faq" class="page">
 <div class="container">
   <div class="section">
     <div class="sec-label">Knowledge Base</div>
@@ -992,7 +998,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 <!-- GLOSSARY REMOVED — consolidated into Ecosystem cards + official help centers -->
 
 <!-- ═══════ PAGE: COMMUNITY ═══════ -->
-<div id="page-community" class="page" style="padding-top:88px;">
+<div id="page-community" class="page">
 <div class="container">
   <div class="section">
     <div class="sec-label">Community</div>
@@ -1102,7 +1108,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 </div>
 
 <!-- ═══════ PAGE: CREATOR ═══════ -->
-<div id="page-creator" class="page" style="padding-top:88px;">
+<div id="page-creator" class="page">
 <div class="container">
   <div class="section">
     <div class="sec-label">The Creator</div>
@@ -1752,10 +1758,12 @@ function onWalletConnected(actor) {
   const gcb = document.getElementById('guard-connect-btn');
   if (gcb) gcb.style.display = 'none';
 
-  // Wallet bar
-  const bar = document.getElementById('wallet-bar');
+  // Wallet bar — swap to connected state
+  const wbarConnect = document.getElementById('wbar-connect');
+  const wbarConnected = document.getElementById('wbar-connected');
+  if (wbarConnect) wbarConnect.style.display = 'none';
+  if (wbarConnected) wbarConnected.style.display = 'flex';
   const actorEl = document.getElementById('wallet-actor');
-  if (bar) bar.style.display = 'flex';
   if (actorEl) actorEl.textContent = '@' + actor;
 
   // Mobile menu wallet section
@@ -1763,9 +1771,6 @@ function onWalletConnected(actor) {
   const mobActor = document.getElementById('mob-wallet-actor');
   if (mobDisc) mobDisc.style.display = 'block';
   if (mobActor) mobActor.textContent = '@' + actor;
-
-  // Push page content below wallet bar
-  document.body.classList.add('wallet-active');
 
   // Shields page
   const prompt = document.getElementById('shield-wallet-prompt');
@@ -1820,12 +1825,19 @@ function onGuardBalanceLoaded(actor, bal) {
 }
 
 function onWalletDisconnected() {
+  // Nav button
   const btn = document.getElementById('wallet-btn');
   if (btn) { btn.textContent = '⚡ Connect'; btn.style.color = ''; }
 
-  const bar = document.getElementById('wallet-bar');
-  if (bar) bar.style.display = 'none';
+  // Wallet bar — swap back to connect state
+  const wbarConnect = document.getElementById('wbar-connect');
+  const wbarConnected = document.getElementById('wbar-connected');
+  if (wbarConnect) wbarConnect.style.display = 'flex';
+  if (wbarConnected) wbarConnected.style.display = 'none';
+  const barBal = document.getElementById('wallet-guard-balance');
+  if (barBal) barBal.textContent = '';
 
+  // GUARD page connect button
   const gcb = document.getElementById('guard-connect-btn');
   if (gcb) gcb.style.display = 'inline-flex';
 
@@ -1833,14 +1845,33 @@ function onWalletDisconnected() {
   const mobDisc = document.getElementById('mob-wallet-disconnect');
   if (mobDisc) mobDisc.style.display = 'none';
 
-  // Restore page padding
-  document.body.classList.remove('wallet-active');
-
   // Shields page — hide rank display, show connect prompt
   const prompt = document.getElementById('shield-wallet-prompt');
   const rankDisplay = document.getElementById('shield-rank-display');
   if (prompt) prompt.style.display = 'block';
   if (rankDisplay) rankDisplay.style.display = 'none';
+
+  // Reset rank and balance state
+  guardianRank = 0;
+  guardianBalance = 0;
+  saveRank();
+
+  // Clear all balance/status displays
+  const shieldBal = document.getElementById('shield-guard-bal');
+  if (shieldBal) shieldBal.textContent = 'checking…';
+  const rankUnlockEl = document.getElementById('shield-rank-unlock');
+  if (rankUnlockEl) rankUnlockEl.textContent = '';
+
+  // Re-render rank visuals back to Cryptide
+  renderShield();
+  renderCard();
+  renderTimeline();
+  renderProgress(0);
+
+  // Revoke wallet-gated achievements from localStorage
+  const WALLET_ACHS = ['first_steps', 'holder_1', 'holder_2', 'holder_3', 'holder_4', 'holder_5', 'holder_6'];
+  saveUnlockedAchs(getUnlockedAchs().filter(id => !WALLET_ACHS.includes(id)));
+  renderAchievements();
 }
 
 // Try to restore session on page load
