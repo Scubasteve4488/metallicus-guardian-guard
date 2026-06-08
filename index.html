@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Metallicus Guardian — A community-built educational resource for the Metallicus and XPR Network ecosystem.">
+<title>Metallicus Guardian v3 | XPR Network Education Hub</title>
+<!-- Social share preview (OpenGraph + Twitter) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Metallicus Guardian (GUARD) — XPR Network">
+<meta property="og:description" content="Protector of the WebAuth Wallet. A community-built guide to the Metallicus & XPR Network ecosystem — meet GUARD, learn the tools, join the community.">
+<meta property="og:image" content="https://standguard.netlify.app/guard-card-v6.png?v=2">
+<meta property="og:url" content="https://standguard.netlify.app/">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Metallicus Guardian (GUARD) — XPR Network">
+<meta name="twitter:description" content="Protector of the WebAuth Wallet. A community-built guide to the Metallicus & XPR Network ecosystem.">
+<meta name="twitter:image" content="https://standguard.netlify.app/guard-card-v6.png?v=2">
+<meta name="theme-color" content="#c9922a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@500;700&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@500;700&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet"></noscript>
+<style>
+:root{
+  --bg:#080b12;--bg2:#0e1220;--bg3:#141926;--bg4:#1a2035;
+  --border:rgba(255,255,255,0.07);--border-gold:rgba(201,146,42,0.3);
+  --gold:#c9922a;--gold-l:#e8b84b;--gold-b:#f5c842;
+  --pur:#7c3aed;--pur-l:#9d5cf0;--pur-g:#b78df5;
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --red:#ef4444;--green:#22c55e;--blue:#38bdf8;
+  --radius:8px;--radius-lg:12px;
+  --shadow:0 4px 24px rgba(0,0,0,0.4);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden;}
+a{color:var(--pur-g);text-decoration:none;transition:color .2s;}
+a:hover{color:var(--gold-l);}
+button{cursor:pointer;font-family:'Inter',sans-serif;}
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:var(--border-gold);border-radius:3px;}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:60px;background:rgba(8,11,18,0.97);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.5rem;gap:1rem;backdrop-filter:blur(12px);}
+.nav-brand{display:flex;align-items:center;gap:.6rem;cursor:pointer;flex-shrink:0;}
+.nav-brand img{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--gold);object-fit:cover;}
+.nav-brand span{font-family:'Cinzel Decorative','Cinzel',serif;font-size:.95rem;font-weight:700;color:var(--gold-l);letter-spacing:.08em;}
+.nav-links{display:flex;align-items:center;gap:.1rem;flex:1;overflow-x:auto;scrollbar-width:none;}
+.nav-links::-webkit-scrollbar{display:none;}
+.nav-btn{background:none;border:none;padding:.4rem .7rem;font-size:.75rem;font-weight:500;color:var(--text2);border-radius:6px;transition:all .2s;white-space:nowrap;}
+.nav-btn:hover,.nav-btn.active{color:var(--gold-l);background:rgba(201,146,42,0.08);}
+.nav-cta{background:var(--gold);color:#000!important;font-weight:700;font-size:.78rem;padding:.4rem 1rem;border-radius:6px;border:none;white-space:nowrap;transition:all .2s;flex-shrink:0;}
+.nav-cta:hover{background:var(--gold-l);transform:translateY(-1px);}
+.hamburger{display:none;flex-direction:column;gap:4px;background:rgba(201,146,42,0.1);border:1px solid var(--border-gold);border-radius:6px;padding:.5rem;flex-shrink:0;}
+.hamburger span{display:block;width:20px;height:2px;background:var(--gold-l);border-radius:1px;}
+.mobile-nav{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);z-index:2000;flex-direction:column;padding:5rem 1.5rem 2rem;gap:.4rem;overflow-y:auto;}
+.mobile-nav.open{display:flex;}
+.mobile-nav-btn{background:none;border:none;padding:.85rem 1rem;font-size:.92rem;color:var(--text2);text-align:left;border-radius:var(--radius);border-bottom:1px solid var(--border);transition:all .2s;}
+.mobile-nav-btn:hover,.mobile-nav-btn.active{color:var(--gold-l);background:var(--bg3);}
+
+/* PAGES */
+.page{display:none;min-height:100vh;padding-top:60px;}
+.page.active{display:block;}
+.container{max-width:1100px;margin:0 auto;padding:0 1.5rem;}
+.section{padding:4rem 0;}
+.section-sm{padding:2rem 0;}
+
+/* TYPE */
+.page-title{font-family:'Cinzel',serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;color:var(--gold-l);margin-bottom:.4rem;line-height:1.2;letter-spacing:.04em;}
+.guard-wordmark{font-family:'Cinzel Decorative','Cinzel',serif;font-size:clamp(3.5rem,12vw,6rem);font-weight:700;line-height:1;letter-spacing:.02em;background:linear-gradient(180deg,var(--gold-b),var(--gold),#9a6c14);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 40px rgba(201,146,42,0.25);margin:.5rem 0;}
+.guard-subtitle{font-family:'Cinzel',serif;font-size:clamp(1rem,3vw,1.5rem);font-weight:700;color:var(--text2);letter-spacing:.12em;text-transform:uppercase;}
+.page-sub{font-size:.95rem;color:var(--text2);margin-bottom:2.5rem;max-width:620px;line-height:1.7;}
+.sec-label{font-size:.68rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--pur-g);margin-bottom:.5rem;}
+.sec-title{font-family:'Cinzel',serif;font-size:clamp(1.1rem,2.5vw,1.7rem);font-weight:700;color:var(--text);margin-bottom:.75rem;letter-spacing:.03em;}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;transition:all .25s;}
+.card:hover{border-color:var(--border-gold);background:var(--bg3);box-shadow:0 0 24px rgba(201,146,42,0.1);}
+.grid{display:grid;gap:1.25rem;}
+.grid-2{grid-template-columns:1fr 1fr;}
+img{max-width:100%;height:auto;}
+.lore-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;}
+.lore-text{max-width:640px;margin:0 auto;}
+.shield-glow{display:inline-block;padding:1rem;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.18),transparent 70%);transition:all .4s;}
+.shield-ladder{display:grid;grid-template-columns:repeat(7,1fr);gap:.5rem;max-width:640px;margin:0 auto;}
+.ladder-item{text-align:center;cursor:pointer;padding:.5rem .2rem;border-radius:10px;border:1px solid transparent;transition:all .25s;}
+.ladder-item:hover{border-color:var(--border-gold);background:rgba(201,146,42,0.06);}
+.ladder-item img{width:64px;height:64px;object-fit:contain;transition:all .3s;}
+.ladder-item.locked img{filter:grayscale(1) brightness(.35);opacity:.5;}
+.ladder-item.current{border-color:var(--gold);background:rgba(201,146,42,0.12);}
+.ladder-rank{font-size:.6rem;color:var(--text3);margin-top:.25rem;font-weight:600;}
+.ladder-name{font-family:'Cinzel',serif;font-size:.62rem;color:var(--text2);}
+@media(max-width:600px){.shield-ladder{grid-template-columns:repeat(4,1fr);}}
+.lore-text p{font-size:.96rem;color:var(--text2);line-height:1.85;margin-bottom:1.1rem;}
+.lore-text strong{color:var(--gold-l);font-weight:600;}
+.lore-emphasis{text-align:center;font-family:'Cinzel',serif;font-size:1.05rem;color:var(--text);letter-spacing:.03em;line-height:1.7!important;margin:1.5rem 0!important;}
+.lore-list{text-align:center;font-style:italic;color:var(--text2);line-height:1.9!important;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-auto{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));}
+.card-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:.9rem;}
+.ci-gold{background:rgba(201,146,42,0.1);border:1px solid var(--border-gold);}
+.ci-pur{background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.3);}
+.ci-blue{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);}
+.card h3{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:.35rem;}
+.card p{font-size:.83rem;color:var(--text2);line-height:1.6;}
+.card-link{display:inline-flex;align-items:center;gap:.25rem;margin-top:.75rem;font-size:.78rem;font-weight:500;color:var(--pur-g);}
+.card-link::after{content:'→';}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;padding:.18rem .55rem;border-radius:20px;font-size:.67rem;font-weight:600;letter-spacing:.03em;}
+.bg{background:rgba(201,146,42,0.1);color:var(--gold-l);border:1px solid var(--border-gold);}
+.bp{background:rgba(124,58,237,0.1);color:var(--pur-g);border:1px solid rgba(124,58,237,0.3);}
+.bb{background:rgba(56,189,248,0.08);color:var(--blue);border:1px solid rgba(56,189,248,0.2);}
+.bgr{background:rgba(34,197,94,0.08);color:var(--green);border:1px solid rgba(34,197,94,0.2);}
+.br{background:rgba(239,68,68,0.08);color:var(--red);border:1px solid rgba(239,68,68,0.2);}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:var(--radius);font-size:.83rem;font-weight:600;border:none;transition:all .2s;cursor:pointer;text-decoration:none;}
+.btn-g{background:var(--gold);color:#000;}
+.btn-g:hover{background:var(--gold-l);transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,146,42,0.3);color:#000;}
+.btn-o{background:transparent;color:var(--text2);border:1px solid var(--border);}
+.btn-o:hover{border-color:var(--border-gold);color:var(--text);}
+
+/* BOXES */
+.disc{background:rgba(124,58,237,0.05);border:1px solid rgba(124,58,237,0.2);border-radius:var(--radius);padding:.8rem 1.1rem;display:flex;gap:.7rem;font-size:.79rem;color:var(--text2);line-height:1.5;}
+.warn{background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius);padding:.8rem 1.1rem;display:flex;gap:.7rem;font-size:.8rem;color:#fca5a5;line-height:1.5;margin:1rem 0;}
+.info{background:rgba(56,189,248,0.05);border:1px solid rgba(56,189,248,0.2);border-radius:var(--radius);padding:.8rem 1.1rem;display:flex;gap:.7rem;font-size:.8rem;color:#7dd3fc;line-height:1.5;margin:1rem 0;}
+
+/* DIVIDERS */
+.div{height:1px;background:var(--border);margin:2.5rem 0;}
+.div-g{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:2.5rem 0;}
+
+/* TABS */
+.tabs{display:flex;gap:.1rem;border-bottom:1px solid var(--border);margin-bottom:2rem;overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab-btn{background:none;border:none;padding:.6rem .95rem;font-size:.8rem;font-weight:500;color:var(--text3);border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;margin-bottom:-1px;}
+.tab-btn:hover{color:var(--text2);}
+.tab-btn.active{color:var(--gold-l);border-bottom-color:var(--gold);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* ACCORDION */
+.acc-item{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.5rem;overflow:hidden;}
+.acc-q{display:flex;justify-content:space-between;align-items:center;padding:.95rem 1.25rem;cursor:pointer;background:var(--bg2);transition:background .2s;}
+.acc-q:hover{background:var(--bg3);}
+.acc-q span{font-size:.88rem;font-weight:500;color:var(--text);line-height:1.4;padding-right:.75rem;}
+.acc-icon{color:var(--text3);font-size:1.1rem;transition:transform .3s;flex-shrink:0;}
+.acc-a{display:none;padding:.95rem 1.25rem;background:var(--bg);border-top:1px solid var(--border);font-size:.85rem;color:var(--text2);line-height:1.7;}
+.acc-item.open .acc-a{display:block;}
+.acc-item.open .acc-icon{transform:rotate(45deg);}
+
+/* VIDEO CARDS */
+.vid-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:all .25s;text-decoration:none;display:block;}
+.vid-card:hover{border-color:var(--border-gold);transform:translateY(-2px);box-shadow:var(--shadow);}
+.vthumb{position:relative;aspect-ratio:16/9;overflow:hidden;background:#000;}
+.vthumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s,opacity .3s;opacity:.85;}
+.vthumb:hover img{transform:scale(1.04);opacity:1;}
+.vplay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;background:rgba(220,38,38,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;color:#fff;pointer-events:none;padding-left:3px;}
+.vid-body{padding:.95rem;}
+.vid-title{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.3rem;line-height:1.4;}
+.vid-desc{font-size:.78rem;color:var(--text2);line-height:1.5;margin-bottom:.5rem;}
+.vid-credit{font-size:.7rem;color:var(--text3);}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:0;}
+.step{display:flex;gap:1.25rem;position:relative;padding-bottom:2rem;}
+.step:last-child{padding-bottom:0;}
+.step-l{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;}
+.step-n{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#7a4e08);display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700;color:#000;box-shadow:0 0 16px rgba(201,146,42,0.3);}
+.step-line{width:2px;flex:1;background:linear-gradient(180deg,var(--gold),var(--pur));opacity:.25;margin-top:.4rem;}
+.step:last-child .step-line{display:none;}
+.step-body{flex:1;padding-top:.45rem;}
+.step-body h3{font-size:.98rem;font-weight:600;color:var(--text);margin-bottom:.35rem;}
+.step-body p{font-size:.86rem;color:var(--text2);line-height:1.65;}
+
+/* ECO MAP */
+.eco-map{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2.5rem;text-align:center;}
+.enode{padding:.45rem 1.1rem;border-radius:6px;font-size:.8rem;font-weight:600;display:inline-block;}
+.enode-main{background:linear-gradient(135deg,var(--gold),#7a4e08);color:#000;}
+.enode-mid{background:var(--bg3);border:1px solid var(--border-gold);color:var(--gold-l);}
+.earrow{font-size:.95rem;color:var(--text3);line-height:1;padding:.2rem 0;display:block;}
+.erow{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin:.3rem 0;}
+.enode-sm{background:var(--bg4);border:1px solid var(--border);color:var(--text2);padding:.3rem .8rem;border-radius:6px;font-size:.74rem;font-weight:500;transition:all .2s;cursor:pointer;border:none;}
+.enode-sm:hover{border:1px solid var(--border-gold);color:var(--gold-l);}
+.enode-comm{background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);color:var(--pur-g);padding:.3rem .8rem;border-radius:6px;font-size:.74rem;font-weight:500;}
+
+/* HERO */
+.hero{padding:3.5rem 0 3rem;border-bottom:1px solid var(--border);background:radial-gradient(ellipse 70% 50% at 50% 100%,rgba(124,58,237,0.07),transparent);}
+.hero-inner{display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:center;}
+.hero-eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--pur-g);margin-bottom:.75rem;}
+.hero-title{font-family:'Cinzel Decorative','Cinzel',serif;font-size:clamp(1.7rem,3.5vw,2.8rem);font-weight:700;color:var(--text);line-height:1.2;margin-bottom:1rem;letter-spacing:.03em;}
+.hero-title span{color:var(--gold-l);}
+.hero-mission{font-size:.9rem;color:var(--text2);line-height:1.7;max-width:520px;margin-bottom:1.75rem;padding:.9rem 1.1rem;background:var(--bg2);border-left:3px solid var(--gold);border-radius:0 var(--radius) var(--radius) 0;}
+.hero-btns{display:flex;gap:.75rem;flex-wrap:wrap;}
+.hero-img{width:200px;opacity:.8;filter:drop-shadow(0 0 24px rgba(124,58,237,0.3));}
+
+/* GLOSSARY */
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1rem;}
+.gloss-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.2rem;}
+.gloss-term{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-l);margin-bottom:.3rem;}
+.gloss-def{font-size:.82rem;color:var(--text2);line-height:1.55;}
+
+/* COMMUNITY */
+.comm-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.4rem;display:flex;gap:1rem;align-items:flex-start;transition:all .25s;}
+.comm-card:hover{border-color:var(--border-gold);}
+.comm-avi{width:50px;height:50px;border-radius:10px;object-fit:cover;flex-shrink:0;border:1px solid var(--border-gold);}
+.comm-avi-ph{width:50px;height:50px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.char-avi{width:50px;height:50px;border-radius:10px;object-fit:cover;object-position:center top;flex-shrink:0;border:1px solid var(--border-gold);}
+.comm-name{font-size:.92rem;font-weight:600;color:var(--text);margin-bottom:.15rem;}
+.comm-role{font-size:.72rem;color:var(--text3);margin-bottom:.45rem;}
+.comm-desc{font-size:.81rem;color:var(--text2);line-height:1.55;}
+
+/* CREATOR */
+.creator-wrap{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:start;}
+.creator-sidebar{position:sticky;top:76px;}
+.creator-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.4rem;text-align:center;margin-bottom:1rem;}
+.creator-avi{width:auto;max-width:200px;max-height:240px;border-radius:var(--radius-lg);object-fit:contain;margin:0 auto .9rem;display:block;border:2px solid var(--border-gold);background:rgba(0,0,0,0.2);}
+.creator-name{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--gold-l);margin-bottom:.15rem;}
+.creator-handle{font-size:.72rem;color:var(--text3);margin-bottom:.8rem;}
+.creator-tags{display:flex;flex-wrap:wrap;gap:.3rem;justify-content:center;}
+.creator-links{display:flex;flex-direction:column;gap:.45rem;}
+.c-link{display:flex;align-items:center;gap:.55rem;padding:.6rem .9rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);font-size:.79rem;color:var(--text2);text-decoration:none;transition:all .2s;}
+.c-link:hover{border-color:var(--border-gold);color:var(--gold-l);}
+.creator-body h2{font-family:'Cinzel',serif;font-size:1.3rem;color:var(--text);margin-bottom:1.25rem;}
+.creator-body .sec-label{margin-top:2rem;}
+.creator-body p{font-size:.9rem;color:var(--text2);line-height:1.75;margin-bottom:.9rem;}
+.creator-body strong{color:var(--text);}
+.creator-body ul{list-style:none;display:flex;flex-direction:column;gap:.45rem;padding:0;}
+.creator-body ul li{display:flex;align-items:flex-start;gap:.55rem;font-size:.88rem;color:var(--text2);line-height:1.5;}
+.creator-body ul li::before{content:'⚡';color:var(--gold);font-size:.72rem;margin-top:.25rem;flex-shrink:0;}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0 2rem;margin-top:4rem;}
+.foot-inner{max-width:1100px;margin:0 auto;padding:0 1.5rem;}
+.foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2rem;margin-bottom:2rem;}
+.foot-brand{display:flex;align-items:center;gap:.55rem;margin-bottom:.65rem;}
+.foot-brand img{width:30px;height:30px;border-radius:50%;object-fit:cover;border:1px solid var(--border-gold);}
+.foot-brand span{font-family:'Cinzel',serif;font-size:.85rem;font-weight:700;color:var(--gold-l);}
+.foot-desc{font-size:.78rem;color:var(--text3);line-height:1.6;}
+.foot-col h4{font-size:.67rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:.8rem;}
+.foot-col a{display:block;font-size:.8rem;color:var(--text3);margin-bottom:.4rem;transition:color .2s;}
+.foot-col a:hover{color:var(--gold-l);}
+.foot-bottom{border-top:1px solid var(--border);padding-top:1.25rem;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.75rem;}
+.foot-disc{font-size:.7rem;color:var(--text3);line-height:1.5;max-width:680px;}
+
+/* UTIL */
+.mt1{margin-top:.5rem;}.mt2{margin-top:1rem;}.mt3{margin-top:1.5rem;}.mt4{margin-top:2rem;}
+.mb1{margin-bottom:.5rem;}.mb2{margin-bottom:1rem;}.mb3{margin-bottom:1.5rem;}
+.flex{display:flex;}.gap-sm{gap:.5rem;}.gap{gap:1rem;}.wrap{flex-wrap:wrap;}
+.center{text-align:center;}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s,transform .6s;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;}.hero-img{display:none;}
+  .creator-wrap{grid-template-columns:1fr;}.creator-sidebar{position:static;}
+  .grid-2,.grid-3{grid-template-columns:1fr;}
+  .lore-grid{grid-template-columns:1fr;}
+  .foot-top{grid-template-columns:1fr 1fr;}
+  .nav-links{display:none;}.hamburger{display:flex;}
+  .nav-brand span{font-size:.78rem;}
+  #nav{padding:0 1rem;gap:.5rem;}
+  .nav-cta{font-size:.7rem;padding:.4rem .7rem;}
+  .nav-cta .buytext{display:none;}
+}
+@media(max-width:600px){
+  .foot-top{grid-template-columns:1fr;}
+  .tab-btn{padding:.5rem .7rem;font-size:.76rem;}
+}
+</style>
+  <!-- WebAuth / Proton Web SDK -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-brand" onclick="go('home')">
+    <img src="./img_coin.jpg?v=2" alt="GUARD">
+    <span>Metallicus Guardian</span>
+  </div>
+  <div class="nav-links">
+    <button class="nav-btn active" id="t-home" onclick="go('home')">Home</button>
+    <button class="nav-btn" id="t-guard" onclick="go('guard')">🛡 GUARD</button>
+    <button class="nav-btn" id="t-start" onclick="go('start')">Start Here</button>
+    <button class="nav-btn" id="t-ecosystem" onclick="go('ecosystem')">Ecosystem</button>
+    <button class="nav-btn" id="t-learn" onclick="go('learn')">Learn</button>
+    <button class="nav-btn" id="t-shields" onclick="go('shields')">🛡 Shields</button>
+    <button class="nav-btn" id="t-faq" onclick="go('faq')">FAQ</button>
+    <button class="nav-btn" id="t-community" onclick="go('community')">Community</button>
+    <button class="nav-btn" id="t-creator" onclick="go('creator')">Creator</button>
+  </div>
+  <a href="https://simpledex.fun/token/172" target="_blank" class="nav-cta">⚔ <span class="buytext">Buy GUARD</span></a>
+  <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-nav" id="mob">
+  <button onclick="closeMenu()" style="position:absolute;top:1rem;right:1.5rem;background:none;border:none;color:var(--gold-l);font-size:1.8rem;line-height:1;cursor:pointer;">✕</button>
+  <button class="mobile-nav-btn" onclick="go('home');closeMenu()">🏠 Home</button>
+  <button class="mobile-nav-btn" onclick="go('guard');closeMenu()">🛡 GUARD Token</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('start')">🚀 Start Here</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('ecosystem')">🌐 Ecosystem</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('learn')">🎬 Learn</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('shields')">🛡 Shields</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('faq')">❓ FAQ</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('community')">👥 Community</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('creator')">👤 Creator</button>
+  <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g mt2" style="justify-content:center;">⚔ Buy GUARD Token</a>
+</div>
+
+<!-- DISCLAIMER BANNER -->
+<div id="disc-banner" style="background:rgba(124,58,237,0.07);border-bottom:1px solid rgba(124,58,237,0.18);padding:.5rem 1.5rem;text-align:center;position:fixed;top:60px;left:0;right:0;z-index:999;">
+  <p style="font-size:.72rem;color:var(--text3);">⚠ Community educational resource — not affiliated with or officially endorsed by Metallicus or XPR Network.</p>
+</div>
+
+<!-- ═══════ PAGE: HOME ═══════ -->
+<div id="page-home" class="page active" style="padding-top:88px;">
+<div class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow">Community · Education · XPR Network</div>
+        <h1 class="hero-title">Your Guide to the<br><span>Metallicus Ecosystem</span></h1>
+        <div class="hero-mission">"A community-built educational resource designed to spotlight the tools, builders, and infrastructure growing around Metallicus and XPR Network."</div>
+        <div class="hero-btns">
+          <button class="btn btn-g" onclick="go('guard')">🛡 Meet GUARD →</button>
+          <button class="btn btn-o" onclick="go('start')">🚀 Start Here</button>
+          <button class="btn btn-o" onclick="go('ecosystem')">🌐 Ecosystem</button>
+        </div>
+      </div>
+      <img class="hero-img" src="./img_guard_dark.jpg?v=2" alt="Metallicus Guardian" style="border-radius:12px;">
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="section">
+    <div class="sec-label reveal">Purpose</div>
+    <h2 class="sec-title reveal">What is this site?</h2>
+    <p class="page-sub reveal">This site exists to make the XPR Network ecosystem easier to understand — for beginners and experienced users alike. Find guides, tutorials, and plain-language explanations for every tool in the Metallicus stack.</p>
+    <div class="grid grid-auto mt3">
+      <div class="card reveal"><div class="card-icon ci-gold">🚀</div><h3>New to XPR?</h3><p>Start with the onboarding guide — wallet setup, identity verification, and your first transaction step by step.</p><span class="card-link" onclick="go('start')" style="cursor:pointer;">Start Here</span></div>
+      <div class="card reveal"><div class="card-icon ci-pur">🌐</div><h3>Explore the Ecosystem</h3><p>Every tool explained — MetalX, WebAuth, Alcor, Blastpad, LOAN Protocol, SimpleDEX, Metal Pay, and more.</p><span class="card-link" onclick="go('ecosystem')" style="cursor:pointer;">View Ecosystem</span></div>
+      <div class="card reveal"><div class="card-icon ci-blue">🎬</div><h3>Video Tutorials</h3><p>Community tutorials by BloxProd covering every major protocol on XPR Network.</p><span class="card-link" onclick="go('learn')" style="cursor:pointer;">Watch Videos</span></div>
+      <div class="card reveal"><div class="card-icon ci-gold">🛡</div><h3>Meet GUARD</h3><p>The Metallicus Guardian — the community token and mascot at the heart of this site. Learn his story and role in the ecosystem.</p><span class="card-link" onclick="go('guard')" style="cursor:pointer;">Meet GUARD</span></div>
+    </div>
+  </div>
+  <div class="div-g"></div>
+  <div class="section reveal">
+    <div class="sec-label">Overview</div>
+    <h2 class="sec-title">Ecosystem at a Glance</h2>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1.5rem;">Everything connects back to Metallicus and XPR Network. Click any node to learn more.</p>
+    <div class="eco-map">
+      <div style="display:inline-flex;flex-direction:column;align-items:center;gap:0;">
+        <div class="enode enode-main">⚒ Metallicus</div>
+        <span class="earrow">↓</span>
+        <div style="font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:.3rem;">Foundation · Layer 0</div>
+        <div class="enode enode-mid">🔗 Metal Blockchain (L0)</div>
+        <span class="earrow">↓</span>
+        <div style="font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:.3rem;">Network · Layer 1</div>
+        <div class="enode enode-mid">⚡ XPR Network (L1)</div>
+        <span class="earrow">↓</span>
+        <div style="font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:.3rem;">Apps &amp; Tools</div>
+        <div class="erow">
+          <button class="enode-sm" onclick="go('ecosystem');ecoTab('webauth')">🗝 WebAuth</button>
+          <button class="enode-sm" onclick="go('ecosystem');ecoTab('metalx')">🏦 Metal X</button>
+          <button class="enode-sm" onclick="go('ecosystem');ecoTab('loan')">📜 LOAN</button>
+          <button class="enode-sm" onclick="go('ecosystem');ecoTab('xmd')">💵 Metal Dollar</button>
+          <button class="enode-sm" onclick="go('ecosystem');ecoTab('simpledex')">⚔ SimpleDEX</button>
+          <button class="enode-sm" onclick="go('ecosystem');ecoTab('blastpad')">🚀 BlastPad</button>
+          <button class="enode-sm" onclick="go('ecosystem');ecoTab('alcor')">🔀 Alcor</button>
+          <button class="enode-sm" onclick="go('ecosystem');ecoTab('metalpay')">💳 Metal Pay</button>
+        </div>
+        <span class="earrow">↓</span>
+        <div style="font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:.4rem;">Community</div>
+        <div class="erow">
+          <span class="enode-comm">👥 KSTO</span>
+          <span class="enode-comm">🦊 Snippy</span>
+        </div>
+        <span class="earrow">↓</span>
+        <div style="font-size:.58rem;font-weight:500;color:var(--text3);margin-bottom:.3rem;font-style:italic;">community tribute, inspired by KSTO &amp; Snippy</div>
+        <div class="erow">
+          <button class="enode-sm" onclick="go('guard')" style="border:1px solid var(--border-gold);color:var(--gold-l);background:rgba(201,146,42,0.08);">🛡 GUARD</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="div"></div>
+  <div class="section reveal">
+    <div class="sec-label">Quick Links</div>
+    <h2 class="sec-title">Official Ecosystem Links</h2>
+    <div class="grid grid-auto mt3">
+      <a href="https://xprnetwork.org" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>⚡</span><h3 style="margin:0;">XPR Network</h3></div><p>Official site — zero-fee Layer 1 blockchain by Metallicus.</p></a>
+      <a href="https://webauth.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🗝</span><h3 style="margin:0;">WebAuth Wallet</h3></div><p>Official non-custodial wallet. Create yours free in 2 minutes.</p></a>
+      <a href="https://metalx.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🏦</span><h3 style="margin:0;">Metal X</h3></div><p>DEX, lending, and yield farming hub on XPR Network. Gas-free.</p></a>
+      <a href="https://simpledex.fun" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>⚔</span><h3 style="margin:0;">SimpleDEX</h3></div><p>Community token launchpad. Where GUARD was born.</p></a>
+      <a href="https://proton.alcor.exchange" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🔀</span><h3 style="margin:0;">Alcor Exchange</h3></div><p>Advanced DEX with limit orders and LP farming.</p></a>
+      <a href="https://metalpay.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>💳</span><h3 style="margin:0;">Metal Pay</h3></div><p>Regulated payments app — easiest fiat on-ramp to XPR.</p></a>
+    </div>
+  </div>
+  <div class="div"></div>
+  <div class="section reveal">
+    <div class="sec-label">GUARD Token</div>
+    <h2 class="sec-title">About the GUARD Token</h2>
+    <p style="font-size:.9rem;color:var(--text2);margin-bottom:1.5rem;max-width:620px;line-height:1.7;">GUARD (Metallicus Guardian) launched on SimpleDEX via a fair bonding-curve launch and has since graduated to a live XPR/GUARD liquidity pool. For real-time supply, price, and market data, always check SimpleDEX directly — figures change constantly.</p>
+    <div class="grid grid-2" style="align-items:start;">
+      <div>
+        <div class="grid" style="grid-template-columns:1fr 1fr;gap:1rem;">
+          <div class="card"><div class="stat" style="font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold-l);">$GUARD</div><p style="font-size:.78rem;">Ticker symbol</p></div>
+          <div class="card"><div class="stat" style="font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold-l);">XPR</div><p style="font-size:.78rem;">Network</p></div>
+          <div class="card"><div class="stat" style="font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold-l);">Graduated</div><p style="font-size:.78rem;">Past bonding curve → live pool</p></div>
+          <div class="card"><div class="stat" style="font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold-l);">Community</div><p style="font-size:.78rem;">No team allocation, fair launch</p></div>
+        </div>
+        <div class="flex gap-sm wrap mt3">
+          <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g" style="font-size:.8rem;">⚔ Buy / Trade GUARD →</a>
+          <a href="https://simpledex.fun/pool/187" target="_blank" class="btn btn-o" style="font-size:.8rem;">View Liquidity Pool →</a>
+        </div>
+        <div class="disc mt3"><span>ℹ</span><div>GUARD is part of the broader Snipverse/KSTO community spirit. KSTO (Keep Snipping) is the established parent community — GUARD stands alongside it as an independent, community-built tribute project, not a replacement.</div></div>
+      </div>
+      <div style="text-align:center;">
+        <img src="./img_poster.jpg?v=2" alt="Standing Guard. Stand With Us." style="max-width:300px;width:100%;border-radius:12px;border:1px solid var(--border-gold);box-shadow:0 8px 40px rgba(124,58,237,0.3);">
+        <div class="mt2"><button class="btn btn-g" onclick="go('guard')" style="font-size:.82rem;">🛡 Explore GUARD →</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-sm reveal">
+    <div class="disc"><span>ℹ</span><div><strong style="color:var(--text);">Community Resource — Not Official.</strong> Metallicus Guardian (GUARD) is a community-created project not affiliated with, endorsed by, or connected to Metallicus or any ecosystem product. Not financial advice.</div></div>
+  </div>
+</div>
+FOOT
+</div>
+
+<!-- ═══════ PAGE: GUARD ═══════ -->
+<div id="page-guard" class="page" style="padding-top:88px;">
+<div class="container">
+  <div class="section" style="padding-bottom:2rem;text-align:center;">
+    <img src="./g_token.jpg?v=2" alt="GUARD Token" style="width:220px;max-width:65%;border-radius:16px;box-shadow:0 0 50px rgba(124,58,237,0.5);margin-bottom:1.5rem;object-fit:contain;">
+    <div class="sec-label" style="justify-content:center;text-align:center;">⚡ XPR Network · SimpleDEX · Stand GUARD</div>
+    <h1 class="guard-wordmark">GUARD</h1>
+    <div class="guard-subtitle">Metallicus Guardian Token</div>
+    <p style="font-family:'Cinzel',serif;font-size:1.05rem;color:var(--gold-l);line-height:1.7;margin:1.5rem auto;max-width:560px;letter-spacing:.02em;">Protector of the WebAuth Wallet. The meme token forged in the fires of XPR Network — armored, eternal, unstoppable.</p>
+    <div class="flex gap-sm wrap" style="justify-content:center;">
+      <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g">⚔ Buy on SimpleDEX</a>
+      <a href="https://simpledex.fun/pool/187" target="_blank" class="btn btn-o">💧 Liquidity Pool →</a>
+    </div>
+  </div>
+
+  <!-- LIVE ON-CHAIN DATA -->
+  <div class="section-sm">
+    <div class="sec-label" style="justify-content:center;text-align:center;">⛓ Live On-Chain Data</div>
+    <h2 class="sec-title" style="text-align:center;">Straight From XPR Network</h2>
+    <div id="live-stats" class="grid grid-2" style="max-width:640px;margin:1.5rem auto 0;">
+      <div class="card" style="text-align:center;"><div class="stat" id="stat-supply" style="font-family:'Cinzel',serif;font-size:1.6rem;color:var(--gold-l);">—</div><p style="font-size:.78rem;">Total Supply <span style="color:var(--green);">● live</span></p></div>
+      <a href="https://simpledex.fun/token/172" target="_blank" class="card" style="text-align:center;text-decoration:none;"><div class="stat" style="font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold-l);">Price · Liquidity · Holders</div><p style="font-size:.78rem;">View live on SimpleDEX →</p></a>
+    </div>
+    <div style="text-align:center;margin-bottom:1rem;">
+      <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g" style="display:inline-flex;margin-right:.5rem;">🛒 Buy GUARD on SimpleDEX</a>
+      <button onclick="walletConnect()" id="guard-connect-btn" class="btn btn-o" style="display:inline-flex;">⚡ Connect Wallet</button>
+    </div>
+    <p id="live-status" style="text-align:center;font-size:.72rem;color:var(--text3);margin-top:1rem;">Loading supply from the chain…</p>
+  </div>
+
+  <div class="warn"><span>⚠</span><div>GUARD is a speculative community meme token. Price is driven entirely by community demand and can rise or fall sharply. Never invest more than you can afford to lose. Not financial advice. For live supply, price, and market data, always check SimpleDEX directly.</div></div>
+  <img src="./g_tokeninfo.jpg" alt="GUARD Token Details" style="width:100%;max-width:700px;display:block;margin:2rem auto;border-radius:12px;box-shadow:0 0 40px rgba(124,58,237,0.3);">
+
+  <div class="div-g"></div>
+
+  <!-- THE LORE -->
+  <div class="section-sm">
+    <div class="sec-label" style="justify-content:center;text-align:center;">The Lore</div>
+    <h2 class="sec-title" style="text-align:center;">The Lore of GUARD</h2>
+    <p style="text-align:center;font-family:'Cinzel',serif;color:var(--gold-l);letter-spacing:.08em;margin-bottom:1.5rem;">The Metallicus Guardian</p>
+    <img src="./g_guardian.jpg?v=2" alt="Metallicus Guardian" style="width:100%;max-width:480px;display:block;margin:0 auto 2rem;border-radius:12px;border:1px solid var(--border-gold);box-shadow:0 8px 40px rgba(124,58,237,0.25);">
+    <div class="lore-text">
+      <p>Before there were castles, kingdoms, or guardians, there was only the forge.</p>
+      <p>Deep within the expanding ecosystem of Metallicus, where digital identity, ownership, and decentralized finance converged, fragments of forgotten <strong>METAL</strong> were gathered by the community itself — builders, creators, traders, educators, meme makers, validators, believers, and everyday users who refused to let decentralization become something only institutions could understand.</p>
+      <p>From those fragments, GUARD was forged.</p>
+      <p class="lore-emphasis">Not by kings.<br>Not by corporations.<br>Not by decree.<br><span style="color:var(--gold-l);">By community.</span></p>
+      <p>The forge was fed with METAL itself, while the current of the <strong>XPR Network</strong> flowed through the armor that would become his body. The result was not merely a warrior — but a protector built for a new frontier.</p>
+      <p>His armor was forged from scorched METAL alloy, darkened by countless battles against exploitation and deception. Through his veins runs the pulse of the XPR Network — fast, efficient, and always moving.</p>
+      <p>But his greatest weapon was never his armor.</p>
+      <p class="lore-emphasis" style="color:var(--gold-l);">It was identity.</p>
+      <p>Upon his arm rests the <strong>Guardian Shield</strong> — forged from cosmic METAL, it is not a shield of conquest, but of ownership. A reminder that users should control their own access, assets, and identity.</p>
+      <p>In his grasp is the <strong>Proton Key</strong>.</p>
+      <p class="lore-emphasis">No two keys are alike.</p>
+      <p>Every person who creates a WebAuth wallet forges their own key — unique to them alone. GUARD does not carry one key to rule them all. He carries the symbol of what each individual possesses: access to their own identity, ownership of their own assets, and responsibility for protecting both.</p>
+      <p class="lore-emphasis">GUARD does not stand watch over wallets.<br><span style="color:var(--gold-l);">He stands watch over people.</span></p>
+      <p>He watches the gates where newcomers arrive. He walks beside those learning self-custody for the first time. He warns travelers of scammers, phishing attacks, impersonators, fake links, false promises, and those who prey on confusion.</p>
+      <p>His enemies are not armies.</p>
+      <p>His enemies are deception, exploitation, centralized dependency, and the belief that ownership should belong to someone else.</p>
+      <p>Though singular in form, GUARD was never meant to stand alone.</p>
+      <p class="lore-list">Those who educate.<br>Those who build.<br>Those who protect newcomers.<br>Those who help others learn WebAuth.<br>Those who support builders and communities.<br>Those who create.</p>
+      <p class="lore-emphasis" style="color:var(--gold-l);">They stand GUARD beside him.</p>
+      <p class="lore-list">Every WebAuth wallet becomes a shield.<br>Every user carries their own key.<br>Every builder strengthens the walls.</p>
+      <p>As the Metallicus ecosystem expands — through WebAuth, XPR Network, Metal X, community projects, builders, creators, and the countless people entering for the first time — GUARD remains where he has always stood:</p>
+      <p class="lore-emphasis">At the gateway.<br>Watching.<br>Teaching.<br>Protecting.<br>Waiting for the next person to arrive.</p>
+      <p class="guard-wordmark" style="font-size:clamp(2rem,7vw,3.2rem);text-align:center;margin-top:1.5rem;">Stand GUARD.</p>
+    </div>
+  </div>
+
+  <div class="div"></div>
+
+  <!-- WHAT GUARD DOES -->
+  <div class="section-sm">
+    <div class="sec-label">The Guardian's Role</div>
+    <h2 class="sec-title">What GUARD Stands For</h2>
+    <div class="grid grid-auto mt3">
+      <div class="card">
+        <img src="./g_forge.jpg?v=2" alt="Forging Guardian shields" style="width:100%;height:auto;display:block;border-radius:8px;margin-bottom:1rem;">
+        <h3>Onboarding Newcomers</h3>
+        <p>GUARD forges Guardian shields — helping new users create wallets and step safely into XPR Network.</p>
+      </div>
+      <div class="card">
+        <div class="card">
+        <div class="card">
+        <div class="card">
+        <img src="./g_path.jpg?v=2" alt="Aligning with Metallicus" style="width:100%;height:auto;display:block;border-radius:8px;margin-bottom:1rem;">
+        <h3>Aligned With Metallicus</h3>
+        <p>"Sometimes the path isn't obvious — but alignment finds the Guardian." GUARD walks the path of the ecosystem's mission.</p>
+      </div>
+      <div class="card">
+        <img src="./g_marshall.jpg?v=2" alt="Admiring Marshall Hayner" style="width:100%;height:auto;display:block;border-radius:8px;margin-bottom:1rem;">
+        <h3>Respect for the Builders</h3>
+        <p>GUARD honors Marshall Hayner and the Metallicus team whose vision built XPR Network and WebAuth.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="div"></div>
+
+  <!-- GUARD IN THE COMMUNITY -->
+  <div class="section-sm">
+    <div class="sec-label">In the Community</div>
+    <h2 class="sec-title">GUARD Across the Ecosystem</h2>
+    <div class="grid grid-auto mt3">
+      <div class="card"><img src="./g_event.jpg?v=2" alt="GUARD at Metallicus event" style="width:100%;height:auto;display:block;border-radius:8px;margin-bottom:1rem;"><h3>Spreading the Word</h3><p>GUARD talks Metallicus and XPR Network at community gatherings and events.</p></div>
+      <div class="card"><img src="./g_cypher1.jpg?v=2" alt="Teaching CypherGang" style="width:100%;height:auto;display:block;border-radius:8px;margin-bottom:1rem;"><h3>Teaching CypherGang</h3><p>GUARD helps users learn about Cypher Gang NFTs and where to buy them on soon.market and AtomicHub.</p></div>
+      <div class="card"><img src="./g_cypher2.jpg?v=2" alt="CypherBrawls" style="width:100%;height:auto;display:block;border-radius:8px;margin-bottom:1rem;"><h3>Into Cypher Brawls</h3><p>GUARD introduces the tactical on-chain battle game where your Cypher Gang NFT is your fighter.</p></div>
+      <div class="card"><img src="./g_snipverse.jpg?v=2" alt="Showcasing Snipverse" style="width:100%;height:auto;display:block;border-radius:8px;margin-bottom:1rem;"><h3>Showcasing Snipverse</h3><p>GUARD champions Snipverse — the XPR Network-native social platform where the community lives.</p></div>
+      <div class="card"><img src="./g_spaces.jpg?v=2" alt="KSTO Spaces with Snippy" style="width:100%;height:auto;display:block;border-radius:8px;margin-bottom:1rem;"><h3>KSTO Spaces — Wednesdays</h3><p>GUARD and Snippy listen in on the KSTO Spaces on X, every Wednesday at 8 PM EST.</p></div>
+    </div>
+  </div>
+
+  <div style="padding-bottom:2rem;"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ═══════ PAGE: START HERE ═══════ -->
+<div id="page-start" class="page" style="padding-top:88px;">
+<div class="container">
+  <div class="section">
+    <div class="sec-label">Onboarding</div>
+    <h1 class="page-title">Start Here</h1>
+    <p class="page-sub">New to XPR Network? Follow these steps in order. You can be up and running in under 15 minutes.</p>
+    <div class="info"><span>💡</span><div>All tools are <strong>free to use</strong>. XPR Network has zero gas fees and WebAuth wallet creation costs nothing. You only need funds if you want to trade or invest.</div></div>
+    <div class="steps mt4">
+      <div class="step reveal">
+        <div class="step-l"><div class="step-n">1</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <h3>Create Your WebAuth Wallet</h3>
+          <p>WebAuth is the official XPR Network wallet. It uses Face ID or fingerprint instead of seed phrases — far more secure and accessible. Visit <a href="https://webauth.com" target="_blank">webauth.com</a> to get started.</p>
+          <a href="https://www.youtube.com/watch?v=ICsvNdv83B8" target="_blank" class="card flex gap mt2" style="max-width:460px;padding:1rem;text-decoration:none;align-items:center;">
+            <div class="vthumb" style="width:110px;height:62px;flex-shrink:0;border-radius:6px;overflow:hidden;"><img src="https://img.youtube.com/vi/ICsvNdv83B8/mqdefault.jpg?v=2" alt=""><div class="vplay" style="width:30px;height:30px;font-size:.8rem;"></div></div>
+            <div><div style="font-size:.82rem;font-weight:600;color:var(--text);">WebAuth Wallet Creation Tutorial</div><div style="font-size:.7rem;color:var(--text3);">BloxProd · KSTO Community</div></div>
+          </a>
+          <a href="https://webauth.com" target="_blank" class="btn btn-g mt2" style="font-size:.8rem;">Create Wallet →</a>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-l"><div class="step-n">2</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <h3>Complete Identity Verification (KYC)</h3>
+          <p>Unlock regulated features like lending and fiat on-ramps by verifying your identity through WebAuth. Quick to complete and recommended for full ecosystem access.</p>
+          <a href="https://www.youtube.com/watch?v=7FPGUytwi8Y" target="_blank" class="card flex gap mt2" style="max-width:460px;padding:1rem;text-decoration:none;align-items:center;">
+            <div class="vthumb" style="width:110px;height:62px;flex-shrink:0;border-radius:6px;overflow:hidden;"><img src="https://img.youtube.com/vi/7FPGUytwi8Y/mqdefault.jpg?v=2" alt=""><div class="vplay" style="width:30px;height:30px;font-size:.8rem;"></div></div>
+            <div><div style="font-size:.82rem;font-weight:600;color:var(--text);">XPR Network KYC Tutorial</div><div style="font-size:.7rem;color:var(--text3);">BloxProd · KSTO Community</div></div>
+          </a>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-l"><div class="step-n">3</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <h3>Fund Your Wallet</h3>
+          <p>Use <a href="https://metalpay.com" target="_blank">Metal Pay</a> to buy XPR with USD — the easiest fiat on-ramp. You can also transfer from KuCoin or other exchanges that support XPR.</p>
+          <a href="https://www.youtube.com/watch?v=vAB28FdWvBs" target="_blank" class="card flex gap mt2" style="max-width:460px;padding:1rem;text-decoration:none;align-items:center;">
+            <div class="vthumb" style="width:110px;height:62px;flex-shrink:0;border-radius:6px;overflow:hidden;"><img src="https://img.youtube.com/vi/vAB28FdWvBs/mqdefault.jpg?v=2" alt=""><div class="vplay" style="width:30px;height:30px;font-size:.8rem;"></div></div>
+            <div><div style="font-size:.82rem;font-weight:600;color:var(--text);">Send & Receive Crypto on XPR Network</div><div style="font-size:.7rem;color:var(--text3);">BloxProd · KSTO Community</div></div>
+          </a>
+          <a href="https://metalpay.com" target="_blank" class="btn btn-o mt2" style="font-size:.8rem;">Metal Pay →</a>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-l"><div class="step-n">4</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <h3>Explore Ecosystem Tools</h3>
+          <p>Wallet set up, funded and ready. Now explore trading on MetalX or Alcor, stake XPR or METAL for yield, or buy GUARD on SimpleDEX.</p>
+          <div class="flex gap-sm wrap mt2">
+            <button class="btn btn-o" style="font-size:.78rem;" onclick="go('ecosystem')">🌐 Ecosystem →</button>
+            <button class="btn btn-o" style="font-size:.78rem;" onclick="go('learn')">🎬 Learn →</button>
+          </div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-l"><div class="step-n">5</div></div>
+        <div class="step-body">
+          <h3>Join the Community</h3>
+          <p>The XPR Network community is active and welcoming. Join the KSTO Telegram, connect on Snipverse, and follow creators like BloxProd for ongoing education.</p>
+          <div class="flex gap-sm wrap mt2">
+            <a href="https://t.me/KSTOX/1" target="_blank" class="btn btn-o" style="font-size:.78rem;">✈ KSTO Telegram</a>
+            <a href="https://snipverse.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">✦ Snipverse</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="div mt4"></div>
+    <div class="disc"><span>ℹ</span><div>Crypto assets carry risk. Only invest what you can afford to lose. This guide is educational only — not financial advice.</div></div>
+  </div>
+</div>
+FOOT
+</div>
+
+<!-- ═══════ PAGE: ECOSYSTEM ═══════ -->
+<div id="page-ecosystem" class="page" style="padding-top:88px;">
+<div class="container">
+  <div class="section">
+    <div class="sec-label">Ecosystem</div>
+    <h1 class="page-title">The Metallicus Ecosystem</h1>
+    <p class="page-sub">A quick, plain-English map of the tools and tokens. Tap any card to visit the official source — that's always the best place for full detail.</p>
+
+    <div class="sec-label mt4">Core Infrastructure</div>
+    <div class="grid grid-auto mt2 mb4">
+      <a href="https://metallicus.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>⚒</span><h3 style="margin:0;">Metallicus</h3></div><p>The U.S. fintech (founded 2016) building a regulated Digital Asset Banking Network — the company behind everything here.</p><span class="card-link">metallicus.com</span></a>
+      <a href="https://xprnetwork.org" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><img src="./img_xprlogo.png?v=2" style="width:22px;height:22px;border-radius:5px;"><h3 style="margin:0;">XPR Network</h3></div><p>The Layer 1 blockchain. Zero gas fees, 4,000+ TPS, human-readable @names, and built-in on-chain identity.</p><span class="card-link">xprnetwork.org</span></a>
+      <a href="https://metalblockchain.org" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🔗</span><h3 style="margin:0;">Metal Blockchain</h3></div><p>A BSA-ready Layer 0 built for banks and financial institutions — private subnets, digital identity, compliance-first.</p><span class="card-link">metalblockchain.org</span></a>
+      <a href="https://webauth.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><img src="./img_webauthlogo.png?v=2" style="width:22px;height:22px;border-radius:5px;"><h3 style="margin:0;">WebAuth Wallet</h3></div><p>The official non-custodial wallet. Biometric login, no seed phrases, free to create. Your gateway to XPR Network.</p><span class="card-link">webauth.com</span></a>
+    </div>
+
+    <div class="sec-label">Apps & DeFi</div>
+    <div class="grid grid-auto mt2 mb4">
+      <a href="https://metalpay.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>💳</span><h3 style="margin:0;">Metal Pay</h3></div><p>The regulated U.S. payments app — the easiest way to buy crypto with fiat and on-ramp into the ecosystem.</p><span class="card-link">metalpay.com</span></a>
+      <a href="https://metalx.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🏦</span><h3 style="margin:0;">Metal X</h3></div><p>The DEX & DeFi hub — gas-free swaps, liquidity pools, farms, and lending (no lockup). Curated tokens.</p><span class="card-link">metalx.com</span></a>
+      <a href="https://proton.alcor.exchange" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🔀</span><h3 style="margin:0;">Alcor</h3></div><p>The first self-listing order-book DEX on XPR — limit orders, AMM pools, farms, NFTs, and OTC trades.</p><span class="card-link">proton.alcor.exchange</span></a>
+      <a href="https://simpledex.fun" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>⚔</span><h3 style="margin:0;">SimpleDEX</h3></div><p>The community token launchpad using bonding curves. Where GUARD was born.</p><span class="card-link">simpledex.fun</span></a>
+      <a href="https://blastpad.io" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🚀</span><h3 style="margin:0;">BlastPad</h3></div><p>Launchpad and staking platform ($BLPAD) — create tokens, run airdrops, and set up staking pools.</p><span class="card-link">blastpad.io</span></a>
+    </div>
+
+    <div class="sec-label">Tokens</div>
+    <div class="grid grid-auto mt2 mb4">
+      <div class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>⚛️</span><h3 style="margin:0;">XPR</h3></div><p>Native coin of XPR Network. Used for network resources (CPU/NET/RAM), staking, Block Producer voting, and governance.</p></div>
+      <div class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>Ⓜ️</span><h3 style="margin:0;">METAL</h3></div><p>Native coin of Metal Blockchain. Governs staking fees, transaction costs, and emissions (2,000 METAL min to validate).</p></div>
+      <a href="https://xprnetwork.org/loan" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>📜</span><h3 style="margin:0;">LOAN</h3></div><p>Governance + incentive token for the LOAN Protocol (Metal X Lending). Stake to earn and boost voting power.</p><span class="card-link">Learn more</span></a>
+      <div class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>💵</span><h3 style="margin:0;">XMD — Metal Dollar</h3></div><p>A non-algorithmic stablecoin basket. Mint/redeem 1:1 with USDC, PYUSD & USDP. Governed by Metal DAO ($XMT).</p></div>
+    </div>
+
+    <div class="sec-label">NFTs & Marketplaces</div>
+    <div class="grid grid-auto mt2 mb4">
+      <a href="https://soon.market" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🛒</span><h3 style="margin:0;">soon.market</h3></div><p>NFT marketplace on XPR Network (Atomic Assets standard). Home to collections like Cypher Gang.</p><span class="card-link">soon.market</span></a>
+      <a href="https://nftclaimhub.io" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🎁</span><h3 style="margin:0;">NFT Claim Hub</h3></div><p>Claim NFT rewards (incl. Snippy / KSTO rewards for Snipverse activity). Non-custodial — built by BloxProd.</p><span class="card-link">nftclaimhub.io</span></a>
+      <a href="https://nftpacks.io" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>📦</span><h3 style="margin:0;">NFT Packs</h3></div><p>A random-mint NFT launchpad by BloxProd — one random NFT per pack, with a voucher system.</p><span class="card-link">nftpacks.io</span></a>
+    </div>
+
+    <div class="div-g"></div>
+
+    <!-- OFFICIAL RESOURCES -->
+    <div class="sec-label">Official Resources</div>
+    <h2 class="sec-title mb2">Go Straight to the Source</h2>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1.5rem;max-width:600px;">This site is a community starting point. For complete, authoritative information — guides, FAQs, and docs — these official resources are the best place to go.</p>
+    <div class="grid grid-auto">
+      <a href="https://www.metalpay.com/how-to-buy/xpr-network" target="_blank" class="card"><h3>How to Buy XPR →</h3><p>Metal Pay's official step-by-step guide to buying XPR with a debit or credit card.</p></a>
+      <a href="https://help.xprnetwork.org/" target="_blank" class="card"><h3>XPR Knowledge Center →</h3><p>Official help articles covering WebAuth, Metal X Lending, staking, XMD, and more.</p></a>
+      <a href="https://explore.fednow.org/explore-the-city?id=10&postId=121&vendor=metallicus-inc" target="_blank" class="card"><h3>FedNow × Metallicus →</h3><p>See Metallicus featured in the Federal Reserve's official FedNow Service Explorer.</p></a>
+      <a href="https://help.metalpay.com/hc/en-us" target="_blank" class="card"><h3>Metal Pay Support →</h3><p>Official Metal Pay help center — verification, fees, buying, and withdrawals.</p></a>
+    </div>
+
+    <div class="info mt3"><span>💡</span><div>New here? The <strong onclick="go('start')" style="cursor:pointer;color:var(--gold-l);">Start Here</strong> page walks you through your first steps in order.</div></div>
+  </div>
+</div>
+FOOT
+</div>
+
+<!-- ═══════ PAGE: GUIDES ═══════ -->
+
+<!-- ═══════ PAGE: VIDEOS ═══════ -->
+<div id="page-learn" class="page" style="padding-top:88px;">
+<div class="container">
+  <div class="section">
+    <div class="sec-label">Learn</div>
+    <h1 class="page-title">Learn — Video Tutorials</h1>
+    <p class="page-sub">Step-by-step community tutorials covering the full Metallicus ecosystem, organized from beginner to advanced. All videos by BloxProd.</p>
+    <div class="grid grid-auto">
+      <a href="https://www.youtube.com/watch?v=ICsvNdv83B8" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/ICsvNdv83B8/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">WebAuth Wallet Creation</div><div class="vid-desc">Create your XPR Network wallet with biometric security.</div><div class="vid-credit"><span class="badge bb">Wallet</span> 🎬 BloxProd</div></div></a>
+      <a href="https://www.youtube.com/watch?v=7FPGUytwi8Y" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/7FPGUytwi8Y/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">XPR Network KYC / Identity Verification</div><div class="vid-desc">Complete identity verification for full ecosystem access.</div><div class="vid-credit"><span class="badge bb">Wallet</span> 🎬 BloxProd</div></div></a>
+      <a href="https://www.youtube.com/watch?v=vAB28FdWvBs" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/vAB28FdWvBs/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Send & Receive Crypto — Fast, Free & Easy</div><div class="vid-desc">Transfer BTC and other assets on XPR Network with zero fees.</div><div class="vid-credit"><span class="badge bb">Wallet</span> 🎬 BloxProd</div></div></a>
+      <a href="https://www.youtube.com/watch?v=njQryGjx3Og" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/njQryGjx3Og/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">How to Stake $XPR</div><div class="vid-desc">Earn staking rewards by staking XPR tokens.</div><div class="vid-credit"><span class="badge bgr">Staking</span> 🎬 BloxProd</div></div></a>
+      <a href="https://www.youtube.com/watch?v=3gv96oKVufE" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/3gv96oKVufE/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">How to Stake $METAL</div><div class="vid-desc">Stake METAL for rewards and Metal DAO governance.</div><div class="vid-credit"><span class="badge bgr">Staking</span> 🎬 BloxProd</div></div></a>
+      <a href="https://www.youtube.com/watch?v=PdpP5yIZhsA" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/PdpP5yIZhsA/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Transfer METAL + Claim LOAN Tokens</div><div class="vid-desc">Unstake METAL, transfer to XPR Network, claim LOAN rewards.</div><div class="vid-credit"><span class="badge bgr">Staking</span> 🎬 BloxProd</div></div></a>
+      <a href="https://www.youtube.com/watch?v=yE80F181yv0" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/yE80F181yv0/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">MetalX Lending — Key Parameters</div><div class="vid-desc">Collateral, interest rates, and liquidation explained.</div><div class="vid-credit"><span class="badge bg">MetalX</span> 🎬 BloxProd</div></div></a>
+      <a href="https://www.youtube.com/watch?v=q_L4Xz0ghf4" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/q_L4Xz0ghf4/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">MetalX Lending — USDC & METAL DAO</div><div class="vid-desc">Lend USDC and METAL; understand DAO governance.</div><div class="vid-credit"><span class="badge bg">MetalX</span> 🎬 BloxProd</div></div></a>
+      <a href="https://www.youtube.com/watch?v=8YvB3DZTuUw" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/8YvB3DZTuUw/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">MetalX Lending — Lend Your XRP</div><div class="vid-desc">Full walkthrough of lending XRP on MetalX.</div><div class="vid-credit"><span class="badge bg">MetalX</span> 🎬 BloxProd</div></div></a>
+      <a href="https://www.youtube.com/watch?v=ERCmQ4osiuc" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/ERCmQ4osiuc/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">MetalX Liquidity Pools & Farming</div><div class="vid-desc">Add LP, earn fees, and boost yields on MetalX.</div><div class="vid-credit"><span class="badge bg">MetalX</span> 🎬 BloxProd</div></div></a>
+      <a href="https://www.youtube.com/watch?v=QHtU2IDfcxs" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/QHtU2IDfcxs/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Alcor Exchange on XPR Network</div><div class="vid-desc">Swaps, limit orders, and trading on Alcor.</div><div class="vid-credit"><span class="badge bp">Trading</span> 🎬 BloxProd</div></div></a>
+      <a href="https://www.youtube.com/watch?v=1vi8EEEueEs" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/1vi8EEEueEs/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Alcor — LP & Farming Rewards</div><div class="vid-desc">Provide liquidity and collect farming rewards on Alcor.</div><div class="vid-credit"><span class="badge bp">Trading</span> 🎬 BloxProd</div></div></a>
+      <a href="https://www.youtube.com/watch?v=jWyT7lg02vg" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/jWyT7lg02vg/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Blastpad — Staking Pools</div><div class="vid-desc">Full walkthrough of Blastpad staking pools.</div><div class="vid-credit"><span class="badge br">Advanced</span> 🎬 BloxProd</div></div></a>
+    </div>
+  </div>
+</div>
+FOOT
+</div>
+
+<!-- ═══════ PAGE: SHIELDS ═══════ -->
+<div id="page-shields" class="page" style="padding-top:88px;">
+<div class="container">
+  <div class="section">
+    <div class="sec-label">Choose Your Shield</div>
+    <h1 class="page-title">The Path of the Guardian</h1>
+    <p class="page-sub">Every Guardian begins as a Recruit and climbs the ranks — from the first awakening of power to the eternal Aegis. Connect your WebAuth wallet to unlock your rank based on your GUARD holdings.</p>
+
+    <!-- WALLET CONNECT PROMPT -->
+    <div id="shield-wallet-prompt" style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.3);border-radius:12px;padding:1.5rem;text-align:center;max-width:480px;margin:1.5rem auto;">
+      <div style="font-size:2rem;margin-bottom:.5rem;">⚡</div>
+      <h3 style="font-family:'Cinzel',serif;color:var(--gold-l);margin-bottom:.5rem;">Connect Your WebAuth Wallet</h3>
+      <p style="font-size:.85rem;color:var(--text2);margin-bottom:1rem;">Connect to automatically unlock your Guardian rank based on your GUARD token balance.</p>
+      <button onclick="walletConnect()" class="btn btn-g" style="width:100%;justify-content:center;">⚡ Connect WebAuth Wallet</button>
+      <p style="font-size:.72rem;color:var(--text3);margin-top:.75rem;">Or advance manually below without connecting.</p>
+    </div>
+
+    <!-- WALLET RANK INFO (shown when connected) -->
+    <div id="shield-wallet-info" style="display:none;background:rgba(201,146,42,0.08);border:1px solid var(--border-gold);border-radius:12px;padding:1rem 1.5rem;text-align:center;max-width:480px;margin:1.5rem auto;">
+      <div style="font-size:.78rem;color:var(--text3);font-family:'Cinzel',serif;letter-spacing:.1em;">CONNECTED AS</div>
+      <div id="shield-wallet-actor" style="font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold-l);margin:.25rem 0;"></div>
+      <div style="font-size:.82rem;color:var(--text2);">GUARD Balance: <span id="shield-guard-bal" style="color:var(--pur-g);font-weight:600;">checking...</span></div>
+      <div id="shield-rank-unlock" style="font-size:.78rem;color:var(--green);margin-top:.35rem;"></div>
+      <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-o" style="margin-top:.75rem;font-size:.78rem;display:inline-flex;">🛒 Buy More GUARD on SimpleDEX →</a>
+    </div>
+
+    <!-- CURRENT SHIELD CARD -->
+    <div id="shield-stage" style="max-width:540px;margin:1.5rem auto 0;text-align:center;">
+      <div class="shield-glow" id="shield-glow">
+        <img id="shield-img" src="" alt="Your Shield" style="width:240px;height:240px;object-fit:contain;max-width:70%;filter:drop-shadow(0 10px 30px rgba(124,58,237,0.45));">
+      </div>
+      <div id="shield-rank-badge" style="font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-top:1rem;">Rank 1 of 7</div>
+      <h2 id="shield-name" class="guard-wordmark" style="font-size:clamp(2rem,7vw,3rem);margin:.3rem 0;">Cryptide</h2>
+      <div id="shield-title" style="font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold-l);letter-spacing:.08em;text-transform:uppercase;">Recruit</div>
+      <p id="shield-lore" style="font-size:.92rem;color:var(--text2);line-height:1.7;margin:1rem auto;max-width:440px;"></p>
+
+      <div class="flex gap-sm wrap" style="justify-content:center;margin-top:1rem;">
+        <button id="btn-advance" class="btn btn-g" onclick="advanceRank()">⚔ Advance to next rank →</button>
+        <button id="btn-reset" class="btn btn-o" style="font-size:.8rem;" onclick="resetRank()">↺ Restart journey</button>
+      </div>
+      <p id="shield-maxed" style="display:none;font-family:'Cinzel',serif;color:var(--gold-l);margin-top:1rem;letter-spacing:.05em;">⛨ You have reached Aegis — the eternal Guardian. The path is complete.</p>
+    </div>
+
+    <!-- PROGRESS LADDER -->
+    <div class="div-g" style="margin:2.5rem 0 1.5rem;"></div>
+    <div class="sec-label" style="justify-content:center;text-align:center;">The Seven Ranks</div>
+    <h2 class="sec-title" style="text-align:center;">Your Ascent</h2>
+    <div id="rank-ladder" class="shield-ladder"></div>
+
+    <!-- PROFILE CARD -->
+    <div class="div-g" style="margin:2.5rem 0 1.5rem;"></div>
+    <div class="sec-label" style="justify-content:center;text-align:center;">Your Guardian Card</div>
+    <h2 class="sec-title" style="text-align:center;">Claim Your Identity</h2>
+    <p style="text-align:center;font-size:.88rem;color:var(--text2);max-width:480px;margin:0 auto 1.5rem;">Enter your name or handle to forge your Guardian Card — then screenshot it and share it with the community. Stand GUARD.</p>
+    <div style="max-width:420px;margin:0 auto;">
+      <input id="guardian-handle" type="text" placeholder="@yourhandle" maxlength="24" oninput="renderCard()" style="width:100%;padding:.8rem 1rem;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);font-size:1rem;text-align:center;font-family:'Cinzel',serif;">
+    </div>
+
+    <div id="guardian-card" style="max-width:480px;margin:1.5rem auto 0;border-radius:16px;overflow:hidden;border:1px solid var(--border-gold);background:linear-gradient(160deg,#0b0e16,#16101f);position:relative;">
+      <div style="padding:1.5rem;text-align:center;position:relative;z-index:2;">
+        <div style="font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);">Metallicus Guardian · GUARD</div>
+        <img id="card-shield" src="" alt="" style="width:150px;height:150px;object-fit:contain;margin:1rem auto .5rem;filter:drop-shadow(0 8px 24px rgba(124,58,237,0.5));">
+        <div id="card-rank" style="font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);">Rank 1 · Recruit</div>
+        <h3 id="card-name" class="guard-wordmark" style="font-size:2rem;margin:.2rem 0;">Cryptide</h3>
+        <div id="card-handle" style="font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold-l);margin-top:.3rem;">@yourhandle</div>
+        <div style="font-size:.7rem;color:var(--text3);margin-top:1rem;letter-spacing:.1em;">⚡ XPR NETWORK · STAND GUARD ⚡</div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:.75rem;color:var(--text3);margin-top:1rem;max-width:460px;margin-left:auto;margin-right:auto;">This is a community identity for fun and belonging — a journey you choose, not a verified credential. Screenshot your card to share it.</p>
+  </div>
+</div>
+FOOT
+</div>
+
+<!-- ═══════ PAGE: FAQ ═══════ -->
+<div id="page-faq" class="page" style="padding-top:88px;">
+<div class="container">
+  <div class="section">
+    <div class="sec-label">Knowledge Base</div>
+    <h1 class="page-title">GUARD — FAQ</h1>
+    <p class="page-sub">Answers to the questions only this site can answer — about GUARD itself. For ecosystem and DeFi questions, the official help centers (linked below) are the best, most up-to-date source.</p>
+    <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>What is GUARD?</span><span class="acc-icon">+</span></div><div class="acc-a">GUARD (Metallicus Guardian) is a community meme token on XPR Network launched on SimpleDEX by Tim Rangel. A grassroots community project — not an official Metallicus product. Created to contribute to the ecosystem through community building, education, and advocacy.</div></div>
+    <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>Is GUARD an official Metallicus product?</span><span class="acc-icon">+</span></div><div class="acc-a">No. GUARD is entirely community-created and not affiliated with, endorsed by, or officially connected to Metallicus or any ecosystem project. It's a tribute, built by a community member.</div></div>
+    <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>How do I buy GUARD?</span><span class="acc-icon">+</span></div><div class="acc-a">You need a WebAuth wallet funded with XPR. Then visit <a href="https://simpledex.fun/token/172" target="_blank">simpledex.fun/token/172</a> and connect your wallet. The Start Here page walks through wallet setup and funding first.</div></div>
+    <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>Can I sell GUARD?</span><span class="acc-icon">+</span></div><div class="acc-a">Yes. GUARD has graduated past its bonding curve to a live XPR/GUARD liquidity pool, so you can trade it any time on <a href="https://simpledex.fun/token/172" target="_blank">SimpleDEX</a>.</div></div>
+    <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>What are the risks of holding GUARD?</span><span class="acc-icon">+</span></div><div class="acc-a">GUARD is a speculative meme token. Price is driven entirely by community demand and can rise or fall sharply. Never invest more than you can afford to lose. This is not financial advice.</div></div>
+    <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>Why does this site exist?</span><span class="acc-icon">+</span></div><div class="acc-a">To give newcomers a friendly, plain-English starting point for the XPR Network ecosystem — and to point them to the official sources for the full detail. It's a community resource, not an official one.</div></div>
+
+    <div class="div-g"></div>
+    <div class="sec-label">Ecosystem Questions?</div>
+    <h2 class="sec-title mb2">The Official Help Centers</h2>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1.5rem;max-width:600px;">For everything about wallets, DeFi, staking, lending, fees, and tokens, these official sources are always the most accurate and current:</p>
+    <div class="grid grid-auto">
+      <a href="https://help.xprnetwork.org/" target="_blank" class="card"><h3>XPR Network Knowledge Center →</h3><p>Official help for WebAuth, Metal X Lending, staking, XMD, and more.</p></a>
+      <a href="https://www.metalpay.com/how-to-buy/xpr-network" target="_blank" class="card"><h3>How to Buy XPR →</h3><p>Metal Pay's official step-by-step buying guide.</p></a>
+      <a href="https://help.metalpay.com/hc/en-us" target="_blank" class="card"><h3>Metal Pay Support →</h3><p>Verification, fees, buying, and withdrawals.</p></a>
+      <a href="https://help.metalblockchain.org/" target="_blank" class="card"><h3>Metal Blockchain Knowledge Center →</h3><p>Docs and guides for the Layer 0 chain and validators.</p></a>
+    </div>
+  </div>
+</div>
+FOOT
+</div>
+
+<!-- GLOSSARY REMOVED — consolidated into Ecosystem cards + official help centers -->
+
+<!-- ═══════ PAGE: COMMUNITY ═══════ -->
+<div id="page-community" class="page" style="padding-top:88px;">
+<div class="container">
+  <div class="section">
+    <div class="sec-label">Community</div>
+    <h1 class="page-title">The Community</h1>
+    <p class="page-sub">The XPR Network ecosystem is built by its community. These are the people, projects, and spaces making it what it is.</p>
+    <div class="disc mb4"><span>ℹ</span><div>GUARD is inspired by and part of this community — not a representative of it. Communities listed below are independent. GUARD does not speak for them.</div></div>
+
+    <div class="sec-label">Where to Connect</div>
+    <h2 class="sec-title mb3">Communities</h2>
+    <div class="grid grid-auto mb4">
+      <a href="https://snipverse.com" target="_blank" class="comm-card" style="text-decoration:none;">
+        <img class="char-avi" src="./icon_snipverse.jpg?v=2" alt="Snipverse">
+        <div><div class="comm-name">Snipverse</div><div class="comm-role">Social Platform · XPR Network Native</div><div class="comm-desc">A decentralized social platform built on XPR Network for creators, thinkers, and builders. Snipverse 2.0 launched in 2025. It's the Web3 social home where the KSTO and broader XPR community gathers — streaks, snips, and cashtags.</div><span class="badge bb" style="display:inline-flex;margin-top:.6rem;">Visit Snipverse →</span></div>
+      </a>
+      <a href="https://keepsnipping.com" target="_blank" class="comm-card" style="text-decoration:none;">
+        <img class="char-avi" src="./icon_ksto.jpg?v=2" alt="KSTO">
+        <div><div class="comm-name">KSTO — Keep Snipping</div><div class="comm-role">Community Token ($KSTO) · Snipverse</div><div class="comm-desc">A community-driven movement on XPR Network built around the $KSTO token — transparent, DAO-driven, and powered by real builders. Home of Snippy the Guardian. "Authenticity is our currency."</div><span class="badge bp" style="display:inline-flex;margin-top:.6rem;">keepsnipping.com →</span></div>
+      </a>
+      <div class="comm-card">
+        <img class="char-avi" src="./char_funky.jpg?v=2" alt="Funky">
+        <div><div class="comm-name">FunkyVerse <span style="font-size:.62rem;color:var(--text3);font-weight:500;">· within KSTO</span></div><div class="comm-role">NFT Collection · a project inside the KSTO Community</div><div class="comm-desc">A vibrant, character-driven NFT collection on XPR Network — its own distinct project that lives within the KSTO (Keep Snipping) community. Created by Funky. Full of personality and color, part of the growing NFT culture in the XPR ecosystem.</div></div>
+      </div>
+      <a href="https://cyphergang.com" target="_blank" class="comm-card" style="text-decoration:none;">
+        <img class="char-avi" src="./icon_cyphergang.jpg?v=2" alt="Cypher Gang">
+        <div><div class="comm-name">Cypher Gang</div><div class="comm-role">OG NFT Project (2021) · XPR Network</div><div class="comm-desc">An original hand-crafted collection of 1,777 unique NFTs on XPR Network, live since 2021. Founded by ProtonPunk. Stack Cypher Gang NFTs to earn passive $CYPHR plus monthly holder rewards. Built on the Atomic Assets standard — a community Tim is part of.</div><span class="badge bp" style="display:inline-flex;margin-top:.6rem;">cyphergang.com →</span></div>
+      </a>
+    </div>
+
+    <div class="div"></div>
+    <div class="sec-label mt4">Community Characters</div>
+    <h2 class="sec-title mb3">Ecosystem Mascots & Projects</h2>
+    <div class="grid grid-auto mb4">
+      <div class="comm-card">
+        <img class="char-avi" src="./char_snippy.jpg?v=2" alt="Snippy">
+        <div><div class="comm-name">Snippy the Guardian</div><div class="comm-role">Official Mascot of KSTO / Snipverse</div><div class="comm-desc">Snippy is the official mascot of the Keep Snipping ($KSTO) community — a fox character representing protection, fun, and the spirit of the Snipverse. Snippy the Guardian shares the protective spirit that inspired GUARD, the Metallicus Guardian.</div><a href="https://keepsnipping.com/about.html" target="_blank" class="badge bg" style="display:inline-flex;margin-top:.6rem;text-decoration:none;">About Snippy →</a></div>
+      </div>
+      <div class="comm-card">
+        <img class="char-avi" src="./icon_cypherbrawls.jpg?v=2" alt="Cypher Brawls">
+        <div><div class="comm-name">Cypher Brawls NFTs</div><div class="comm-role">Play-to-Earn Game · XPR Network</div><div class="comm-desc">A play-to-earn game built on XPR Network where your Cypher Gang NFT is your fighter. Battle and earn $CYPHR through gameplay. Connect your WebAuth wallet to play; NFTs can be bought on soon.market or AtomicHub.</div><div class="flex gap-sm wrap" style="margin-top:.6rem;"><a href="https://app.cypherbrawls.com" target="_blank" class="badge bp" style="display:inline-flex;text-decoration:none;">Play Cypher Brawls →</a><a href="https://soon.market/collection/zvapir55jvu4" target="_blank" class="badge bb" style="display:inline-flex;text-decoration:none;">Buy NFTs →</a></div></div>
+      </div>
+      <div class="comm-card">
+        <img class="comm-avi" src="./img_coin.jpg?v=2" alt="GUARD">
+        <div><div class="comm-name">Metallicus Guardian (GUARD)</div><div class="comm-role">Community Token · SimpleDEX</div><div class="comm-desc">Community meme token created by Tim Rangel. An armored warrior wielding a golden key and cosmic Guardian shield — forged in the fires of XPR Network. Not official Metallicus.</div><a href="https://simpledex.fun/token/172" target="_blank" class="badge bg mt1" style="display:inline-flex;margin-top:.6rem;text-decoration:none;">Buy on SimpleDEX →</a></div>
+      </div>
+    </div>
+    <p style="font-size:.8rem;color:var(--text3);text-align:center;font-style:italic;margin-bottom:1rem;">…and many more characters, mascots, and projects across these communities. This is just a glimpse.</p>
+
+    <div class="div"></div>
+    <div class="sec-label mt4">Leaders, Creators & Builders</div>
+    <h2 class="sec-title mb3">The People Behind It</h2>
+    <div class="grid grid-auto">
+      <div class="comm-card">
+        <img class="char-avi" src="./icon_marshall.jpg?v=2" alt="Marshall Hayner">
+        <div><div class="comm-name">Marshall Hayner</div><div class="comm-role">Co-Founder & CEO of Metallicus</div><div class="comm-desc">Co-founded Metallicus in 2016 to build a regulated Digital Asset Banking Network — the vision behind XPR Network, WebAuth, Metal Pay, and the entire ecosystem this site celebrates. He developed the first Facebook Bitcoin wallet and has worked across projects including Stellar and Dogecoin.</div><a href="https://www.metallicus.com/company" target="_blank" class="badge bg" style="display:inline-flex;margin-top:.6rem;text-decoration:none;">Meet the full Metallicus team →</a></div>
+      </div>
+      <div class="comm-card">
+        <img class="char-avi" src="./char_hulk.jpg?v=2" alt="Hulkwarrior">
+        <div><div class="comm-name">Hulkwarrior</div><div class="comm-role">Lead Creator · KSTO (Keep Snipping)</div><div class="comm-desc">The lead creator behind KSTO. Hulkwarrior helped drive the community-powered revival of Keep Snipping into the transparent, DAO-driven movement it is today — embodying the "authenticity is our currency" ethos.</div><a href="https://keepsnipping.com" target="_blank" class="badge bp" style="display:inline-flex;margin-top:.6rem;text-decoration:none;">keepsnipping.com →</a></div>
+      </div>
+      <div class="comm-card">
+        <img class="char-avi" src="./char_bloxprod.jpg?v=2" alt="BloxProd">
+        <div><div class="comm-name">BloxProd</div><div class="comm-role">Builder · Metal Validator · Educator</div><div class="comm-desc">A builder and Metal Blockchain validator on XPR Network, and one of the ecosystem's most active educators. BloxProd helps oversee both the KSTO (Keep Snipping) community and CypherGang, and produces the tutorial library covering the full Metallicus ecosystem — plus tools like NFT Claim Hub and NFT Packs.</div><button onclick="go('learn')" class="badge bp" style="border:none;cursor:pointer;display:inline-flex;margin-top:.6rem;">Watch Tutorials →</button></div>
+      </div>
+      <a href="https://x.com/ProtonPunk" target="_blank" class="comm-card" style="text-decoration:none;">
+        <img class="char-avi" src="./char_protonpunk.jpg?v=2" alt="ProtonPunk">
+        <div><div class="comm-name">ProtonPunk</div><div class="comm-role">Founder of Cypher Gang & CypherBrawls</div><div class="comm-desc">An XPR Network veteran since 2021 and a true OG builder. ProtonPunk founded the Cypher Gang NFT collection, the CypherBrawls play-to-earn game, and the $CYPHR ecosystem token — a cornerstone of NFT culture on XPR Network.</div><span class="badge bp" style="display:inline-flex;margin-top:.6rem;">@ProtonPunk →</span></div>
+      </a>
+      <div class="comm-card">
+        <img class="char-avi" src="./icon_tim.jpg?v=2" alt="Tim Rangel">
+        <div><div class="comm-name">Tim Rangel</div><div class="comm-role">GUARD Creator · Community Builder</div><div class="comm-desc">Creator of the GUARD token and this educational resource. Active XPR Network ecosystem participant focused on community building, education, and accessibility.</div><button onclick="go('creator')" class="badge bg mt1" style="border:none;cursor:pointer;display:inline-flex;margin-top:.6rem;">Creator Bio →</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+FOOT
+</div>
+
+<!-- ═══════ PAGE: CREATOR ═══════ -->
+<div id="page-creator" class="page" style="padding-top:88px;">
+<div class="container">
+  <div class="section">
+    <div class="sec-label">The Creator</div>
+    <h1 class="page-title">Meet Tim Rangel</h1>
+    <p class="page-sub">The person behind GUARD and this site — a community builder, not a corporation.</p>
+    <div class="creator-wrap">
+      <div class="creator-sidebar">
+        <div class="creator-box">
+          <img class="creator-avi" src="./icon_tim.jpg?v=2" alt="Tim Rangel">
+          <div class="creator-name">Tim Rangel</div>
+          <div class="creator-handle">@scubasteve4488</div>
+          <div class="creator-tags">
+            <span class="badge bg">Builder</span>
+            <span class="badge bp">Creator</span>
+            <span class="badge bb">Healthcare</span>
+            <span class="badge bgr">XPR Ecosystem</span>
+          </div>
+        </div>
+        <div class="creator-links">
+          <a href="https://x.com/scubasteve4488" target="_blank" class="c-link">✕ Twitter / X</a>
+          <a href="https://snipverse.com/scubasteve44" target="_blank" class="c-link">✦ Snipverse</a>
+          <a href="https://t.me/KSTOX/1" target="_blank" class="c-link">✈ KSTO Telegram</a>
+          <a href="https://simpledex.fun/token/172" target="_blank" class="c-link">⚔ GUARD Token</a>
+        </div>
+      </div>
+      <div class="creator-body">
+        <p>My name is Tim Rangel. I enjoy baseball and martial arts — that was my athletic history growing up. I'm a <strong>builder, creator, and active participant</strong> within the Metallicus ecosystem with a focus on infrastructure, accessibility, and community growth.</p>
+        <p>My background isn't in software engineering or traditional finance — I work in <strong>healthcare</strong> — but crypto pulled me in because of the technology behind it, not just the markets. Over time, that interest evolved into learning how identity, authentication, lending, payments, and digital ownership actually function beneath the surface.</p>
+        <p>That curiosity is what led me deeper into <strong>XPR Network, WebAuth Wallet, MetalX, LOAN Protocol, SimpleDEX</strong>, and the broader Metallicus ecosystem.</p>
+        <p>I created GUARD as a community-driven project inspired by the principles I believe matter most for the future of digital finance: <strong>ownership, security, accessibility, and education</strong>. GUARD is not an official representation of Metallicus — it is my way of contributing through community building, educational content, creativity, and ecosystem advocacy.</p>
+        <div class="sec-label">Why Metallicus?</div>
+        <p>Because I believe the next phase of crypto adoption depends less on speculation and more on <strong>infrastructure</strong>. What stands out to me about this ecosystem is its focus on solving real problems:</p>
+        <ul>
+          <li>Simpler authentication through WebAuth</li>
+          <li>Modern approaches to digital identity and access</li>
+          <li>Decentralized lending and financial infrastructure</li>
+          <li>Payment systems and real-world integrations</li>
+          <li>Regulatory-minded growth and compliance</li>
+          <li>Better onboarding for everyday users</li>
+          <li>Building products designed for long-term usability</li>
+        </ul>
+        <div class="sec-label">The Infrastructure Layer</div>
+        <p>I'm interested in the part of crypto that most people never see — <strong>the infrastructure layer</strong>. Whether I'm creating content, building the Metallicus Guardian project, participating in community spaces, or helping simplify technical concepts, my goal is the same:</p>
+        <p><strong>Help make this technology easier to understand and more accessible to the people who will eventually use it every day.</strong></p>
+        <div class="sec-label">About This Site</div>
+        <p>I built this site to give newcomers a friendly, plain-English starting point for the XPR Network ecosystem — and to showcase the communities, builders, and projects that make it special, alongside Metallicus and XPR Network themselves. It's an educational resource and a celebration of the people here, not an official product. If something's wrong or missing, reach out.</p>
+        <div class="sec-label">A Bit More About Me</div>
+        <p>Outside of crypto, one of my hobbies is American Sign Language (ASL). Here's GUARD signing — a nod to communication, accessibility, and meeting people where they are, which is exactly the spirit behind this whole project.</p>
+        <img src="./g_asl.jpg?v=2" alt="GUARD doing ASL" style="border-radius:12px;border:1px solid var(--border-gold);max-width:300px;margin-top:.5rem;">
+        <div class="div"></div>
+        <div class="disc"><span>ℹ</span><div>GUARD is a community meme token created independently. Not affiliated with or endorsed by Metallicus or any ecosystem project.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+FOOT
+</div>
+
+<!-- FOOTER TEMPLATE -->
+<template id="foot-tpl">
+<footer>
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand"><img src="./img_coin.jpg?v=2" alt="GUARD"><span>Metallicus Guardian</span></div>
+        <p class="foot-desc">A community-built educational resource for the Metallicus and XPR Network ecosystem. Not affiliated with or endorsed by Metallicus.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Navigate</h4>
+        <a href="#" onclick="go('guard');return false;">GUARD</a>
+        <a href="#" onclick="go('start');return false;">Start Here</a>
+        <a href="#" onclick="go('ecosystem');return false;">Ecosystem</a>
+        <a href="#" onclick="go('learn');return false;">Learn</a>
+        <a href="#" onclick="go('faq');return false;">FAQ</a>
+        <a href="#" onclick="go('community');return false;">Community</a>
+      </div>
+      <div class="foot-col">
+        <h4>Connect</h4>
+        <a href="https://x.com/scubasteve4488" target="_blank">Twitter / X</a>
+        <a href="https://snipverse.com/scubasteve44" target="_blank">Snipverse</a>
+        <a href="https://t.me/KSTOX/1" target="_blank">KSTO Telegram</a>
+        <a href="https://simpledex.fun/token/172" target="_blank">Buy GUARD</a>
+        <a href="https://xprnetwork.org" target="_blank">XPR Network</a>
+        <a href="https://webauth.com" target="_blank">WebAuth Wallet</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p class="foot-disc">Metallicus Guardian (GUARD) is an independent, community-created project. It is not affiliated with, sponsored by, endorsed by, or officially connected to Metallicus, XPR Network, WebAuth, Metal Blockchain, or any other product, company, or project referenced on this site. All product names, logos, and trademarks are the property of their respective owners and are used here for identification and educational purposes only (nominative use). This site is an unofficial educational resource. Nothing here is financial advice. Crypto assets are highly speculative — do your own research.</p>
+      <span style="font-size:.7rem;color:var(--text3);white-space:nowrap;">© 2026 GUARD Community</span>
+    </div>
+  </div>
+</footer>
+</template>
+
+<script>
+const PAGES=['home','guard','start','ecosystem','learn','shields','faq','community','creator'];
+
+function go(id){
+  PAGES.forEach(p=>{
+    const el=document.getElementById('page-'+p);
+    const tb=document.getElementById('t-'+p);
+    if(el){el.classList.remove('active');el.style.display='';}
+    if(tb)tb.classList.remove('active');
+  });
+  const pg=document.getElementById('page-'+id);
+  const tb=document.getElementById('t-'+id);
+  if(pg){pg.classList.add('active');}
+  if(tb)tb.classList.add('active');
+  window.scrollTo({top:0,behavior:'instant'});
+  rev();
+}
+
+function toggleMenu(){document.getElementById('mob').classList.toggle('open');}
+function closeMenu(){document.getElementById('mob').classList.remove('open');}
+
+function ecoTab(id){
+  const ids=['metallicus','xpr','metalblockchain','webauth','metalx','loan','xmd','simpledex','blastpad','alcor','metalpay','metaldao','nfttools'];
+  document.querySelectorAll('#eco-tab-row .tab-btn').forEach((b,i)=>b.classList.toggle('active',ids[i]===id));
+  ids.forEach(i=>{const p=document.getElementById('eco-'+i);if(p)p.classList.toggle('active',i===id);});
+}
+
+function toggleAcc(el){el.closest('.acc-item').classList.toggle('open');}
+
+function rev(){
+  const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.08});
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el=>obs.observe(el));
+}
+
+// Inject footer into all pages
+const footHTML=document.getElementById('foot-tpl').innerHTML;
+document.querySelectorAll('.page').forEach(p=>{
+  p.innerHTML=p.innerHTML.replace(/FOOT/g,footHTML);
+});
+
+rev();
+
+// ===== LIVE ON-CHAIN DATA (XPR Network) =====
+// CONFIG — confirm these against the GUARD token on an XPR explorer:
+const GUARD_CFG = {
+  contract: 'simpletoken',
+  symbol: 'GUARD',
+  rpcs: [
+    'https://proton.eosusa.io',
+    'https://proton.greymass.com',
+    'https://api.protonnz.com',
+    'https://proton.cryptolions.io',
+    'https://proton.eosphere.io'
+  ],
+};
+
+function fmtNum(n){
+  if(n>=1e9)return (n/1e9).toFixed(2)+'B';
+  if(n>=1e6)return (n/1e6).toFixed(2)+'M';
+  if(n>=1e3)return (n/1e3).toFixed(1)+'K';
+  return n.toLocaleString();
+}
+function setStat(id,val){const el=document.getElementById(id);if(el)el.textContent=val;}
+
+function fetchTimeout(url,opts,ms){
+  return Promise.race([
+    fetch(url,opts),
+    new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),ms))
+  ]);
+}
+
+async function loadLiveData(){
+  const status=document.getElementById('live-status');
+  let gotAny=false;
+
+  // Token supply via standard Antelope get_currency_stats — try multiple RPCs
+  for(const rpc of GUARD_CFG.rpcs){
+    try{
+      const r=await fetchTimeout(rpc+'/v1/chain/get_currency_stats',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({code:GUARD_CFG.contract,symbol:GUARD_CFG.symbol})
+      },5000);
+      if(r.ok){
+        const d=await r.json();
+        const info=d[GUARD_CFG.symbol];
+        if(info&&info.supply){
+          const supply=parseFloat(String(info.supply).split(' ')[0]);
+          setStat('stat-supply',fmtNum(supply));
+          gotAny=true;
+          break;
+        }
+      }
+    }catch(e){/* try next endpoint */}
+  }
+
+  if(gotAny){
+    status.innerHTML='⛓ Total supply is live from XPR Network · <a href="https://simpledex.fun/token/172" target="_blank" style="color:var(--gold-l);">full price &amp; pool data on SimpleDEX →</a>';
+  }else{
+    setStat('stat-supply','—');
+    status.innerHTML='📊 <a href="https://simpledex.fun/token/172" target="_blank" style="color:var(--gold-l);font-weight:600;">View live GUARD data on SimpleDEX →</a>';
+  }
+}
+// Run on load
+loadLiveData();
+
+// ===== SHIELDS — THE PATH OF THE GUARDIAN =====
+const SHIELDS = [
+  {name:'Cryptide', title:'Recruit', emoji:'🌊', img:'./shield_cryptide.png', lore:'New to the ecosystem. A stable foundation and a defensive footing — learning the way. Every Guardian begins here.'},
+  {name:'Riftforge', title:'Defender', emoji:'🌋', img:'./shield_riftforge.png', lore:'The first awakening of power — raw and uncontrolled. Bold and eye-catching, stepping up to defend the community.'},
+  {name:'Helion', title:'Protector', emoji:'☀️', img:'./shield_helion.png', lore:'Power under control. Light, guidance, and standing watch — actively protecting others, not just yourself.'},
+  {name:'Nebulon', title:'Ascendant', emoji:'🌌', img:'./shield_nebulon.png', lore:'Cosmic scale begins. Mysterious and advanced — risen beyond the basic defender into something greater.'},
+  {name:'Protonis', title:'Architect', emoji:'⚛️', img:'./shield_protonis.png', lore:'The shield most tied to XPR Network and Metallicus. Technological and intentional — elite ecosystem knowledge and status.'},
+  {name:'Keystone', title:'Gatekeeper', emoji:'🔑', img:'./shield_keystone.png', lore:'Near-final form. Custodian energy — keeper of access, protector of keys, guardian of the gate.'},
+  {name:'Aegis', title:'Guardian', emoji:'🛡️', img:'./shield_aegis.png', lore:'God-tier. The final evolution — vault, protection, security, eternity. The fusion of all shields before it. To bear Aegis is to BE the Guardian.'}
+];
+let guardianRank = 0; // index of current (highest attained) rank
+
+async function loadRank(){
+  try{
+    const r = await window.storage.get('guardian_rank');
+    if(r && r.value!=null) guardianRank = Math.min(6, Math.max(0, parseInt(r.value)||0));
+  }catch(e){ guardianRank = 0; }
+  try{
+    const h = await window.storage.get('guardian_handle');
+    if(h && h.value){ const el=document.getElementById('guardian-handle'); if(el) el.value=h.value; }
+  }catch(e){}
+  renderShield();
+}
+async function saveRank(){ try{ await window.storage.set('guardian_rank', String(guardianRank)); }catch(e){} }
+
+function renderShield(){
+  const s = SHIELDS[guardianRank];
+  if(!document.getElementById('shield-img')) return;
+  document.getElementById('shield-img').src = s.img;
+  document.getElementById('shield-rank-badge').textContent = 'Rank '+(guardianRank+1)+' of 7';
+  document.getElementById('shield-name').textContent = s.name;
+  document.getElementById('shield-title').textContent = s.emoji+' '+s.title;
+  document.getElementById('shield-lore').textContent = s.lore;
+  const adv = document.getElementById('btn-advance');
+  const maxed = document.getElementById('shield-maxed');
+  if(guardianRank>=6){ adv.style.display='none'; maxed.style.display='block'; }
+  else { adv.style.display=''; maxed.style.display='none'; adv.textContent='⚔ Advance to '+SHIELDS[guardianRank+1].title+' →'; }
+  renderLadder();
+  renderCard();
+}
+function renderLadder(){
+  const lad = document.getElementById('rank-ladder');
+  if(!lad) return;
+  lad.innerHTML = SHIELDS.map((s,i)=>{
+    const locked = i>guardianRank ? 'locked' : '';
+    const cur = i===guardianRank ? 'current' : '';
+    return '<div class="ladder-item '+locked+' '+cur+'" onclick="jumpRank('+i+')"><img src="'+s.img+'" alt="'+s.name+'"><div class="ladder-rank">R'+(i+1)+'</div><div class="ladder-name">'+(i<=guardianRank?s.name:'???')+'</div></div>';
+  }).join('');
+}
+function renderCard(){
+  const s = SHIELDS[guardianRank];
+  if(!document.getElementById('card-shield')) return;
+  document.getElementById('card-shield').src = s.img;
+  document.getElementById('card-rank').textContent = 'Rank '+(guardianRank+1)+' · '+s.title;
+  document.getElementById('card-name').textContent = s.name;
+  const h = document.getElementById('guardian-handle').value.trim();
+  document.getElementById('card-handle').textContent = h ? (h.startsWith('@')?h:'@'+h) : '@yourhandle';
+  try{ if(h) window.storage.set('guardian_handle', h); }catch(e){}
+}
+function advanceRank(){ if(guardianRank<6){ guardianRank++; saveRank(); renderShield(); window.scrollTo({top:document.getElementById('shield-stage').offsetTop-90,behavior:'smooth'}); } }
+function jumpRank(i){ if(i<=guardianRank){ guardianRank=i; saveRank(); renderShield(); } }
+function resetRank(){ guardianRank=0; saveRank(); renderShield(); }
+
+loadRank();
+
+// ===== WEBAUTH WALLET INTEGRATION =====
+const DAPP_CONFIG = {
+  appName: 'Metallicus Guardian',
+  requestAccount: 'scubasteve44',
+  chainId: '384da888112027f0321850a169f737c33e8f27a0db95f8f1505cf1b9f9a571e', // XPR mainnet
+  endpoints: [
+    'https://proton.eosusa.io',
+    'https://proton.greymass.com',
+    'https://api.protonnz.com',
+    'https://proton.cryptolions.io',
+  ],
+};
+
+// GUARD rank thresholds (GUARD tokens needed for each rank)
+const RANK_THRESHOLDS = [0, 100, 500, 2000, 10000, 50000, 200000];
+// Rank 1 (Cryptide): 0+
+// Rank 2 (Riftforge): 100+
+// Rank 3 (Helion): 500+
+// Rank 4 (Nebulon): 2,000+
+// Rank 5 (Protonis): 10,000+
+// Rank 6 (Keystone): 50,000+
+// Rank 7 (Aegis): 200,000+
+
+let walletSession = null;
+let walletLink = null;
+let walletActor = null;
+
+async function walletConnect() {
+  try {
+    const ProtonWebSDK = window.ProtonWebSDK || window.protonWebSdk || window['@proton/web-sdk'];
+    if (!ProtonWebSDK) {
+      alert('WebAuth SDK not loaded yet. Please try again in a moment.');
+      return;
+    }
+
+    const { link, session } = await ProtonWebSDK({
+      linkOptions: {
+        chainId: DAPP_CONFIG.chainId,
+        endpoints: DAPP_CONFIG.endpoints,
+        restoreSession: false,
+      },
+      transportOptions: {
+        requestAccount: DAPP_CONFIG.requestAccount,
+        backButton: true,
+      },
+      selectorOptions: {
+        appName: DAPP_CONFIG.appName,
+        appLogo: 'https://standguard.pages.dev/img_coin.jpg',
+        enabledWalletTypes: ['webauth', 'proton'],
+        customStyleOptions: {
+          modalBackgroundColor: '#0d0f1a',
+          logoBackgroundColor: '#161828',
+          isLogoRound: true,
+          optionBackgroundColor: '#1a1d2e',
+          optionFontColor: '#e8d5a3',
+          primaryFontColor: '#c9922a',
+          secondaryFontColor: '#8b7355',
+          linkColor: '#7c3aed',
+        },
+      },
+    });
+
+    walletLink = link;
+    walletSession = session;
+    walletActor = session.auth.actor;
+
+    onWalletConnected(walletActor);
+    await fetchGuardBalance(walletActor);
+
+  } catch (e) {
+    console.error('Wallet connect error:', e);
+  }
+}
+
+async function walletDisconnect() {
+  try {
+    if (walletLink) await walletLink.disconnect();
+  } catch(e) {}
+  walletSession = null;
+  walletLink = null;
+  walletActor = null;
+  onWalletDisconnected();
+}
+
+async function walletRestore() {
+  try {
+    const ProtonWebSDK = window.ProtonWebSDK || window.protonWebSdk || window['@proton/web-sdk'];
+    if (!ProtonWebSDK) return;
+    const { link, session } = await ProtonWebSDK({
+      linkOptions: {
+        chainId: DAPP_CONFIG.chainId,
+        endpoints: DAPP_CONFIG.endpoints,
+        restoreSession: true,
+      },
+      transportOptions: { requestAccount: DAPP_CONFIG.requestAccount },
+      selectorOptions: { appName: DAPP_CONFIG.appName, showSelector: false },
+    });
+    if (session) {
+      walletLink = link;
+      walletSession = session;
+      walletActor = session.auth.actor;
+      onWalletConnected(walletActor);
+      await fetchGuardBalance(walletActor);
+    }
+  } catch(e) {}
+}
+
+async function fetchGuardBalance(actor) {
+  for (const rpc of DAPP_CONFIG.endpoints) {
+    try {
+      const r = await fetchTimeout(rpc + '/v1/chain/get_currency_balance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: 'simpletoken', account: actor, symbol: 'GUARD' }),
+      }, 5000);
+      if (r.ok) {
+        const data = await r.json();
+        const balStr = data && data[0] ? data[0] : '0 GUARD';
+        const bal = parseFloat(balStr.split(' ')[0]) || 0;
+        onGuardBalanceLoaded(actor, bal);
+        return bal;
+      }
+    } catch(e) { /* try next */ }
+  }
+  onGuardBalanceLoaded(actor, 0);
+  return 0;
+}
+
+function getRankForBalance(bal) {
+  let rank = 0;
+  for (let i = RANK_THRESHOLDS.length - 1; i >= 0; i--) {
+    if (bal >= RANK_THRESHOLDS[i]) { rank = i; break; }
+  }
+  return rank;
+}
+
+function onWalletConnected(actor) {
+  // Nav button
+  const btn = document.getElementById('wallet-btn');
+  if (btn) { btn.textContent = '⚡ @' + actor; btn.style.color = 'var(--gold-l)'; }
+
+  // Hide connect button on GUARD page
+  const gcb = document.getElementById('guard-connect-btn');
+  if (gcb) gcb.style.display = 'none';
+
+  // Wallet bar
+  const bar = document.getElementById('wallet-bar');
+  const actorEl = document.getElementById('wallet-actor');
+  if (bar) bar.style.display = 'block';
+  if (actorEl) actorEl.textContent = '@' + actor;
+
+  // Shields page
+  const prompt = document.getElementById('shield-wallet-prompt');
+  const info = document.getElementById('shield-wallet-info');
+  const actorShield = document.getElementById('shield-wallet-actor');
+  if (prompt) prompt.style.display = 'none';
+  if (info) info.style.display = 'block';
+  if (actorShield) actorShield.textContent = '@' + actor;
+}
+
+function onGuardBalanceLoaded(actor, bal) {
+  const fmtBal = bal.toLocaleString() + ' GUARD';
+
+  // Wallet bar balance
+  const barBal = document.getElementById('wallet-guard-balance');
+  if (barBal) barBal.textContent = fmtBal;
+
+  // Shields page balance
+  const shieldBal = document.getElementById('shield-guard-bal');
+  if (shieldBal) shieldBal.textContent = fmtBal;
+
+  // Unlock rank based on balance
+  const unlockedRank = getRankForBalance(bal);
+  const rankUnlockEl = document.getElementById('shield-rank-unlock');
+
+  if (unlockedRank > guardianRank) {
+    guardianRank = unlockedRank;
+    saveRank();
+    renderShield();
+    if (rankUnlockEl) rankUnlockEl.textContent = '🎉 Rank unlocked: ' + SHIELDS[unlockedRank].title + ' (' + SHIELDS[unlockedRank].name + ')';
+  } else if (unlockedRank === guardianRank) {
+    if (rankUnlockEl) rankUnlockEl.textContent = '✅ Your rank: ' + SHIELDS[unlockedRank].title + ' · ' + (unlockedRank < 6 ? 'Hold ' + RANK_THRESHOLDS[unlockedRank+1].toLocaleString() + ' GUARD to advance' : 'Maximum rank reached!');
+  } else {
+    if (rankUnlockEl) rankUnlockEl.textContent = '✅ Rank ' + (unlockedRank+1) + ' unlocked · ' + (unlockedRank < 6 ? 'Hold ' + RANK_THRESHOLDS[unlockedRank+1].toLocaleString() + ' GUARD to advance' : '');
+  }
+
+  // Update Guardian card handle with wallet name if empty
+  const handleInput = document.getElementById('guardian-handle');
+  if (handleInput && !handleInput.value.trim()) {
+    handleInput.value = '@' + actor;
+    renderCard();
+  }
+}
+
+function onWalletDisconnected() {
+  const btn = document.getElementById('wallet-btn');
+  if (btn) { btn.textContent = '⚡ Connect'; btn.style.color = ''; }
+
+  const bar = document.getElementById('wallet-bar');
+  if (bar) bar.style.display = 'none';
+
+  const gcb = document.getElementById('guard-connect-btn');
+  if (gcb) gcb.style.display = 'inline-flex';
+
+  const prompt = document.getElementById('shield-wallet-prompt');
+  const info = document.getElementById('shield-wallet-info');
+  if (prompt) prompt.style.display = 'block';
+  if (info) info.style.display = 'none';
+}
+
+// Try to restore session on page load
+window.addEventListener('load', () => { setTimeout(walletRestore, 1000); });
+
+
+</script>
+</body>
+</html>
