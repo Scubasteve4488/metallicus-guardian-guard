@@ -1,0 +1,9 @@
+{
+  "name": "metallicus-guardian-guard",
+  "version": "1.0.0",
+  "description": "Metallicus Guardian GUARD site – XPR Network WebAuth wallet connect",
+  "scripts": {
+    "dev": "npx serve . -l 3000",
+    "preview": "npx serve . -l 3000"
+  }
+}
