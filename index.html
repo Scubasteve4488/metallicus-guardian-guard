@@ -325,6 +325,24 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 .gs-card{background:linear-gradient(145deg,rgba(124,58,237,0.07),rgba(201,146,42,0.05));border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:1.5rem;max-width:560px;margin:0 auto;}
 @keyframes rankGlow{0%,100%{box-shadow:0 0 18px rgba(201,146,42,0.18);}50%{box-shadow:0 0 38px rgba(201,146,42,0.38),0 0 55px rgba(124,58,237,0.15);}}
 .gs-card{animation:rankGlow 3.5s ease-in-out infinite;}
+/* ── NEWS FEED ── */
+.news-feed-hdr{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem;}
+.news-feed-hdr .sec-title{margin:0;}
+.news-refresh{background:transparent;border:1px solid var(--border-gold);color:var(--gold);border-radius:6px;padding:.28rem .75rem;font-size:.72rem;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;transition:all .2s;}
+.news-refresh:hover{background:rgba(201,146,42,0.1);}
+.news-refresh:disabled{opacity:.45;cursor:default;}
+.news-loading{text-align:center;padding:2.5rem 1rem;color:var(--text3);font-size:.85rem;grid-column:1/-1;}
+.news-item{display:flex;flex-direction:column;gap:.5rem;}
+.news-cat{display:inline-flex;align-items:center;gap:.3rem;font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:.16rem .48rem;border-radius:4px;width:fit-content;}
+.news-cat.cat-gold{background:rgba(201,146,42,0.12);color:var(--gold);border:1px solid rgba(201,146,42,0.28);}
+.news-cat.cat-pur{background:rgba(124,58,237,0.12);color:var(--pur-g);border:1px solid rgba(124,58,237,0.28);}
+.news-item h3{font-size:.9rem;font-weight:600;color:var(--text);margin:0;line-height:1.35;}
+.news-meta{display:flex;align-items:center;flex-wrap:wrap;gap:.35rem .65rem;font-size:.7rem;color:var(--text3);}
+.news-x{display:inline-flex;align-items:center;gap:.28rem;vertical-align:middle;}
+.news-summary{font-size:.81rem;color:var(--text2);line-height:1.55;flex:1;}
+.news-link{font-size:.76rem;color:var(--pur-g);font-weight:500;margin-top:.15rem;}
+.news-link:hover{color:var(--gold-l);}
+.news-stamp{font-size:.67rem;color:var(--text3);margin-top:.65rem;}
 </style>
   <!-- WebAuth / Proton Web SDK -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
@@ -517,12 +535,16 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
   <div class="div"></div>
   <div class="section reveal">
     <div class="sec-label">Latest</div>
-    <h2 class="sec-title">News</h2>
-    <div class="grid grid-auto mt3">
-      <div class="card reveal"><div class="sec-label" style="margin-bottom:.4rem;">WebAuth Wallet</div><h3>WebAuth 3.0 Announced</h3><p>Passkey support, an AI assistant, unified portfolio view, and biometric key recovery are coming to WebAuth — the next evolution of the easiest crypto wallet.</p><a href="https://webauth.com" target="_blank" class="card-link">webauth.com →</a></div>
-      <div class="card reveal"><div class="sec-label" style="margin-bottom:.4rem;">Metal X · 2025</div><h3>Metal X Going Multichain</h3><p>Metal X is expanding beyond XPR Network — launching on Metal L2 in 2025 and becoming a multichain DeFi hub.</p><a href="https://metalx.com" target="_blank" class="card-link">metalx.com →</a></div>
-      <div class="card reveal"><div class="sec-label" style="margin-bottom:.4rem;">Snipverse · March 2025</div><h3>Snipverse 2.0 Live</h3><p>Snipverse 2.0 launched in March 2025 — the XPR Network-native social platform with streaks, cashtags, and SNIPS token rewards.</p><a href="https://snipverse.com" target="_blank" class="card-link">snipverse.com →</a></div>
+    <div class="news-feed-hdr">
+      <h2 class="sec-title">News</h2>
+      <button id="news-refresh-btn" class="news-refresh" onclick="loadNews(true)" title="Refresh news">
+        <span id="news-refresh-icon">↺</span> Refresh
+      </button>
     </div>
+    <div id="news-feed" class="grid grid-auto">
+      <div class="news-loading">⚡ Loading latest ecosystem news…</div>
+    </div>
+    <p id="news-stamp" class="news-stamp"></p>
   </div>
 
   <div class="section-sm reveal">
@@ -2276,8 +2298,95 @@ function onWalletDisconnected() {
 resetWalletBarUI();
 
 // Try to restore session on page load
-window.addEventListener('load', () => { setTimeout(walletRestore, 1000); });
+window.addEventListener('load', () => { setTimeout(walletRestore, 1000); loadNews(); });
 
+// ===== LIVE NEWS FEED =====
+const NEWS_LS_KEY = 'guard_news_v1';
+const NEWS_TTL = 60 * 60 * 1000; // 1 hour
+
+async function loadNews(force) {
+  const feed = document.getElementById('news-feed');
+  const stamp = document.getElementById('news-stamp');
+  if (!feed) return;
+
+  if (!force) {
+    try {
+      const cached = JSON.parse(localStorage.getItem(NEWS_LS_KEY) || 'null');
+      if (cached && (Date.now() - cached.timestamp) < NEWS_TTL) {
+        renderNews(cached.items);
+        if (stamp) stamp.textContent = 'Updated ' + newsTimeAgo(cached.timestamp);
+        return;
+      }
+    } catch (e) {}
+  }
+
+  feed.innerHTML = '<div class="news-loading">⚡ Loading latest ecosystem news…</div>';
+  if (stamp) stamp.textContent = '';
+  const btn = document.getElementById('news-refresh-btn');
+  if (btn) btn.disabled = true;
+
+  try {
+    const r = await fetch('/api/news');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    if (data.error) throw new Error(data.error);
+    try { localStorage.setItem(NEWS_LS_KEY, JSON.stringify(data)); } catch (e) {}
+    renderNews(data.items || []);
+    if (stamp) stamp.textContent = 'Updated just now · Powered by AI · Based on available knowledge';
+  } catch (e) {
+    feed.innerHTML = `<div class="news-loading">Could not load news. <button class="news-refresh" style="margin-left:.5rem;" onclick="loadNews(true)">↺ Retry</button></div>`;
+    if (stamp) stamp.textContent = '';
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+function renderNews(items) {
+  const feed = document.getElementById('news-feed');
+  if (!feed) return;
+  if (!items || !items.length) {
+    feed.innerHTML = '<div class="news-loading">No news items found.</div>';
+    return;
+  }
+
+  const GOLD_CATS = new Set(['Metallicus', 'XPR Network', 'WebAuth', 'Metal X']);
+  const X_ICON = `<svg class="news-x" width="11" height="11" viewBox="0 0 300 300" fill="currentColor" aria-hidden="true"><path d="M178.57 127.15 290.27 0h-26.46l-97.03 110.38L89.34 0H0l117.13 166.93L0 300.25h26.46l102.4-116.59 81.8 116.59h89.34M36.01 19.54H76.66l187.13 262.13h-40.66"/></svg>`;
+
+  feed.innerHTML = items.map(item => {
+    const cat = item.category || 'Community';
+    const isGold = GOLD_CATS.has(cat);
+    const isX = (item.source || '').startsWith('@');
+    const srcHtml = isX
+      ? `${X_ICON}<span>${newsEsc(item.source)}</span>`
+      : newsEsc(item.source || '');
+    const link = item.url ? `<a href="${newsEsc(item.url)}" target="_blank" rel="noopener" class="news-link card-link">Read more</a>` : '';
+
+    return `<div class="card news-item reveal">
+  <div class="news-cat ${isGold ? 'cat-gold' : 'cat-pur'}">${newsEsc(cat)}</div>
+  <h3>${newsEsc(item.title || '')}</h3>
+  <div class="news-meta">
+    <span>${newsEsc(item.date || '')}</span>
+    ${srcHtml ? `<span style="display:inline-flex;align-items:center;gap:.28rem;">${srcHtml}</span>` : ''}
+  </div>
+  <p class="news-summary">${newsEsc(item.summary || '')}</p>
+  ${link}
+</div>`;
+  }).join('');
+
+  rev();
+}
+
+function newsEsc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function newsTimeAgo(ts) {
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s / 60) + 'm ago';
+  if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+  return Math.floor(s / 86400) + 'd ago';
+}
 
 </script>
 <div id="ach-toast"></div>
