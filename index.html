@@ -544,6 +544,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
     <div class="flex gap-sm wrap" style="justify-content:center;">
       <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g">⚔ Buy on SimpleDEX</a>
       <a href="https://simpledex.fun/pool/187" target="_blank" class="btn btn-o">💧 Liquidity Pool →</a>
+      <a href="https://blastpad.io/staking-pool?poolId=791" target="_blank" class="btn btn-o" style="border-color:rgba(124,58,237,0.4);color:var(--pur-g);">🔥 Stake GUARD on BlastPad</a>
     </div>
   </div>
 
@@ -1330,6 +1331,7 @@ let guardianBalance = 0;
 let guardianLpXpr = -1;    // -1=loading, 0=no LP, >0=XPR equivalent
 let guardianDaysHeld = -1; // -1=loading, 0=never held GUARD, >0=days
 let guardianNfts = {snippy:0, funky:0, cyphergang:0};
+let guardianStaked = -1; // -1=loading, 0=no stake, >0=GUARD staked on BlastPad pool 791
 
 // ----- Achievements -----
 const ACH_CATS = [
@@ -1359,6 +1361,17 @@ const ACH_CATS = [
       {id:'lp_3', label:'Depth Provider',   desc:'500 XPR LP equivalent',      icon:'💧'},
       {id:'lp_4', label:'Guardian Pool',    desc:'2,000 XPR LP equivalent',    icon:'💧'},
       {id:'lp_5', label:'Liquidity Pillar', desc:'5,000 XPR LP equivalent',    icon:'💧'},
+    ]
+  },
+  { id:'staking', label:'Staking Achievements', icon:'🔥',
+    items:[
+      {id:'stake_1', label:'Stake I',   desc:'Stake 10,000 GUARD on BlastPad',      icon:'🔥', req:10000},
+      {id:'stake_2', label:'Stake II',  desc:'Stake 50,000 GUARD on BlastPad',      icon:'🔥', req:50000},
+      {id:'stake_3', label:'Stake III', desc:'Stake 150,000 GUARD on BlastPad',     icon:'🔥', req:150000},
+      {id:'stake_4', label:'Stake IV',  desc:'Stake 500,000 GUARD on BlastPad',     icon:'🔥', req:500000},
+      {id:'stake_5', label:'Stake V',   desc:'Stake 1,500,000 GUARD on BlastPad',   icon:'🔥', req:1500000},
+      {id:'stake_6', label:'Stake VI',  desc:'Stake 5,000,000 GUARD on BlastPad',   icon:'🔥', req:5000000},
+      {id:'stake_7', label:'Stake VII', desc:'Stake 10,000,000 GUARD on BlastPad',  icon:'🔥', req:10000000},
     ]
   },
   { id:'loyalty', label:'Loyalty Achievements', icon:'⏳',
@@ -1425,7 +1438,7 @@ function showAchToast(id){
   achToastTimer = setTimeout(()=>el.classList.remove('show'), 3000);
 }
 function calcGuardianScore(basePct){
-  const WEIGHTS = {site:2, holding:5, lp:3, loyalty:4, community:3, brawls:2};
+  const WEIGHTS = {site:2, holding:5, lp:3, staking:4, loyalty:4, community:3, brawls:2};
   const unlocked = getUnlockedAchs();
   let bonus = 0;
   for(const cat of ACH_CATS){
@@ -1537,6 +1550,21 @@ function getRankReqs(rankIdx, bal){
     return {label:'LP '+xprMin.toLocaleString()+' XPR equivalent', detail, met, soon, progress};
   }
 
+  // Staking helpers
+  const stakeLoading = guardianStaked < 0;
+  function stakeReq(amount){
+    const met    = !stakeLoading && guardianStaked >= amount;
+    const soon   = stakeLoading;
+    const stakeLink = '<a href="https://blastpad.io/staking-pool?poolId=791" target="_blank" style="color:var(--pur-g);">Stake on BlastPad →</a>';
+    const detail = stakeLoading
+      ? 'Checking on-chain data…'
+      : guardianStaked > 0
+        ? guardianStaked.toLocaleString() + ' GUARD staked' + (met ? ' ✓' : ' / ' + amount.toLocaleString() + ' needed')
+        : 'No GUARD staked · ' + stakeLink;
+    const progress = stakeLoading ? null : Math.min(100, guardianStaked > 0 ? Math.round((guardianStaked/amount)*100) : 0);
+    return {label:'Stake '+amount.toLocaleString()+' GUARD on BlastPad', detail, met, soon, progress};
+  }
+
   // Hold-time helpers
   const htLoading = guardianDaysHeld < 0;
   function htReq(days){
@@ -1557,35 +1585,41 @@ function getRankReqs(rankIdx, bal){
       {label:'Hold 25,000 GUARD',      detail: guardMet ? bal.toLocaleString()+' GUARD held ✓' : bal.toLocaleString()+' / 25,000',    met:guardMet, progress:guardPct},
       lpReq(25),
       htReq(7),
+      stakeReq(10000),
     ],
     2:[
       {label:'Hold 150,000 GUARD',     detail: bal>=150000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 150,000',      met:bal>=150000,  progress:Math.min(100,Math.round(bal/1500))},
       lpReq(100),
       htReq(14),
+      stakeReq(50000),
       {label:'Complete profile setup', detail:cs, met:false, soon:true},
     ],
     3:[
       {label:'Hold 750,000 GUARD',     detail: bal>=750000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 750,000',      met:bal>=750000,  progress:Math.min(100,Math.round(bal/7500))},
       lpReq(250),
       htReq(45),
+      stakeReq(150000),
       {label:'Complete Start Here tutorial', detail:cs, met:false, soon:true},
     ],
     4:[
       {label:'Hold 2,500,000 GUARD',   detail: bal>=2500000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 2,500,000',   met:bal>=2500000, progress:Math.min(100,Math.round(bal/25000))},
       lpReq(750),
       htReq(90),
+      stakeReq(500000),
       {label:'Complete 3 site missions',detail:cs, met:false, soon:true},
     ],
     5:[
       {label:'Hold 7,500,000 GUARD',   detail: bal>=7500000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 7,500,000',   met:bal>=7500000, progress:Math.min(100,Math.round(bal/75000))},
       lpReq(2000),
       htReq(180),
+      stakeReq(1500000),
       {label:'Earn 5 achievements',    detail:cs, met:false, soon:true},
     ],
     6:[
       {label:'Hold 15,000,000 GUARD',  detail: bal>=15000000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 15,000,000', met:bal>=15000000,progress:Math.min(100,Math.round(bal/150000))},
       lpReq(5000),
       htReq(365),
+      stakeReq(5000000),
       {label:'Complete all shield quests', detail:cs, met:false, soon:true},
       {label:'Earn 10 achievements',   detail:cs, met:false, soon:true},
       {label:'Maintain Rank 6 for 90+ days', detail:cs, met:false, soon:true},
@@ -1598,6 +1632,7 @@ const SELF_VERIFY_MAP = {
   'com_ksto1': {btn:'I am a KSTO community member', key:'ksto_member'},
   'com_ksto2': {btn:'I actively participate in KSTO', key:'ksto_active'},
 };
+const STAKING_ACHS = new Set(['stake_1','stake_2','stake_3','stake_4','stake_5','stake_6','stake_7']);
 function renderAchievements(){
   const c = document.getElementById('ach-container');
   if(!c) return;
@@ -1610,7 +1645,9 @@ function renderAchievements(){
       const vfy = !isOn && SELF_VERIFY_MAP[a.id];
       const selfBtn = vfy
         ? `<button class="ach-self-btn" onclick="selfVerify('${a.id}','${vfy.key}')">✓ ${vfy.btn}</button><div style="font-size:.58rem;color:var(--text3);margin-top:.2rem;">Self-verified — honor system</div>`
-        : '';
+        : (!isOn && STAKING_ACHS.has(a.id)
+          ? `<a href="https://blastpad.io/staking-pool?poolId=791" target="_blank" class="ach-self-btn" style="display:block;text-align:center;text-decoration:none;">🔥 Stake GUARD on BlastPad →</a>`
+          : '');
       return `<div class="ach-card${isOn?' unlocked':''}${soon&&!isOn?' coming':''}">
         <div class="ach-icon">${a.icon}</div>
         <div class="ach-label">${a.label}</div>
@@ -1708,10 +1745,11 @@ function parseChainAmount(val) {
 }
 
 async function fetchOnChainData(actor) {
-  // Fire all three in parallel, each handles its own errors
+  // Fire all four in parallel, each handles its own errors
   fetchLpPosition(actor);
   fetchHoldTime(actor);
   fetchNftHoldings(actor);
+  fetchStakingData(actor);
 }
 
 async function fetchLpPosition(actor) {
@@ -1898,6 +1936,47 @@ async function fetchNftHoldings(actor) {
   if (funkyCount  >= 2) unlockAch('com_fn2');
   if (cypherCount >= 1) unlockAch('com_cg1');
   if (cypherCount >= 2) unlockAch('com_cg2');
+}
+
+async function fetchStakingData(actor) {
+  const POOL_ID = 791;
+  const endpoint = DAPP_CONFIG.endpoints[0];
+  // Try common table names and scope strategies used by BlastPad staking contracts
+  const attempts = [
+    {table:'userstakes', scope:actor,        lower:POOL_ID, upper:POOL_ID},
+    {table:'stakes',     scope:actor,        lower:POOL_ID, upper:POOL_ID},
+    {table:'userinfo',   scope:String(POOL_ID), lower:null,   upper:null},
+    {table:'userstakes', scope:String(POOL_ID), lower:null,   upper:null},
+  ];
+  for (const a of attempts) {
+    try {
+      const body = {json:true, code:'blastpadio', table:a.table, scope:a.scope, limit:100};
+      if (a.lower != null) { body.lower_bound = a.lower; body.upper_bound = a.upper; body.key_type = 'i64'; body.index_position = '1'; }
+      const r = await fetchTimeout(endpoint + '/v1/chain/get_table_rows', {
+        method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)
+      }, 7000);
+      if (!r.ok) continue;
+      const data = await r.json();
+      if (!data.rows || !data.rows.length) continue;
+      // Find the row for this actor (when scoped to pool_id, rows have account/user/owner field)
+      const row = a.scope === actor ? data.rows[0]
+        : data.rows.find(x => x.account===actor || x.user===actor || x.owner===actor);
+      if (!row) continue;
+      const raw = row.staked || row.staked_amount || row.amount || row.balance || row.quantity || row.guard || 0;
+      guardianStaked = parseChainAmount(raw);
+      console.log('[GUARD] BlastPad staked:', guardianStaked, 'GUARD (table:', a.table, 'scope:', a.scope + ')');
+      unlockStakingAchs(guardianStaked);
+      renderProgress(guardianBalance);
+      return;
+    } catch(e) { /* try next */ }
+  }
+  guardianStaked = 0;
+  renderProgress(guardianBalance);
+}
+
+function unlockStakingAchs(staked) {
+  const tiers = [10000, 50000, 150000, 500000, 1500000, 5000000, 10000000];
+  tiers.forEach((t, i) => { if (staked >= t) unlockAch('stake_' + (i + 1)); });
 }
 
 // ===== WEBAUTH WALLET INTEGRATION =====
@@ -2178,6 +2257,7 @@ function onWalletDisconnected() {
   guardianLpXpr = -1;
   guardianDaysHeld = -1;
   guardianNfts = {snippy:0, funky:0, cyphergang:0};
+  guardianStaked = -1;
 
   // Re-render rank visuals back to Cryptide
   renderShield();
@@ -2190,6 +2270,7 @@ function onWalletDisconnected() {
     'first_steps',
     'holder_1','holder_2','holder_3','holder_4','holder_5','holder_6',
     'lp_1','lp_2','lp_3','lp_4','lp_5',
+    'stake_1','stake_2','stake_3','stake_4','stake_5','stake_6','stake_7',
     'loy_7','loy_30','loy_90','loy_180','loy_365',
     'com_sn1','com_sn2','com_fn1','com_fn2','com_cg1','com_cg2',
     // com_ksto1 and com_ksto2 are NOT revoked — they are self-verified and persist across sessions
