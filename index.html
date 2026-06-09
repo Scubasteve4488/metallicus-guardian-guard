@@ -2108,6 +2108,7 @@ function onGuardBalanceLoaded(actor, bal) {
 
   // Update new systems
   updateHoldingAchs(bal);
+  if (unlockedRank >= 1) unlockAch('shielded');
   renderTimeline();
   renderProgress(bal);
 
