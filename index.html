@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Metallicus Guardian — A community-built educational resource for the Metallicus and XPR Network ecosystem.">
-<title>Metallicus Guardian | XPR Network</title>
+<title>Metallicus Guardian | Stand GUARD</title>
 <!-- Social share preview (OpenGraph + Twitter) -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Metallicus Guardian (GUARD) — XPR Network">
 <meta property="og:description" content="Protector of the WebAuth Wallet. A community-built guide to the Metallicus & XPR Network ecosystem — meet GUARD, learn the tools, join the community.">
-<meta property="og:image" content="https://metallicus-guardian-guard.pages.dev/guard-card-v6.png?v=2">
-<meta property="og:url" content="https://metallicus-guardian-guard.pages.dev/">
+<meta property="og:image" content="https://standguard.net/guard-card-v6.png">
+<meta property="og:url" content="https://standguard.net/">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Metallicus Guardian (GUARD) — XPR Network">
 <meta name="twitter:description" content="Protector of the WebAuth Wallet. A community-built guide to the Metallicus & XPR Network ecosystem.">
-<meta name="twitter:image" content="https://metallicus-guardian-guard.pages.dev/guard-card-v6.png?v=2">
+<meta name="twitter:image" content="https://standguard.net/guard-card-v6.png">
 <meta name="theme-color" content="#c9922a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1677,7 +1677,7 @@ function renderCard(){
 function shareGuardianCard(){
   const s = SHIELDS[guardianRank];
   const handle = walletActor ? ' (@' + walletActor + ')' : '';
-  const txt = 'I am a ' + s.name + ' Guardian' + handle + '. Stand GUARD. ⚡🛡 #GUARD #XPRNetwork #MetallicusGuardian metallicus-guardian-guard.pages.dev';
+  const txt = 'I am a ' + s.name + ' Guardian' + handle + '. Stand GUARD. ⚡🛡 #GUARD #XPRNetwork #MetallicusGuardian standguard.net';
   window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(txt), '_blank');
 }
 function resetRank(){ guardianRank=0; saveRank(); renderShield(); renderProgress(guardianBalance); }
@@ -1939,7 +1939,7 @@ async function walletConnect() {
       },
       selectorOptions: {
         appName: DAPP_CONFIG.appName,
-        appLogo: 'https://metallicus-guardian-guard.pages.dev/img_coin.jpg',
+        appLogo: 'https://standguard.net/img_coin.jpg',
         enabledWalletTypes: ['webauth', 'proton'],
         customStyleOptions: {
           modalBackgroundColor: '#0d0f1a',
