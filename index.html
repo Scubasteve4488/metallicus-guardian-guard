@@ -341,6 +341,30 @@ body.wallet-on #wbar-connect{display:none!important;}
 body.wallet-on #wbar-connected{display:flex!important;}
 body.wallet-on #mob-wallet-disconnect{display:block!important;}
 body.wallet-on #mob-wallet-connect-btn{display:none!important;}
+/* ── GUARDIAN CARD REDESIGN ── */
+.gc-card{max-width:480px;margin:1.5rem auto 0;border-radius:22px;position:relative;isolation:isolate;}
+.gc-card::before{content:'';position:absolute;inset:-2px;border-radius:24px;background:linear-gradient(135deg,#c9922a,#7c3aed,#f5c842,#7c3aed,#c9922a);background-size:300% 300%;z-index:-1;animation:gcBorder 6s ease-in-out infinite;}
+@keyframes gcBorder{0%,100%{background-position:0% 50%;opacity:.8;}50%{background-position:100% 50%;opacity:1;}}
+.gc-inner{background:radial-gradient(ellipse at 25% 20%,rgba(124,58,237,0.14) 0%,transparent 55%),radial-gradient(ellipse at 78% 80%,rgba(201,146,42,0.08) 0%,transparent 55%),#080b12;border-radius:20px;padding:2rem 1.75rem 1.5rem;text-align:center;overflow:hidden;}
+.gc-eyebrow{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;}
+.gc-shield-wrap{margin:0 auto 1rem;display:inline-block;}
+.gc-shield-img{width:210px;height:210px;object-fit:contain;display:block;transition:filter .5s ease;}
+.gc-rank-badge{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--pur-g);margin-bottom:.4rem;}
+.gc-name{font-family:'Cinzel Decorative','Cinzel',serif;font-size:clamp(1.8rem,6vw,2.5rem);font-weight:700;background:linear-gradient(135deg,var(--gold-b),var(--gold),#9a6c14);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;margin-bottom:.25rem;}
+.gc-title-text{font-family:'Cinzel',serif;font-size:.82rem;font-style:italic;color:var(--text2);letter-spacing:.08em;margin-bottom:.8rem;}
+.gc-handle{font-family:'Cinzel',serif;font-size:1rem;color:var(--gold-l);margin-bottom:.3rem;}
+.gc-balance{font-size:.8rem;color:var(--pur-g);font-weight:600;margin-bottom:.3rem;}
+.gc-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(201,146,42,0.5),transparent);margin:.9rem 0;}
+.gc-progress-section{padding:0 .25rem;}
+.gc-progress-label{font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:.35rem;}
+.gc-progress-track{background:rgba(255,255,255,0.07);border-radius:8px;height:5px;overflow:hidden;}
+.gc-progress-fill{height:100%;background:linear-gradient(90deg,var(--pur),var(--gold));border-radius:8px;transition:width .7s ease;}
+.gc-maxrank{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.18em;color:var(--gold);padding:.15rem 0;animation:gcMaxGlow 2.5s ease-in-out infinite;}
+@keyframes gcMaxGlow{0%,100%{text-shadow:0 0 8px rgba(201,146,42,0.5);}50%{text-shadow:0 0 20px rgba(201,146,42,0.9),0 0 35px rgba(124,58,237,0.4);}}
+.gc-footer{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.18em;color:var(--text3);margin-top:1rem;}
+.gc-watermark{font-size:.5rem;color:rgba(255,255,255,0.12);margin-top:.4rem;letter-spacing:.1em;}
+.gc-share-btn{display:block;width:100%;max-width:480px;margin:.9rem auto 0;background:var(--gold);color:#000;font-weight:700;font-size:.9rem;padding:.8rem 1rem;border:none;border-radius:10px;cursor:pointer;font-family:'Cinzel',serif;letter-spacing:.04em;transition:all .2s;}
+.gc-share-btn:hover{background:var(--gold-l);transform:translateY(-2px);box-shadow:0 4px 20px rgba(201,146,42,0.4);}
 </style>
   <!-- WebAuth / Proton Web SDK -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
@@ -991,20 +1015,28 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <div style="max-width:420px;margin:0 auto;">
       <input id="guardian-handle" type="text" placeholder="@yourhandle" maxlength="24" oninput="renderCard()" style="width:100%;padding:.8rem 1rem;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);font-size:1rem;text-align:center;font-family:'Cinzel',serif;">
     </div>
-    <div id="guardian-card" style="max-width:480px;margin:1.5rem auto 0;border-radius:16px;overflow:hidden;border:1px solid var(--border-gold);background:linear-gradient(160deg,#0b0e16,#16101f);position:relative;">
-      <div style="padding:1.5rem;text-align:center;position:relative;z-index:2;">
-        <div style="font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);">Metallicus Guardian · GUARD</div>
-        <img id="card-shield" src="./shield_cryptide.png" alt="" style="width:150px;height:150px;object-fit:contain;margin:1rem auto .5rem;filter:drop-shadow(0 8px 24px rgba(124,58,237,0.5));">
-        <div id="card-rank" style="font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);">Rank 1 · Initiate</div>
-        <h3 id="card-name" class="guard-wordmark" style="font-size:2rem;margin:.2rem 0;">Cryptide</h3>
-        <div id="card-handle" style="font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold-l);margin-top:.3rem;">@yourhandle</div>
-        <div style="font-size:.7rem;color:var(--text3);margin-top:1rem;letter-spacing:.1em;">⚡ XPR NETWORK · STAND GUARD ⚡</div>
+    <div id="guardian-card" class="gc-card">
+      <div class="gc-inner">
+        <div class="gc-eyebrow">Metallicus Guardian · GUARD</div>
+        <div class="gc-shield-wrap">
+          <img id="card-shield" src="./shield_cryptide.png" class="gc-shield-img" alt="Guardian Shield">
+        </div>
+        <div id="card-rank-num" class="gc-rank-badge">RANK 1 OF 7</div>
+        <div id="card-name" class="gc-name">Cryptide</div>
+        <div id="card-title-text" class="gc-title-text">Initiate</div>
+        <div id="card-handle" class="gc-handle">@yourhandle</div>
+        <div id="card-balance" class="gc-balance" style="display:none;"></div>
+        <div class="gc-divider"></div>
+        <div id="card-progress-wrap" class="gc-progress-section">
+          <div class="gc-progress-label">Progress to Next Rank</div>
+          <div class="gc-progress-track"><div id="card-progress-fill" class="gc-progress-fill" style="width:0%"></div></div>
+        </div>
+        <div id="card-maxrank" class="gc-maxrank" style="display:none;">✦ MAX RANK ACHIEVED ✦</div>
+        <div class="gc-footer">⚡ XPR NETWORK · STAND GUARD ⚡</div>
+        <div class="gc-watermark">standguard.net</div>
       </div>
     </div>
-    <p style="text-align:center;font-size:.75rem;color:var(--text3);margin-top:1rem;max-width:460px;margin-left:auto;margin-right:auto;">This is a community identity for fun and belonging — a journey you choose, not a verified credential. Screenshot your card to share it.</p>
-    <div style="text-align:center;margin-top:1.25rem;">
-      <button onclick="shareGuardianCard()" style="background:#1d9bf0;border:none;color:#fff;padding:.7rem 1.75rem;border-radius:9px;font-size:.9rem;cursor:pointer;font-weight:600;letter-spacing:.02em;font-family:inherit;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">🐦 Share on X</button>
-    </div>
+    <button class="gc-share-btn" onclick="shareGuardianCard()">🐦 Share on X</button>
 
     <!-- S8: DISCLAIMER -->
     <div class="div mt4"></div>
@@ -1745,15 +1777,74 @@ function renderShield(){
   renderCard();
 }
 function renderLadder(){ /* replaced by renderTimeline */ }
+const RANK_COLORS = [
+  {primary:'#38bdf8',glow:'rgba(56,189,248,0.55)'},   // Cryptide  — ice
+  {primary:'#22c55e',glow:'rgba(34,197,94,0.55)'},    // Riftforge — green
+  {primary:'#f97316',glow:'rgba(249,115,22,0.55)'},   // Helion    — orange
+  {primary:'#14b8a6',glow:'rgba(20,184,166,0.55)'},   // Nebulon   — teal
+  {primary:'#a855f7',glow:'rgba(168,85,247,0.55)'},   // Protonis  — purple
+  {primary:'#dc2626',glow:'rgba(220,38,38,0.55)'},    // Keystone  — crimson
+  {primary:'#c9922a',glow:'rgba(201,146,42,0.75)'},   // Aegis     — gold
+];
 function renderCard(){
-  const s = SHIELDS[guardianRank];
+  const s   = SHIELDS[guardianRank];
+  const rc  = RANK_COLORS[guardianRank];
+  const isMax = guardianRank >= 6;
+  // Shield image + rank-color glow
   const cs = document.getElementById('card-shield');
   if(!cs) return;
   cs.src = s.img;
-  document.getElementById('card-rank').textContent = 'Rank '+(guardianRank+1)+' · '+s.title;
-  document.getElementById('card-name').textContent = s.name;
+  cs.style.filter = `drop-shadow(0 0 36px ${rc.glow}) drop-shadow(0 0 14px ${rc.glow})`;
+  // Rank badge
+  const rankEl = document.getElementById('card-rank-num');
+  if(rankEl) rankEl.textContent = 'RANK '+(guardianRank+1)+' OF 7';
+  // Shield name — Aegis gets rainbow gradient
+  const nameEl = document.getElementById('card-name');
+  if(nameEl){
+    nameEl.textContent = s.name;
+    if(isMax){
+      nameEl.style.background = 'linear-gradient(135deg,#f5c842,#c9922a,#f97316,#a855f7,#38bdf8,#c9922a)';
+    } else {
+      nameEl.style.background = 'linear-gradient(135deg,var(--gold-b),var(--gold),#9a6c14)';
+    }
+    nameEl.style.webkitBackgroundClip = 'text';
+    nameEl.style.backgroundClip = 'text';
+    nameEl.style.webkitTextFillColor = 'transparent';
+  }
+  // Title (Initiate, Defender, etc.)
+  const titleEl = document.getElementById('card-title-text');
+  if(titleEl) titleEl.textContent = s.title;
+  // Handle
   const h = document.getElementById('guardian-handle').value.trim();
-  document.getElementById('card-handle').textContent = h ? (h.startsWith('@')?h:'@'+h) : '@yourhandle';
+  const handleEl = document.getElementById('card-handle');
+  if(handleEl) handleEl.textContent = h ? (h.startsWith('@')?h:'@'+h) : '@yourhandle';
+  // GUARD balance (purple, only when connected)
+  const balEl = document.getElementById('card-balance');
+  if(balEl){
+    if(guardianBalance > 0){
+      balEl.textContent = Number(guardianBalance.toFixed(0)).toLocaleString()+' GUARD';
+      balEl.style.display = 'block';
+    } else {
+      balEl.style.display = 'none';
+    }
+  }
+  // Progress bar vs MAX RANK banner
+  const progWrap = document.getElementById('card-progress-wrap');
+  const maxEl   = document.getElementById('card-maxrank');
+  const fillEl  = document.getElementById('card-progress-fill');
+  if(isMax){
+    if(progWrap) progWrap.style.display = 'none';
+    if(maxEl)    maxEl.style.display    = 'block';
+  } else {
+    if(progWrap) progWrap.style.display = 'block';
+    if(maxEl)    maxEl.style.display    = 'none';
+    if(fillEl){
+      const curReq  = SHIELDS[guardianRank].req;
+      const nextReq = SHIELDS[guardianRank+1].req;
+      const pct = nextReq > curReq ? Math.min(100,Math.max(0,Math.round((guardianBalance-curReq)/(nextReq-curReq)*100))) : 0;
+      fillEl.style.width = pct+'%';
+    }
+  }
   try{ if(h) window.storage.set('guardian_handle', h); }catch(e){}
 }
 function shareGuardianCard(){
