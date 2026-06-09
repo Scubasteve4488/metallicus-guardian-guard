@@ -505,7 +505,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
           <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g" style="font-size:.8rem;">⚔ Buy / Trade GUARD →</a>
           <a href="https://simpledex.fun/pool/187" target="_blank" class="btn btn-o" style="font-size:.8rem;">View Liquidity Pool →</a>
         </div>
-        <div class="disc mt3"><span>ℹ</span><div>GUARD is part of the broader Snipverse/KSTO community spirit. KSTO (Kulture Speaks Truth Onchain) is the established parent community — GUARD stands alongside it as an independent, community-built tribute project, not a replacement.</div></div>
+        <div class="disc mt3"><span>ℹ</span><div>GUARD stands alongside the XPR Network community as an independent, community-built tribute to the ecosystem.</div></div>
       </div>
       <div style="text-align:center;">
         <img src="./img_poster.jpg?v=2" alt="Standing Guard. Stand With Us." style="max-width:300px;width:100%;border-radius:12px;border:1px solid var(--border-gold);box-shadow:0 8px 40px rgba(124,58,237,0.3);">
@@ -532,6 +532,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 </div>
 
 <!-- ═══════ PAGE: GUARD ═══════ -->
+<!-- GUARD TAB START -->
 <div id="page-guard" class="page">
 <div class="container">
   <div class="section" style="padding-bottom:2rem;text-align:center;">
@@ -657,6 +658,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
   <div style="padding-bottom:2rem;"></div>
 </div>
 </div>
+<!-- GUARD TAB END -->
 
 <!-- ═══════ PAGE: START HERE ═══════ -->
 <div id="page-start" class="page">
@@ -1246,12 +1248,6 @@ function rev(){
   const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.08});
   document.querySelectorAll('.reveal:not(.visible)').forEach(el=>obs.observe(el));
 }
-
-// Inject footer into all pages
-const footHTML=document.getElementById('foot-tpl').innerHTML;
-document.querySelectorAll('.page').forEach(p=>{
-  p.innerHTML=p.innerHTML.replace(/FOOT/g,footHTML);
-});
 
 rev();
 
