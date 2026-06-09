@@ -1978,11 +1978,23 @@ async function walletDisconnect() {
   onWalletDisconnected();
 }
 
+function resetWalletBarUI() {
+  const wbarConnect   = document.getElementById('wbar-connect');
+  const wbarConnected = document.getElementById('wbar-connected');
+  if (wbarConnect)   wbarConnect.style.display   = 'flex';
+  if (wbarConnected) wbarConnected.style.display  = 'none';
+  const mobDisc = document.getElementById('mob-wallet-disconnect');
+  if (mobDisc) mobDisc.style.display = 'none';
+}
+
 async function walletRestore() {
-  if (localStorage.getItem('wallet_explicitly_disconnected') === 'true') return;
+  if (localStorage.getItem('wallet_explicitly_disconnected') === 'true') {
+    resetWalletBarUI();
+    return;
+  }
   try {
     const ProtonWebSDK = window.ProtonWebSDK || window.protonWebSdk || window['@proton/web-sdk'];
-    if (!ProtonWebSDK) return;
+    if (!ProtonWebSDK) { resetWalletBarUI(); return; }
     const { link, session } = await ProtonWebSDK({
       linkOptions: {
         chainId: DAPP_CONFIG.chainId,
@@ -1998,8 +2010,12 @@ async function walletRestore() {
       walletActor = session.auth.actor;
       onWalletConnected(walletActor);
       await fetchGuardBalance(walletActor);
+    } else {
+      resetWalletBarUI();
     }
-  } catch(e) {}
+  } catch(e) {
+    resetWalletBarUI();
+  }
 }
 
 async function fetchGuardBalance(actor) {
@@ -2181,6 +2197,9 @@ function onWalletDisconnected() {
   saveUnlockedAchs(getUnlockedAchs().filter(id => !WALLET_ACHS.includes(id)));
   renderAchievements();
 }
+
+// Enforce disconnected UI immediately on script load — walletRestore corrects this if a session exists
+resetWalletBarUI();
 
 // Try to restore session on page load
 window.addEventListener('load', () => { setTimeout(walletRestore, 1000); });
