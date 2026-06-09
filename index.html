@@ -1939,38 +1939,31 @@ async function fetchNftHoldings(actor) {
 }
 
 async function fetchStakingData(actor) {
-  const POOL_ID = 791;
-  const endpoint = DAPP_CONFIG.endpoints[0];
-  // Try common table names and scope strategies used by BlastPad staking contracts
-  const attempts = [
-    {table:'userstakes', scope:actor,        lower:POOL_ID, upper:POOL_ID},
-    {table:'stakes',     scope:actor,        lower:POOL_ID, upper:POOL_ID},
-    {table:'userinfo',   scope:String(POOL_ID), lower:null,   upper:null},
-    {table:'userstakes', scope:String(POOL_ID), lower:null,   upper:null},
-  ];
-  for (const a of attempts) {
-    try {
-      const body = {json:true, code:'blastpadio', table:a.table, scope:a.scope, limit:100};
-      if (a.lower != null) { body.lower_bound = a.lower; body.upper_bound = a.upper; body.key_type = 'i64'; body.index_position = '1'; }
-      const r = await fetchTimeout(endpoint + '/v1/chain/get_table_rows', {
-        method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)
-      }, 7000);
-      if (!r.ok) continue;
-      const data = await r.json();
-      if (!data.rows || !data.rows.length) continue;
-      // Find the row for this actor (when scoped to pool_id, rows have account/user/owner field)
-      const row = a.scope === actor ? data.rows[0]
-        : data.rows.find(x => x.account===actor || x.user===actor || x.owner===actor);
-      if (!row) continue;
-      const raw = row.staked || row.staked_amount || row.amount || row.balance || row.quantity || row.guard || 0;
-      guardianStaked = parseChainAmount(raw);
-      console.log('[GUARD] BlastPad staked:', guardianStaked, 'GUARD (table:', a.table, 'scope:', a.scope + ')');
-      unlockStakingAchs(guardianStaked);
-      renderProgress(guardianBalance);
-      return;
-    } catch(e) { /* try next */ }
+  // blastpad has no deployed ABI — tables are not queryable via get_table_rows.
+  // Instead, derive net staked GUARD by summing token transfers to/from blastpad
+  // via the XPR history API (inbound = staking, outbound = unstaking/rewards).
+  try {
+    const url = `https://proton.eosusa.io/v2/history/get_actions?account=${encodeURIComponent(actor)}&filter=simpletoken%3Atransfer&limit=500&sort=desc`;
+    const r = await fetchTimeout(url, {}, 10000);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    const actions = data.actions || [];
+    let totalIn = 0, totalOut = 0;
+    for (const a of actions) {
+      const act = a.act;
+      if (!act || act.account !== 'simpletoken') continue;
+      const d = act.data;
+      if (!d || d.symbol !== 'GUARD') continue;
+      if (d.to === 'blastpad')   totalIn  += d.amount;
+      else if (d.from === 'blastpad') totalOut += d.amount;
+    }
+    guardianStaked = Math.max(0, totalIn - totalOut);
+    console.log('[GUARD] Staked GUARD:', guardianStaked.toFixed(4));
+  } catch(e) {
+    console.warn('[GUARD] fetchStakingData error:', e.message);
+    guardianStaked = 0;
   }
-  guardianStaked = 0;
+  unlockStakingAchs(guardianStaked);
   renderProgress(guardianBalance);
 }
 
