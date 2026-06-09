@@ -2293,8 +2293,18 @@ function xFeedTab(handle, btn) {
   if (btn) btn.classList.add('active');
   const container = document.getElementById('x-feed-container');
   if (!container) return;
-  container.innerHTML = `<a class="twitter-timeline" data-theme="dark" data-height="400" href="https://twitter.com/${handle}"></a>`;
-  if (window.twttr && window.twttr.widgets) window.twttr.widgets.load(container);
+  container.innerHTML = '';
+  if (window.twttr && twttr.widgets && twttr.widgets.createTimeline) {
+    twttr.widgets.createTimeline(
+      { sourceType: 'profile', screenName: handle },
+      container,
+      { theme: 'dark', height: 400 }
+    );
+  } else {
+    // widgets.js not ready yet — insert anchor so it auto-processes on load
+    container.innerHTML = `<a class="twitter-timeline" data-theme="dark" data-height="400" href="https://twitter.com/${handle}"></a>`;
+    if (window.twttr && twttr.widgets) twttr.widgets.load(container);
+  }
 }
 
 </script>
