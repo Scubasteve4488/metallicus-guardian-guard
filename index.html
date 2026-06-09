@@ -331,6 +331,16 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 .x-badge{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--text);flex-shrink:0;}
 .x-acct-name{font-size:.88rem;font-weight:600;color:var(--text);}
 .x-acct-handle{font-size:.72rem;color:var(--text3);}
+/* ── WALLET CONNECTION STATE ──
+   body.wallet-on = connected; no class = disconnected.
+   CSS !important overrides any inline style set by JS or SDK. */
+#wbar-connected{display:none;}
+#mob-wallet-disconnect{display:none;}
+#mob-wallet-connect-btn{display:flex;}
+body.wallet-on #wbar-connect{display:none!important;}
+body.wallet-on #wbar-connected{display:flex!important;}
+body.wallet-on #mob-wallet-disconnect{display:block!important;}
+body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 </style>
   <!-- WebAuth / Proton Web SDK -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
@@ -372,7 +382,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
   <button class="mobile-nav-btn" onclick="closeMenu();go('community')">👥 Community</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('creator')">👤 Creator</button>
   <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g mt2" style="justify-content:center;">⚔ Buy GUARD Token</a>
-  <div id="mob-wallet-disconnect" style="display:none;border-top:1px solid var(--border-gold);margin-top:.75rem;padding-top:.75rem;">
+  <button id="mob-wallet-connect-btn" onclick="walletConnect();closeMenu();" class="mobile-nav-btn" style="color:var(--gold-l);border-color:var(--border-gold);border-top:1px solid var(--border-gold);margin-top:.75rem;padding-top:.75rem;text-align:center;width:100%;">⚡ Connect Wallet</button>
+  <div id="mob-wallet-disconnect" style="border-top:1px solid var(--border-gold);margin-top:.75rem;padding-top:.75rem;">
     <div style="font-size:.75rem;color:var(--text3);text-align:center;padding:.4rem 1rem .5rem;">Connected: <span id="mob-wallet-actor" style="color:var(--gold-l);font-family:'Cinzel',serif;"></span></div>
     <button onclick="walletDisconnect();closeMenu();" class="mobile-nav-btn" style="color:#ef4444;border-color:rgba(239,68,68,0.25);text-align:center;width:100%;">⚡ Disconnect Wallet</button>
   </div>
@@ -389,7 +400,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
     <span style="font-size:.74rem;color:var(--text3);">Connect your WebAuth wallet to check your Guardian rank</span>
     <button onclick="walletConnect()" style="font-size:.72rem;color:var(--gold-l);background:rgba(201,146,42,0.1);border:1px solid var(--border-gold);border-radius:5px;padding:.25rem .75rem;cursor:pointer;line-height:1.4;white-space:nowrap;">⚡ Connect Wallet</button>
   </div>
-  <div id="wbar-connected" style="display:none;align-items:center;gap:.65rem;flex-wrap:wrap;justify-content:center;">
+  <div id="wbar-connected" style="align-items:center;gap:.65rem;flex-wrap:wrap;justify-content:center;">
     <span style="font-size:.78rem;color:var(--gold-l);font-family:'Cinzel',serif;">⚡ <span id="wallet-actor"></span></span>
     <span id="wallet-guard-balance" style="font-size:.75rem;color:var(--pur-g);"></span>
     <button onclick="walletDisconnect()" style="font-size:.72rem;color:var(--text3);background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:5px;padding:.2rem .65rem;cursor:pointer;line-height:1.4;">Disconnect</button>
@@ -2085,12 +2096,7 @@ async function walletDisconnect() {
 }
 
 function resetWalletBarUI() {
-  const wbarConnect   = document.getElementById('wbar-connect');
-  const wbarConnected = document.getElementById('wbar-connected');
-  if (wbarConnect)   wbarConnect.style.display   = 'flex';
-  if (wbarConnected) wbarConnected.style.display  = 'none';
-  const mobDisc = document.getElementById('mob-wallet-disconnect');
-  if (mobDisc) mobDisc.style.display = 'none';
+  document.body.classList.remove('wallet-on');
 }
 
 async function walletRestore() {
@@ -2164,18 +2170,11 @@ function onWalletConnected(actor) {
   const gcb = document.getElementById('guard-connect-btn');
   if (gcb) gcb.style.display = 'none';
 
-  // Wallet bar — swap to connected state
-  const wbarConnect = document.getElementById('wbar-connect');
-  const wbarConnected = document.getElementById('wbar-connected');
-  if (wbarConnect) wbarConnect.style.display = 'none';
-  if (wbarConnected) wbarConnected.style.display = 'flex';
+  // Wallet bar + mobile menu — driven by body class
+  document.body.classList.add('wallet-on');
   const actorEl = document.getElementById('wallet-actor');
   if (actorEl) actorEl.textContent = '@' + actor;
-
-  // Mobile menu wallet section
-  const mobDisc = document.getElementById('mob-wallet-disconnect');
   const mobActor = document.getElementById('mob-wallet-actor');
-  if (mobDisc) mobDisc.style.display = 'block';
   if (mobActor) mobActor.textContent = '@' + actor;
 
   // Shields page
@@ -2243,21 +2242,14 @@ function onWalletDisconnected() {
   const btn = document.getElementById('wallet-btn');
   if (btn) { btn.textContent = '⚡ Connect'; btn.style.color = ''; }
 
-  // Wallet bar — swap back to connect state
-  const wbarConnect = document.getElementById('wbar-connect');
-  const wbarConnected = document.getElementById('wbar-connected');
-  if (wbarConnect) wbarConnect.style.display = 'flex';
-  if (wbarConnected) wbarConnected.style.display = 'none';
+  // Wallet bar + mobile menu — driven by body class
+  document.body.classList.remove('wallet-on');
   const barBal = document.getElementById('wallet-guard-balance');
   if (barBal) barBal.textContent = '';
 
   // GUARD page connect button
   const gcb = document.getElementById('guard-connect-btn');
   if (gcb) gcb.style.display = 'inline-flex';
-
-  // Mobile menu wallet section
-  const mobDisc = document.getElementById('mob-wallet-disconnect');
-  if (mobDisc) mobDisc.style.display = 'none';
 
   // Shields page — hide rank display, show connect prompt
   const prompt = document.getElementById('shield-wallet-prompt');
