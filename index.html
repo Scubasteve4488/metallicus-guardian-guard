@@ -325,9 +325,12 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 .gs-card{background:linear-gradient(145deg,rgba(124,58,237,0.07),rgba(201,146,42,0.05));border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:1.5rem;max-width:560px;margin:0 auto;}
 @keyframes rankGlow{0%,100%{box-shadow:0 0 18px rgba(201,146,42,0.18);}50%{box-shadow:0 0 38px rgba(201,146,42,0.38),0 0 55px rgba(124,58,237,0.15);}}
 .gs-card{animation:rankGlow 3.5s ease-in-out infinite;}
-/* ── X FEED ── */
-#x-feed-container{border-radius:var(--radius-lg);overflow:hidden;background:var(--bg2);border:1px solid var(--border);}
-#x-feed-container iframe{display:block;width:100%!important;border:none!important;}
+/* ── X ACCOUNT CARDS ── */
+.x-acct{display:flex;flex-direction:column;gap:.5rem;text-decoration:none;}
+.x-acct-hdr{display:flex;align-items:center;gap:.75rem;}
+.x-badge{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--text);flex-shrink:0;}
+.x-acct-name{font-size:.88rem;font-weight:600;color:var(--text);}
+.x-acct-handle{font-size:.72rem;color:var(--text3);}
 </style>
   <!-- WebAuth / Proton Web SDK -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
@@ -520,18 +523,40 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
   <div class="div"></div>
   <div class="section reveal">
     <div class="sec-label">Ecosystem Updates</div>
-    <h2 class="sec-title mb2">Latest from the Ecosystem</h2>
-    <div class="tabs" id="x-feed-tabs" style="margin-bottom:1.25rem;">
-      <button class="tab-btn active" onclick="xFeedTab('MetallicusHQ',this)">⚡ Metallicus</button>
-      <button class="tab-btn" onclick="xFeedTab('XPRNetwork',this)">🌐 XPR Network</button>
-      <button class="tab-btn" onclick="xFeedTab('webauthwallet',this)">🔮 WebAuth</button>
-      <button class="tab-btn" onclick="xFeedTab('Keep_Snipping',this)">🗣 KSTO</button>
-      <button class="tab-btn" onclick="xFeedTab('snipverse',this)">✂️ Snipverse</button>
+    <h2 class="sec-title mb2">Stay in the Loop</h2>
+    <p style="font-size:.85rem;color:var(--text2);margin-bottom:1.5rem;max-width:580px;line-height:1.65;">Follow the official accounts on X for real-time updates, announcements, and community news.</p>
+    <div class="grid grid-auto">
+      <a href="https://x.com/MetallicusHQ" target="_blank" rel="noopener" class="card x-acct">
+        <div class="x-acct-hdr"><div class="x-badge">𝕏</div><div><div class="x-acct-name">Metallicus</div><div class="x-acct-handle">@MetallicusHQ</div></div></div>
+        <p>Official Metallicus company — product launches, regulatory updates, and ecosystem announcements.</p>
+        <span class="card-link">Follow on X</span>
+      </a>
+      <a href="https://x.com/XPRNetwork" target="_blank" rel="noopener" class="card x-acct">
+        <div class="x-acct-hdr"><div class="x-badge">𝕏</div><div><div class="x-acct-name">XPR Network</div><div class="x-acct-handle">@XPRNetwork</div></div></div>
+        <p>Official XPR Network chain — protocol updates, validator news, and developer resources.</p>
+        <span class="card-link">Follow on X</span>
+      </a>
+      <a href="https://x.com/webauthwallet" target="_blank" rel="noopener" class="card x-acct">
+        <div class="x-acct-hdr"><div class="x-badge">𝕏</div><div><div class="x-acct-name">WebAuth Wallet</div><div class="x-acct-handle">@webauthwallet</div></div></div>
+        <p>WebAuth wallet updates — new features, security announcements, and onboarding guides.</p>
+        <span class="card-link">Follow on X</span>
+      </a>
+      <a href="https://x.com/MetalXApp" target="_blank" rel="noopener" class="card x-acct">
+        <div class="x-acct-hdr"><div class="x-badge">𝕏</div><div><div class="x-acct-name">Metal X</div><div class="x-acct-handle">@MetalXApp</div></div></div>
+        <p>Metal X DEX — trading pairs, liquidity updates, and multichain expansion news.</p>
+        <span class="card-link">Follow on X</span>
+      </a>
+      <a href="https://x.com/Keep_Snipping" target="_blank" rel="noopener" class="card x-acct">
+        <div class="x-acct-hdr"><div class="x-badge">𝕏</div><div><div class="x-acct-name">KSTO</div><div class="x-acct-handle">@Keep_Snipping</div></div></div>
+        <p>Kulture Speaks Truth Onchain — community updates, weekly Spaces, and XPR Network culture.</p>
+        <span class="card-link">Follow on X</span>
+      </a>
+      <a href="https://x.com/snipverse" target="_blank" rel="noopener" class="card x-acct">
+        <div class="x-acct-hdr"><div class="x-badge">𝕏</div><div><div class="x-acct-name">Snipverse</div><div class="x-acct-handle">@snipverse</div></div></div>
+        <p>Snipverse social platform — streaks, SNIPS rewards, and the XPR Network community feed.</p>
+        <span class="card-link">Follow on X</span>
+      </a>
     </div>
-    <div id="x-feed-container">
-      <a class="twitter-timeline" data-theme="dark" data-height="400" href="https://twitter.com/MetallicusHQ"></a>
-    </div>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
   </div>
 
   <div class="section-sm reveal">
@@ -2287,25 +2312,6 @@ resetWalletBarUI();
 // Try to restore session on page load
 window.addEventListener('load', () => { setTimeout(walletRestore, 1000); });
 
-// ===== X / TWITTER FEED TABS =====
-function xFeedTab(handle, btn) {
-  document.querySelectorAll('#x-feed-tabs .tab-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  const container = document.getElementById('x-feed-container');
-  if (!container) return;
-  container.innerHTML = '';
-  if (window.twttr && twttr.widgets && twttr.widgets.createTimeline) {
-    twttr.widgets.createTimeline(
-      { sourceType: 'profile', screenName: handle },
-      container,
-      { theme: 'dark', height: 400 }
-    );
-  } else {
-    // widgets.js not ready yet — insert anchor so it auto-processes on load
-    container.innerHTML = `<a class="twitter-timeline" data-theme="dark" data-height="400" href="https://twitter.com/${handle}"></a>`;
-    if (window.twttr && twttr.widgets) twttr.widgets.load(container);
-  }
-}
 
 </script>
 <div id="ach-toast"></div>
