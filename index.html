@@ -1845,13 +1845,13 @@ function onHoldTimeLoaded(firstTimestamp) {
 
 const AA_BASE = 'https://proton.api.atomicassets.io';
 
-// Confirmed collection names (researched via API):
-//   snippygensis = KSTO Snippy Genesis Drop
-//   funkyfrags   = Funky Frags (KSTO / FunkyVerse community)
-//   cyphergang   = CypherGang (trying — collection may use different name)
+// Confirmed collection names (researched via AtomicAssets API):
+//   snippygensis = KSTO Snippy – Genesis Drop
+//   genesisofunk = Genesis of Funk
+//   zvapir55jvu4 = CypherGang
 const NFT_COLLECTIONS = {
   snippy:    'snippygensis',
-  funky:     'funkyfrags',
+  funky:     'genesisofunk',
   cyphergang:'zvapir55jvu4',
 };
 
@@ -1881,7 +1881,7 @@ async function fetchNftHoldings(actor) {
   } catch(e) { console.log('[GUARD] NFT collection log failed:', e && e.message); }
 
   // Try multiple funky collection names in priority order
-  const FUNKY_NAMES = ['funkyfrags', 'funky', 'funkyverse', 'funkyfverse', 'nftpacks'];
+  const FUNKY_NAMES = ['genesisofunk', 'funkyfrags', 'funky', 'funkyverse', 'nftpacks'];
   let funkyCount = 0;
   for (const name of FUNKY_NAMES) {
     const c = await fetchNftCount(actor, name);
