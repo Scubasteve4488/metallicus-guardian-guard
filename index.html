@@ -317,6 +317,10 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 .ach-badge.done{color:var(--green);}
 .ach-badge.soon{color:var(--text3);}
 .ach-badge.locked-lbl{color:var(--text3);}
+.ach-self-btn{margin-top:.4rem;width:100%;background:rgba(201,146,42,0.12);border:1px solid var(--border-gold);border-radius:4px;color:var(--gold-l);font-size:.65rem;padding:.3rem .4rem;cursor:pointer;line-height:1.3;}
+.ach-self-btn:hover{background:rgba(201,146,42,0.22);}
+#ach-toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#0d0f1a;border:2px solid var(--border-gold);border-radius:10px;padding:.65rem 1.2rem;font-size:.82rem;color:var(--gold-l);z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 24px rgba(201,146,42,0.25);}
+#ach-toast.show{opacity:1;}
 /* ── RANK CARD ── */
 .gs-card{background:linear-gradient(145deg,rgba(124,58,237,0.07),rgba(201,146,42,0.05));border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:1.5rem;max-width:560px;margin:0 auto;}
 @keyframes rankGlow{0%,100%{box-shadow:0 0 18px rgba(201,146,42,0.18);}50%{box-shadow:0 0 38px rgba(201,146,42,0.38),0 0 55px rgba(124,58,237,0.15);}}
@@ -887,7 +891,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
         <!-- guardian score -->
         <div style="background:rgba(0,0,0,0.25);border-radius:var(--radius);padding:.8rem 1rem;margin-bottom:1rem;text-align:left;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem;">
-            <span style="font-size:.68rem;color:var(--text3);font-weight:600;letter-spacing:.1em;text-transform:uppercase;">Progress to Next Rank</span>
+            <span style="font-size:.68rem;color:var(--text3);font-weight:600;letter-spacing:.1em;text-transform:uppercase;">Guardian Score</span>
             <span id="gs-score" style="font-family:'Cinzel',serif;font-size:.84rem;color:var(--gold-l);">0%</span>
           </div>
           <div class="progress-track"><div id="gs-fill" class="progress-fill" style="width:0%"></div></div>
@@ -1222,6 +1226,8 @@ function go(id){
   if(tb)tb.classList.add('active');
   window.scrollTo({top:0,behavior:'instant'});
   rev();
+  const TAB_ACHS = {guard:'lorekeeper', ecosystem:'ecosystem_scout'};
+  if(TAB_ACHS[id]) unlockAch(TAB_ACHS[id]);
   if(typeof trackPageVisit==='function') trackPageVisit(id);
 }
 
@@ -1334,11 +1340,10 @@ const ACH_CATS = [
   { id:'site', label:'Site Achievements', icon:'🏛',
     items:[
       {id:'first_steps',     label:'First Steps',      desc:'Connect your WebAuth wallet',    icon:'⚡'},
-      {id:'shielded',        label:'Shielded',          desc:'Complete profile setup',         icon:'🛡'},
       {id:'lorekeeper',      label:'Lorekeeper',        desc:'Read the GUARD lore',            icon:'📜'},
-      {id:'ecosystem_scout', label:'Ecosystem Scout',   desc:'Complete Start Here',            icon:'🧭'},
-      {id:'shield_chosen',   label:'Shield Chosen',     desc:'Select a Guardian shield',       icon:'🔱'},
+      {id:'ecosystem_scout', label:'Ecosystem Scout',   desc:'Explore the Ecosystem tab',      icon:'🧭'},
       {id:'explorer',        label:'Explorer',          desc:'Visit all major pages',          icon:'🗺'},
+      {id:'shielded',        label:'Shielded',          desc:'Complete profile setup',         icon:'🛡'},
     ]
   },
   { id:'holding', label:'Holding Achievements', icon:'🪙',
@@ -1400,7 +1405,38 @@ function saveUnlockedAchs(arr){
 }
 function unlockAch(id){
   const arr = getUnlockedAchs();
-  if(!arr.includes(id)){ arr.push(id); saveUnlockedAchs(arr); renderAchievements(); }
+  if(!arr.includes(id)){
+    arr.push(id);
+    saveUnlockedAchs(arr);
+    renderAchievements();
+    renderProgress(guardianBalance);
+    showAchToast(id);
+  }
+}
+function selfVerify(achId, lsKey){
+  try{ localStorage.setItem(lsKey, 'true'); }catch(e){}
+  unlockAch(achId);
+}
+let achToastTimer = null;
+function showAchToast(id){
+  let label = id;
+  for(const cat of ACH_CATS){ const f=cat.items.find(a=>a.id===id); if(f){label=f.label;break;} }
+  const el = document.getElementById('ach-toast');
+  if(!el) return;
+  el.textContent = '🏆 Achievement Unlocked: ' + label;
+  el.classList.add('show');
+  clearTimeout(achToastTimer);
+  achToastTimer = setTimeout(()=>el.classList.remove('show'), 3000);
+}
+function calcGuardianScore(basePct){
+  const WEIGHTS = {site:2, holding:5, lp:3, loyalty:4, community:3, brawls:2};
+  const unlocked = getUnlockedAchs();
+  let bonus = 0;
+  for(const cat of ACH_CATS){
+    const w = WEIGHTS[cat.id] || 0;
+    bonus += cat.items.filter(a=>unlocked.includes(a.id)).length * w;
+  }
+  return basePct + bonus;
 }
 function updateHoldingAchs(bal){
   ACH_CATS.find(c=>c.id==='holding').items.forEach(a=>{ if(bal >= a.req) unlockAch(a.id); });
@@ -1453,8 +1489,9 @@ function renderProgress(bal){
   const scoreEl = document.getElementById('gs-score');
   const fillEl  = document.getElementById('gs-fill');
   const nextEl  = document.getElementById('gs-next');
-  if(scoreEl) scoreEl.textContent = pct + '%';
-  if(fillEl)  fillEl.style.width  = pct + '%';
+  const guardianScore = calcGuardianScore(pct);
+  if(scoreEl) scoreEl.textContent = guardianScore + '%';
+  if(fillEl)  fillEl.style.width  = Math.min(100, guardianScore) + '%';
   if(nextEl && next) nextEl.textContent = next.req.toLocaleString() + ' GUARD needed for ' + next.name;
   else if(nextEl)    nextEl.textContent = 'Maximum rank achieved — you are the eternal Guardian';
 
@@ -1561,6 +1598,10 @@ function getRankReqs(rankIdx, bal){
   return map[rankIdx] || [];
 }
 
+const SELF_VERIFY_MAP = {
+  'com_ksto1': {btn:'I am a KSTO community member', key:'ksto_member'},
+  'com_ksto2': {btn:'I actively participate in KSTO', key:'ksto_active'},
+};
 function renderAchievements(){
   const c = document.getElementById('ach-container');
   if(!c) return;
@@ -1570,11 +1611,16 @@ function renderAchievements(){
     const soon = cat.comingSoon || false;
     const cards = cat.items.map(a=>{
       const isOn = unlocked.includes(a.id);
+      const vfy = !isOn && SELF_VERIFY_MAP[a.id];
+      const selfBtn = vfy
+        ? `<button class="ach-self-btn" onclick="selfVerify('${a.id}','${vfy.key}')">✓ ${vfy.btn}</button><div style="font-size:.58rem;color:var(--text3);margin-top:.2rem;">Self-verified — honor system</div>`
+        : '';
       return `<div class="ach-card${isOn?' unlocked':''}${soon&&!isOn?' coming':''}">
         <div class="ach-icon">${a.icon}</div>
         <div class="ach-label">${a.label}</div>
         <div class="ach-desc">${a.desc}</div>
         <span class="ach-badge ${isOn?'done':soon?'soon':'locked-lbl'}">${isOn?'✓ Unlocked':soon?'Coming Soon':'Locked'}</span>
+        ${selfBtn}
       </div>`;
     }).join('');
     return `<div class="ach-cat">
@@ -1601,6 +1647,8 @@ async function loadRank(){
   renderShield();
   renderTimeline();
   renderAchievements();
+  try{if(localStorage.getItem('ksto_member')==='true') unlockAch('com_ksto1');}catch(e){}
+  try{if(localStorage.getItem('ksto_active')==='true') unlockAch('com_ksto2');}catch(e){}
 }
 async function saveRank(){ try{ await window.storage.set('guardian_rank', String(guardianRank)); }catch(e){} }
 
@@ -1820,9 +1868,28 @@ async function fetchNftCount(actor, collection) {
 }
 
 async function fetchNftHoldings(actor) {
-  const [snippyCount, funkyCount, cypherCount] = await Promise.all([
+  // Log all collection names owned by this wallet (debug — check console for Funky collection name)
+  try {
+    const r = await fetchTimeout(AA_BASE + '/atomicassets/v1/assets?owner=' + encodeURIComponent(actor) + '&limit=100&page=1', {}, 8000);
+    if (r.ok) {
+      const d = await r.json();
+      if (d.data) {
+        const cols = [...new Set(d.data.map(a => a.collection && a.collection.collection_name).filter(Boolean))];
+        console.log('[GUARD] NFT collections for', actor, ':', cols);
+      }
+    }
+  } catch(e) { console.log('[GUARD] NFT collection log failed:', e && e.message); }
+
+  // Try multiple funky collection names in priority order
+  const FUNKY_NAMES = ['funkyfrags', 'funky', 'funkyverse', 'funkyfverse', 'nftpacks'];
+  let funkyCount = 0;
+  for (const name of FUNKY_NAMES) {
+    const c = await fetchNftCount(actor, name);
+    if (c > 0) { console.log('[GUARD] Funky NFTs found in collection:', name, '(count:', c + ')'); funkyCount = c; break; }
+  }
+
+  const [snippyCount, cypherCount] = await Promise.all([
     fetchNftCount(actor, NFT_COLLECTIONS.snippy),
-    fetchNftCount(actor, NFT_COLLECTIONS.funky),
     fetchNftCount(actor, NFT_COLLECTIONS.cyphergang),
   ]);
   guardianNfts.snippy     = snippyCount;
@@ -2044,6 +2111,10 @@ function onGuardBalanceLoaded(actor, bal) {
   renderTimeline();
   renderProgress(bal);
 
+  // Restore self-verified community achievements
+  try{if(localStorage.getItem('ksto_member')==='true') unlockAch('com_ksto1');}catch(e){}
+  try{if(localStorage.getItem('ksto_active')==='true') unlockAch('com_ksto2');}catch(e){}
+
   // Fire on-chain data queries (LP position, hold time, NFT holdings)
   if (walletActor) fetchOnChainData(walletActor);
 }
@@ -2108,6 +2179,7 @@ function onWalletDisconnected() {
     'lp_1','lp_2','lp_3','lp_4','lp_5',
     'loy_7','loy_30','loy_90','loy_180','loy_365',
     'com_sn1','com_sn2','com_fn1','com_fn2','com_cg1','com_cg2',
+    // com_ksto1 and com_ksto2 are NOT revoked — they are self-verified and persist across sessions
   ];
   saveUnlockedAchs(getUnlockedAchs().filter(id => !WALLET_ACHS.includes(id)));
   renderAchievements();
@@ -2118,5 +2190,6 @@ window.addEventListener('load', () => { setTimeout(walletRestore, 1000); });
 
 
 </script>
+<div id="ach-toast"></div>
 </body>
 </html>
