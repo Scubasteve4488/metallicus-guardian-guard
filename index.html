@@ -866,6 +866,10 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
         <div style="font-size:.65rem;color:var(--text3);font-family:'Cinzel',serif;letter-spacing:.14em;margin-bottom:.2rem;">CONNECTED AS</div>
         <div id="shield-wallet-actor" style="font-family:'Cinzel',serif;font-size:1.05rem;color:var(--gold-l);margin-bottom:.2rem;"></div>
         <div style="font-size:.82rem;color:var(--text2);">GUARD Balance: <span id="shield-guard-bal" style="color:var(--pur-g);font-weight:600;">checking…</span></div>
+        <div style="font-size:.74rem;color:var(--text3);margin-top:.2rem;display:flex;gap:.85rem;flex-wrap:wrap;justify-content:center;">
+          <span id="shield-lp-display">LP: checking…</span>
+          <span id="shield-days-display">Hold time: checking…</span>
+        </div>
         <div id="shield-rank-unlock" style="font-size:.75rem;color:var(--green);margin-top:.2rem;min-height:.9rem;"></div>
         <div style="margin-top:.6rem;">
           <button onclick="walletDisconnect()" style="font-size:.72rem;color:var(--text3);background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:5px;padding:.25rem .75rem;cursor:pointer;line-height:1.4;">⚡ Disconnect</button>
@@ -1321,6 +1325,9 @@ const SHIELDS = [
 const RANK_THRESHOLDS = SHIELDS.map(s => s.req);
 let guardianRank = 0;
 let guardianBalance = 0;
+let guardianLpXpr = -1;    // -1=loading, 0=no LP, >0=XPR equivalent
+let guardianDaysHeld = -1; // -1=loading, 0=never held GUARD, >0=days
+let guardianNfts = {snippy:0, funky:0, cyphergang:0};
 
 // ----- Achievements -----
 const ACH_CATS = [
@@ -1344,7 +1351,7 @@ const ACH_CATS = [
       {id:'holder_6', label:'Holder VI',  desc:'Hold 15,000,000 GUARD', icon:'🪙', req:15000000},
     ]
   },
-  { id:'lp', label:'LP Achievements', icon:'💧', comingSoon:true,
+  { id:'lp', label:'LP Achievements', icon:'💧',
     items:[
       {id:'lp_1', label:'Liquidity Added',  desc:'First LP position',          icon:'💧'},
       {id:'lp_2', label:'Market Maker',     desc:'100 XPR LP equivalent',      icon:'💧'},
@@ -1353,7 +1360,7 @@ const ACH_CATS = [
       {id:'lp_5', label:'Liquidity Pillar', desc:'5,000 XPR LP equivalent',    icon:'💧'},
     ]
   },
-  { id:'loyalty', label:'Loyalty Achievements', icon:'⏳', comingSoon:true,
+  { id:'loyalty', label:'Loyalty Achievements', icon:'⏳',
     items:[
       {id:'loy_7',   label:'7 Days',   desc:'Standing GUARD for 7 days',   icon:'⏳'},
       {id:'loy_30',  label:'30 Days',  desc:'Standing GUARD for 30 days',  icon:'⏳'},
@@ -1362,7 +1369,7 @@ const ACH_CATS = [
       {id:'loy_365', label:'365 Days', desc:'Standing GUARD for 365 days', icon:'⏳'},
     ]
   },
-  { id:'community', label:'Community Achievements', icon:'👥', comingSoon:true,
+  { id:'community', label:'Community Achievements', icon:'👥',
     items:[
       {id:'com_ksto1', label:'KSTO Member',         desc:'Join KSTO community',             icon:'🦊'},
       {id:'com_ksto2', label:'KSTO Supporter',      desc:'Active KSTO participant',         icon:'🦊'},
@@ -1482,41 +1489,70 @@ function getRankReqs(rankIdx, bal){
   const threshold = SHIELDS[rankIdx].req;
   const guardPct  = threshold > 0 ? Math.min(100, Math.round((bal / threshold) * 100)) : 100;
   const guardMet  = bal >= threshold;
-  const cs = 'Coming Soon — on-chain tracking in development';
+
+  // LP helpers
+  const lpLoading = guardianLpXpr < 0;
+  function lpReq(xprMin){
+    const met  = !lpLoading && guardianLpXpr >= xprMin;
+    const soon = lpLoading;
+    const detail = lpLoading
+      ? 'Checking on-chain data…'
+      : guardianLpXpr > 0
+        ? guardianLpXpr.toLocaleString() + ' XPR LP' + (met ? ' ✓' : ' / ' + xprMin.toLocaleString() + ' needed')
+        : 'No LP position on pool 187';
+    const progress = lpLoading ? null : Math.min(100, guardianLpXpr > 0 ? Math.round((guardianLpXpr/xprMin)*100) : 0);
+    return {label:'LP '+xprMin.toLocaleString()+' XPR equivalent', detail, met, soon, progress};
+  }
+
+  // Hold-time helpers
+  const htLoading = guardianDaysHeld < 0;
+  function htReq(days){
+    const met  = !htLoading && guardianDaysHeld >= days;
+    const soon = htLoading;
+    const detail = htLoading
+      ? 'Checking on-chain data…'
+      : guardianDaysHeld > 0
+        ? guardianDaysHeld + ' day' + (guardianDaysHeld !== 1 ? 's' : '') + ' holding GUARD' + (met ? ' ✓' : ' / ' + days + ' needed')
+        : 'No GUARD transfer history found';
+    const progress = htLoading ? null : Math.min(100, guardianDaysHeld > 0 ? Math.round((guardianDaysHeld/days)*100) : 0);
+    return {label:'Hold for '+days+' days', detail, met, soon, progress};
+  }
+
+  const cs = 'Coming Soon';
   const map = {
     1:[
       {label:'Hold 25,000 GUARD',      detail: guardMet ? bal.toLocaleString()+' GUARD held ✓' : bal.toLocaleString()+' / 25,000',    met:guardMet, progress:guardPct},
-      {label:'LP 25 XPR equivalent',   detail:cs, met:false, soon:true},
-      {label:'Hold for 7 days',        detail:cs, met:false, soon:true},
+      lpReq(25),
+      htReq(7),
     ],
     2:[
       {label:'Hold 150,000 GUARD',     detail: bal>=150000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 150,000',      met:bal>=150000,  progress:Math.min(100,Math.round(bal/1500))},
-      {label:'LP 100 XPR equivalent',  detail:cs, met:false, soon:true},
-      {label:'Hold for 14 days',       detail:cs, met:false, soon:true},
+      lpReq(100),
+      htReq(14),
       {label:'Complete profile setup', detail:cs, met:false, soon:true},
     ],
     3:[
       {label:'Hold 750,000 GUARD',     detail: bal>=750000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 750,000',      met:bal>=750000,  progress:Math.min(100,Math.round(bal/7500))},
-      {label:'LP 250 XPR equivalent',  detail:cs, met:false, soon:true},
-      {label:'Hold for 45 days',       detail:cs, met:false, soon:true},
+      lpReq(250),
+      htReq(45),
       {label:'Complete Start Here tutorial', detail:cs, met:false, soon:true},
     ],
     4:[
       {label:'Hold 2,500,000 GUARD',   detail: bal>=2500000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 2,500,000',   met:bal>=2500000, progress:Math.min(100,Math.round(bal/25000))},
-      {label:'LP 750 XPR equivalent',  detail:cs, met:false, soon:true},
-      {label:'Hold for 90 days',       detail:cs, met:false, soon:true},
+      lpReq(750),
+      htReq(90),
       {label:'Complete 3 site missions',detail:cs, met:false, soon:true},
     ],
     5:[
       {label:'Hold 7,500,000 GUARD',   detail: bal>=7500000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 7,500,000',   met:bal>=7500000, progress:Math.min(100,Math.round(bal/75000))},
-      {label:'LP 2,000 XPR equivalent',detail:cs, met:false, soon:true},
-      {label:'Hold for 180 days',      detail:cs, met:false, soon:true},
+      lpReq(2000),
+      htReq(180),
       {label:'Earn 5 achievements',    detail:cs, met:false, soon:true},
     ],
     6:[
       {label:'Hold 15,000,000 GUARD',  detail: bal>=15000000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 15,000,000', met:bal>=15000000,progress:Math.min(100,Math.round(bal/150000))},
-      {label:'LP 5,000 XPR equivalent',detail:cs, met:false, soon:true},
-      {label:'Hold for 365 days',      detail:cs, met:false, soon:true},
+      lpReq(5000),
+      htReq(365),
       {label:'Complete all shield quests', detail:cs, met:false, soon:true},
       {label:'Earn 10 achievements',   detail:cs, met:false, soon:true},
       {label:'Maintain Rank 6 for 90+ days', detail:cs, met:false, soon:true},
@@ -1617,6 +1653,188 @@ if (/Android/i.test(navigator.userAgent)) {
     }
     return _open(url, ...args);
   };
+}
+
+// ===== ON-CHAIN DATA QUERIES =====
+
+function parseChainAmount(val) {
+  if (!val && val !== 0) return 0;
+  if (typeof val === 'string') return val.includes(' ') ? parseFloat(val) : parseInt(val) / 10000;
+  return typeof val === 'number' ? val / 10000 : 0;
+}
+
+async function fetchOnChainData(actor) {
+  // Fire all three in parallel, each handles its own errors
+  fetchLpPosition(actor);
+  fetchHoldTime(actor);
+  fetchNftHoldings(actor);
+}
+
+async function fetchLpPosition(actor) {
+  const endpoint = DAPP_CONFIG.endpoints[0];
+  try {
+    // Step 1: user LP row for pool 187
+    const lpR = await fetchTimeout(endpoint + '/v1/chain/get_table_rows', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({json:true, code:'simpledex', scope:actor,
+        table:'lp', lower_bound:187, upper_bound:187,
+        limit:1, key_type:'i64', index_position:'1'})
+    }, 7000);
+    const lpData = lpR.ok ? await lpR.json() : null;
+    const row = lpData && lpData.rows && lpData.rows[0];
+    const userLp = row ? parseInt(row.lpTokens || row.lp_tokens || 0) : 0;
+
+    if (userLp === 0) { onLpLoaded(0, 0); return; }
+
+    // Step 2: pool 187 state for total LP and XPR reserve
+    const poolR = await fetchTimeout(endpoint + '/v1/chain/get_table_rows', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({json:true, code:'simpledex', scope:'simpledex',
+        table:'pools', lower_bound:187, upper_bound:187,
+        limit:1, key_type:'i64', index_position:'1'})
+    }, 7000);
+    const poolData = poolR.ok ? await poolR.json() : null;
+    const pool = poolData && poolData.rows && poolData.rows[0];
+    if (!pool) { onLpLoaded(userLp, 0); return; }
+
+    const totalLp = parseInt(pool.totalLpTokens || pool.total_lp_tokens || pool.lpSupply || 0);
+    if (totalLp === 0) { onLpLoaded(userLp, 0); return; }
+
+    // XPR is tokenA — try multiple field shapes
+    const rawXpr = pool.tokenA_reserve != null ? pool.tokenA_reserve
+      : pool.reserveA != null ? pool.reserveA
+      : pool.reserve1 != null ? pool.reserve1
+      : (pool.tokenA && (pool.tokenA.reserve != null ? pool.tokenA.reserve : pool.tokenA.amount)) || 0;
+    const xprReserve = parseChainAmount(rawXpr);
+
+    // Constant-product AMM: total pool value = 2 × XPR reserve
+    const userShare = userLp / totalLp;
+    const xprEquivalent = Math.round(userShare * 2 * xprReserve);
+    onLpLoaded(userLp, xprEquivalent);
+  } catch(e) {
+    onLpLoaded(0, 0);
+  }
+}
+
+function onLpLoaded(lpTokens, xprEquivalent) {
+  guardianLpXpr = xprEquivalent;
+  const el = document.getElementById('shield-lp-display');
+  if (el) {
+    if (xprEquivalent > 0) {
+      el.textContent = 'LP: ~' + xprEquivalent.toLocaleString() + ' XPR';
+      el.style.color = 'var(--green)';
+    } else if (lpTokens === 0) {
+      el.textContent = 'LP: none on pool 187';
+      el.style.color = '';
+    } else {
+      el.textContent = 'LP: position found';
+      el.style.color = 'var(--gold-l)';
+    }
+  }
+  if (xprEquivalent > 0)    unlockAch('lp_1');
+  if (xprEquivalent >= 100) unlockAch('lp_2');
+  if (xprEquivalent >= 500) unlockAch('lp_3');
+  if (xprEquivalent >= 2000) unlockAch('lp_4');
+  if (xprEquivalent >= 5000) unlockAch('lp_5');
+  renderProgress(guardianBalance);
+}
+
+async function fetchHoldTime(actor) {
+  const base = 'https://proton.eosusa.io'; // v2 history confirmed on this node
+  let firstTs = null;
+  let skip = 0;
+  const limit = 100;
+
+  while (firstTs === null && skip < 600) {
+    try {
+      const r = await fetchTimeout(
+        base + '/v2/history/get_actions?account=' + encodeURIComponent(actor) +
+        '&filter=simpletoken:transfer&limit=' + limit + '&skip=' + skip + '&sort=asc',
+        {}, 8000);
+      if (!r.ok) break;
+      const data = await r.json();
+      const actions = data.actions || [];
+      if (actions.length === 0) break;
+      for (const a of actions) {
+        const d = a.act && a.act.data;
+        if (d && d.to === actor && typeof d.quantity === 'string' && d.quantity.endsWith(' GUARD')) {
+          firstTs = a['@timestamp'] || a.timestamp;
+          break;
+        }
+      }
+      if (firstTs !== null || actions.length < limit) break;
+      skip += limit;
+    } catch(e) { break; }
+  }
+
+  onHoldTimeLoaded(firstTs);
+}
+
+function onHoldTimeLoaded(firstTimestamp) {
+  if (firstTimestamp) {
+    const ms = Date.now() - new Date(firstTimestamp).getTime();
+    guardianDaysHeld = Math.max(0, Math.floor(ms / 86400000));
+  } else {
+    guardianDaysHeld = 0;
+  }
+  const el = document.getElementById('shield-days-display');
+  if (el) {
+    if (guardianDaysHeld > 0) {
+      el.textContent = guardianDaysHeld + ' day' + (guardianDaysHeld !== 1 ? 's' : '') + ' holding';
+      el.style.color = 'var(--gold-l)';
+    } else {
+      el.textContent = firstTimestamp === null ? 'Hold time: not found' : '< 1 day holding';
+      el.style.color = '';
+    }
+  }
+  if (guardianDaysHeld >= 7)   unlockAch('loy_7');
+  if (guardianDaysHeld >= 30)  unlockAch('loy_30');
+  if (guardianDaysHeld >= 90)  unlockAch('loy_90');
+  if (guardianDaysHeld >= 180) unlockAch('loy_180');
+  if (guardianDaysHeld >= 365) unlockAch('loy_365');
+  renderProgress(guardianBalance);
+}
+
+const AA_BASE = 'https://proton.api.atomicassets.io';
+
+// Confirmed collection names (researched via API):
+//   snippygensis = KSTO Snippy Genesis Drop
+//   funkyfrags   = Funky Frags (KSTO / FunkyVerse community)
+//   cyphergang   = CypherGang (trying — collection may use different name)
+const NFT_COLLECTIONS = {
+  snippy:    'snippygensis',
+  funky:     'funkyfrags',
+  cyphergang:'cyphergang',
+};
+
+async function fetchNftCount(actor, collection) {
+  try {
+    const r = await fetchTimeout(
+      AA_BASE + '/atomicassets/v1/assets?owner=' + encodeURIComponent(actor) +
+      '&collection_name=' + encodeURIComponent(collection) + '&limit=5&page=1',
+      {}, 8000);
+    if (!r.ok) return 0;
+    const data = await r.json();
+    return (data.data && data.data.length) || 0;
+  } catch(e) { return 0; }
+}
+
+async function fetchNftHoldings(actor) {
+  const [snippyCount, funkyCount, cypherCount] = await Promise.all([
+    fetchNftCount(actor, NFT_COLLECTIONS.snippy),
+    fetchNftCount(actor, NFT_COLLECTIONS.funky),
+    fetchNftCount(actor, NFT_COLLECTIONS.cyphergang),
+  ]);
+  guardianNfts.snippy     = snippyCount;
+  guardianNfts.funky      = funkyCount;
+  guardianNfts.cyphergang = cypherCount;
+
+  if (snippyCount >= 1) unlockAch('com_sn1');
+  if (snippyCount >= 2) unlockAch('com_sn2');
+  if (funkyCount  >= 1) unlockAch('com_fn1');
+  if (funkyCount  >= 2) unlockAch('com_fn2');
+  if (cypherCount >= 1) unlockAch('com_cg1');
+  if (cypherCount >= 2) unlockAch('com_cg2');
 }
 
 // ===== WEBAUTH WALLET INTEGRATION =====
@@ -1825,6 +2043,9 @@ function onGuardBalanceLoaded(actor, bal) {
   updateHoldingAchs(bal);
   renderTimeline();
   renderProgress(bal);
+
+  // Fire on-chain data queries (LP position, hold time, NFT holdings)
+  if (walletActor) fetchOnChainData(walletActor);
 }
 
 function onWalletDisconnected() {
@@ -1864,6 +2085,15 @@ function onWalletDisconnected() {
   if (shieldBal) shieldBal.textContent = 'checking…';
   const rankUnlockEl = document.getElementById('shield-rank-unlock');
   if (rankUnlockEl) rankUnlockEl.textContent = '';
+  const lpDisp = document.getElementById('shield-lp-display');
+  if (lpDisp) { lpDisp.textContent = 'LP: checking…'; lpDisp.style.color = ''; }
+  const daysDisp = document.getElementById('shield-days-display');
+  if (daysDisp) { daysDisp.textContent = 'Hold time: checking…'; daysDisp.style.color = ''; }
+
+  // Reset on-chain data state
+  guardianLpXpr = -1;
+  guardianDaysHeld = -1;
+  guardianNfts = {snippy:0, funky:0, cyphergang:0};
 
   // Re-render rank visuals back to Cryptide
   renderShield();
@@ -1871,8 +2101,14 @@ function onWalletDisconnected() {
   renderTimeline();
   renderProgress(0);
 
-  // Revoke wallet-gated achievements from localStorage
-  const WALLET_ACHS = ['first_steps', 'holder_1', 'holder_2', 'holder_3', 'holder_4', 'holder_5', 'holder_6'];
+  // Revoke all wallet-gated achievements from localStorage
+  const WALLET_ACHS = [
+    'first_steps',
+    'holder_1','holder_2','holder_3','holder_4','holder_5','holder_6',
+    'lp_1','lp_2','lp_3','lp_4','lp_5',
+    'loy_7','loy_30','loy_90','loy_180','loy_365',
+    'com_sn1','com_sn2','com_fn1','com_fn2','com_cg1','com_cg2',
+  ];
   saveUnlockedAchs(getUnlockedAchs().filter(id => !WALLET_ACHS.includes(id)));
   renderAchievements();
 }
