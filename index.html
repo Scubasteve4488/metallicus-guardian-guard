@@ -365,6 +365,52 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 .gc-watermark{font-size:.5rem;color:rgba(255,255,255,0.12);margin-top:.4rem;letter-spacing:.1em;}
 .gc-share-btn{display:block;width:100%;max-width:480px;margin:.9rem auto 0;background:var(--gold);color:#000;font-weight:700;font-size:.9rem;padding:.8rem 1rem;border:none;border-radius:10px;cursor:pointer;font-family:'Cinzel',serif;letter-spacing:.04em;transition:all .2s;}
 .gc-share-btn:hover{background:var(--gold-l);transform:translateY(-2px);box-shadow:0 4px 20px rgba(201,146,42,0.4);}
+/* ── CINEMATIC HERO ── */
+.hero-cin{position:relative;width:100%;min-height:85vh;display:flex;align-items:center;overflow:hidden;margin-top:-134px;padding:calc(134px + 7rem) 0 5rem;border-bottom:1px solid rgba(201,146,42,0.15);}
+.hero-bg{position:absolute;inset:0;background:url('./img_guard_dark.jpg?v=2') center/cover no-repeat;filter:brightness(0.22);will-change:transform;transform-origin:center top;}
+.hero-cin::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(124,58,237,0.18),transparent 65%),radial-gradient(ellipse 50% 35% at 20% 80%,rgba(201,146,42,0.08),transparent 55%),linear-gradient(to bottom,rgba(8,11,18,0.25) 0%,rgba(8,11,18,0.7) 100%);z-index:1;pointer-events:none;}
+.hero-cin-inner{text-align:center;position:relative;z-index:3;max-width:860px;margin:0 auto;}
+.hero-cin-eyebrow{font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;color:var(--pur-g);margin-bottom:1.5rem;font-weight:600;}
+.hero-cin-title{font-family:'Cinzel',serif;font-size:clamp(1.8rem,4.5vw,3.6rem);font-weight:700;color:#fff;line-height:1.18;margin-bottom:1.1rem;letter-spacing:.07em;text-shadow:0 2px 40px rgba(0,0,0,0.7);}
+.hero-cin-title span{background:linear-gradient(135deg,var(--gold-b),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-cin-sub{font-family:'Cinzel',serif;font-size:clamp(.85rem,1.8vw,1.12rem);color:var(--text2);letter-spacing:.08em;margin-bottom:1.25rem;line-height:1.6;}
+.hero-guardians{display:inline-flex;align-items:center;gap:.4rem;font-size:.75rem;color:var(--gold-l);letter-spacing:.06em;margin-bottom:2rem;font-weight:600;background:rgba(201,146,42,0.08);border:1px solid rgba(201,146,42,0.2);border-radius:20px;padding:.35rem .9rem;}
+.hero-cin-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.btn-hero{padding:.85rem 2rem!important;font-size:.88rem!important;font-weight:700;font-family:'Cinzel',serif!important;letter-spacing:.04em;}
+/* Particles */
+.particles{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;}
+.particle{position:absolute;border-radius:50%;opacity:0;animation:particleRise linear infinite;}
+@keyframes particleRise{0%{opacity:0;transform:translateY(0) scale(.8);}10%{opacity:.65;}80%{opacity:.3;}100%{opacity:0;transform:translateY(-90vh) scale(1.2);}}
+.p1{width:3px;height:3px;background:var(--pur-g);left:12%;bottom:5%;animation-duration:9s;animation-delay:0s;}
+.p2{width:2px;height:2px;background:var(--gold);left:23%;bottom:18%;animation-duration:12s;animation-delay:1.2s;}
+.p3{width:4px;height:4px;background:var(--pur);left:37%;bottom:3%;animation-duration:10s;animation-delay:2.3s;}
+.p4{width:2px;height:2px;background:var(--gold-l);left:52%;bottom:14%;animation-duration:14s;animation-delay:.7s;}
+.p5{width:3px;height:3px;background:var(--pur-g);left:68%;bottom:7%;animation-duration:8s;animation-delay:3.4s;}
+.p6{width:2px;height:2px;background:var(--gold);left:80%;bottom:22%;animation-duration:11s;animation-delay:1.8s;}
+.p7{width:3px;height:3px;background:var(--pur-l);left:6%;bottom:28%;animation-duration:13s;animation-delay:4.1s;}
+.p8{width:2px;height:2px;background:var(--gold-b);left:60%;bottom:38%;animation-duration:10s;animation-delay:2.9s;}
+.p9{width:4px;height:4px;background:var(--pur-g);left:33%;bottom:48%;animation-duration:16s;animation-delay:.5s;}
+.p10{width:2px;height:2px;background:var(--gold);left:88%;bottom:10%;animation-duration:9s;animation-delay:4s;}
+.p11{width:3px;height:3px;background:var(--pur);left:45%;bottom:32%;animation-duration:12s;animation-delay:5.3s;}
+.p12{width:2px;height:2px;background:var(--gold-l);left:18%;bottom:43%;animation-duration:15s;animation-delay:1.5s;}
+.p13{width:3px;height:3px;background:var(--pur-g);left:73%;bottom:17%;animation-duration:11s;animation-delay:4.8s;}
+.p14{width:2px;height:2px;background:var(--gold);left:4%;bottom:52%;animation-duration:10s;animation-delay:6.2s;}
+.p15{width:4px;height:4px;background:var(--pur-l);left:91%;bottom:40%;animation-duration:14s;animation-delay:3s;}
+/* ── HOME PRICE BAR ── */
+.price-bar{background:rgba(8,11,18,0.98);border-bottom:1px solid rgba(201,146,42,0.18);padding:.55rem 0;}
+.pb-inner{max-width:1100px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+.pb-live{display:flex;align-items:center;gap:.35rem;font-size:.6rem;font-weight:700;letter-spacing:.14em;color:var(--text3);flex-shrink:0;}
+.pb-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pbDot 1.8s ease-in-out infinite;flex-shrink:0;}
+@keyframes pbDot{0%,100%{opacity:1;}50%{opacity:.3;}}
+.pb-stat{display:flex;align-items:center;gap:.35rem;}
+.pb-label{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);}
+.pb-val{font-family:'Cinzel',serif;font-size:.85rem;font-weight:700;color:var(--gold-l);}
+.pb-sep{color:rgba(255,255,255,0.1);font-size:.75rem;flex-shrink:0;}
+.pb-link{margin-left:auto;font-size:.65rem;flex-shrink:0;}
+.pb-link a{color:var(--pur-g);}
+.pb-link a:hover{color:var(--gold-l);}
+@media(max-width:700px){.hero-cin{min-height:75vh;padding-top:calc(134px + 4rem);}.hero-cin-title{letter-spacing:.04em;}}
+@media(max-width:520px){.pb-hide-sm{display:none;}}
 </style>
   <!-- WebAuth / Proton Web SDK -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
@@ -433,21 +479,41 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 
 <!-- ═══════ PAGE: HOME ═══════ -->
 <div id="page-home" class="page active">
-<div class="hero">
-  <div class="container">
-    <div class="hero-inner">
-      <div>
-        <div class="hero-eyebrow">Community · Education · XPR Network</div>
-        <h1 class="hero-title">Your Guide to the<br><span>Metallicus Ecosystem</span></h1>
-        <div class="hero-mission">"A community-built educational resource designed to spotlight the tools, builders, and infrastructure growing around Metallicus and XPR Network."</div>
-        <div class="hero-btns">
-          <button class="btn btn-g" onclick="go('guard')">🛡 Meet GUARD →</button>
-          <button class="btn btn-o" onclick="go('start')">🚀 Start Here</button>
-          <button class="btn btn-o" onclick="go('ecosystem')">🌐 Ecosystem</button>
-        </div>
+<!-- CINEMATIC HERO -->
+<div class="hero-cin" id="hero-section">
+  <div class="hero-bg" id="hero-bg"></div>
+  <div class="particles" aria-hidden="true">
+    <span class="particle p1"></span><span class="particle p2"></span><span class="particle p3"></span>
+    <span class="particle p4"></span><span class="particle p5"></span><span class="particle p6"></span>
+    <span class="particle p7"></span><span class="particle p8"></span><span class="particle p9"></span>
+    <span class="particle p10"></span><span class="particle p11"></span><span class="particle p12"></span>
+    <span class="particle p13"></span><span class="particle p14"></span><span class="particle p15"></span>
+  </div>
+  <div class="container" style="position:relative;z-index:3;">
+    <div class="hero-cin-inner">
+      <div class="hero-cin-eyebrow">Community · Education · XPR Network</div>
+      <h1 class="hero-cin-title">YOUR GUIDE TO THE<br><span>METALLICUS ECOSYSTEM</span></h1>
+      <p class="hero-cin-sub">Community-built. On-chain verified. Stand GUARD.</p>
+      <div class="hero-guardians">🛡 <span id="guardian-count">—</span> Guardians Standing</div>
+      <div class="hero-cin-btns">
+        <button class="btn btn-g btn-hero" onclick="walletConnect()">Connect Wallet ⚡</button>
+        <button class="btn btn-o btn-hero" onclick="go('ecosystem')">Explore the Ecosystem →</button>
       </div>
-      <img class="hero-img" src="./img_guard_dark.jpg?v=2" alt="Metallicus Guardian" style="border-radius:12px;">
     </div>
+  </div>
+</div>
+<!-- LIVE GUARD PRICE BAR -->
+<div class="price-bar">
+  <div class="pb-inner">
+    <div class="pb-live"><span class="pb-dot"></span>LIVE</div>
+    <div class="pb-stat"><span class="pb-label">GUARD</span><span id="hp-price" class="pb-val">—</span></div>
+    <span class="pb-sep">|</span>
+    <div class="pb-stat pb-hide-sm"><span class="pb-label">Mkt Cap</span><span id="hp-mcap" class="pb-val">—</span></div>
+    <span class="pb-sep pb-hide-sm">|</span>
+    <div class="pb-stat"><span class="pb-label">Supply</span><span id="hp-supply" class="pb-val">—</span></div>
+    <span class="pb-sep pb-hide-sm">|</span>
+    <div class="pb-stat pb-hide-sm"><span class="pb-label">24h Vol</span><span id="hp-vol" class="pb-val">—</span></div>
+    <div class="pb-link"><a href="https://simpledex.fun/token/172" target="_blank" rel="noopener">SimpleDEX →</a></div>
   </div>
 </div>
 <div class="container">
@@ -1392,6 +1458,107 @@ async function loadLiveData(){
 // Run on load
 loadLiveData();
 
+// ===== HOME PAGE PRICE BAR =====
+async function fetchHomePrice() {
+  let price = 0, vol = 0, supply = 0;
+
+  // 1. Supply from chain
+  for (const rpc of GUARD_CFG.rpcs) {
+    try {
+      const r = await fetchTimeout(rpc + '/v1/chain/get_currency_stats', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({code:'simpletoken', symbol:'GUARD'})
+      }, 5000);
+      if (r.ok) {
+        const d = await r.json();
+        const info = d['GUARD'];
+        if (info && info.supply) { supply = parseFloat(String(info.supply).split(' ')[0]); break; }
+      }
+    } catch(e) {}
+  }
+
+  // 2. Try SimpleDEX API for USD price + 24h volume
+  try {
+    const r = await fetchTimeout('https://api.simpledex.fun/v1/tokens/172', {}, 6000);
+    if (r.ok) {
+      const d = await r.json();
+      price = parseFloat(d.priceUsd || d.price_usd || d.usdPrice || d.price || 0) || 0;
+      vol   = parseFloat(d.volume24h || d.volume_24h || d.volumeUsd || d.volume || 0) || 0;
+    }
+  } catch(e) {}
+
+  // 3. Fall back: derive price from pool 187 + CoinGecko XPR/USD
+  if (price === 0) {
+    try {
+      const xprR = await fetchTimeout('https://api.coingecko.com/api/v3/simple/price?ids=proton&vs_currencies=usd', {}, 6000);
+      const xprData = xprR.ok ? await xprR.json() : {};
+      const xprUsd = (xprData.proton && xprData.proton.usd) || 0;
+      if (xprUsd > 0) {
+        const poolR = await fetchTimeout(GUARD_CFG.rpcs[0] + '/v1/chain/get_table_rows', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({json:true, code:'simpledex', scope:'simpledex',
+            table:'pools', lower_bound:187, upper_bound:187, limit:1, key_type:'i64', index_position:'1'})
+        }, 7000);
+        if (poolR.ok) {
+          const pd = await poolR.json();
+          const pool = pd.rows && pd.rows[0];
+          if (pool) {
+            const rawXpr   = pool.tokenA_reserve != null ? pool.tokenA_reserve : pool.reserveA != null ? pool.reserveA : pool.reserve1 != null ? pool.reserve1 : (pool.tokenA && (pool.tokenA.reserve != null ? pool.tokenA.reserve : pool.tokenA.amount)) || 0;
+            const rawGuard = pool.tokenB_reserve != null ? pool.tokenB_reserve : pool.reserveB != null ? pool.reserveB : pool.reserve2 != null ? pool.reserve2 : (pool.tokenB && (pool.tokenB.reserve != null ? pool.tokenB.reserve : pool.tokenB.amount)) || 0;
+            const xprAmt   = parseChainAmount(rawXpr);
+            const guardAmt = parseChainAmount(rawGuard);
+            if (xprAmt > 0 && guardAmt > 0) price = (xprAmt / guardAmt) * xprUsd;
+          }
+        }
+      }
+    } catch(e) {}
+  }
+
+  // Update price bar
+  const fmt = n => n >= 1e9 ? '$' + (n/1e9).toFixed(2)+'B' : n >= 1e6 ? '$' + (n/1e6).toFixed(2)+'M' : n >= 1e3 ? '$' + (n/1e3).toFixed(1)+'K' : '$' + n.toFixed(2);
+  setStat('hp-price', price > 0 ? (price < 0.000001 ? '$' + price.toExponential(2) : price < 0.01 ? '$' + price.toFixed(8) : price < 1 ? '$' + price.toFixed(6) : '$' + price.toFixed(4)) : '—');
+  setStat('hp-supply', supply > 0 ? fmtNum(supply) : '—');
+  setStat('hp-mcap',   price > 0 && supply > 0 ? fmt(price * supply) : '—');
+  setStat('hp-vol',    vol   > 0 ? fmt(vol)   : '—');
+  // Sync supply to GUARD page stat too
+  if (supply > 0) setStat('stat-supply', fmtNum(supply));
+}
+fetchHomePrice();
+setInterval(fetchHomePrice, 60000);
+
+// ===== GUARDIAN COUNT (localStorage) =====
+function trackGuardianWallet(actor) {
+  try {
+    const key = 'guard_connected_wallets';
+    const list = JSON.parse(localStorage.getItem(key) || '[]');
+    if (!list.includes(actor)) { list.push(actor); localStorage.setItem(key, JSON.stringify(list)); }
+    renderGuardianCount();
+  } catch(e) {}
+}
+function renderGuardianCount() {
+  try {
+    const list = JSON.parse(localStorage.getItem('guard_connected_wallets') || '[]');
+    const el = document.getElementById('guardian-count');
+    if (el) el.textContent = list.length.toLocaleString();
+  } catch(e) {}
+}
+renderGuardianCount();
+
+// ===== PARALLAX HERO =====
+(function(){
+  let ticking = false;
+  window.addEventListener('scroll', function(){
+    if (!ticking) {
+      requestAnimationFrame(function(){
+        const bg = document.getElementById('hero-bg');
+        if (bg) bg.style.transform = 'translateY(' + Math.round(window.scrollY * 0.28) + 'px)';
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, {passive:true});
+})();
+
 // ===== SHIELDS — THE PATH OF THE GUARDIAN =====
 const SHIELDS = [
   {name:'Cryptide',  title:'Initiate',   emoji:'🌊', img:'./shield_cryptide.png',  req:0,          lore:'New to the ecosystem. A stable foundation and a defensive footing — learning the way. Every Guardian begins here.'},
@@ -2278,6 +2445,9 @@ function onWalletConnected(actor) {
 
   // Unlock first steps achievement
   if (typeof unlockAch === 'function') unlockAch('first_steps');
+
+  // Track unique guardian connection for home page counter
+  trackGuardianWallet(actor);
 }
 
 function onGuardBalanceLoaded(actor, bal) {
