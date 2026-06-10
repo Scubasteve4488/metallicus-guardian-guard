@@ -1420,13 +1420,36 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <div class="section" style="padding-bottom:2rem;">
     <div class="sec-label" style="text-align:center;">Guardian Arena · GUARD Ecosystem</div>
     <h1 style="font-family:'Cinzel Decorative','Cinzel',serif;text-align:center;font-size:clamp(1.8rem,5vw,2.8rem);color:var(--gold-l);margin:.2rem 0 .4rem;">GUARDIAN ARENA</h1>
-    <p style="text-align:center;font-size:.88rem;color:var(--text2);max-width:500px;margin:.4rem auto 1.4rem;line-height:1.7;">Defend the ecosystem. Tap enemies before they breach your shield. Your Guardian rank grants power and abilities.</p>
     <div id="arena-container" style="position:relative;width:100%;max-width:600px;margin:0 auto;">
       <canvas id="arena-canvas" style="display:block;width:100%;border-radius:16px;border:1px solid rgba(201,146,42,0.25);cursor:crosshair;touch-action:none;-webkit-user-select:none;user-select:none;background:#080b12;"></canvas>
     </div>
-    <div class="card" style="max-width:600px;margin:1.5rem auto 0;text-align:center;border-color:rgba(124,58,237,0.15);">
-      <div class="sec-label" style="justify-content:center;margin-bottom:.5rem;">⛓ On-Chain Leaderboard</div>
-      <p style="font-size:.82rem;color:var(--text3);margin:0;">On-chain leaderboard coming with smart contract deployment — powered by XPR Network. <span style="color:var(--pur-g);">Stand GUARD. Compete for glory.</span></p>
+    <div style="max-width:600px;margin:1.2rem auto 0;">
+      <!-- Personal best bar -->
+      <div style="background:rgba(201,146,42,0.07);border:1px solid rgba(201,146,42,0.22);border-radius:10px;padding:.6rem 1.1rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem;gap:.5rem;">
+        <span style="font-size:.82rem;color:var(--text2);white-space:nowrap;">🏆 Your Best</span>
+        <span id="arena-pb-display" style="font-size:.88rem;color:var(--gold-l);font-family:'Cinzel',serif;font-weight:700;text-align:right;">—</span>
+      </div>
+      <!-- Weekly Leaderboard -->
+      <div class="card" style="border-color:rgba(201,146,42,0.25);padding:1.2rem 1.2rem 1rem;">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:.4rem;margin-bottom:.25rem;">
+          <div class="sec-label" style="margin:0;">👑 WEEKLY GUARDIANS — Top Defenders</div>
+          <span style="font-size:.72rem;color:var(--text3);white-space:nowrap;">Reset every Monday</span>
+        </div>
+        <p style="font-size:.8rem;color:var(--text2);margin:0 0 .9rem;">Top 10 scores this week. Featured on standguard.net.</p>
+        <div style="border:1px solid rgba(201,146,42,0.18);border-radius:8px;overflow:hidden;">
+          <div style="display:grid;grid-template-columns:2.2rem 1fr 4rem 5.2rem 5rem;background:rgba(0,0,0,0.35);">
+            <div style="padding:.45rem .6rem;font-size:.7rem;color:var(--text3);font-family:'Cinzel',serif;border-bottom:1px solid rgba(255,255,255,0.05);">#</div>
+            <div style="padding:.45rem .6rem;font-size:.7rem;color:var(--text3);font-family:'Cinzel',serif;border-bottom:1px solid rgba(255,255,255,0.05);">Guardian</div>
+            <div style="padding:.45rem .6rem;font-size:.7rem;color:var(--text3);font-family:'Cinzel',serif;border-bottom:1px solid rgba(255,255,255,0.05);text-align:center;">Wave</div>
+            <div style="padding:.45rem .6rem;font-size:.7rem;color:var(--text3);font-family:'Cinzel',serif;border-bottom:1px solid rgba(255,255,255,0.05);text-align:right;">Score</div>
+            <div style="padding:.45rem .6rem;font-size:.7rem;color:var(--text3);font-family:'Cinzel',serif;border-bottom:1px solid rgba(255,255,255,0.05);text-align:right;">Date</div>
+          </div>
+          <div style="padding:1.6rem 1rem;text-align:center;">
+            <div style="font-size:.85rem;color:var(--text3);font-style:italic;">No scores this week yet — be the first Guardian to defend the Arena</div>
+          </div>
+        </div>
+        <p style="font-size:.74rem;color:var(--text3);margin:.9rem 0 0;border-top:1px solid var(--border);padding-top:.7rem;">On-chain verified leaderboard with GUARD rewards coming with smart contract deployment — Category B</p>
+      </div>
     </div>
   </div>
 </div>
@@ -2820,6 +2843,7 @@ function arenaInit(){
   g=newG(false);
   loadShield();
   drawStart();
+  updatePBBar();
 }
 function resize(){if(!cvs)return;const cont=document.getElementById('arena-container');const w=Math.min(CW,cont?cont.clientWidth:CW);cscale=w/CW;cvs.style.width=w+'px';cvs.style.height=Math.round(CH*cscale)+'px';}
 function loadShield(){const rank=g?g.rank:0;const src=typeof SHIELDS!=='undefined'&&SHIELDS[rank]?SHIELDS[rank].img:'./shield_cryptide.png';shImg=new Image();shLoaded=false;shImg.onload=()=>{shLoaded=true;if(g&&g.phase==='START')drawStart();};shImg.src=src;}
@@ -3042,49 +3066,88 @@ function drawStart(){
   const gr=ctx.createRadialGradient(CX,CY,0,CX,CY,CW*0.8);
   gr.addColorStop(0,'hsla(220,40%,10%,1)');gr.addColorStop(1,'hsla(190,60%,4%,1)');
   ctx.fillStyle=gr;ctx.fillRect(0,0,CW,CH);
+  // Shield
   const rank=typeof guardianRank!=='undefined'?guardianRank:0;
   const rc=typeof RANK_COLORS!=='undefined'?RANK_COLORS[rank]:{primary:'#7c3aed'};
-  if(shLoaded&&shImg){ctx.save();ctx.shadowBlur=40;ctx.shadowColor=rc.primary;ctx.drawImage(shImg,CX-55,66,110,110);ctx.restore();}
-  else{ctx.save();ctx.shadowBlur=30;ctx.shadowColor=rc.primary;ctx.beginPath();ctx.arc(CX,121,55,0,Math.PI*2);ctx.fillStyle=rc.primary+'33';ctx.fill();ctx.restore();}
+  if(shLoaded&&shImg){ctx.save();ctx.shadowBlur=35;ctx.shadowColor=rc.primary;ctx.drawImage(shImg,CX-48,28,96,96);ctx.restore();}
+  else{ctx.save();ctx.beginPath();ctx.arc(CX,76,48,0,Math.PI*2);ctx.fillStyle=rc.primary+'22';ctx.fill();ctx.restore();}
+  ctx.textAlign='center';ctx.textBaseline='alphabetic';
+  // Title
+  ctx.fillStyle='#e8b84b';ctx.shadowBlur=12;ctx.shadowColor='#c9922a';
+  ctx.font='bold 24px "Cinzel Decorative",Cinzel,serif';ctx.fillText('⚔  GUARDIAN ARENA',CX,150);
+  ctx.shadowBlur=0;
+  // Main instruction
+  ctx.fillStyle='#e2e8f0';ctx.font='bold 15px Cinzel,serif';
+  ctx.fillText('TAP enemies before they reach your shield',CX,178);
+  // Divider
+  ctx.strokeStyle='rgba(201,146,42,0.25)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(CX-210,192);ctx.lineTo(CX+210,192);ctx.stroke();
+  // Enemy grid — 2 columns, 2 rows
+  ctx.textBaseline='middle';ctx.font='17px sans-serif';
+  ctx.textAlign='right';ctx.fillStyle='#e2e8f0';
+  ctx.fillText('🟣 FUD — 1 tap',CX-10,212);
+  ctx.textAlign='left';ctx.fillText('🔴 RUG — 3 taps',CX+10,212);
+  ctx.textAlign='right';ctx.fillText('🟡 HACK — fast',CX-10,240);
+  ctx.textAlign='left';ctx.fillText('💀 BOSS — every 5 waves',CX+10,240);
+  // Rank line
+  ctx.textAlign='center';ctx.textBaseline='alphabetic';
+  ctx.fillStyle='#b78df5';ctx.font='13px Cinzel,serif';
   const cfg=RANK_CFG[Math.min(6,rank)];
-  const rname=typeof SHIELDS!=='undefined'?SHIELDS[rank].title:'Guardian';
-  const pb=JSON.parse(localStorage.getItem('guard_arena_pb')||'{}');
-  ctx.textAlign='center';
-  ctx.shadowBlur=14;ctx.shadowColor='#c9922a';ctx.fillStyle='#e8b84b';ctx.font='bold 28px "Cinzel Decorative",Cinzel,serif';ctx.fillText('GUARDIAN ARENA',CX,206);
-  ctx.shadowBlur=0;ctx.fillStyle='#b78df5';ctx.font='13px Cinzel,serif';ctx.fillText(rname+' RANK — '+cfg.hp+' HP'+(cfg.ab?' · '+cfg.abN:''),CX,232);
-  ctx.fillStyle='#64748b';ctx.font='11px Cinzel,serif';ctx.fillText(pb.score?'Best: Wave '+pb.wave+' · Score '+pb.score:'No record yet — be the first!',CX,256);
-  // BEGIN
-  ctx.fillStyle='rgba(201,146,42,0.15)';rrect(CX-90,CH/2+43,180,44,8);ctx.fill();
-  ctx.strokeStyle='#c9922a';ctx.lineWidth=1.5;rrect(CX-90,CH/2+43,180,44,8);ctx.stroke();
-  ctx.fillStyle='#e8b84b';ctx.font='bold 16px Cinzel,serif';ctx.textBaseline='middle';ctx.fillText('⚔  BEGIN',CX,CH/2+65);
-  // DAILY
-  ctx.fillStyle='rgba(124,58,237,0.15)';rrect(CX-90,CH/2+97,180,38,8);ctx.fill();
-  ctx.strokeStyle='#7c3aed';ctx.lineWidth=1.5;rrect(CX-90,CH/2+97,180,38,8);ctx.stroke();
-  ctx.fillStyle='#b78df5';ctx.font='bold 12px Cinzel,serif';ctx.fillText('DAILY CHALLENGE',CX,CH/2+116+3);
-  ctx.textBaseline='alphabetic';ctx.fillStyle='#475569';ctx.font='10px Cinzel,serif';ctx.fillText('Tap enemies to destroy · Ability button to activate power',CX,CH-18);
+  ctx.fillText('Your rank = '+cfg.hp+' HP starting'+(cfg.ab?' + '+cfg.abN:''),CX,270);
+  // Divider
+  ctx.strokeStyle='rgba(201,146,42,0.2)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(CX-210,283);ctx.lineTo(CX+210,283);ctx.stroke();
+  // BEGIN button — center y=325 (matches tap())
+  ctx.fillStyle='rgba(201,146,42,0.15)';rrect(CX-90,303,180,44,8);ctx.fill();
+  ctx.strokeStyle='#c9922a';ctx.lineWidth=1.5;rrect(CX-90,303,180,44,8);ctx.stroke();
+  ctx.fillStyle='#e8b84b';ctx.font='bold 16px Cinzel,serif';ctx.textBaseline='middle';
+  ctx.fillText('⚔  BEGIN',CX,325);
+  // DAILY button — center y=379 (matches tap())
+  ctx.fillStyle='rgba(124,58,237,0.15)';rrect(CX-90,360,180,38,8);ctx.fill();
+  ctx.strokeStyle='#7c3aed';ctx.lineWidth=1.5;rrect(CX-90,360,180,38,8);ctx.stroke();
+  ctx.fillStyle='#b78df5';ctx.font='bold 12px Cinzel,serif';
+  ctx.fillText('DAILY CHALLENGE',CX,379);
+  ctx.textBaseline='alphabetic';
+  ctx.fillStyle='#334155';ctx.font='10px Cinzel,serif';
+  ctx.fillText('Ability button appears bottom-center during play',CX,CH-18);
 }
 function drawGameOver(nb,gp){
   if(!cvs||!ctx)return;
   ctx.clearRect(0,0,CW,CH);
-  const gr=ctx.createRadialGradient(CX,CY*0.7,0,CX,CY,CW*0.8);
+  const gr=ctx.createRadialGradient(CX,CY*0.6,0,CX,CY,CW*0.8);
   gr.addColorStop(0,'hsla(0,40%,8%,1)');gr.addColorStop(1,'hsla(220,60%,4%,1)');
   ctx.fillStyle=gr;ctx.fillRect(0,0,CW,CH);
-  ctx.textAlign='center';
-  ctx.fillStyle='#ef4444';ctx.shadowBlur=20;ctx.shadowColor='#ef4444';ctx.font='bold 32px "Cinzel Decorative",Cinzel,serif';ctx.fillText('SHIELD BREACHED',CX,88);
-  ctx.shadowBlur=0;ctx.fillStyle='#e8b84b';ctx.font='bold 22px Cinzel,serif';ctx.fillText('Wave '+g.wave+' · Score '+g.score,CX,128);
-  if(nb){ctx.fillStyle='#22c55e';ctx.font='bold 14px Cinzel,serif';ctx.fillText('✦ NEW PERSONAL BEST ✦',CX,156);}
-  ctx.fillStyle='#b78df5';ctx.font='13px Cinzel,serif';ctx.fillText('+'+gp+' Guardian Points earned',CX,180);
+  ctx.textAlign='center';ctx.textBaseline='alphabetic';
+  // Title
+  ctx.fillStyle='#ef4444';ctx.shadowBlur=20;ctx.shadowColor='#ef4444';
+  ctx.font='bold 38px "Cinzel Decorative",Cinzel,serif';ctx.fillText('GAME OVER',CX,90);
+  ctx.shadowBlur=0;
+  // Results
+  ctx.fillStyle='#e8b84b';ctx.font='bold 22px Cinzel,serif';
+  ctx.fillText('Wave '+g.wave+' · Score '+g.score,CX,130);
+  let nextY=158;
+  if(gp>0){ctx.fillStyle='#b78df5';ctx.font='14px Cinzel,serif';ctx.fillText('+'+gp+' Guardian Points earned',CX,nextY);nextY+=28;}
   const earned=g.achs.filter(k=>ACH_NAMES[k]);
-  if(earned.length){ctx.fillStyle='#e8b84b';ctx.font='11px Cinzel,serif';ctx.fillText('Achievements: '+earned.map(k=>ACH_NAMES[k]).join(' · '),CX,204);}
-  // PLAY AGAIN
-  ctx.fillStyle='rgba(201,146,42,0.15)';rrect(CX-90,CY+48,180,44,8);ctx.fill();
-  ctx.strokeStyle='#c9922a';ctx.lineWidth=1.5;rrect(CX-90,CY+48,180,44,8);ctx.stroke();
-  ctx.fillStyle='#e8b84b';ctx.font='bold 15px Cinzel,serif';ctx.textBaseline='middle';ctx.fillText('⚔  PLAY AGAIN',CX,CY+70);
-  // SHARE
-  ctx.fillStyle='rgba(29,155,240,0.15)';rrect(CX-90,CY+102,180,38,8);ctx.fill();
-  ctx.strokeStyle='#1d9bf0';ctx.lineWidth=1.5;rrect(CX-90,CY+102,180,38,8);ctx.stroke();
-  ctx.fillStyle='#1d9bf0';ctx.font='bold 13px Cinzel,serif';ctx.fillText('🐦  SHARE SCORE',CX,CY+121+3);
-  ctx.textBaseline='alphabetic';ctx.fillStyle='#475569';ctx.font='10px Cinzel,serif';ctx.fillText('On-chain leaderboard coming with XPR Network smart contract',CX,CH-18);
+  if(earned.length){ctx.fillStyle='#e8b84b';ctx.font='12px Cinzel,serif';ctx.fillText('🏆 '+earned.map(k=>ACH_NAMES[k]).join(' · '),CX,nextY);nextY+=28;}
+  if(nb){ctx.fillStyle='#22c55e';ctx.font='bold 14px Cinzel,serif';ctx.fillText('✦ NEW PERSONAL BEST ✦',CX,nextY);}
+  // PLAY AGAIN — center y=330 (matches tap())
+  ctx.fillStyle='rgba(201,146,42,0.15)';rrect(CX-90,308,180,44,8);ctx.fill();
+  ctx.strokeStyle='#c9922a';ctx.lineWidth=1.5;rrect(CX-90,308,180,44,8);ctx.stroke();
+  ctx.fillStyle='#e8b84b';ctx.font='bold 15px Cinzel,serif';ctx.textBaseline='middle';ctx.fillText('⚔  PLAY AGAIN',CX,330);
+  // SHARE — center y=381 (matches tap())
+  ctx.fillStyle='rgba(29,155,240,0.15)';rrect(CX-90,362,180,38,8);ctx.fill();
+  ctx.strokeStyle='#1d9bf0';ctx.lineWidth=1.5;rrect(CX-90,362,180,38,8);ctx.stroke();
+  ctx.fillStyle='#1d9bf0';ctx.font='bold 13px Cinzel,serif';ctx.fillText('🐦  SHARE SCORE',CX,381);
+  ctx.textBaseline='alphabetic';
+  updatePBBar();
+}
+
+// ─── Personal best bar ────────────────────────────────────────────────────────
+function updatePBBar(){
+  const el=document.getElementById('arena-pb-display');
+  if(!el)return;
+  const pb=JSON.parse(localStorage.getItem('guard_arena_pb')||'{}');
+  el.textContent=pb.score?'Wave '+pb.wave+' · '+pb.score+' pts':'No record yet — play to set one!';
 }
 
 window.arenaInit=arenaInit;
