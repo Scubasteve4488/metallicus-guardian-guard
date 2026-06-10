@@ -435,6 +435,10 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 .hall-shield-img{width:34px;height:34px;object-fit:contain;flex-shrink:0;}
 .hall-rank-label{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);font-weight:600;margin-bottom:.1rem;}
 .hall-handle-text{font-family:'Cinzel',serif;font-size:.88rem;color:var(--gold-l);}
+/* ── NOMINATION FORM ── */
+.nom-input,.nom-textarea{width:100%;padding:.7rem .9rem;border-radius:var(--radius);border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);font-size:.88rem;font-family:inherit;box-sizing:border-box;transition:border-color .2s;}
+.nom-input:focus,.nom-textarea:focus{outline:none;border-color:rgba(201,146,42,0.45);}
+.nom-textarea{resize:vertical;min-height:80px;}
 </style>
   <!-- WebAuth / Proton Web SDK -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
@@ -1153,7 +1157,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <div class="div-g" style="margin:2rem 0 1.5rem;"></div>
     <div class="sec-label">Hall of Guardians</div>
     <h2 class="sec-title">Guardians Who Have Stood Up</h2>
-    <p style="font-size:.83rem;color:var(--text2);margin-bottom:.5rem;max-width:600px;">Guardians who have connected their wallet and earned their rank on this device. <span style="color:var(--text3);">Full on-chain Hall of Guardians coming with smart contract deployment.</span></p>
+    <p style="font-size:.83rem;color:var(--text2);margin-bottom:.5rem;max-width:600px;">Guardians from across the community who have connected their wallet and earned their rank. <span style="color:var(--text3);">Full on-chain Hall coming with smart contract deployment.</span></p>
     <div id="hall-list" class="hall-list">
       <p style="font-size:.82rem;color:var(--text3);padding:.5rem 0;">Connect your wallet to join the Hall of Guardians.</p>
     </div>
@@ -1228,6 +1232,25 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
         </div>
       </div>
       <p class="spotlight-cta-note">Want to be featured? Stand GUARD and make your mark in the ecosystem.</p>
+      <div style="text-align:center;margin-top:.85rem;">
+        <button onclick="toggleNomForm()" class="btn btn-o" style="font-size:.8rem;padding:.5rem 1.4rem;">✦ Nominate a Guardian</button>
+      </div>
+      <div id="nominate-wrap" style="display:none;margin-top:1rem;">
+        <div class="card" style="border-color:rgba(201,146,42,0.3);background:rgba(0,0,0,0.2);">
+          <div style="font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.85rem;">Nominate a Guardian for Spotlight</div>
+          <div style="display:flex;flex-direction:column;gap:.6rem;">
+            <input id="nom-nominee" class="nom-input" type="text" placeholder="@their-handle" maxlength="50" autocomplete="off">
+            <textarea id="nom-reason" class="nom-textarea" maxlength="280" placeholder="Why do they deserve the spotlight? (max 280 chars)"></textarea>
+            <input id="nom-nominator" class="nom-input" type="text" placeholder="Your @handle (optional)" maxlength="50" autocomplete="off">
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+              <button onclick="submitNomination()" class="btn btn-g" style="font-size:.82rem;">Submit Nomination</button>
+              <button onclick="toggleNomForm()" class="btn btn-o" style="font-size:.82rem;">Cancel</button>
+            </div>
+          </div>
+          <p id="nom-status" style="font-size:.75rem;margin-top:.6rem;min-height:1.1em;"></p>
+          <p style="font-size:.68rem;color:var(--text3);margin-top:.35rem;font-style:italic;">Nominations reviewed weekly by @scubasteve4488</p>
+        </div>
+      </div>
     </div>
 
     <!-- ── SECTION 1: KSTO Community ── -->
@@ -1596,41 +1619,91 @@ async function fetchHomePrice() {
 fetchHomePrice();
 setInterval(fetchHomePrice, 60000);
 
-// ===== HALL OF GUARDIANS (localStorage roster) =====
-function trackGuardianInHall(actor, rank) {
+// ===== HALL OF GUARDIANS (Cloudflare KV via /api/guardians) =====
+async function trackGuardianInHall(actor, rank) {
   try {
-    const key = 'guard_hall_roster';
-    const roster = JSON.parse(localStorage.getItem(key) || '[]');
-    const filtered = roster.filter(e => e.actor !== actor);
-    filtered.unshift({actor, rank});
-    localStorage.setItem(key, JSON.stringify(filtered.slice(0, 50)));
-    renderHallOfGuardians();
-  } catch(e) {}
+    await fetch('/api/guardians', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ actor, rank }),
+    });
+  } catch(e) { /* non-fatal */ }
+  loadHallOfGuardians();
 }
-function renderHallOfGuardians() {
+
+async function loadHallOfGuardians() {
   const el = document.getElementById('hall-list');
   if (!el) return;
   try {
-    const roster = JSON.parse(localStorage.getItem('guard_hall_roster') || '[]');
-    if (!roster.length) {
-      el.innerHTML = '<p style="font-size:.82rem;color:var(--text3);padding:.5rem 0;">Connect your wallet to join the Hall of Guardians.</p>';
-      return;
-    }
-    const sorted = [...roster].sort((a, b) => b.rank - a.rank).slice(0, 20);
-    el.innerHTML = sorted.map(e => {
-      const s = SHIELDS[Math.min(6, Math.max(0, e.rank || 0))];
-      const rc = RANK_COLORS[Math.min(6, Math.max(0, e.rank || 0))];
-      return `<div class="hall-entry" style="border-color:${rc.primary}44;">
-        <img src="${s.img}" class="hall-shield-img" alt="${s.name}" style="filter:drop-shadow(0 0 5px ${rc.glow});">
-        <div>
-          <div class="hall-rank-label" style="color:${rc.primary};">${s.name} · ${s.title}</div>
-          <div class="hall-handle-text">@${e.actor}</div>
-        </div>
-      </div>`;
-    }).join('');
-  } catch(e) { el.innerHTML = ''; }
+    const r = await fetchTimeout('/api/guardians', {}, 8000);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const list = await r.json();
+    renderHallOfGuardians(list);
+  } catch(e) {
+    // Silently leave placeholder
+  }
 }
-renderHallOfGuardians();
+
+function renderHallOfGuardians(list) {
+  const el = document.getElementById('hall-list');
+  if (!el) return;
+  if (!Array.isArray(list) || !list.length) {
+    el.innerHTML = '<p style="font-size:.82rem;color:var(--text3);padding:.5rem 0;">No Guardians logged yet — connect your wallet to be first.</p>';
+    return;
+  }
+  el.innerHTML = list.slice(0, 20).map(e => {
+    const idx = Math.min(6, Math.max(0, e.rank || 0));
+    const s  = SHIELDS[idx];
+    const rc = RANK_COLORS[idx];
+    return `<div class="hall-entry" style="border-color:${rc.primary}44;">
+      <img src="${s.img}" class="hall-shield-img" alt="${s.name}" style="filter:drop-shadow(0 0 5px ${rc.glow});">
+      <div>
+        <div class="hall-rank-label" style="color:${rc.primary};">${s.name} · ${s.title}</div>
+        <div class="hall-handle-text">@${e.actor}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Load on page init
+loadHallOfGuardians();
+
+// ===== NOMINATION FORM =====
+function toggleNomForm() {
+  const w = document.getElementById('nominate-wrap');
+  if (w) w.style.display = w.style.display === 'none' ? 'block' : 'none';
+}
+
+async function submitNomination() {
+  const nominee   = (document.getElementById('nom-nominee')   || {}).value?.trim();
+  const reason    = (document.getElementById('nom-reason')    || {}).value?.trim();
+  const nominator = (document.getElementById('nom-nominator') || {}).value?.trim();
+  const status    = document.getElementById('nom-status');
+
+  const setStatus = (msg, color) => { if (status) { status.textContent = msg; status.style.color = color; } };
+
+  if (!nominee)          { setStatus('Please enter the handle to nominate.', 'var(--red)'); return; }
+  if (!reason)           { setStatus('Please explain why they deserve the spotlight.', 'var(--red)'); return; }
+  if (reason.length > 280) { setStatus('Reason must be 280 characters or less.', 'var(--red)'); return; }
+
+  setStatus('Submitting…', 'var(--text3)');
+
+  try {
+    const r = await fetch('/api/nominations', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nominee, reason, nominator }),
+    });
+    if (r.ok) {
+      setStatus('✅ Nomination submitted! Thank you for standing GUARD.', 'var(--green)');
+      ['nom-nominee','nom-reason','nom-nominator'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    } else {
+      setStatus('Submission failed. Please try again.', 'var(--red)');
+    }
+  } catch(e) {
+    setStatus('Network error. Please try again.', 'var(--red)');
+  }
+}
 
 // ===== GUARDIAN COUNT (localStorage) =====
 function trackGuardianWallet(actor) {
