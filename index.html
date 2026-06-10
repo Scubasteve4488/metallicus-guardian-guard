@@ -439,6 +439,30 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 .nom-input,.nom-textarea{width:100%;padding:.7rem .9rem;border-radius:var(--radius);border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);font-size:.88rem;font-family:inherit;box-sizing:border-box;transition:border-color .2s;}
 .nom-input:focus,.nom-textarea:focus{outline:none;border-color:rgba(201,146,42,0.45);}
 .nom-textarea{resize:vertical;min-height:80px;}
+/* ── HERO TAGLINE ── */
+.hero-cin-tagline{font-family:'Cinzel Decorative','Cinzel',serif;font-size:clamp(.82rem,1.75vw,1.1rem);color:var(--gold-l);text-align:center;letter-spacing:.06em;line-height:1.6;margin:.1rem 0 1.3rem;text-shadow:0 0 24px rgba(201,146,42,0.42),0 0 8px rgba(201,146,42,0.2);}
+/* ── GUARDIAN CARD RANK MESSAGE ── */
+.gc-rank-msg{font-family:'Cinzel',serif;font-size:.67rem;font-style:italic;letter-spacing:.04em;text-align:center;margin-bottom:.55rem;background:linear-gradient(135deg,var(--pur-g),var(--gold-l));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;min-height:.9rem;line-height:1.5;}
+/* ── SHIELD FORGE OVERLAY ── */
+#forge-overlay{position:fixed;inset:0;z-index:9000;background:rgba(6,9,16,0.96);display:none;align-items:center;justify-content:center;flex-direction:column;padding:2rem;cursor:pointer;}
+.forge-inner{text-align:center;max-width:460px;width:100%;cursor:default;}
+.forge-title{font-family:'Cinzel Decorative','Cinzel',serif;font-size:clamp(.9rem,2.4vw,1.25rem);color:var(--gold-l);letter-spacing:.06em;margin-bottom:2rem;text-shadow:0 0 30px rgba(201,146,42,0.5);}
+.forge-steps{text-align:left;margin-bottom:1.8rem;}
+.forge-step{font-family:'Cinzel',serif;font-size:.8rem;color:var(--text2);letter-spacing:.04em;padding:.28rem 0;opacity:0;transition:opacity .3s;display:flex;align-items:center;gap:.6rem;}
+.forge-step.visible{opacity:1;}
+.forge-step .fs-check{color:#22c55e;opacity:0;transition:opacity .25s .08s;font-size:.82rem;flex-shrink:0;}
+.forge-step.done .fs-check{opacity:1;}
+.forge-bar-wrap{height:3px;background:rgba(201,146,42,0.12);border-radius:2px;overflow:hidden;margin-bottom:2rem;opacity:0;transition:opacity .3s;}
+.forge-bar-wrap.visible{opacity:1;}
+.forge-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold-b));border-radius:2px;transition:width 1.1s ease-in-out;}
+.forge-result{opacity:0;transition:opacity .5s;}
+.forge-result.visible{opacity:1;}
+.forge-shield-res{width:84px;height:84px;object-fit:contain;margin-bottom:.75rem;display:block;margin-left:auto;margin-right:auto;}
+.forge-rank-name-r{font-family:'Cinzel Decorative','Cinzel',serif;font-size:clamp(1.5rem,3.8vw,2.1rem);background:linear-gradient(135deg,var(--gold-b),var(--gold-l));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.25rem;}
+.forge-rank-title-r{font-family:'Cinzel',serif;font-size:.82rem;font-style:italic;color:var(--pur-g);letter-spacing:.07em;margin-bottom:.5rem;}
+.forge-score-r{font-family:'Cinzel',serif;font-size:.95rem;color:var(--gold-l);letter-spacing:.09em;margin-bottom:.55rem;}
+.forge-rank-msg-r{font-family:'Cinzel',serif;font-size:.75rem;font-style:italic;color:var(--text2);margin-bottom:1.5rem;line-height:1.6;}
+.forge-dismiss-hint{font-size:.6rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;}
 </style>
   <!-- WebAuth / Proton Web SDK -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
@@ -524,6 +548,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
       <div class="hero-cin-eyebrow">Community · Education · XPR Network</div>
       <h1 class="hero-cin-title">YOUR GUIDE TO THE<br><span>METALLICUS ECOSYSTEM</span></h1>
       <p class="hero-cin-sub">Community-built. On-chain verified. Stand GUARD.</p>
+      <p class="hero-cin-tagline">Every Wallet Is A Shield. Every User Holds A Key.</p>
       <div class="hero-guardians">🛡 <span id="guardian-count">—</span> Guardians Standing</div>
       <div class="hero-cin-btns">
         <button class="btn btn-g btn-hero" onclick="walletConnect()">Connect Wallet ⚡</button>
@@ -1142,6 +1167,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
         <div id="card-rank-num" class="gc-rank-badge">RANK 1 OF 7</div>
         <div id="card-name" class="gc-name">Cryptide</div>
         <div id="card-title-text" class="gc-title-text">Initiate</div>
+        <div id="card-rank-msg" class="gc-rank-msg">Your journey begins. The ecosystem needs you.</div>
         <div id="card-handle" class="gc-handle">@yourhandle</div>
         <div id="card-balance" class="gc-balance" style="display:none;"></div>
         <div class="gc-divider"></div>
@@ -2178,6 +2204,10 @@ function renderCard(){
   // Title (Initiate, Defender, etc.)
   const titleEl = document.getElementById('card-title-text');
   if(titleEl) titleEl.textContent = s.title;
+  // Rank message
+  const RANK_MSGS=['Your journey begins. The ecosystem needs you.','You are standing guard. Keep building.','The community feels your presence.','A force in the ecosystem. Others look to you.','You are the architecture. The foundation holds.','The gate is yours to guard. None shall pass.','You are the Guardian. The ecosystem is protected.'];
+  const msgEl = document.getElementById('card-rank-msg');
+  if(msgEl) msgEl.textContent = RANK_MSGS[guardianRank] || '';
   // Handle
   const h = document.getElementById('guardian-handle').value.trim();
   const handleEl = document.getElementById('card-handle');
@@ -2491,6 +2521,67 @@ let walletSession = null;
 let walletLink = null;
 let walletActor = null;
 
+var _forgeTimer=null;
+function showForgeOverlay(){
+  if(sessionStorage.getItem('forge_shown'))return;
+  sessionStorage.setItem('forge_shown','1');
+  const ov=document.getElementById('forge-overlay');
+  if(!ov)return;
+  ov.style.display='flex';
+  const FORGE_RANK_MSGS=['Your journey begins. The ecosystem needs you.','You are standing guard. Keep building.','The community feels your presence.','A force in the ecosystem. Others look to you.','You are the architecture. The foundation holds.','The gate is yours to guard. None shall pass.','You are the Guardian. The ecosystem is protected.'];
+  for(let i=0;i<5;i++){
+    setTimeout(function(idx){return function(){
+      const el=document.getElementById('fs-'+idx);
+      if(!el)return;
+      el.classList.add('visible');
+      setTimeout(function(){el.classList.add('done');},320);
+    };}(i),i*420);
+  }
+  setTimeout(function(){
+    const bw=document.getElementById('forge-bar-wrap');
+    if(bw)bw.classList.add('visible');
+    setTimeout(function(){
+      const bf=document.getElementById('forge-bar-fill');
+      if(bf)bf.style.width='100%';
+    },60);
+  },2300);
+  setTimeout(function(){
+    const rank=typeof guardianRank!=='undefined'?Math.min(6,Math.max(0,guardianRank)):0;
+    const sh=typeof SHIELDS!=='undefined'&&SHIELDS?SHIELDS[rank]:null;
+    const rc=typeof RANK_COLORS!=='undefined'&&RANK_COLORS?RANK_COLORS[rank]:null;
+    const si=document.getElementById('forge-shield-res');
+    const sn=document.getElementById('forge-rank-name-r');
+    const st=document.getElementById('forge-rank-title-r');
+    const sm=document.getElementById('forge-rank-msg-r');
+    const sc=document.getElementById('forge-score-num');
+    const ti=document.getElementById('forge-title');
+    if(sh){
+      if(si){si.src=sh.img;if(rc)si.style.filter='drop-shadow(0 0 28px '+rc.primary+')';}
+      if(sn)sn.textContent=sh.name;
+      if(st)st.textContent=sh.title;
+    }
+    if(sm)sm.textContent=FORGE_RANK_MSGS[rank]||'';
+    if(ti)ti.textContent='⚔ SHIELD FORGED';
+    const scoreEl=document.getElementById('gs-score');
+    const targetScore=scoreEl?parseInt(scoreEl.textContent)||0:0;
+    if(sc&&targetScore>0){
+      var cur=0;
+      var step=Math.max(1,Math.ceil(targetScore/40));
+      var iv=setInterval(function(){cur=Math.min(cur+step,targetScore);sc.textContent=cur;if(cur>=targetScore)clearInterval(iv);},50);
+    }
+    const res=document.getElementById('forge-result');
+    if(res)res.classList.add('visible');
+    _forgeTimer=setTimeout(dismissForge,4000);
+  },3500);
+}
+function dismissForge(){
+  if(_forgeTimer){clearTimeout(_forgeTimer);_forgeTimer=null;}
+  const ov=document.getElementById('forge-overlay');
+  if(!ov||ov.style.display==='none')return;
+  ov.style.transition='opacity .4s';
+  ov.style.opacity='0';
+  setTimeout(function(){ov.style.display='none';ov.style.opacity='';ov.style.transition='';},420);
+}
 async function walletConnect() {
   try {
     const ProtonWebSDK = window.ProtonWebSDK || window.protonWebSdk || window['@proton/web-sdk'];
@@ -2531,6 +2622,7 @@ async function walletConnect() {
     walletActor = session.auth.actor;
 
     localStorage.removeItem('wallet_explicitly_disconnected');
+    showForgeOverlay();
     onWalletConnected(walletActor);
     await fetchGuardBalance(walletActor);
 
@@ -3586,5 +3678,26 @@ window.addEventListener('load', () => { setTimeout(walletRestore, 1000); });
 
 </script>
 <div id="ach-toast"></div>
+<div id="forge-overlay" onclick="dismissForge()">
+  <div class="forge-inner" onclick="event.stopPropagation()">
+    <div class="forge-title" id="forge-title">⚔ FORGING YOUR GUARDIAN PROFILE...</div>
+    <div class="forge-steps">
+      <div class="forge-step" id="fs-0"><span class="fs-check">✓</span><span>Scanning GUARD Holdings...</span></div>
+      <div class="forge-step" id="fs-1"><span class="fs-check">✓</span><span>Checking LP Position...</span></div>
+      <div class="forge-step" id="fs-2"><span class="fs-check">✓</span><span>Verifying NFT Holdings...</span></div>
+      <div class="forge-step" id="fs-3"><span class="fs-check">✓</span><span>Measuring Time Standing GUARD...</span></div>
+      <div class="forge-step" id="fs-4"><span class="fs-check">✓</span><span>Calculating Guardian Score...</span></div>
+    </div>
+    <div class="forge-bar-wrap" id="forge-bar-wrap"><div class="forge-bar-fill" id="forge-bar-fill"></div></div>
+    <div class="forge-result" id="forge-result">
+      <img id="forge-shield-res" src="./shield_cryptide.png" class="forge-shield-res" alt="">
+      <div class="forge-rank-name-r" id="forge-rank-name-r">Cryptide</div>
+      <div class="forge-rank-title-r" id="forge-rank-title-r">Initiate</div>
+      <div class="forge-score-r">Guardian Score: <span id="forge-score-num">0</span>%</div>
+      <div class="forge-rank-msg-r" id="forge-rank-msg-r">Your journey begins. The ecosystem needs you.</div>
+      <div class="forge-dismiss-hint">Tap anywhere to continue</div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
