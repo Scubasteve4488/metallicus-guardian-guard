@@ -501,7 +501,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
 </head>
 <body>
-<!-- build: 2026-06-11-v3 -->
+<!-- build: 2026-06-11-v4 -->
 
 <!-- NAV -->
 <nav id="nav">
@@ -1725,7 +1725,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <h1 style="font-family:'Cinzel Decorative','Cinzel',serif;text-align:center;font-size:clamp(1.8rem,5vw,2.8rem);color:var(--gold-l);margin:.2rem 0 .8rem;">GUARDIAN ARENA</h1>
     <div id="game-selector" style="display:flex;gap:.5rem;justify-content:center;margin-bottom:1.1rem;">
       <button id="sel-wave" class="game-sel-btn active" onclick="switchGame('wave')">⚔ Wave Survival</button>
-      <button id="sel-flappy" class="game-sel-btn" onclick="switchGame('flappy')">🪙 Flappy GUARD <sup style="font-size:8px;opacity:.6">v3</sup></button>
+      <button id="sel-flappy" class="game-sel-btn" onclick="this.style.background='#c00';this.style.color='#fff';switchGame('flappy')">🪙 Flappy GUARD <sup style="font-size:8px;opacity:.6">v4</sup></button>
     </div>
     <div id="arena-container" style="position:relative;width:100%;max-width:600px;margin:0 auto;">
       <canvas id="arena-canvas" style="display:block;width:100%;border-radius:16px;border:1px solid rgba(201,146,42,0.25);cursor:crosshair;touch-action:none;-webkit-user-select:none;user-select:none;background:#080b12;"></canvas>
@@ -4097,8 +4097,11 @@ function fNewGame(){
 }
 
 function switchGame(type){
+  var _d=document.getElementById('fg-dbg');
+  if(_d){_d.style.display='block';_d.innerHTML='DBG: switchGame('+type+')';_fDbgHidden=false;clearTimeout(window._fDbgT);window._fDbgT=setTimeout(function(){_fDbgHidden=true;if(_d)_d.style.display='none';},8000);}
   var wc=document.getElementById('arena-container');
   var fc=document.getElementById('flappy-container');
+  if(!wc||!fc){if(_d)_d.innerHTML+='<br>MISSING: wc='+!!wc+' fc='+!!fc;return;}
   if(type==='wave'){
     wc.style.display='block';fc.style.display='none';
     document.getElementById('sel-wave').classList.add('active');
@@ -4109,12 +4112,10 @@ function switchGame(type){
     document.getElementById('sel-wave').classList.remove('active');
     document.getElementById('sel-flappy').classList.add('active');
     if(raf){cancelAnimationFrame(raf);raf=null;}
-    // reset debug overlay
-    var dbg=document.getElementById('fg-dbg');if(dbg){dbg.style.display='none';dbg.innerHTML='';}_fDbgHidden=false;
-    fDbg('switchGame: container shown');
+    _fDbgHidden=false;
+    fDbg('containers switched');
     fNewGame();
     fDbg('fNewGame ok');
-    // force layout reflow, then init synchronously
     void fc.offsetWidth;
     fInit();
   }
