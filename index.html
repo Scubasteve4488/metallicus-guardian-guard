@@ -501,7 +501,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
 </head>
 <body>
-<!-- build: 2026-06-11-v1 -->
+<!-- build: 2026-06-11-v2 -->
 
 <!-- NAV -->
 <nav id="nav">
@@ -1731,7 +1731,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
       <canvas id="arena-canvas" style="display:block;width:100%;border-radius:16px;border:1px solid rgba(201,146,42,0.25);cursor:crosshair;touch-action:none;-webkit-user-select:none;user-select:none;background:#080b12;"></canvas>
     </div>
     <div id="flappy-container" style="display:none;position:relative;width:100%;max-width:480px;margin:0 auto;">
-      <canvas id="flappy-canvas" width="480" height="520" style="display:block;width:100%;max-width:480px;height:auto;border-radius:16px;border:1px solid rgba(201,146,42,0.25);cursor:pointer;touch-action:none;-webkit-user-select:none;user-select:none;background:#080b12;"></canvas>
+      <canvas id="flappy-canvas" width="480" height="520" style="display:block;width:100%;max-width:480px;border-radius:16px;border:1px solid rgba(201,146,42,0.25);cursor:pointer;touch-action:none;-webkit-user-select:none;user-select:none;background:#080b12;"></canvas>
       <div id="fg-dbg" style="position:absolute;top:8px;left:8px;right:8px;background:rgba(220,40,40,0.92);color:#fff;font:12px/1.5 monospace;padding:8px 10px;border-radius:6px;z-index:10;display:none;word-break:break-all;"></div>
     </div>
     <div style="max-width:600px;margin:1.2rem auto 0;">
@@ -4117,11 +4117,15 @@ function fInit(){
   fDbg('fInit start');
   fCvs=document.getElementById('flappy-canvas');
   if(!fCvs){fDbg('ERROR: canvas el missing');return;}
-  fDbg('canvas found, buf='+fCvs.width+'x'+fCvs.height+' css='+fCvs.offsetWidth+'x'+fCvs.offsetHeight);
   fCtx=fCvs.getContext('2d');
   if(!fCtx){fDbg('ERROR: getContext returned null');return;}
-  fDbg('ctx OK');
   fCvs.width=FCW;fCvs.height=FCH;
+  // Explicitly set CSS height like wave game's resize() — height:auto doesn't work on canvas
+  var fc2=document.getElementById('flappy-container');
+  var dw=Math.min(FCW,fc2&&fc2.clientWidth>0?fc2.clientWidth:FCW);
+  fCvs.style.width=dw+'px';
+  fCvs.style.height=Math.round(FCH*dw/FCW)+'px';
+  fDbg('canvas buf='+fCvs.width+'x'+fCvs.height+' css='+dw+'x'+Math.round(FCH*dw/FCW));
   if(!fImg){fImg=new Image();fImg.onload=function(){fImgOk=true;};fImg.src='./g_token.jpg?v=2';}
   fStop();
   _fClick=function(e){var r=fCvs.getBoundingClientRect(),sx=r.width>0?FCW/r.width:1;fTap((e.clientX-r.left)*sx,(e.clientY-r.top)*sx);};
