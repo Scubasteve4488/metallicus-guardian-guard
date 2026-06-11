@@ -1724,14 +1724,17 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <div class="sec-label" style="text-align:center;">Guardian Arena · GUARD Ecosystem</div>
     <h1 style="font-family:'Cinzel Decorative','Cinzel',serif;text-align:center;font-size:clamp(1.8rem,5vw,2.8rem);color:var(--gold-l);margin:.2rem 0 .8rem;">GUARDIAN ARENA</h1>
     <div id="game-selector" style="display:flex;gap:.5rem;justify-content:center;margin-bottom:1.1rem;">
-      <button id="sel-wave" class="game-sel-btn active" onclick="switchGame('wave')">⚔ Wave Survival</button>
-      <button id="sel-flappy" class="game-sel-btn" onclick="switchGame('flappy')">🪙 Flappy GUARD</button>
+      <button id="sel-wave" class="game-sel-btn active" onclick="switchToWave()">⚔ Wave Survival</button>
+      <button id="sel-flappy" class="game-sel-btn" onclick="switchToFlappy()">🪙 Flappy GUARD</button>
     </div>
     <div id="arena-container" style="position:relative;width:100%;max-width:600px;margin:0 auto;">
       <canvas id="arena-canvas" style="display:block;width:100%;border-radius:16px;border:1px solid rgba(201,146,42,0.25);cursor:crosshair;touch-action:none;-webkit-user-select:none;user-select:none;background:#080b12;"></canvas>
     </div>
-    <div id="flappy-container" style="display:none;position:relative;width:100%;max-width:480px;margin:0 auto;">
-      <canvas id="flappy-canvas" width="480" height="520" style="display:block;width:100%;max-width:480px;border-radius:16px;border:1px solid rgba(201,146,42,0.25);cursor:pointer;touch-action:none;-webkit-user-select:none;user-select:none;background:#080b12;"></canvas>
+    <div id="flappy-game-container" style="display:none;text-align:center;">
+      <canvas id="fg-canvas" style="display:block;margin:0 auto;border-radius:12px;border:1px solid rgba(201,146,42,0.3);max-width:100%;touch-action:none;-webkit-user-select:none;user-select:none;cursor:pointer;"></canvas>
+      <div style="margin-top:1rem;">
+        <button onclick="FG.shareScore()" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;padding:.6rem 1.4rem;border-radius:8px;font-size:.85rem;cursor:pointer;margin-right:.5rem;">🐦 Share Score</button>
+      </div>
     </div>
     <div style="max-width:600px;margin:1.2rem auto 0;">
       <!-- Personal best bar -->
@@ -4065,281 +4068,416 @@ function scrollNav(amount){
   document.getElementById('navScroll').scrollBy({left:amount,behavior:'smooth'});
 }
 
-// --- FLAPPY GUARD ---
-var FCW=480,FCH=520,FC_R=22,FG_PW=56,FG_TOP=28;
-var fCvs=null,fCtx=null,fRaf=null,fG=null;
-var fMuted=localStorage.getItem('fg_mute')==='1';
-var fImg=null,fImgOk=false,_fClick=null,_fTouch2=null,_fKey2=null;
+// ============ FLAPPY GUARD ============
+var FG = {
+  canvas: null,
+  ctx: null,
+  animFrame: null,
+  started: false,
+  dead: false,
+  frameCount: 0,
+  score: 0,
+  pb: parseInt(localStorage.getItem('fg_pb') || '0'),
+  gp: 0,
+  speed: 2.5,
+  gapSize: 140,
+  shield: false,
+  shieldTimer: 0,
+  particles: [],
+  barriers: [],
+  coin: { x: 120, y: 290, vy: 0, angle: 0, radius: 22 },
+  gravity: 0.38,
+  flapPower: -8,
+  coinImg: null,
+  _tapHandler: null,
+  _keyHandler: null,
+  _resizeHandler: null,
 
-function fNewGame(){
-  var rank=typeof guardianRank!=='undefined'?Math.min(6,guardianRank):0;
-  fG={
-    state:'start',y:FCH/2,vy:0,
-    pipes:[],pu:[],
-    score:0,pb:+(localStorage.getItem('fg_pb')||0),
-    speed:2.8,gap:140,tick:0,nextPipe:90,
-    shield:false,shieldT:0,skipNext:false,
-    grav:0.48*(1-rank*0.015),rank:rank,
-    deadT:0,showT:0,newPB:false,
-    stars:(function(){var a=[];for(var i=0;i<55;i++)a.push({x:Math.random()*FCW,y:Math.random()*FCH,r:Math.random()*1.6+0.3,s:Math.random()+0.4,a:Math.random()*0.6+0.25});return a;}()),
-    lbls:['FUD','RUG','HACK','DRAINER'],li:0,
-  };
-}
-
-function fResize(){
-  if(!fCvs)return;
-  var fc=document.getElementById('flappy-container');
-  var dw=Math.min(FCW,fc&&fc.clientWidth>0?fc.clientWidth:FCW);
-  fCvs.style.width=dw+'px';
-  fCvs.style.height=Math.round(FCH*dw/FCW)+'px';
-}
-
-function switchGame(type){
-  var wc=document.getElementById('arena-container');
-  var fc=document.getElementById('flappy-container');
-  if(!wc||!fc)return;
-  if(type==='wave'){
-    wc.style.display='block';fc.style.display='none';
-    document.getElementById('sel-wave').classList.add('active');
-    document.getElementById('sel-flappy').classList.remove('active');
-    fStop();
-  }else{
-    wc.style.display='none';fc.style.display='block';
-    document.getElementById('sel-wave').classList.remove('active');
-    document.getElementById('sel-flappy').classList.add('active');
-    if(typeof raf!=='undefined'&&raf){cancelAnimationFrame(raf);raf=null;}
-    fNewGame();
-    void fc.offsetWidth;
-    fInit();
-  }
-}
-
-function fInit(){
-  fStop(); // cancel any previous loop and remove old listeners first
-  fCvs=document.getElementById('flappy-canvas');
-  if(!fCvs)return;
-  fCtx=fCvs.getContext('2d');
-  if(!fCtx)return;
-  fCvs.width=FCW;fCvs.height=FCH;
-  fResize();
-  if(!fImg){fImg=new Image();fImg.onload=function(){fImgOk=true;};fImg.src='./g_token.jpg';}
-  // pointerdown fires for mouse, touch, and pen — no separate touchstart needed
-  _fClick=function(e){
-    e.preventDefault();
-    var r=fCvs.getBoundingClientRect();
-    if(!r||r.width<=0)return;
-    var sx=FCW/r.width,sy=FCH/r.height;
-    fTap((e.clientX-r.left)*sx,(e.clientY-r.top)*sy);
-  };
-  _fTouch2=function(e){
-    e.preventDefault();
-    if(!e.touches||!e.touches[0])return;
-    var t=e.touches[0],r=fCvs.getBoundingClientRect();
-    if(!r||r.width<=0)return;
-    var sx=FCW/r.width,sy=FCH/r.height;
-    fTap((t.clientX-r.left)*sx,(t.clientY-r.top)*sy);
-  };
-  _fKey2=function(e){if(e.code==='Space'){var fc2=document.getElementById('flappy-container');if(fc2&&fc2.style.display!=='none'){e.preventDefault();fTap(FCW/2,FCH/2);}}};
-  fCvs.addEventListener('pointerdown',_fClick);
-  fCvs.addEventListener('touchstart',_fTouch2,{passive:false});
-  window.addEventListener('keydown',_fKey2);
-  window.addEventListener('resize',fResize);
-  fRender();
-  fRaf=requestAnimationFrame(fLoop);
-}
-
-function fStop(){
-  if(fRaf){cancelAnimationFrame(fRaf);fRaf=null;}
-  if(fCvs){
-    if(_fClick)fCvs.removeEventListener('pointerdown',_fClick);
-    if(_fTouch2)fCvs.removeEventListener('touchstart',_fTouch2);
-  }
-  if(_fKey2)window.removeEventListener('keydown',_fKey2);
-  window.removeEventListener('resize',fResize);
-  _fClick=_fTouch2=_fKey2=null;
-}
-
-function fTap(x,y){
-  initAC();
-  if(x>FCW-48&&y<48){fMuted=!fMuted;localStorage.setItem('fg_mute',fMuted?'1':'0');return;}
-  if(!fG)return;
-  if(fG.state==='start'){fG.state='play';fFlap();return;}
-  if(fG.state==='play'){fFlap();return;}
-  if(fG.state==='dead'&&fG.showT>=20){
-    if(Math.abs(x-FCW/2)<80&&Math.abs(y-(FCH*0.68+18))<22){fNewGame();return;}
-    if(y>FCH*0.78){var msg='I scored '+fG.score+' on Flappy GUARD — can you beat me? 🪙⚡ #GUARD #XPRNetwork standguard.net';window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(msg),'_blank');}
-  }
-}
-
-function fFlap(){if(!fG)return;fG.vy=-9.5;fBoop('flap');}
-function fLoop(){fTick();fRender();fRaf=requestAnimationFrame(fLoop);}
-
-function fTick(){
-  if(!fG||fG.state==='start')return;
-  if(fG.state==='dead'){fG.deadT=Math.max(0,fG.deadT-1);if(fG.deadT<=0&&fG.showT<120)fG.showT++;return;}
-  fG.tick++;
-  fG.vy+=fG.grav;if(fG.vy>14)fG.vy=14;
-  fG.y+=fG.vy;
-  if(fG.shield){fG.shieldT--;if(fG.shieldT<=0)fG.shield=false;}
-  for(var i=0;i<fG.stars.length;i++){var s=fG.stars[i];s.x-=s.s*(fG.speed/2.8);if(s.x<0)s.x=FCW;}
-  fG.nextPipe--;
-  if(fG.nextPipe<=0){
-    var minY=FG_TOP+30,maxY=FCH-FG_TOP-fG.gap-30;
-    var top=minY+Math.random()*(maxY-minY);
-    fG.pipes.push({x:FCW+FG_PW,top:top,gap:fG.gap,lbl:fG.lbls[fG.li%4],done:false,safe:fG.skipNext});
-    if(fG.skipNext)fG.skipNext=false;
-    fG.li++;
-    fG.nextPipe=Math.max(60,95-Math.floor(fG.score*1.1));
-    if(Math.random()<0.35&&fG.tick>120)fG.pu.push({x:FCW+FG_PW+60,y:top+fG.gap/2,type:Math.random()<0.6?'skip':'shield',t:0,life:260});
-  }
-  for(var i=0;i<fG.pipes.length;i++){var p=fG.pipes[i];p.x-=fG.speed;if(!p.done&&p.x+FG_PW<FCW/2-FC_R){p.done=true;fG.score++;fBoop('point');fG.speed=Math.min(8,2.8+fG.score*0.05);fG.gap=Math.max(110,140-Math.floor(fG.score/10)*5);}}
-  fG.pipes=fG.pipes.filter(function(p){return p.x>-FG_PW-10;});
-  for(var i=0;i<fG.pu.length;i++){var pu=fG.pu[i];pu.x-=fG.speed;pu.t+=0.1;pu.life--;}
-  fG.pu=fG.pu.filter(function(pu){return pu.life>0&&pu.x>-30;});
-  var cx=FCW/2,cy=fG.y;
-  for(var i=fG.pu.length-1;i>=0;i--){var pu=fG.pu[i];if(Math.abs(cx-pu.x)<FC_R+16&&Math.abs(cy-pu.y)<FC_R+16){fBoop('pu');if(pu.type==='shield'){fG.shield=true;fG.shieldT=180;}else fG.skipNext=true;fG.pu.splice(i,1);}}
-  if(!fG.shield){
-    if(fG.y-FC_R<FG_TOP||fG.y+FC_R>FCH-FG_TOP){fDead();return;}
-    for(var i=0;i<fG.pipes.length;i++){var p=fG.pipes[i];if(p.safe)continue;if(cx+FC_R>p.x&&cx-FC_R<p.x+FG_PW){if(fG.y-FC_R<p.top||fG.y+FC_R>p.top+p.gap){fDead();return;}}}
-  }
-}
-
-function fDead(){
-  if(!fG||fG.state==='dead')return;
-  fG.state='dead';fBoop('die');fG.deadT=30;fG.showT=0;
-  fG.newPB=fG.score>fG.pb;
-  if(fG.newPB)localStorage.setItem('fg_pb',String(fG.score));
-  fG.pb=Math.max(fG.pb,fG.score);
-}
-
-function fRender(){
-  if(!fCtx||!fG)return;
-  var ctx=fCtx,W=FCW,H=FCH;
-  ctx.setTransform(1,0,0,1,0,0);
-  ctx.globalAlpha=1;
-  ctx.globalCompositeOperation='source-over';
-  ctx.fillStyle='#06071a';ctx.fillRect(0,0,W,H);
-  for(var i=0;i<fG.stars.length;i++){
-    var s=fG.stars[i];
-    ctx.globalAlpha=s.a;ctx.fillStyle='#ffffff';
-    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,6.283);ctx.fill();
-  }
-  ctx.globalAlpha=1;
-  ctx.strokeStyle='rgba(201,146,42,0.35)';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(0,FG_TOP);ctx.lineTo(W,FG_TOP);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(0,H-FG_TOP);ctx.lineTo(W,H-FG_TOP);ctx.stroke();
-  if(fG.state==='start'){fRenderStart();return;}
-  for(var i=0;i<fG.pipes.length;i++){
-    var p=fG.pipes[i];
-    var pf=p.safe?'#003a1a':'#1a0000',pe=p.safe?'#22c55e':'#ef4444';
-    ctx.fillStyle=pf;ctx.fillRect(p.x,FG_TOP,FG_PW,p.top-FG_TOP);
-    ctx.strokeStyle=pe;ctx.lineWidth=2;ctx.strokeRect(p.x,FG_TOP,FG_PW,p.top-FG_TOP);
-    var by=p.top+p.gap;
-    ctx.fillStyle=pf;ctx.fillRect(p.x,by,FG_PW,H-FG_TOP-by);
-    ctx.strokeStyle=pe;ctx.lineWidth=2;ctx.strokeRect(p.x,by,FG_PW,H-FG_TOP-by);
-    ctx.fillStyle=pe;ctx.font='bold 9px Arial,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(p.lbl,p.x+FG_PW/2,Math.max(FG_TOP+10,p.top-12));
-    ctx.fillText(p.lbl,p.x+FG_PW/2,Math.min(H-FG_TOP-10,by+12));
-  }
-  for(var i=0;i<fG.pu.length;i++){
-    var pu=fG.pu[i];
-    ctx.globalAlpha=Math.min(1,pu.life/20);
-    ctx.font='20px Arial,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(pu.type==='shield'?'🛡':'⚡',pu.x,pu.y);
-  }
-  ctx.globalAlpha=1;
-  if(!(fG.state==='dead'&&fG.deadT>15)){
-    var cx=W/2,cy=fG.y;
-    if(fImgOk&&fImg){
-      ctx.save();ctx.beginPath();ctx.arc(cx,cy,FC_R,0,6.283);ctx.clip();
-      ctx.drawImage(fImg,cx-FC_R,cy-FC_R,FC_R*2,FC_R*2);ctx.restore();
-    }else{
-      ctx.fillStyle='#e8b84b';ctx.beginPath();ctx.arc(cx,cy,FC_R,0,6.283);ctx.fill();
+  init: function(canvas) {
+    this.stop();
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    // Size canvas to container width, keeping 480:580 ratio
+    var cont = document.getElementById('flappy-game-container');
+    var cw = (cont && cont.clientWidth > 40) ? Math.min(480, cont.clientWidth) : 480;
+    this.canvas.width = cw;
+    this.canvas.height = Math.round(580 * cw / 480);
+    // Load coin image once
+    if (!this.coinImg) {
+      this.coinImg = new Image();
+      this.coinImg.src = './g_token.jpg';
     }
-    ctx.strokeStyle=fG.shield?'#a855f7':'rgba(255,255,255,0.7)';ctx.lineWidth=2;
-    ctx.beginPath();ctx.arc(cx,cy,FC_R,0,6.283);ctx.stroke();
+    this.reset();
+    // Input handlers — pointerdown covers mouse, touch, and pen universally
+    var self = this;
+    this._tapHandler = function(e) {
+      e.preventDefault();
+      self.tap();
+    };
+    this._keyHandler = function(e) {
+      if (e.code === 'Space') {
+        var fc = document.getElementById('flappy-game-container');
+        if (fc && fc.style.display !== 'none') { e.preventDefault(); self.tap(); }
+      }
+    };
+    this._resizeHandler = function() { self._resize(); };
+    this.canvas.addEventListener('pointerdown', this._tapHandler);
+    this.canvas.addEventListener('touchstart', this._tapHandler, {passive: false});
+    document.addEventListener('keydown', this._keyHandler);
+    window.addEventListener('resize', this._resizeHandler);
+    // Start loop
+    var loop = function() {
+      self.animFrame = requestAnimationFrame(loop);
+      self.update();
+      self.draw();
+    };
+    loop();
+  },
+
+  _resize: function() {
+    if (!this.canvas) return;
+    var cont = document.getElementById('flappy-game-container');
+    if (!cont || cont.style.display === 'none') return;
+    var cw = Math.min(480, cont.clientWidth || 480);
+    this.canvas.width = cw;
+    this.canvas.height = Math.round(580 * cw / 480);
+    // Reposition coin proportionally
+    this.coin.x = Math.round(cw * 0.25);
+    if (!this.started) this.coin.y = Math.round(this.canvas.height * 0.5);
+  },
+
+  reset: function() {
+    var w = this.canvas ? this.canvas.width : 480;
+    var h = this.canvas ? this.canvas.height : 580;
+    var rank = typeof guardianRank !== 'undefined' ? Math.min(6, guardianRank) : 0;
+    this.coin = { x: Math.round(w * 0.25), y: Math.round(h * 0.5), vy: 0, angle: 0, radius: 22 };
+    this.barriers = [];
+    this.particles = [];
+    this.score = 0;
+    this.gp = 0;
+    this.speed = 2.5;
+    this.gapSize = 140;
+    this.frameCount = 0;
+    this.shield = false;
+    this.shieldTimer = 0;
+    this.dead = false;
+    this.started = false;
+    this.gravity = 0.38 * (1 - rank * 0.015);
+  },
+
+  tap: function() {
+    if (this.dead) { this.reset(); return; }
+    if (!this.started) { this.started = true; }
+    this.coin.vy = this.flapPower;
+    this._boop('flap');
+  },
+
+  stop: function() {
+    if (this.animFrame) { cancelAnimationFrame(this.animFrame); this.animFrame = null; }
+    if (this.canvas && this._tapHandler) {
+      this.canvas.removeEventListener('pointerdown', this._tapHandler);
+      this.canvas.removeEventListener('touchstart', this._tapHandler);
+    }
+    if (this._keyHandler) document.removeEventListener('keydown', this._keyHandler);
+    if (this._resizeHandler) window.removeEventListener('resize', this._resizeHandler);
+    this._tapHandler = null;
+    this._keyHandler = null;
+    this._resizeHandler = null;
+  },
+
+  update: function() {
+    this.frameCount++;
+    if (!this.started || this.dead) return;
+    var w = this.canvas.width, h = this.canvas.height;
+    // Gravity
+    this.coin.vy += this.gravity;
+    if (this.coin.vy > 12) this.coin.vy = 12;
+    this.coin.y += this.coin.vy;
+    this.coin.angle = Math.max(-0.5, Math.min(0.5, this.coin.vy * 0.06));
+    // Spawn barrier every 90 frames
+    if (this.frameCount % 90 === 0) {
+      var lbls = ['FUD','RUG','HACK','DRAINER'];
+      var topH = 60 + Math.random() * (h - this.gapSize - 90);
+      this.barriers.push({ x: w, topH: topH, lbl: lbls[Math.floor(Math.random()*4)], passed: false });
+    }
+    var bw = 52;
+    for (var i = this.barriers.length - 1; i >= 0; i--) {
+      var b = this.barriers[i];
+      b.x -= this.speed;
+      if (b.x + bw < 0) { this.barriers.splice(i, 1); continue; }
+      // Score when coin passes barrier
+      if (!b.passed && b.x + bw < this.coin.x - this.coin.radius) {
+        b.passed = true;
+        this.score++;
+        this.gp++;
+        if (this.score % 5 === 0) this.speed = Math.min(8, this.speed + 0.15);
+        if (this.score % 10 === 0) this.gapSize = Math.max(110, this.gapSize - 5);
+        this._boop('point');
+      }
+      // Collision (skip if shield active)
+      if (!this.shield) {
+        var cx = this.coin.x, cy = this.coin.y, r = this.coin.radius;
+        if (cx + r > b.x && cx - r < b.x + bw) {
+          if (cy - r < b.topH || cy + r > b.topH + this.gapSize) { this.die(); return; }
+        }
+      }
+    }
+    // Boundary collision
+    if (this.coin.y - this.coin.radius < 0 || this.coin.y + this.coin.radius > h) { this.die(); return; }
+    // Shield timer
+    if (this.shield) { this.shieldTimer--; if (this.shieldTimer <= 0) this.shield = false; }
+    // Update death particles
+    for (var j = this.particles.length - 1; j >= 0; j--) {
+      var p = this.particles[j];
+      p.x += p.vx; p.y += p.vy; p.vy += 0.15; p.life--;
+      if (p.life <= 0) this.particles.splice(j, 1);
+    }
+  },
+
+  die: function() {
+    if (this.dead) return;
+    this.dead = true;
+    this._boop('die');
+    for (var i = 0; i < 28; i++) {
+      var ang = (Math.PI * 2 / 28) * i;
+      this.particles.push({
+        x: this.coin.x, y: this.coin.y,
+        vx: Math.cos(ang) * (1.5 + Math.random() * 3.5),
+        vy: Math.sin(ang) * (1.5 + Math.random() * 3.5),
+        life: 35 + Math.random() * 25,
+        color: Math.random() > 0.5 ? '#c9922a' : '#7c3aed'
+      });
+    }
+    if (this.score > this.pb) {
+      this.pb = this.score;
+      localStorage.setItem('fg_pb', String(this.pb));
+    }
+  },
+
+  draw: function() {
+    if (!this.ctx || !this.canvas) return;
+    var c = this.ctx, w = this.canvas.width, h = this.canvas.height;
+    c.setTransform(1,0,0,1,0,0);
+    c.globalAlpha = 1;
+    // Background
+    c.fillStyle = '#06071a';
+    c.fillRect(0, 0, w, h);
+    // Scrolling stars
+    for (var i = 0; i < 50; i++) {
+      var sx = (i * 137 + this.frameCount * 0.4) % w;
+      var sy = (i * 73 + Math.floor(i/5) * 17) % h;
+      c.globalAlpha = 0.2 + (Math.sin(i * 2.3 + this.frameCount * 0.02) * 0.5 + 0.5) * 0.5;
+      c.fillStyle = '#ffffff';
+      c.fillRect(sx, sy, 1.5, 1.5);
+    }
+    c.globalAlpha = 1;
+    // Gold border lines top/bottom
+    c.strokeStyle = 'rgba(201,146,42,0.4)';
+    c.lineWidth = 1;
+    c.beginPath(); c.moveTo(0, 0); c.lineTo(w, 0); c.stroke();
+    c.beginPath(); c.moveTo(0, h-1); c.lineTo(w, h-1); c.stroke();
+
+    if (!this.started && !this.dead) {
+      // ── START SCREEN ──
+      var bcy = h * 0.3 + Math.sin(this.frameCount * 0.05) * 12;
+      this._drawCoin(w/2, bcy, 34, 0, false);
+      c.textAlign = 'center';
+      c.textBaseline = 'middle';
+      c.fillStyle = '#ffffff';
+      c.font = 'bold 28px Arial,sans-serif';
+      c.fillText('FLAPPY GUARD', w/2, h * 0.52);
+      c.fillStyle = '#8899bb';
+      c.font = '13px Arial,sans-serif';
+      c.fillText('Fly through the blockchain', w/2, h * 0.60);
+      var pulse = 0.5 + 0.5 * Math.abs(Math.sin(this.frameCount * 0.06));
+      c.globalAlpha = pulse;
+      c.fillStyle = '#ffe066';
+      c.font = 'bold 17px Arial,sans-serif';
+      c.fillText('TAP  ·  CLICK  ·  SPACEBAR', w/2, h * 0.70);
+      c.globalAlpha = 1;
+      if (this.pb > 0) {
+        c.fillStyle = '#667788';
+        c.font = '12px Arial,sans-serif';
+        c.fillText('Best: ' + this.pb, w/2, h * 0.78);
+      }
+      return;
+    }
+
+    if (this.dead) {
+      // ── DEATH PARTICLES ──
+      for (var pi = 0; pi < this.particles.length; pi++) {
+        var pp = this.particles[pi];
+        c.globalAlpha = Math.max(0, pp.life / 60);
+        c.fillStyle = pp.color;
+        c.beginPath(); c.arc(pp.x, pp.y, 3, 0, 6.28); c.fill();
+      }
+      c.globalAlpha = 1;
+      // ── GAME OVER OVERLAY ──
+      c.fillStyle = 'rgba(3,4,15,0.85)';
+      c.fillRect(w*0.06, h*0.20, w*0.88, h*0.62);
+      c.strokeStyle = 'rgba(201,146,42,0.35)';
+      c.lineWidth = 1;
+      c.strokeRect(w*0.06, h*0.20, w*0.88, h*0.62);
+      c.textAlign = 'center';
+      c.textBaseline = 'middle';
+      c.fillStyle = '#ef4444';
+      c.font = 'bold 22px Arial,sans-serif';
+      c.fillText('GUARDIAN DOWN', w/2, h*0.30);
+      c.fillStyle = '#ffffff';
+      c.font = 'bold 44px Arial,sans-serif';
+      c.fillText(String(this.score), w/2, h*0.43);
+      if (this.score > 0 && this.score >= this.pb) {
+        c.fillStyle = '#4ade80';
+        c.font = 'bold 14px Arial,sans-serif';
+        c.fillText('★ NEW PERSONAL BEST ★', w/2, h*0.54);
+      } else {
+        c.fillStyle = '#8899aa';
+        c.font = '13px Arial,sans-serif';
+        c.fillText('Best: ' + this.pb, w/2, h*0.54);
+      }
+      // Play again button
+      c.fillStyle = 'rgba(201,146,42,0.18)';
+      c.fillRect(w/2-70, h*0.64, 140, 36);
+      c.strokeStyle = 'rgba(201,146,42,0.8)';
+      c.lineWidth = 1;
+      c.strokeRect(w/2-70, h*0.64, 140, 36);
+      c.fillStyle = '#ffe066';
+      c.font = 'bold 14px Arial,sans-serif';
+      c.fillText('► PLAY AGAIN', w/2, h*0.64 + 18);
+      return;
+    }
+
+    // ── PLAYING ──
+    var bw2 = 52;
+    for (var bi = 0; bi < this.barriers.length; bi++) {
+      var bar = this.barriers[bi];
+      // Top pipe
+      c.fillStyle = '#1a0808';
+      c.fillRect(bar.x, 0, bw2, bar.topH);
+      c.strokeStyle = '#ef4444';
+      c.lineWidth = 2;
+      c.strokeRect(bar.x, 0, bw2, bar.topH);
+      // Bottom pipe
+      var botY = bar.topH + this.gapSize;
+      c.fillStyle = '#1a0808';
+      c.fillRect(bar.x, botY, bw2, h - botY);
+      c.strokeStyle = '#ef4444';
+      c.strokeRect(bar.x, botY, bw2, h - botY);
+      // Label
+      c.fillStyle = '#ef4444';
+      c.font = 'bold 9px Arial,sans-serif';
+      c.textAlign = 'center';
+      c.textBaseline = 'middle';
+      c.fillText(bar.lbl, bar.x + bw2/2, Math.max(12, bar.topH - 12));
+      c.fillText(bar.lbl, bar.x + bw2/2, Math.min(h - 12, botY + 12));
+    }
+    // Coin
+    this._drawCoin(this.coin.x, this.coin.y, this.coin.radius, this.coin.angle, this.shield);
+    // HUD — score
+    c.textAlign = 'center';
+    c.textBaseline = 'top';
+    c.fillStyle = '#ffffff';
+    c.font = 'bold 24px Arial,sans-serif';
+    c.fillText(String(this.score), w/2, 6);
+    c.fillStyle = '#8899aa';
+    c.font = '11px Arial,sans-serif';
+    c.textAlign = 'right';
+    c.fillText('BEST ' + this.pb, w - 8, 8);
+    if (this.shield) {
+      c.fillStyle = '#c084fc';
+      c.font = 'bold 10px Arial,sans-serif';
+      c.textAlign = 'left';
+      c.fillText('🛡 ' + Math.ceil(this.shieldTimer/60) + 's', 6, 8);
+    }
+  },
+
+  _drawCoin: function(x, y, r, angle, shielded) {
+    var c = this.ctx;
+    c.save();
+    c.translate(x, y);
+    c.rotate(angle || 0);
+    c.shadowColor = shielded ? '#a855f7' : '#c9922a';
+    c.shadowBlur = shielded ? 18 : 8;
+    c.beginPath();
+    c.arc(0, 0, r, 0, 6.283);
+    c.clip();
+    if (this.coinImg && this.coinImg.complete && this.coinImg.naturalWidth > 0) {
+      c.drawImage(this.coinImg, -r, -r, r*2, r*2);
+    } else {
+      c.fillStyle = '#c9922a';
+      c.fill();
+    }
+    c.restore();
+    c.save();
+    c.shadowBlur = 0;
+    c.strokeStyle = shielded ? '#a855f7' : 'rgba(255,255,255,0.7)';
+    c.lineWidth = 2;
+    c.beginPath();
+    c.arc(x, y, r, 0, 6.283);
+    c.stroke();
+    c.restore();
+  },
+
+  shareScore: function() {
+    var msg = 'I scored ' + this.score + ' on Flappy GUARD — can you beat me? 🪙⚡ #GUARD #XPRNetwork standguard.net';
+    window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(msg), '_blank');
+  },
+
+  _boop: function(type) {
+    try {
+      initAC();
+      if (!AC) return;
+      var now = AC.currentTime, o = AC.createOscillator(), g = AC.createGain();
+      o.connect(g); g.connect(AC.destination);
+      if (type === 'flap') {
+        o.type = 'sine';
+        o.frequency.setValueAtTime(420, now); o.frequency.exponentialRampToValueAtTime(660, now + 0.07);
+        g.gain.setValueAtTime(0.12, now); g.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+        o.start(now); o.stop(now + 0.15);
+      } else if (type === 'point') {
+        o.type = 'triangle';
+        o.frequency.setValueAtTime(660, now); o.frequency.exponentialRampToValueAtTime(990, now + 0.1);
+        g.gain.setValueAtTime(0.09, now); g.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        o.start(now); o.stop(now + 0.2);
+      } else if (type === 'die') {
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(280, now); o.frequency.exponentialRampToValueAtTime(40, now + 0.65);
+        g.gain.setValueAtTime(0.15, now); g.gain.exponentialRampToValueAtTime(0.001, now + 0.72);
+        o.start(now); o.stop(now + 0.75);
+      }
+    } catch(e) {}
   }
-  ctx.globalAlpha=1;ctx.textAlign='center';ctx.textBaseline='top';
-  ctx.fillStyle='#ffffff';ctx.font='bold 22px Arial,sans-serif';
-  ctx.fillText(String(fG.score),W/2,5);
-  ctx.fillStyle='#8899aa';ctx.font='11px Arial,sans-serif';ctx.textAlign='right';
-  ctx.fillText('BEST '+fG.pb,W-8,8);
-  ctx.globalAlpha=0.7;ctx.fillStyle='#ffffff';ctx.font='16px Arial,sans-serif';
-  ctx.textAlign='right';ctx.textBaseline='top';
-  ctx.fillText(fMuted?'🔇':'🔊',W-4,4);ctx.globalAlpha=1;
-  if(fG.shield){ctx.fillStyle='#c084fc';ctx.font='bold 10px Arial,sans-serif';ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('🛡 '+Math.ceil(fG.shieldT/60)+'s',6,8);}
-  else if(fG.skipNext){ctx.fillStyle='#4ade80';ctx.font='bold 10px Arial,sans-serif';ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('⚡ SAFE',6,8);}
-  if(fG.state==='dead')fRenderDead();
+};
+
+function switchToFlappy() {
+  var wc = document.getElementById('arena-container');
+  var fc = document.getElementById('flappy-game-container');
+  var btnW = document.getElementById('sel-wave');
+  var btnF = document.getElementById('sel-flappy');
+  if (wc) wc.style.display = 'none';
+  if (fc) fc.style.display = 'block';
+  if (btnW) btnW.classList.remove('active');
+  if (btnF) btnF.classList.add('active');
+  if (typeof raf !== 'undefined' && raf) { cancelAnimationFrame(raf); raf = null; }
+  FG.stop();
+  setTimeout(function() {
+    var canvas = document.getElementById('fg-canvas');
+    if (canvas) FG.init(canvas);
+  }, 50);
 }
 
-function fRenderStart(){
-  var ctx=fCtx,W=FCW,H=FCH,t=Date.now();
-  var coiny=H*0.27+Math.sin(t/420)*11;
-  if(fImgOk&&fImg){
-    ctx.save();ctx.beginPath();ctx.arc(W/2,coiny,36,0,6.283);ctx.clip();
-    ctx.drawImage(fImg,W/2-36,coiny-36,72,72);ctx.restore();
-  }else{
-    ctx.fillStyle='#e8b84b';ctx.beginPath();ctx.arc(W/2,coiny,36,0,6.283);ctx.fill();
-  }
-  ctx.strokeStyle='rgba(255,255,255,0.6)';ctx.lineWidth=2.5;
-  ctx.beginPath();ctx.arc(W/2,coiny,37,0,6.283);ctx.stroke();
-  ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillStyle='#ffffff';ctx.font='bold 30px Arial,sans-serif';
-  ctx.fillText('FLAPPY GUARD',W/2,H*0.50);
-  ctx.fillStyle='#8899bb';ctx.font='13px Arial,sans-serif';
-  ctx.fillText('Fly through the blockchain',W/2,H*0.58);
-  var pulse=0.55+0.45*Math.abs(Math.sin(t/520));
-  ctx.globalAlpha=pulse;
-  ctx.fillStyle='#ffe066';ctx.font='bold 17px Arial,sans-serif';
-  ctx.fillText('TAP TO BEGIN',W/2,H*0.67);
-  ctx.globalAlpha=1;
-  ctx.fillStyle='#667788';ctx.font='12px Arial,sans-serif';
-  ctx.fillText('Best: '+(fG?fG.pb:0),W/2,H*0.75);
-  if(fG&&fG.rank>0){
-    var rn=typeof SHIELDS!=='undefined'&&SHIELDS[fG.rank]?SHIELDS[fG.rank].title:'Guardian';
-    ctx.fillStyle='#a78bfa';ctx.font='10px Arial,sans-serif';
-    ctx.fillText('+'+Math.round(fG.rank*1.5)+'% lighter gravity · '+rn,W/2,H*0.81);
-  }
-  ctx.fillStyle='#445566';ctx.font='11px Arial,sans-serif';
-  ctx.fillText('Tap  ·  Click  ·  Spacebar',W/2,H*0.87);
+function switchToWave() {
+  var wc = document.getElementById('arena-container');
+  var fc = document.getElementById('flappy-game-container');
+  var btnW = document.getElementById('sel-wave');
+  var btnF = document.getElementById('sel-flappy');
+  if (fc) fc.style.display = 'none';
+  if (wc) wc.style.display = 'block';
+  if (btnW) btnW.classList.add('active');
+  if (btnF) btnF.classList.remove('active');
+  FG.stop();
 }
-
-function fRenderDead(){
-  var ctx=fCtx,W=FCW,H=FCH;
-  if(!fG||fG.showT<=0)return;
-  var fade=Math.min(1,fG.showT/20);
-  ctx.globalAlpha=fade*0.85;ctx.fillStyle='#03040f';
-  ctx.fillRect(W*0.05,H*0.28,W*0.9,H*0.54);
-  ctx.globalAlpha=fade;ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillStyle='#ef4444';ctx.font='bold 24px Arial,sans-serif';ctx.fillText('GUARDIAN DOWN',W/2,H*0.37);
-  ctx.fillStyle='#ffffff';ctx.font='bold 16px Arial,sans-serif';ctx.fillText('Score: '+fG.score,W/2,H*0.44);
-  ctx.fillStyle='#8899aa';ctx.font='12px Arial,sans-serif';ctx.fillText('Best: '+fG.pb,W/2,H*0.50);
-  if(fG.newPB){ctx.fillStyle='#4ade80';ctx.font='bold 12px Arial,sans-serif';ctx.fillText('★ NEW BEST ★',W/2,H*0.56);}
-  if(fG.showT>=20){
-    ctx.fillStyle='rgba(201,146,42,0.2)';ctx.fillRect(W/2-78,H*0.67,156,36);
-    ctx.strokeStyle='rgba(201,146,42,0.7)';ctx.lineWidth=1;ctx.strokeRect(W/2-78,H*0.67,156,36);
-    ctx.fillStyle='#ffe066';ctx.font='bold 14px Arial,sans-serif';ctx.fillText('► PLAY AGAIN',W/2,H*0.67+18);
-    ctx.fillStyle='#445566';ctx.font='11px Arial,sans-serif';ctx.fillText('Tap below to tweet your score',W/2,H*0.79);
-    ctx.fillStyle='rgba(29,161,242,0.18)';ctx.fillRect(W/2-56,H*0.82,112,28);
-    ctx.strokeStyle='rgba(29,161,242,0.55)';ctx.lineWidth=1;ctx.strokeRect(W/2-56,H*0.82,112,28);
-    ctx.fillStyle='#93c5fd';ctx.font='11px Arial,sans-serif';ctx.fillText('Tweet Score',W/2,H*0.82+14);
-  }
-  ctx.globalAlpha=1;
-}
-
-function fBoop(type){
-  if(fMuted)return;initAC();if(!AC)return;
-  try{
-    var now=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();
-    o.connect(g);g.connect(AC.destination);
-    if(type==='flap'){o.type='sine';o.frequency.setValueAtTime(420,now);o.frequency.exponentialRampToValueAtTime(660,now+0.07);g.gain.setValueAtTime(0.12,now);g.gain.exponentialRampToValueAtTime(0.001,now+0.13);}
-    else if(type==='point'){o.type='triangle';o.frequency.setValueAtTime(660,now);o.frequency.exponentialRampToValueAtTime(990,now+0.1);g.gain.setValueAtTime(0.09,now);g.gain.exponentialRampToValueAtTime(0.001,now+0.18);}
-    else if(type==='die'){o.type='sawtooth';o.frequency.setValueAtTime(280,now);o.frequency.exponentialRampToValueAtTime(40,now+0.65);g.gain.setValueAtTime(0.15,now);g.gain.exponentialRampToValueAtTime(0.001,now+0.72);}
-    else if(type==='pu'){o.type='sine';o.frequency.setValueAtTime(660,now);o.frequency.exponentialRampToValueAtTime(1100,now+0.18);g.gain.setValueAtTime(0.11,now);g.gain.exponentialRampToValueAtTime(0.001,now+0.24);}
-    o.start(now);o.stop(now+0.9);
-  }catch(e){}
-}
-// --- END FLAPPY GUARD ---
+// ============ END FLAPPY GUARD ============
 
 
 
