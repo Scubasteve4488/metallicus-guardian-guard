@@ -501,7 +501,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
 </head>
 <body>
-<!-- build: 2026-06-11-v4 -->
+<!-- build: 2026-06-11-v5 -->
 
 <!-- NAV -->
 <nav id="nav">
@@ -4098,26 +4098,31 @@ function fNewGame(){
 
 function switchGame(type){
   var _d=document.getElementById('fg-dbg');
-  if(_d){_d.style.display='block';_d.innerHTML='DBG: switchGame('+type+')';_fDbgHidden=false;clearTimeout(window._fDbgT);window._fDbgT=setTimeout(function(){_fDbgHidden=true;if(_d)_d.style.display='none';},8000);}
-  var wc=document.getElementById('arena-container');
-  var fc=document.getElementById('flappy-container');
-  if(!wc||!fc){if(_d)_d.innerHTML+='<br>MISSING: wc='+!!wc+' fc='+!!fc;return;}
-  if(type==='wave'){
-    wc.style.display='block';fc.style.display='none';
-    document.getElementById('sel-wave').classList.add('active');
-    document.getElementById('sel-flappy').classList.remove('active');
-    fStop();
-  }else{
-    wc.style.display='none';fc.style.display='block';
-    document.getElementById('sel-wave').classList.remove('active');
-    document.getElementById('sel-flappy').classList.add('active');
-    if(raf){cancelAnimationFrame(raf);raf=null;}
-    _fDbgHidden=false;
-    fDbg('containers switched');
-    fNewGame();
-    fDbg('fNewGame ok');
-    void fc.offsetWidth;
-    fInit();
+  if(_d){_d.style.display='block';_d.innerHTML='DBG: switchGame('+type+')';_fDbgHidden=false;clearTimeout(window._fDbgT);window._fDbgT=setTimeout(function(){_fDbgHidden=true;if(_d)_d.style.display='none';},10000);}
+  try {
+    var wc=document.getElementById('arena-container');
+    var fc=document.getElementById('flappy-container');
+    if(!wc||!fc){if(_d)_d.innerHTML+='<br>MISSING wc='+!!wc+' fc='+!!fc;return;}
+    if(type==='wave'){
+      wc.style.display='block';fc.style.display='none';
+      document.getElementById('sel-wave').classList.add('active');
+      document.getElementById('sel-flappy').classList.remove('active');
+      fStop();
+    }else{
+      wc.style.display='none';fc.style.display='block';
+      fDbg('containers switched');
+      document.getElementById('sel-wave').classList.remove('active');
+      document.getElementById('sel-flappy').classList.add('active');
+      if(typeof raf!=='undefined'&&raf){cancelAnimationFrame(raf);raf=null;}
+      fDbg('raf cancelled');
+      _fDbgHidden=false;
+      fNewGame();
+      fDbg('fNewGame ok');
+      void fc.offsetWidth;
+      fInit();
+    }
+  } catch(e) {
+    if(_d)_d.innerHTML+='<br>THROW: '+e.message;
   }
 }
 
