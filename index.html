@@ -1732,6 +1732,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     </div>
     <div id="flappy-container" style="display:none;position:relative;width:100%;max-width:480px;margin:0 auto;">
       <canvas id="flappy-canvas" width="480" height="520" style="display:block;width:100%;max-width:480px;height:auto;border-radius:16px;border:1px solid rgba(201,146,42,0.25);cursor:pointer;touch-action:none;-webkit-user-select:none;user-select:none;background:#080b12;"></canvas>
+      <div id="fg-dbg" style="position:absolute;top:8px;left:8px;right:8px;background:rgba(220,40,40,0.92);color:#fff;font:12px/1.5 monospace;padding:8px 10px;border-radius:6px;z-index:10;display:none;word-break:break-all;"></div>
     </div>
     <div style="max-width:600px;margin:1.2rem auto 0;">
       <!-- Personal best bar -->
@@ -4070,6 +4071,8 @@ var FCW=480,FCH=520,FC_R=22,FG_PW=56,FG_TOP=28;
 var fCvs=null,fCtx=null,fRaf=null,fG=null;
 var fMuted=localStorage.getItem('fg_mute')==='1';
 var fImg=null,fImgOk=false,_fClick=null,_fTouch2=null,_fKey2=null;
+var _fDbgHidden=false;
+function fDbg(msg){var d=document.getElementById('fg-dbg');if(!d||_fDbgHidden)return;d.style.display='block';d.innerHTML=(d.innerHTML?d.innerHTML+'<br>':'')+msg;}
 
 function fNewGame(){
   var rank=typeof guardianRank!=='undefined'?Math.min(6,guardianRank):0;
@@ -4099,17 +4102,26 @@ function switchGame(type){
     document.getElementById('sel-wave').classList.remove('active');
     document.getElementById('sel-flappy').classList.add('active');
     if(raf){cancelAnimationFrame(raf);raf=null;}
+    // reset debug overlay
+    var dbg=document.getElementById('fg-dbg');if(dbg){dbg.style.display='none';dbg.innerHTML='';}_fDbgHidden=false;
+    fDbg('switchGame: container shown');
     fNewGame();
-    requestAnimationFrame(function(){requestAnimationFrame(fInit);});
+    fDbg('fNewGame ok');
+    // force layout reflow, then init synchronously
+    void fc.offsetWidth;
+    fInit();
   }
 }
 
 function fInit(){
+  fDbg('fInit start');
   fCvs=document.getElementById('flappy-canvas');
-  if(!fCvs){console.error('flappy-canvas not found');return;}
-  fCvs.width=FCW;fCvs.height=FCH;
+  if(!fCvs){fDbg('ERROR: canvas el missing');return;}
+  fDbg('canvas found, buf='+fCvs.width+'x'+fCvs.height+' css='+fCvs.offsetWidth+'x'+fCvs.offsetHeight);
   fCtx=fCvs.getContext('2d');
-  if(!fCtx){console.error('flappy 2d context failed');return;}
+  if(!fCtx){fDbg('ERROR: getContext returned null');return;}
+  fDbg('ctx OK');
+  fCvs.width=FCW;fCvs.height=FCH;
   if(!fImg){fImg=new Image();fImg.onload=function(){fImgOk=true;};fImg.src='./g_token.jpg?v=2';}
   fStop();
   _fClick=function(e){var r=fCvs.getBoundingClientRect(),sx=r.width>0?FCW/r.width:1;fTap((e.clientX-r.left)*sx,(e.clientY-r.top)*sx);};
@@ -4118,6 +4130,7 @@ function fInit(){
   fCvs.addEventListener('click',_fClick);
   fCvs.addEventListener('touchstart',_fTouch2,{passive:false});
   window.addEventListener('keydown',_fKey2);
+  fDbg('starting render loop');
   fRender();
   fRaf=requestAnimationFrame(fLoop);
 }
@@ -4185,7 +4198,11 @@ function fDead(){
 
 function fRender(){
   if(!fCtx)return;
+  if(!_fDbgHidden){_fDbgHidden=true;var d=document.getElementById('fg-dbg');if(d)d.style.display='none';}
   var ctx=fCtx,W=FCW,H=FCH;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.globalAlpha=1;
+  ctx.globalCompositeOperation='source-over';
   ctx.fillStyle='#080918';
   ctx.fillRect(0,0,W,H);
   if(!fG)return;
