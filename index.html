@@ -4115,6 +4115,7 @@ function switchGame(type){
 }
 
 function fInit(){
+  fStop(); // cancel any previous loop and remove old listeners first
   fCvs=document.getElementById('flappy-canvas');
   if(!fCvs)return;
   fCtx=fCvs.getContext('2d');
@@ -4122,11 +4123,24 @@ function fInit(){
   fCvs.width=FCW;fCvs.height=FCH;
   fResize();
   if(!fImg){fImg=new Image();fImg.onload=function(){fImgOk=true;};fImg.src='./g_token.jpg';}
-  fStop();
-  _fClick=function(e){var r=fCvs.getBoundingClientRect(),sx=FCW/r.width;fTap((e.clientX-r.left)*sx,(e.clientY-r.top)*sx);};
-  _fTouch2=function(e){e.preventDefault();var t=e.touches[0],r=fCvs.getBoundingClientRect(),sx=FCW/r.width;fTap((t.clientX-r.left)*sx,(t.clientY-r.top)*sx);};
+  // pointerdown fires for mouse, touch, and pen — no separate touchstart needed
+  _fClick=function(e){
+    e.preventDefault();
+    var r=fCvs.getBoundingClientRect();
+    if(!r||r.width<=0)return;
+    var sx=FCW/r.width,sy=FCH/r.height;
+    fTap((e.clientX-r.left)*sx,(e.clientY-r.top)*sy);
+  };
+  _fTouch2=function(e){
+    e.preventDefault();
+    if(!e.touches||!e.touches[0])return;
+    var t=e.touches[0],r=fCvs.getBoundingClientRect();
+    if(!r||r.width<=0)return;
+    var sx=FCW/r.width,sy=FCH/r.height;
+    fTap((t.clientX-r.left)*sx,(t.clientY-r.top)*sy);
+  };
   _fKey2=function(e){if(e.code==='Space'){var fc2=document.getElementById('flappy-container');if(fc2&&fc2.style.display!=='none'){e.preventDefault();fTap(FCW/2,FCH/2);}}};
-  fCvs.addEventListener('click',_fClick);
+  fCvs.addEventListener('pointerdown',_fClick);
   fCvs.addEventListener('touchstart',_fTouch2,{passive:false});
   window.addEventListener('keydown',_fKey2);
   window.addEventListener('resize',fResize);
@@ -4136,7 +4150,10 @@ function fInit(){
 
 function fStop(){
   if(fRaf){cancelAnimationFrame(fRaf);fRaf=null;}
-  if(fCvs){if(_fClick)fCvs.removeEventListener('click',_fClick);if(_fTouch2)fCvs.removeEventListener('touchstart',_fTouch2);}
+  if(fCvs){
+    if(_fClick)fCvs.removeEventListener('pointerdown',_fClick);
+    if(_fTouch2)fCvs.removeEventListener('touchstart',_fTouch2);
+  }
   if(_fKey2)window.removeEventListener('keydown',_fKey2);
   window.removeEventListener('resize',fResize);
   _fClick=_fTouch2=_fKey2=null;
