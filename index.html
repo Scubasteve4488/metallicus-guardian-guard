@@ -481,7 +481,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <button class="nav-btn" id="t-guard" onclick="go('guard')">🛡 GUARD</button>
     <button class="nav-btn" id="t-start" onclick="go('start')">Start Here</button>
     <button class="nav-btn" id="t-ecosystem" onclick="go('ecosystem')">Ecosystem</button>
-    <button class="nav-btn" id="t-learn" onclick="go('learn')">Learn</button>
+    <button class="nav-btn" id="t-learn" onclick="go('learn')">🎓 Academy</button>
     <button class="nav-btn" id="t-shields" onclick="go('shields')">🛡 Shields</button>
     <button class="nav-btn" id="t-faq" onclick="go('faq')">FAQ</button>
     <button class="nav-btn" id="t-community" onclick="go('community')">Community</button>
@@ -499,7 +499,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <button class="mobile-nav-btn" onclick="go('guard');closeMenu()">🛡 GUARD Token</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('start')">🚀 Start Here</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('ecosystem')">🌐 Ecosystem</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('learn')">🎬 Learn</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('learn')">🎓 Academy</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('shields')">🛡 Shields</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('faq')">❓ FAQ</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('community')">👥 Community</button>
@@ -579,7 +579,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <div class="grid grid-auto mt3">
       <div class="card reveal"><div class="card-icon ci-gold">🚀</div><h3>New to XPR?</h3><p>Start with the onboarding guide — wallet setup, identity verification, and your first transaction step by step.</p><span class="card-link" onclick="go('start')" style="cursor:pointer;">Start Here</span></div>
       <div class="card reveal"><div class="card-icon ci-pur">🌐</div><h3>Explore the Ecosystem</h3><p>Every tool explained — MetalX, WebAuth, Alcor, Blastpad, LOAN Protocol, SimpleDEX, Metal Pay, and more.</p><span class="card-link" onclick="go('ecosystem')" style="cursor:pointer;">View Ecosystem</span></div>
-      <div class="card reveal"><div class="card-icon ci-blue">🎬</div><h3>Video Tutorials</h3><p>Community tutorials by BloxProd covering every major protocol on XPR Network.</p><span class="card-link" onclick="go('learn')" style="cursor:pointer;">Watch Videos</span></div>
+      <div class="card reveal"><div class="card-icon ci-blue">🎓</div><h3>Guardian Academy</h3><p>Community tutorials by BloxProd covering every major protocol on XPR Network.</p><span class="card-link" onclick="go('learn')" style="cursor:pointer;">Watch Videos</span></div>
       <div class="card reveal"><div class="card-icon ci-gold">🛡</div><h3>Meet GUARD</h3><p>The Metallicus Guardian — the community token and mascot at the heart of this site. Learn his story and role in the ecosystem.</p><span class="card-link" onclick="go('guard')" style="cursor:pointer;">Meet GUARD</span></div>
     </div>
   </div>
@@ -1014,9 +1014,23 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 <div id="page-learn" class="page">
 <div class="container">
   <div class="section">
-    <div class="sec-label">Learn</div>
-    <h1 class="page-title">Learn — Video Tutorials</h1>
-    <p class="page-sub">Step-by-step community tutorials covering the full Metallicus ecosystem, organized from beginner to advanced. All videos by BloxProd.</p>
+    <div class="sec-label">Guardian Academy</div>
+    <h1 class="page-title">Guardian Academy</h1>
+    <p class="page-sub">Community education powered by BloxProd — XPR Network Block Producer</p>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(201,146,42,0.38);border-radius:12px;padding:1.35rem 1.6rem;margin-bottom:1.75rem;">
+      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.7rem;">
+        <span style="font-size:1.3rem;">🛠</span>
+        <div>
+          <div style="font-family:'Cinzel',serif;font-size:.88rem;letter-spacing:.08em;color:var(--gold-l);font-weight:700;">About BloxProd</div>
+          <div style="font-size:.66rem;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-top:.1rem;">XPR Network Block Producer · Educator · Builder</div>
+        </div>
+      </div>
+      <p style="font-size:.84rem;color:var(--text2);line-height:1.78;margin:0 0 .85rem;">BloxProd is an active XPR Network Block Producer — one of the elected validators that keep the XPR Network running, secure, and gas-free 24/7. Block Producers validate every transaction on the network and earn daily XPR rewards for maintaining the infrastructure. BloxProd creates free educational content to help the community understand and navigate the XPR Network ecosystem.</p>
+      <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
+        <a href="https://bloxprod.io" target="_blank" class="badge bb" style="text-decoration:none;font-size:.72rem;padding:.22rem .65rem;">bloxprod.io ↗</a>
+        <a href="https://www.youtube.com/@bloxprod" target="_blank" class="badge br" style="text-decoration:none;font-size:.72rem;padding:.22rem .65rem;">YouTube ↗</a>
+      </div>
+    </div>
     <div class="grid grid-auto">
       <a href="https://www.youtube.com/watch?v=ICsvNdv83B8" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/ICsvNdv83B8/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">WebAuth Wallet Creation</div><div class="vid-desc">Create your XPR Network wallet with biometric security.</div><div class="vid-credit"><span class="badge bb">Wallet</span> 🎬 BloxProd</div></div></a>
       <a href="https://www.youtube.com/watch?v=7FPGUytwi8Y" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/7FPGUytwi8Y/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">XPR Network KYC / Identity Verification</div><div class="vid-desc">Complete identity verification for full ecosystem access.</div><div class="vid-credit"><span class="badge bb">Wallet</span> 🎬 BloxProd</div></div></a>
@@ -1024,6 +1038,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
       <a href="https://www.youtube.com/watch?v=njQryGjx3Og" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/njQryGjx3Og/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">How to Stake $XPR</div><div class="vid-desc">Earn staking rewards by staking XPR tokens.</div><div class="vid-credit"><span class="badge bgr">Staking</span> 🎬 BloxProd</div></div></a>
       <a href="https://www.youtube.com/watch?v=3gv96oKVufE" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/3gv96oKVufE/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">How to Stake $METAL</div><div class="vid-desc">Stake METAL for rewards and Metal DAO governance.</div><div class="vid-credit"><span class="badge bgr">Staking</span> 🎬 BloxProd</div></div></a>
       <a href="https://www.youtube.com/watch?v=PdpP5yIZhsA" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/PdpP5yIZhsA/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Transfer METAL + Claim LOAN Tokens</div><div class="vid-desc">Unstake METAL, transfer to XPR Network, claim LOAN rewards.</div><div class="vid-credit"><span class="badge bgr">Staking</span> 🎬 BloxProd</div></div></a>
+      <a href="https://www.youtube.com/watch?v=wD9Jxp5okmE" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/wD9Jxp5okmE/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">LOAN Token Staking — Step by Step</div><div class="vid-desc">Full walkthrough of the LOAN token staking process — swapping, setting duration, claiming rewards, and unstaking.</div><div class="vid-credit"><span class="badge bgr">Staking</span> 🎬 BloxProd</div></div></a>
       <a href="https://www.youtube.com/watch?v=yE80F181yv0" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/yE80F181yv0/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">MetalX Lending — Key Parameters</div><div class="vid-desc">Collateral, interest rates, and liquidation explained.</div><div class="vid-credit"><span class="badge bg">MetalX</span> 🎬 BloxProd</div></div></a>
       <a href="https://www.youtube.com/watch?v=q_L4Xz0ghf4" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/q_L4Xz0ghf4/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">MetalX Lending — USDC & METAL DAO</div><div class="vid-desc">Lend USDC and METAL; understand DAO governance.</div><div class="vid-credit"><span class="badge bg">MetalX</span> 🎬 BloxProd</div></div></a>
       <a href="https://www.youtube.com/watch?v=8YvB3DZTuUw" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/8YvB3DZTuUw/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">MetalX Lending — Lend Your XRP</div><div class="vid-desc">Full walkthrough of lending XRP on MetalX.</div><div class="vid-credit"><span class="badge bg">MetalX</span> 🎬 BloxProd</div></div></a>
@@ -1496,7 +1511,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
         <a href="#" onclick="go('guard');return false;">GUARD</a>
         <a href="#" onclick="go('start');return false;">Start Here</a>
         <a href="#" onclick="go('ecosystem');return false;">Ecosystem</a>
-        <a href="#" onclick="go('learn');return false;">Learn</a>
+        <a href="#" onclick="go('learn');return false;">Academy</a>
         <a href="#" onclick="go('faq');return false;">FAQ</a>
         <a href="#" onclick="go('community');return false;">Community</a>
       </div>
@@ -1904,15 +1919,34 @@ function showAchToast(id){
   clearTimeout(achToastTimer);
   achToastTimer = setTimeout(()=>el.classList.remove('show'), 3000);
 }
-function calcGuardianScore(basePct){
-  const WEIGHTS = {site:2, holding:5, lp:3, staking:4, loyalty:4, community:3, brawls:2};
-  const unlocked = getUnlockedAchs();
-  let bonus = 0;
-  for(const cat of ACH_CATS){
-    const w = WEIGHTS[cat.id] || 0;
-    bonus += cat.items.filter(a=>unlocked.includes(a.id)).length * w;
+function calcGuardianScore(bal){
+  // Holdings: piecewise-linear 0–85% based on absolute GUARD balance
+  let hold=0;
+  if(bal>=1){
+    const BP=[[0,0],[1,2],[25000,15],[150000,25],[750000,35],[2500000,50],[7500000,70],[15000000,85]];
+    if(bal>=15000000){hold=85;}
+    else{
+      for(let i=1;i<BP.length;i++){
+        if(bal<=BP[i][0]){
+          const t=(bal-BP[i-1][0])/(BP[i][0]-BP[i-1][0]);
+          hold=BP[i-1][1]+t*(BP[i][1]-BP[i-1][1]);
+          break;
+        }
+      }
+    }
   }
-  return basePct + bonus;
+  // Achievement bonuses: staking 4%, LP 3%, loyalty 3%, community 2%, site 1%, brawls 1% → max 14%
+  const BW={staking:4/7,lp:3/5,loyalty:3/5,community:2/8,site:1/5,brawls:1/5,holding:0};
+  const unlocked=getUnlockedAchs();
+  let bonus=0;
+  for(const cat of ACH_CATS){
+    const w=BW[cat.id]||0;
+    bonus+=cat.items.filter(a=>unlocked.includes(a.id)).length*w;
+  }
+  // Game bonus: up to 1% based on arena all-time best score (50,000 pts = 1%)
+  let gameBonus=0;
+  try{const pb=JSON.parse(localStorage.getItem('guard_arena_pb')||'{}');gameBonus=Math.min(1,(pb.score||0)/50000);}catch(e){}
+  return Math.min(100,Math.round((hold+bonus+gameBonus)*10)/10);
 }
 function updateHoldingAchs(bal){
   ACH_CATS.find(c=>c.id==='holding').items.forEach(a=>{ if(bal >= a.req) unlockAch(a.id); });
@@ -1965,7 +1999,7 @@ function renderProgress(bal){
   const scoreEl = document.getElementById('gs-score');
   const fillEl  = document.getElementById('gs-fill');
   const nextEl  = document.getElementById('gs-next');
-  const guardianScore = calcGuardianScore(pct);
+  const guardianScore = calcGuardianScore(bal);
   if(scoreEl) scoreEl.textContent = guardianScore + '%';
   if(fillEl)  fillEl.style.width  = Math.min(100, guardianScore) + '%';
   if(nextEl && next) nextEl.textContent = next.req.toLocaleString() + ' GUARD needed for ' + next.name;
