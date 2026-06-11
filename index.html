@@ -4079,15 +4079,15 @@ var FG = {
   score: 0,
   pb: parseInt(localStorage.getItem('fg_pb') || '0'),
   gp: 0,
-  speed: 2.5,
+  speed: 2.0,
   gapSize: 140,
   shield: false,
   shieldTimer: 0,
   particles: [],
   barriers: [],
   coin: { x: 120, y: 290, vy: 0, angle: 0, radius: 22 },
-  gravity: 0.38,
-  flapPower: -8,
+  gravity: 0.28,
+  flapPower: -5.5,
   coinImg: null,
   _tapHandler: null,
   _keyHandler: null,
@@ -4195,7 +4195,7 @@ var FG = {
     this.coin.y += this.coin.vy;
     this.coin.angle = Math.max(-0.5, Math.min(0.5, this.coin.vy * 0.06));
     // Spawn barrier every 90 frames
-    if (this.frameCount % 90 === 0) {
+    if (this.frameCount % 110 === 0) {
       var lbls = ['FUD','RUG','HACK','DRAINER'];
       var topH = 60 + Math.random() * (h - this.gapSize - 90);
       this.barriers.push({ x: w, topH: topH, lbl: lbls[Math.floor(Math.random()*4)], passed: false });
