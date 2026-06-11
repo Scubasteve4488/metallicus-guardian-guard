@@ -4112,7 +4112,9 @@ function switchGame(type){
     wc.style.display='none';fc.style.display='block';
     sw.classList.remove('active');sf.classList.add('active');
     if(raf){cancelAnimationFrame(raf);raf=null;}
-    fG=newFG();flappyInit();
+    fG=newFG();
+    // Double-rAF: wait two frames so browser computes layout before reading clientWidth
+    requestAnimationFrame(()=>requestAnimationFrame(flappyInit));
   }
 }
 
@@ -4120,26 +4122,24 @@ function flappyInit(){
   fCvs=document.getElementById('flappy-canvas');if(!fCvs)return;
   fCtx=fCvs.getContext('2d');
   fCvs.width=FCW;fCvs.height=FCH;
-  const c=document.getElementById('flappy-container');
-  const w=Math.min(FCW,c?c.clientWidth:FCW);
-  fScale=w/FCW;fCvs.style.width=w+'px';fCvs.style.height=Math.round(FCH*fScale)+'px';
+  // getBoundingClientRect is accurate after browser layout; clientWidth may be 0 if read too early
+  const r=fCvs.getBoundingClientRect();
+  const w=r.width>0?r.width:fCvs.offsetWidth||FCW;
+  fScale=w/FCW;
   if(!fImg){fImg=new Image();fImg.src='./g_token.jpg?v=2';fImg.onload=()=>{fImgLoaded=true;};}
   stopFlappy();
-  _fTap=e=>{const r=fCvs.getBoundingClientRect(),x=(e.clientX-r.left)/fScale,y=(e.clientY-r.top)/fScale;fTapAt(x,y);};
-  _fTouch=e=>{e.preventDefault();const t=e.touches[0],r=fCvs.getBoundingClientRect(),x=(t.clientX-r.left)/fScale,y=(t.clientY-r.top)/fScale;fTapAt(x,y);};
+  // Recompute scale from bounding rect at event time — avoids stale fScale from init
+  _fTap=e=>{const rc=fCvs.getBoundingClientRect(),sx=rc.width/FCW||1;fTapAt((e.clientX-rc.left)/sx,(e.clientY-rc.top)/sx);};
+  _fTouch=e=>{e.preventDefault();const t=e.touches[0],rc=fCvs.getBoundingClientRect(),sx=rc.width/FCW||1;fTapAt((t.clientX-rc.left)/sx,(t.clientY-rc.top)/sx);};
   _fKey=e=>{if(e.code==='Space'&&document.getElementById('flappy-container').style.display!=='none'){e.preventDefault();fTapAt(FCW/2,FCH*.5);}};
   fCvs.addEventListener('click',_fTap);
   fCvs.addEventListener('touchstart',_fTouch,{passive:false});
   window.addEventListener('keydown',_fKey);
-  window.addEventListener('resize',fResize);
   fRaf=requestAnimationFrame(fLoop);
 }
 
-function fResize(){if(!fCvs)return;const c=document.getElementById('flappy-container');const w=Math.min(FCW,c?c.clientWidth:FCW);fScale=w/FCW;fCvs.style.width=w+'px';fCvs.style.height=Math.round(FCH*fScale)+'px';}
-
 function stopFlappy(){
   if(fRaf){cancelAnimationFrame(fRaf);fRaf=null;}
-  window.removeEventListener('resize',fResize);
   if(fCvs&&_fTap)fCvs.removeEventListener('click',_fTap);
   if(fCvs&&_fTouch)fCvs.removeEventListener('touchstart',_fTouch);
   if(_fKey)window.removeEventListener('keydown',_fKey);
