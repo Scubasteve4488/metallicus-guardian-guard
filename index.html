@@ -333,10 +333,13 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 .x-acct-handle{font-size:.72rem;color:var(--text3);}
 /* ── WALLET CONNECTION STATE ──
    body.wallet-on = connected; no class = disconnected.
-   CSS !important overrides any inline style set by JS or SDK. */
+   Both CSS defaults AND inline styles set on the HTML elements.
+   !important on every rule so SDK / JS inline-style overrides cannot win. */
 #wbar-connected{display:none;}
 #mob-wallet-disconnect{display:none;}
 #mob-wallet-connect-btn{display:flex;}
+body:not(.wallet-on) #wbar-connected{display:none!important;}
+body:not(.wallet-on) #mob-wallet-disconnect{display:none!important;}
 body.wallet-on #wbar-connect{display:none!important;}
 body.wallet-on #wbar-connected{display:flex!important;}
 body.wallet-on #mob-wallet-disconnect{display:block!important;}
@@ -507,7 +510,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <button class="mobile-nav-btn" onclick="closeMenu();go('arena')">⚔ Stand Guard</button>
   <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g mt2" style="justify-content:center;">⚔ Buy GUARD Token</a>
   <button id="mob-wallet-connect-btn" onclick="walletConnect();closeMenu();" class="mobile-nav-btn" style="color:var(--gold-l);border-color:var(--border-gold);border-top:1px solid var(--border-gold);margin-top:.75rem;padding-top:.75rem;text-align:center;width:100%;">⚡ Connect Wallet</button>
-  <div id="mob-wallet-disconnect" style="border-top:1px solid var(--border-gold);margin-top:.75rem;padding-top:.75rem;">
+  <div id="mob-wallet-disconnect" style="display:none;border-top:1px solid var(--border-gold);margin-top:.75rem;padding-top:.75rem;">
     <div style="font-size:.75rem;color:var(--text3);text-align:center;padding:.4rem 1rem .5rem;">Connected: <span id="mob-wallet-actor" style="color:var(--gold-l);font-family:'Cinzel',serif;"></span></div>
     <button onclick="walletDisconnect();closeMenu();" class="mobile-nav-btn" style="color:#ef4444;border-color:rgba(239,68,68,0.25);text-align:center;width:100%;">⚡ Disconnect Wallet</button>
   </div>
@@ -524,7 +527,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <span style="font-size:.74rem;color:var(--text3);">Connect your WebAuth wallet to check your Guardian rank</span>
     <button onclick="walletConnect()" style="font-size:.72rem;color:var(--gold-l);background:rgba(201,146,42,0.1);border:1px solid var(--border-gold);border-radius:5px;padding:.25rem .75rem;cursor:pointer;line-height:1.4;white-space:nowrap;">⚡ Connect Wallet</button>
   </div>
-  <div id="wbar-connected" style="align-items:center;gap:.65rem;flex-wrap:wrap;justify-content:center;">
+  <div id="wbar-connected" style="display:none;align-items:center;gap:.65rem;flex-wrap:wrap;justify-content:center;">
     <span style="font-size:.78rem;color:var(--gold-l);font-family:'Cinzel',serif;">⚡ <span id="wallet-actor"></span></span>
     <span id="wallet-guard-balance" style="font-size:.75rem;color:var(--pur-g);"></span>
     <button onclick="walletDisconnect()" style="font-size:.72rem;color:var(--text3);background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:5px;padding:.2rem .65rem;cursor:pointer;line-height:1.4;">Disconnect</button>
