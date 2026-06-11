@@ -501,7 +501,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
 </head>
 <body>
-<!-- build: 2026-06-11-v5 -->
+<!-- build: 2026-06-11-v6 -->
 
 <!-- NAV -->
 <nav id="nav">
@@ -4280,32 +4280,42 @@ function fRender(){
 
 function fRenderStart(){
   var ctx=fCtx,W=FCW,H=FCH,t=Date.now();
+  // Dark navy background (clearly different from CSS bg)
+  ctx.fillStyle='#050525';
+  ctx.fillRect(0,0,W,H);
+  // Bright red test square — if you see this, canvas draws
+  ctx.fillStyle='#ff2200';
+  ctx.fillRect(0,0,80,40);
+  ctx.fillStyle='#ffffff';
+  ctx.font='bold 11px sans-serif';
+  ctx.textAlign='left';ctx.textBaseline='top';
+  ctx.fillText('DRAW OK',4,12);
+  // Bouncing coin
   var coiny=H*0.28+Math.sin(t/400)*12;
   if(fImgOk&&fImg){
     ctx.save();ctx.beginPath();ctx.arc(W/2,coiny,34,0,6.283);ctx.clip();
     ctx.drawImage(fImg,W/2-34,coiny-34,68,68);ctx.restore();
   }else{
-    ctx.fillStyle='#c9922a';ctx.beginPath();ctx.arc(W/2,coiny,34,0,6.283);ctx.fill();
+    ctx.fillStyle='#e8b84b';ctx.beginPath();ctx.arc(W/2,coiny,34,0,6.283);ctx.fill();
   }
-  ctx.strokeStyle='#c9922a';ctx.lineWidth=2;
+  ctx.strokeStyle='#ffffff';ctx.lineWidth=3;
   ctx.beginPath();ctx.arc(W/2,coiny,35,0,6.283);ctx.stroke();
+  // Title
   ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillStyle='#e8b84b';ctx.font='bold 28px serif';
+  ctx.fillStyle='#ffffff';ctx.font='bold 32px Arial,sans-serif';
   ctx.fillText('FLAPPY GUARD',W/2,H*0.50);
-  ctx.fillStyle='#94a3b8';ctx.font='12px sans-serif';
+  ctx.fillStyle='#aabbcc';ctx.font='14px Arial,sans-serif';
   ctx.fillText('Fly through the blockchain',W/2,H*0.57);
+  // Pulsing tap prompt
   var pulse=0.6+0.4*Math.abs(Math.sin(t/500));
-  ctx.globalAlpha=pulse;ctx.fillStyle='#e8b84b';ctx.font='bold 14px sans-serif';
-  ctx.fillText('TAP TO BEGIN',W/2,H*0.65);ctx.globalAlpha=1;
-  ctx.fillStyle='#475569';ctx.font='11px sans-serif';
-  ctx.fillText('Best: '+(fG?fG.pb:0),W/2,H*0.71);
-  if(fG&&fG.rank>0){
-    var rn=typeof SHIELDS!=='undefined'&&SHIELDS[fG.rank]?SHIELDS[fG.rank].title:'Guardian';
-    ctx.fillStyle='#b78df5';ctx.font='10px sans-serif';
-    ctx.fillText('Bonus: '+Math.round(fG.rank*1.5)+'% lighter gravity · '+rn,W/2,H*0.77);
-  }
-  ctx.fillStyle='#334155';ctx.font='9px sans-serif';
-  ctx.fillText('Tap · Click · Spacebar',W/2,H*0.84);
+  ctx.globalAlpha=pulse;
+  ctx.fillStyle='#ffe066';ctx.font='bold 18px Arial,sans-serif';
+  ctx.fillText('TAP TO BEGIN',W/2,H*0.66);
+  ctx.globalAlpha=1;
+  ctx.fillStyle='#8899aa';ctx.font='13px Arial,sans-serif';
+  ctx.fillText('Best: '+(fG?fG.pb:0),W/2,H*0.74);
+  ctx.fillStyle='#556677';ctx.font='11px Arial,sans-serif';
+  ctx.fillText('Tap  ·  Click  ·  Spacebar',W/2,H*0.82);
 }
 
 function fRenderDead(){
