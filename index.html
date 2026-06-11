@@ -501,7 +501,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
 </head>
 <body>
-<!-- build: 2026-06-11-v2 -->
+<!-- build: 2026-06-11-v3 -->
 
 <!-- NAV -->
 <nav id="nav">
@@ -1725,14 +1725,14 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <h1 style="font-family:'Cinzel Decorative','Cinzel',serif;text-align:center;font-size:clamp(1.8rem,5vw,2.8rem);color:var(--gold-l);margin:.2rem 0 .8rem;">GUARDIAN ARENA</h1>
     <div id="game-selector" style="display:flex;gap:.5rem;justify-content:center;margin-bottom:1.1rem;">
       <button id="sel-wave" class="game-sel-btn active" onclick="switchGame('wave')">⚔ Wave Survival</button>
-      <button id="sel-flappy" class="game-sel-btn" onclick="switchGame('flappy')">🪙 Flappy GUARD</button>
+      <button id="sel-flappy" class="game-sel-btn" onclick="switchGame('flappy')">🪙 Flappy GUARD <sup style="font-size:8px;opacity:.6">v3</sup></button>
     </div>
     <div id="arena-container" style="position:relative;width:100%;max-width:600px;margin:0 auto;">
       <canvas id="arena-canvas" style="display:block;width:100%;border-radius:16px;border:1px solid rgba(201,146,42,0.25);cursor:crosshair;touch-action:none;-webkit-user-select:none;user-select:none;background:#080b12;"></canvas>
     </div>
+    <div id="fg-dbg" style="display:none;background:#cc0000;color:#fff;font:13px/1.6 monospace;padding:10px 14px;border-radius:8px;margin-bottom:8px;max-width:480px;margin-left:auto;margin-right:auto;word-break:break-all;"></div>
     <div id="flappy-container" style="display:none;position:relative;width:100%;max-width:480px;margin:0 auto;">
       <canvas id="flappy-canvas" width="480" height="520" style="display:block;width:100%;max-width:480px;border-radius:16px;border:1px solid rgba(201,146,42,0.25);cursor:pointer;touch-action:none;-webkit-user-select:none;user-select:none;background:#080b12;"></canvas>
-      <div id="fg-dbg" style="position:absolute;top:8px;left:8px;right:8px;background:rgba(220,40,40,0.92);color:#fff;font:12px/1.5 monospace;padding:8px 10px;border-radius:6px;z-index:10;display:none;word-break:break-all;"></div>
     </div>
     <div style="max-width:600px;margin:1.2rem auto 0;">
       <!-- Personal best bar -->
@@ -4072,7 +4072,14 @@ var fCvs=null,fCtx=null,fRaf=null,fG=null;
 var fMuted=localStorage.getItem('fg_mute')==='1';
 var fImg=null,fImgOk=false,_fClick=null,_fTouch2=null,_fKey2=null;
 var _fDbgHidden=false;
-function fDbg(msg){var d=document.getElementById('fg-dbg');if(!d||_fDbgHidden)return;d.style.display='block';d.innerHTML=(d.innerHTML?d.innerHTML+'<br>':'')+msg;}
+function fDbg(msg){
+  var d=document.getElementById('fg-dbg');
+  if(!d||_fDbgHidden)return;
+  d.style.display='block';
+  d.innerHTML=(d.innerHTML?d.innerHTML+'<br>':'')+msg;
+  clearTimeout(window._fDbgT);
+  window._fDbgT=setTimeout(function(){_fDbgHidden=true;if(d)d.style.display='none';},6000);
+}
 
 function fNewGame(){
   var rank=typeof guardianRank!=='undefined'?Math.min(6,guardianRank):0;
@@ -4202,7 +4209,6 @@ function fDead(){
 
 function fRender(){
   if(!fCtx)return;
-  if(!_fDbgHidden){_fDbgHidden=true;var d=document.getElementById('fg-dbg');if(d)d.style.display='none';}
   var ctx=fCtx,W=FCW,H=FCH;
   ctx.setTransform(1,0,0,1,0,0);
   ctx.globalAlpha=1;
