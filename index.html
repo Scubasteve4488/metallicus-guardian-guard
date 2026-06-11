@@ -52,6 +52,10 @@ button{cursor:pointer;font-family:'Inter',sans-serif;}
 .nav-links::-webkit-scrollbar{display:none;}
 .nav-btn{background:none;border:none;padding:.4rem .7rem;font-size:.75rem;font-weight:500;color:var(--text2);border-radius:6px;transition:all .2s;white-space:nowrap;}
 .nav-btn:hover,.nav-btn.active{color:var(--gold-l);background:rgba(201,146,42,0.08);}
+.nav-arrow{background:none;border:none;color:var(--gold-l);font-size:1.6rem;cursor:pointer;padding:0 0.5rem;flex-shrink:0;line-height:1;opacity:0.8;}
+.nav-arrow:hover{opacity:1;}
+#navScroll{display:flex;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth;gap:0.25rem;flex:1;}
+#navScroll::-webkit-scrollbar{display:none;}
 .nav-cta{background:var(--gold);color:#000!important;font-weight:700;font-size:.78rem;padding:.4rem 1rem;border-radius:6px;border:none;white-space:nowrap;transition:all .2s;flex-shrink:0;}
 .nav-cta:hover{background:var(--gold-l);transform:translateY(-1px);}
 .hamburger{display:none;flex-direction:column;gap:4px;background:rgba(201,146,42,0.1);border:1px solid var(--border-gold);border-radius:6px;padding:.5rem;flex-shrink:0;}
@@ -381,7 +385,8 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 .hero-cin-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
 .btn-hero{padding:.85rem 2rem!important;font-size:.88rem!important;font-weight:700;font-family:'Cinzel',serif!important;letter-spacing:.04em;}
 .hero-banner img,.page-hero img{object-position:top center!important;}
-[style*='background-image']{background-position:center top!important;}
+.community-hero{background-size:cover;background-position:center top;background-repeat:no-repeat;min-height:380px;border-radius:12px;position:relative;display:flex;align-items:flex-end;padding:2rem;margin-bottom:2rem;}
+@media(min-width:768px){.community-hero{min-height:420px;}}
 /* Particles */
 .particles{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;}
 .particle{position:absolute;border-radius:50%;opacity:0;animation:particleRise linear infinite;}
@@ -503,18 +508,22 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <span>Metallicus Guardian</span>
   </div>
   <div class="nav-links">
-    <button class="nav-btn active" id="t-home" onclick="go('home')">Home</button>
-    <button class="nav-btn" id="t-guard" onclick="go('guard')">🛡 GUARD</button>
-    <button class="nav-btn" id="t-start" onclick="go('start')">Start Here</button>
-    <button class="nav-btn" id="t-ecosystem" onclick="go('ecosystem')">Ecosystem</button>
-    <button class="nav-btn" id="t-learn" onclick="go('learn')">🎓 Academy</button>
-    <button class="nav-btn" id="t-shields" onclick="go('shields')">🛡 Shields</button>
-    <button class="nav-btn" id="t-faq" onclick="go('faq')">FAQ</button>
-    <button class="nav-btn" id="t-ksto" onclick="go('ksto')">🦊 KSTO</button>
-    <button class="nav-btn" id="t-cyphergang" onclick="go('cyphergang')">🔥 CypherGang</button>
-    <button class="nav-btn" id="t-snipverse" onclick="go('snipverse')">🌐 Snipverse</button>
-    <button class="nav-btn" id="t-creator" onclick="go('creator')">Creator</button>
-    <button class="nav-btn" id="t-arena" onclick="go('arena')">⚔ Stand Guard</button>
+    <button class="nav-arrow" onclick="scrollNav(-150)">&#8249;</button>
+    <div id="navScroll">
+      <button class="nav-btn active" id="t-home" onclick="go('home')">Home</button>
+      <button class="nav-btn" id="t-guard" onclick="go('guard')">🛡 GUARD</button>
+      <button class="nav-btn" id="t-start" onclick="go('start')">Start Here</button>
+      <button class="nav-btn" id="t-ecosystem" onclick="go('ecosystem')">Ecosystem</button>
+      <button class="nav-btn" id="t-learn" onclick="go('learn')">🎓 Academy</button>
+      <button class="nav-btn" id="t-shields" onclick="go('shields')">🛡 Shields</button>
+      <button class="nav-btn" id="t-faq" onclick="go('faq')">FAQ</button>
+      <button class="nav-btn" id="t-ksto" onclick="go('ksto')">🦊 KSTO</button>
+      <button class="nav-btn" id="t-cyphergang" onclick="go('cyphergang')">🔥 CypherGang</button>
+      <button class="nav-btn" id="t-snipverse" onclick="go('snipverse')">🌐 Snipverse</button>
+      <button class="nav-btn" id="t-creator" onclick="go('creator')">Creator</button>
+      <button class="nav-btn" id="t-arena" onclick="go('arena')">⚔ Stand Guard</button>
+    </div>
+    <button class="nav-arrow" onclick="scrollNav(150)">&#8250;</button>
   </div>
   <a href="https://simpledex.fun/token/172" target="_blank" class="nav-cta">⚔ <span class="buytext">Buy GUARD</span></a>
   <button id="wallet-btn" onclick="toggleWallet()" style="background:rgba(201,146,42,0.1);border:1px solid var(--border-gold);color:var(--gold-l);font-size:.72rem;padding:.35rem .8rem;border-radius:6px;cursor:pointer;white-space:nowrap;font-family:'Cinzel',serif;flex-shrink:0;line-height:1.4;">⚡ Connect</button>
@@ -1435,7 +1444,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 <div id="page-cyphergang" class="page">
 <div class="container">
   <div class="section">
-    <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden;margin-bottom:2rem;min-height:300px;background-image:url('./g_cypher1.jpg?v=2');background-size:cover;background-position:center top;">
+    <div class="community-hero" style="background-image:url('./g_cypher1.jpg?v=2');">
       <div style="position:absolute;inset:0;background:rgba(8,11,18,0.85);"></div>
       <div style="position:relative;z-index:1;text-align:center;padding:2.5rem 1.5rem;">
         <div class="sec-label" style="margin-bottom:.5rem;">OG XPR Network NFT Community · Est. 2021</div>
@@ -1505,7 +1514,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 <div id="page-ksto" class="page">
 <div class="container">
   <div class="section">
-    <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden;margin-bottom:2rem;min-height:300px;background-image:url('./char_snippy.jpg?v=2');background-size:cover;background-position:center top;">
+    <div class="community-hero" style="background-image:url('./char_snippy.jpg?v=2');">
       <div style="position:absolute;inset:0;background:rgba(8,11,18,0.85);"></div>
       <div style="position:relative;z-index:1;text-align:center;padding:2.5rem 1.5rem;">
         <div class="sec-label" style="margin-bottom:.5rem;">Kulture Speaks Truth Onchain</div>
@@ -1575,7 +1584,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 <div id="page-snipverse" class="page">
 <div class="container">
   <div class="section">
-    <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden;margin-bottom:2rem;min-height:300px;background-image:url('./g_snipverse.jpg?v=2');background-size:cover;background-position:center top;">
+    <div class="community-hero" style="background-image:url('./g_snipverse.jpg?v=2');">
       <div style="position:absolute;inset:0;background:rgba(8,11,18,0.85);"></div>
       <div style="position:relative;z-index:1;text-align:center;padding:2.5rem 1.5rem;">
         <div class="sec-label" style="margin-bottom:.5rem;">Web3 Social Media · Built on XPR Network</div>
@@ -3961,6 +3970,9 @@ resetWalletBarUI();
 // Try to restore session on page load
 window.addEventListener('load', () => { setTimeout(walletRestore, 1000); });
 
+function scrollNav(amount){
+  document.getElementById('navScroll').scrollBy({left:amount,behavior:'smooth'});
+}
 
 </script>
 <div id="ach-toast"></div>
