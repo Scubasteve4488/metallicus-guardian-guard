@@ -3773,18 +3773,21 @@ function drawHUD(){
   ctx.font='bold 13px Cinzel,serif';ctx.fillStyle='#b78df5';ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillText('WAVE '+g.wave,14,18);
   // Score — top-right (leave room for pause/mute)
   ctx.fillStyle='#e8b84b';ctx.textAlign='right';ctx.fillText('SCORE '+g.score,CW-86,18);
-  // Segmented HP — below WAVE label, top-left
+  // Shield HP — top-center as ⬡ symbols
   const mhp=Math.min(10,g.mhp+(g.ftBonus||0));
   const curHp=Math.min(g.hp,mhp);
   const hpCol=g.hp<=1?'#ef4444':g.hp<=2?'#f97316':'#c9922a';
-  const hexR=6,hexGap=15,startX=14+hexR;
+  const shW=16,totalShW=(mhp-1)*shW,shStartX=CX-totalShW/2;
+  ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
   for(let i=0;i<mhp;i++){
     const filled=i<curHp;
-    if(filled&&g.hp<=1){const a=0.6+0.4*Math.abs(Math.sin(performance.now()/180));ctx.globalAlpha=a;}
-    drawHex(startX+i*hexGap,34,hexR,filled,hpCol,'#c9922a44');
-    ctx.globalAlpha=1;
+    ctx.globalAlpha=filled?(g.hp<=1?0.6+0.4*Math.abs(Math.sin(performance.now()/180)):1):0.22;
+    ctx.fillStyle=filled?hpCol:'#c9922a';
+    ctx.shadowBlur=filled?7:0;ctx.shadowColor=hpCol;
+    ctx.fillText('⬡',shStartX+i*shW,34);
   }
-  if(g.mhp+(g.ftBonus||0)>10){ctx.fillStyle='#c9922a';ctx.font='9px Cinzel,serif';ctx.textAlign='left';ctx.fillText('+',startX+10*hexGap+2,38);}
+  ctx.globalAlpha=1;ctx.shadowBlur=0;
+  if(g.mhp+(g.ftBonus||0)>10){ctx.font='9px Cinzel,serif';ctx.fillStyle='#c9922a';ctx.textAlign='left';ctx.fillText('+',CX+totalShW/2+10,37);}
   // Combo counter — centered, below wave/score
   if(g.combo>=5){
     const cm=comboMult(),t=performance.now()/200;
