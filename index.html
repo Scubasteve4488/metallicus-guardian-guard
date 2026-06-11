@@ -466,6 +466,27 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 .forge-score-r{font-family:'Cinzel',serif;font-size:.95rem;color:var(--gold-l);letter-spacing:.09em;margin-bottom:.55rem;}
 .forge-rank-msg-r{font-family:'Cinzel',serif;font-size:.75rem;font-style:italic;color:var(--text2);margin-bottom:1.5rem;line-height:1.6;}
 .forge-dismiss-hint{font-size:.6rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;}
+/* ── ACADEMY TRACKS ── */
+.track-section{border-radius:var(--radius-lg);overflow:hidden;margin-bottom:2.25rem;}
+.track-hdr{padding:.6rem 1.2rem;display:flex;align-items:center;gap:.7rem;}
+.track-hdr-g{background:rgba(34,197,94,0.13);border:1px solid rgba(34,197,94,0.35);}
+.track-hdr-y{background:rgba(234,179,8,0.11);border:1px solid rgba(234,179,8,0.35);}
+.track-hdr-r{background:rgba(239,68,68,0.11);border:1px solid rgba(239,68,68,0.35);}
+.track-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.track-hdr-g .track-dot{background:#4ade80;}
+.track-hdr-y .track-dot{background:#fde047;}
+.track-hdr-r .track-dot{background:#f87171;}
+.track-label{font-family:'Cinzel',serif;font-size:.8rem;font-weight:700;letter-spacing:.09em;}
+.track-hdr-g .track-label{color:#4ade80;}
+.track-hdr-y .track-label{color:#fde047;}
+.track-hdr-r .track-label{color:#f87171;}
+.track-body{border:1px solid rgba(255,255,255,0.07);border-top:none;padding:1.25rem 1.1rem .85rem;border-radius:0 0 var(--radius-lg) var(--radius-lg);}
+.track-desc{font-size:.78rem;color:var(--text2);font-style:italic;margin-bottom:1.25rem;}
+.cs-card{border:1px dashed rgba(255,255,255,0.13);border-radius:8px;display:flex;align-items:center;gap:.75rem;padding:.7rem .85rem;margin-bottom:.6rem;background:rgba(255,255,255,0.02);}
+.cs-thumb{width:96px;height:54px;flex-shrink:0;background:rgba(255,255,255,0.04);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:.58rem;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;text-align:center;padding:.25rem;}
+/* ── COMMUNITY FEATURE CARDS ── */
+.comm-feat-card{all:unset;cursor:pointer;background:rgba(255,255,255,0.025);border-radius:var(--radius-lg);padding:1.2rem 1.4rem;display:flex;align-items:center;gap:.9rem;text-align:left;width:100%;box-sizing:border-box;transition:background .2s;}
+.comm-feat-card:hover{background:rgba(255,255,255,0.045);}
 </style>
   <!-- WebAuth / Proton Web SDK -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
@@ -488,6 +509,8 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <button class="nav-btn" id="t-shields" onclick="go('shields')">🛡 Shields</button>
     <button class="nav-btn" id="t-faq" onclick="go('faq')">FAQ</button>
     <button class="nav-btn" id="t-community" onclick="go('community')">Community</button>
+    <button class="nav-btn" id="t-cyphergang" onclick="go('cyphergang')">🔥 CypherGang</button>
+    <button class="nav-btn" id="t-ksto" onclick="go('ksto')">🦊 KSTO</button>
     <button class="nav-btn" id="t-creator" onclick="go('creator')">Creator</button>
     <button class="nav-btn" id="t-arena" onclick="go('arena')">⚔ Stand Guard</button>
   </div>
@@ -506,6 +529,8 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <button class="mobile-nav-btn" onclick="closeMenu();go('shields')">🛡 Shields</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('faq')">❓ FAQ</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('community')">👥 Community</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('cyphergang')">🔥 CypherGang</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('ksto')">🦊 KSTO</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('creator')">👤 Creator</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('arena')">⚔ Stand Guard</button>
   <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g mt2" style="justify-content:center;">⚔ Buy GUARD Token</a>
@@ -1034,21 +1059,53 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
         <a href="https://www.youtube.com/@bloxprod" target="_blank" class="badge br" style="text-decoration:none;font-size:.72rem;padding:.22rem .65rem;">YouTube ↗</a>
       </div>
     </div>
-    <div class="grid grid-auto">
-      <a href="https://www.youtube.com/watch?v=ICsvNdv83B8" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/ICsvNdv83B8/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">WebAuth Wallet Creation</div><div class="vid-desc">Create your XPR Network wallet with biometric security.</div><div class="vid-credit"><span class="badge bb">Wallet</span> 🎬 BloxProd</div></div></a>
-      <a href="https://www.youtube.com/watch?v=7FPGUytwi8Y" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/7FPGUytwi8Y/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">XPR Network KYC / Identity Verification</div><div class="vid-desc">Complete identity verification for full ecosystem access.</div><div class="vid-credit"><span class="badge bb">Wallet</span> 🎬 BloxProd</div></div></a>
-      <a href="https://www.youtube.com/watch?v=vAB28FdWvBs" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/vAB28FdWvBs/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Send & Receive Crypto — Fast, Free & Easy</div><div class="vid-desc">Transfer BTC and other assets on XPR Network with zero fees.</div><div class="vid-credit"><span class="badge bb">Wallet</span> 🎬 BloxProd</div></div></a>
-      <a href="https://www.youtube.com/watch?v=njQryGjx3Og" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/njQryGjx3Og/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">How to Stake $XPR</div><div class="vid-desc">Earn staking rewards by staking XPR tokens.</div><div class="vid-credit"><span class="badge bgr">Staking</span> 🎬 BloxProd</div></div></a>
-      <a href="https://www.youtube.com/watch?v=3gv96oKVufE" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/3gv96oKVufE/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">How to Stake $METAL</div><div class="vid-desc">Stake METAL for rewards and Metal DAO governance.</div><div class="vid-credit"><span class="badge bgr">Staking</span> 🎬 BloxProd</div></div></a>
-      <a href="https://www.youtube.com/watch?v=PdpP5yIZhsA" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/PdpP5yIZhsA/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Transfer METAL + Claim LOAN Tokens</div><div class="vid-desc">Unstake METAL, transfer to XPR Network, claim LOAN rewards.</div><div class="vid-credit"><span class="badge bgr">Staking</span> 🎬 BloxProd</div></div></a>
-      <a href="https://www.youtube.com/watch?v=wD9Jxp5okmE" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/wD9Jxp5okmE/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">LOAN Token Staking — Step by Step</div><div class="vid-desc">Full walkthrough of the LOAN token staking process — swapping, setting duration, claiming rewards, and unstaking.</div><div class="vid-credit"><span class="badge bgr">Staking</span> 🎬 BloxProd</div></div></a>
-      <a href="https://www.youtube.com/watch?v=yE80F181yv0" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/yE80F181yv0/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">MetalX Lending — Key Parameters</div><div class="vid-desc">Collateral, interest rates, and liquidation explained.</div><div class="vid-credit"><span class="badge bg">MetalX</span> 🎬 BloxProd</div></div></a>
-      <a href="https://www.youtube.com/watch?v=q_L4Xz0ghf4" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/q_L4Xz0ghf4/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">MetalX Lending — USDC & METAL DAO</div><div class="vid-desc">Lend USDC and METAL; understand DAO governance.</div><div class="vid-credit"><span class="badge bg">MetalX</span> 🎬 BloxProd</div></div></a>
-      <a href="https://www.youtube.com/watch?v=8YvB3DZTuUw" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/8YvB3DZTuUw/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">MetalX Lending — Lend Your XRP</div><div class="vid-desc">Full walkthrough of lending XRP on MetalX.</div><div class="vid-credit"><span class="badge bg">MetalX</span> 🎬 BloxProd</div></div></a>
-      <a href="https://www.youtube.com/watch?v=ERCmQ4osiuc" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/ERCmQ4osiuc/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">MetalX Liquidity Pools & Farming</div><div class="vid-desc">Add LP, earn fees, and boost yields on MetalX.</div><div class="vid-credit"><span class="badge bg">MetalX</span> 🎬 BloxProd</div></div></a>
-      <a href="https://www.youtube.com/watch?v=QHtU2IDfcxs" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/QHtU2IDfcxs/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Alcor Exchange on XPR Network</div><div class="vid-desc">Swaps, limit orders, and trading on Alcor.</div><div class="vid-credit"><span class="badge bp">Trading</span> 🎬 BloxProd</div></div></a>
-      <a href="https://www.youtube.com/watch?v=1vi8EEEueEs" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/1vi8EEEueEs/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Alcor — LP & Farming Rewards</div><div class="vid-desc">Provide liquidity and collect farming rewards on Alcor.</div><div class="vid-credit"><span class="badge bp">Trading</span> 🎬 BloxProd</div></div></a>
-      <a href="https://www.youtube.com/watch?v=jWyT7lg02vg" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/jWyT7lg02vg/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Blastpad — Staking Pools</div><div class="vid-desc">Full walkthrough of Blastpad staking pools.</div><div class="vid-credit"><span class="badge br">Advanced</span> 🎬 BloxProd</div></div></a>
+    <!-- 🟢 BEGINNER TRACK -->
+    <div class="track-section">
+      <div class="track-hdr track-hdr-g"><div class="track-dot"></div><span class="track-label">🟢 BEGINNER TRACK — Start Here</span></div>
+      <div class="track-body track-body-g">
+        <p class="track-desc">New to XPR Network? Start with these.</p>
+        <div class="grid grid-auto">
+          <a href="https://www.youtube.com/watch?v=ICsvNdv83B8" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/ICsvNdv83B8/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">WebAuth Wallet Setup</div><div class="vid-desc">Create your XPR Network wallet with biometric security — no seed phrase required.</div><div class="vid-credit"><span class="badge bb">Beginner</span> 🎬 BloxProd</div></div></a>
+          <a href="https://www.youtube.com/watch?v=7FPGUytwi8Y" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/7FPGUytwi8Y/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Creating Your First Account — KYC</div><div class="vid-desc">Complete identity verification for full ecosystem access.</div><div class="vid-credit"><span class="badge bb">Beginner</span> 🎬 BloxProd</div></div></a>
+          <a href="https://www.youtube.com/watch?v=vAB28FdWvBs" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/vAB28FdWvBs/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Sending and Receiving XPR</div><div class="vid-desc">Transfer BTC and other assets on XPR Network with zero fees.</div><div class="vid-credit"><span class="badge bb">Beginner</span> 🎬 BloxProd</div></div></a>
+          <a href="https://www.youtube.com/@bloxprod" target="_blank" class="vid-card cs-card"><div class="cs-thumb">Coming<br>Soon</div><div class="vid-body"><div class="vid-title">Buying XPR for the First Time</div><div class="vid-desc">Step-by-step guide to purchasing XPR and getting started.</div><div class="vid-credit"><span class="badge bb">Beginner</span> 🎬 BloxProd</div></div></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🟡 INTERMEDIATE TRACK -->
+    <div class="track-section">
+      <div class="track-hdr track-hdr-y"><div class="track-dot"></div><span class="track-label">🟡 INTERMEDIATE TRACK — Build Your Knowledge</span></div>
+      <div class="track-body track-body-y">
+        <p class="track-desc">Ready to go deeper? Learn the ecosystem tools.</p>
+        <div class="grid grid-auto">
+          <a href="https://www.youtube.com/watch?v=njQryGjx3Og" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/njQryGjx3Og/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">XPR Staking — Step by Step</div><div class="vid-desc">Earn staking rewards by staking XPR tokens.</div><div class="vid-credit"><span class="badge bgr">Staking</span> 🎬 BloxProd</div></div></a>
+          <a href="https://www.youtube.com/watch?v=3gv96oKVufE" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/3gv96oKVufE/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">How to Stake $METAL</div><div class="vid-desc">Stake METAL for rewards and Metal DAO governance.</div><div class="vid-credit"><span class="badge bgr">Staking</span> 🎬 BloxProd</div></div></a>
+          <a href="https://www.youtube.com/watch?v=PdpP5yIZhsA" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/PdpP5yIZhsA/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Transfer METAL + Claim LOAN Tokens</div><div class="vid-desc">Unstake METAL, transfer to XPR Network, claim LOAN rewards.</div><div class="vid-credit"><span class="badge bgr">Staking</span> 🎬 BloxProd</div></div></a>
+          <a href="https://www.youtube.com/watch?v=wD9Jxp5okmE" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/wD9Jxp5okmE/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">LOAN Token Staking — Step by Step</div><div class="vid-desc">Full walkthrough of LOAN staking — swapping, duration, claiming, unstaking.</div><div class="vid-credit"><span class="badge bgr">Staking</span> 🎬 BloxProd</div></div></a>
+          <a href="https://www.youtube.com/watch?v=yE80F181yv0" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/yE80F181yv0/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Metal X Trading — Key Parameters</div><div class="vid-desc">Collateral, interest rates, and liquidation explained.</div><div class="vid-credit"><span class="badge bg">MetalX</span> 🎬 BloxProd</div></div></a>
+          <a href="https://www.youtube.com/watch?v=q_L4Xz0ghf4" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/q_L4Xz0ghf4/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">MetalX Lending — USDC &amp; METAL DAO</div><div class="vid-desc">Lend USDC and METAL; understand DAO governance.</div><div class="vid-credit"><span class="badge bg">MetalX</span> 🎬 BloxProd</div></div></a>
+          <a href="https://www.youtube.com/watch?v=8YvB3DZTuUw" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/8YvB3DZTuUw/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">MetalX Lending — Lend Your XRP</div><div class="vid-desc">Full walkthrough of lending XRP on MetalX.</div><div class="vid-credit"><span class="badge bg">MetalX</span> 🎬 BloxProd</div></div></a>
+          <a href="https://www.youtube.com/watch?v=ERCmQ4osiuc" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/ERCmQ4osiuc/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">LP &amp; Liquidity Provision — MetalX</div><div class="vid-desc">Add LP, earn fees, and boost yields on MetalX.</div><div class="vid-credit"><span class="badge bg">MetalX</span> 🎬 BloxProd</div></div></a>
+          <a href="https://www.youtube.com/watch?v=QHtU2IDfcxs" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/QHtU2IDfcxs/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Alcor Exchange on XPR Network</div><div class="vid-desc">Swaps, limit orders, and trading on Alcor.</div><div class="vid-credit"><span class="badge bp">Trading</span> 🎬 BloxProd</div></div></a>
+          <a href="https://www.youtube.com/watch?v=1vi8EEEueEs" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/1vi8EEEueEs/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Alcor — LP &amp; Farming Rewards</div><div class="vid-desc">Provide liquidity and collect farming rewards on Alcor.</div><div class="vid-credit"><span class="badge bp">Trading</span> 🎬 BloxProd</div></div></a>
+          <a href="https://www.youtube.com/@bloxprod" target="_blank" class="vid-card cs-card"><div class="cs-thumb">Coming<br>Soon</div><div class="vid-body"><div class="vid-title">SimpleDEX Guide</div><div class="vid-desc">Trading on SimpleDEX — XPR Network's native DEX.</div><div class="vid-credit"><span class="badge bp">Trading</span> 🎬 BloxProd</div></div></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🔴 ADVANCED TRACK -->
+    <div class="track-section">
+      <div class="track-hdr track-hdr-r"><div class="track-dot"></div><span class="track-label">🔴 ADVANCED TRACK — Go Pro</span></div>
+      <div class="track-body track-body-r">
+        <p class="track-desc">For power users and builders.</p>
+        <div class="grid grid-auto">
+          <a href="https://www.youtube.com/watch?v=jWyT7lg02vg" target="_blank" class="vid-card"><div class="vthumb"><img src="https://img.youtube.com/vi/jWyT7lg02vg/mqdefault.jpg?v=2" alt=""><div class="vplay">▶</div></div><div class="vid-body"><div class="vid-title">Blastpad — Staking Pools</div><div class="vid-desc">Full walkthrough of Blastpad staking pools and advanced yield strategies.</div><div class="vid-credit"><span class="badge br">Advanced</span> 🎬 BloxProd</div></div></a>
+          <a href="https://www.youtube.com/@bloxprod" target="_blank" class="vid-card cs-card"><div class="cs-thumb">Coming<br>Soon</div><div class="vid-body"><div class="vid-title">Block Producer Setup</div><div class="vid-desc">How to run an XPR Network Block Producer node.</div><div class="vid-credit"><span class="badge br">Advanced</span> 🎬 BloxProd</div></div></a>
+          <a href="https://www.youtube.com/@bloxprod" target="_blank" class="vid-card cs-card"><div class="cs-thumb">Coming<br>Soon</div><div class="vid-body"><div class="vid-title">Smart Contract Development</div><div class="vid-desc">Deploy WASM smart contracts on XPR Network.</div><div class="vid-credit"><span class="badge br">Advanced</span> 🎬 BloxProd</div></div></a>
+          <a href="https://www.youtube.com/@bloxprod" target="_blank" class="vid-card cs-card"><div class="cs-thumb">Coming<br>Soon</div><div class="vid-body"><div class="vid-title">Advanced DeFi Strategies</div><div class="vid-desc">Maximizing yield across MetalX, Alcor, and Blastpad simultaneously.</div><div class="vid-credit"><span class="badge br">Advanced</span> 🎬 BloxProd</div></div></a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1299,37 +1356,33 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
       </div>
     </div>
 
-    <!-- ── SECTION 1: KSTO Community ── -->
-    <div style="background:rgba(201,146,42,0.04);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:1.75rem 2rem 1.5rem;margin-bottom:2rem;">
-      <div class="sec-label">Kulture Speaks Truth Onchain</div>
-      <h2 class="sec-title">🦊 KSTO Community</h2>
-      <p style="font-size:.88rem;color:var(--text2);margin-bottom:1.5rem;max-width:680px;line-height:1.65;">KSTO (Kulture Speaks Truth Onchain) is a community of XPR Network builders, traders, educators, and holders. Snippy is the beloved fox mascot of the KSTO community. Weekly KSTO Spaces on X every Wednesday at 8 PM EST.</p>
-      <div class="grid grid-auto mb3">
-        <a href="https://keepsnipping.com" target="_blank" class="comm-card" style="text-decoration:none;">
-          <img class="char-avi" src="./icon_ksto.jpg?v=2" alt="KSTO">
-          <div><div class="comm-name">KSTO</div><div class="comm-role">Kulture Speaks Truth Onchain · XPR Network</div><div class="comm-desc">A community of builders, traders, educators, and holders on XPR Network. Powered by the $KSTO token. Weekly Spaces on X every Wednesday at 8 PM EST.</div><span class="badge bp" style="display:inline-flex;margin-top:.6rem;">keepsnipping.com →</span></div>
-        </a>
-        <div class="comm-card">
-          <img class="char-avi" src="./char_snippy.jpg?v=2" alt="Snippy">
-          <div><div class="comm-name">Snippy</div><div class="comm-role">Beloved Fox Mascot of KSTO</div><div class="comm-desc">Snippy is the beloved fox mascot of the KSTO community — a recognizable character across the XPR Network ecosystem.</div><a href="https://keepsnipping.com/about.html" target="_blank" class="badge bg" style="display:inline-flex;margin-top:.6rem;text-decoration:none;">About Snippy →</a></div>
-        </div>
+    <!-- ── FEATURED COMMUNITY PAGES ── -->
+    <div style="margin-bottom:1.75rem;">
+      <div style="font-size:.64rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--text3);margin-bottom:.85rem;">Dedicated Community Pages</div>
+      <div class="grid grid-auto" style="margin-bottom:.85rem;">
+        <button class="comm-feat-card" onclick="go('cyphergang')" style="border:1px solid rgba(124,58,237,0.3);">
+          <img src="./icon_cyphergang.jpg?v=2" alt="CypherGang" style="width:50px;height:50px;border-radius:9px;object-fit:contain;flex-shrink:0;">
+          <div>
+            <div style="font-family:'Cinzel',serif;font-size:.86rem;color:var(--text);font-weight:700;margin-bottom:.2rem;">🔥 CypherGang &amp; CypherBrawls</div>
+            <div style="font-size:.75rem;color:var(--text2);line-height:1.5;">1,777 hand-crafted fighters. Tactical on-chain battle game.</div>
+            <div style="font-size:.7rem;color:var(--pur-g);margin-top:.3rem;">View full page →</div>
+          </div>
+        </button>
+        <button class="comm-feat-card" onclick="go('ksto')" style="border:1px solid var(--border-gold);">
+          <img src="./icon_ksto.jpg?v=2" alt="KSTO" style="width:50px;height:50px;border-radius:9px;object-fit:contain;flex-shrink:0;">
+          <div>
+            <div style="font-family:'Cinzel',serif;font-size:.86rem;color:var(--text);font-weight:700;margin-bottom:.2rem;">🦊 KSTO Community</div>
+            <div style="font-size:.75rem;color:var(--text2);line-height:1.5;">Kulture Speaks Truth Onchain. Spaces every Wednesday 8 PM EST.</div>
+            <div style="font-size:.7rem;color:var(--gold-l);margin-top:.3rem;">View full page →</div>
+          </div>
+        </button>
       </div>
-      <div style="border-top:1px solid var(--border);padding-top:1.1rem;margin-top:.25rem;">
-        <div style="font-size:.65rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--text3);margin-bottom:.7rem;">Within the KSTO Community</div>
-        <div class="comm-card" style="max-width:460px;">
-          <img class="char-avi" src="./char_funky.jpg?v=2" alt="Funky">
-          <div><div class="comm-name">🎨 FunkyVerse</div><div class="comm-role">Creative Project · KSTO Community</div><div class="comm-desc">A vibrant, character-driven creative project living within the KSTO community. Created by Funky.</div><a href="https://x.com/funkyfVerse" target="_blank" class="badge bb" style="display:inline-flex;margin-top:.6rem;text-decoration:none;">@funkyfVerse on X →</a></div>
-        </div>
-      </div>
-      <div class="flex gap-sm wrap" style="margin-top:1.25rem;">
-        <a href="https://t.me/KSTOX/1" target="_blank" class="btn btn-o" style="font-size:.78rem;">✈ KSTO Telegram</a>
-        <a href="https://x.com/Keep_Snipping" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @Keep_Snipping</a>
-      </div>
+      <p style="font-size:.76rem;color:var(--text3);font-style:italic;text-align:center;margin:0;">Explore our dedicated community pages for the full story</p>
     </div>
 
     <div class="div-g"></div>
 
-    <!-- ── SECTION 2: Snipverse ── -->
+    <!-- ── SNIPVERSE ── -->
     <div style="background:rgba(56,189,248,0.04);border:1px solid rgba(56,189,248,0.2);border-radius:var(--radius-lg);padding:1.75rem 2rem 1.5rem;margin-bottom:2rem;">
       <div class="sec-label">Web3 Social Platform · XPR Network</div>
       <h2 class="sec-title">🌐 Snipverse</h2>
@@ -1343,30 +1396,6 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
       <div class="flex gap-sm wrap">
         <a href="https://snipverse.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">✦ snipverse.com</a>
         <a href="https://x.com/snipverse" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @snipverse</a>
-      </div>
-    </div>
-
-    <div class="div-g"></div>
-
-    <!-- ── SECTION 3: CypherGang & CypherBrawls ── -->
-    <div style="background:rgba(124,58,237,0.04);border:1px solid rgba(124,58,237,0.25);border-radius:var(--radius-lg);padding:1.75rem 2rem 1.5rem;margin-bottom:2rem;">
-      <div class="sec-label">OG XPR Network NFT Project · Since 2021</div>
-      <h2 class="sec-title">⚔ CypherGang &amp; CypherBrawls</h2>
-      <p style="font-size:.88rem;color:var(--text2);margin-bottom:1.5rem;max-width:680px;line-height:1.65;">CypherGang is an OG XPR Network NFT project since 2021 — 1,777 hand-crafted NFTs by ProtonPunk. CypherBrawls is the tactical on-chain battle game where your CypherGang NFT is your fighter. Earn passive CYPHR tokens and compete on-chain.</p>
-      <div class="grid grid-auto mb3">
-        <a href="https://cyphergang.com" target="_blank" class="comm-card" style="text-decoration:none;">
-          <img class="char-avi" src="./icon_cyphergang.jpg?v=2" alt="Cypher Gang">
-          <div><div class="comm-name">CypherGang</div><div class="comm-role">1,777 Hand-Crafted NFTs · Founded by ProtonPunk · 2021</div><div class="comm-desc">An original collection of 1,777 hand-crafted NFTs on XPR Network. Stack CypherGang NFTs to earn passive $CYPHR tokens and monthly holder rewards. Built on the Atomic Assets standard.</div><span class="badge bp" style="display:inline-flex;margin-top:.6rem;">cyphergang.com →</span></div>
-        </a>
-        <div class="comm-card">
-          <img class="char-avi" src="./icon_cypherbrawls.jpg?v=2" alt="Cypher Brawls">
-          <div><div class="comm-name">CypherBrawls</div><div class="comm-role">Tactical On-Chain Battle Game · XPR Network</div><div class="comm-desc">Your CypherGang NFT is your fighter. Battle on-chain, earn $CYPHR, and compete against other holders. Connect your WebAuth wallet to play. NFTs available on soon.market.</div><a href="https://app.cypherbrawls.com" target="_blank" class="badge bp" style="display:inline-flex;margin-top:.6rem;text-decoration:none;">Play CypherBrawls →</a></div>
-        </div>
-      </div>
-      <div class="flex gap-sm wrap">
-        <a href="https://cyphergang.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">🔗 cyphergang.com</a>
-        <a href="https://soon.market/collection/zvapir55jvu4" target="_blank" class="btn btn-o" style="font-size:.78rem;">🛒 Buy NFTs on soon.market</a>
-        <a href="https://t.me/CypherGang" target="_blank" class="btn btn-o" style="font-size:.78rem;">✈ CypherGang Telegram</a>
       </div>
     </div>
 
@@ -1394,6 +1423,154 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
       <div class="comm-card">
         <img class="char-avi" src="./icon_tim.jpg?v=2" alt="Tim Rangel">
         <div><div class="comm-name">Tim Rangel</div><div class="comm-role">GUARD Creator · Community Builder</div><div class="comm-desc">Creator of the GUARD token and this educational resource. Active XPR Network ecosystem participant focused on community building, education, and accessibility.</div><button onclick="go('creator')" class="badge bg mt1" style="border:none;cursor:pointer;display:inline-flex;margin-top:.6rem;">Creator Bio →</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════ PAGE: CYPHERGANG ═══════ -->
+<div id="page-cyphergang" class="page">
+<div class="container">
+  <div class="section">
+    <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden;margin-bottom:2rem;">
+      <img src="./g_cypher1.jpg?v=2" alt="" style="width:100%;height:220px;object-fit:cover;display:block;filter:brightness(0.32);">
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.5rem;">
+        <div class="sec-label" style="margin-bottom:.45rem;">OG XPR Network NFT Project · Since 2021</div>
+        <h1 class="page-title" style="margin-bottom:.4rem;">CYPHERGANG &amp; CYPHERBRAWLS</h1>
+        <p class="page-sub" style="margin:0;font-size:.85rem;">The OG XPR Network NFT community. 1,777 hand-crafted fighters. One tactical battle game.</p>
+      </div>
+    </div>
+
+    <div style="background:rgba(124,58,237,0.05);border:1px solid rgba(124,58,237,0.25);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
+      <div class="comm-card" style="align-items:flex-start;gap:1.1rem;">
+        <img src="./char_protonpunk.jpg?v=2" alt="ProtonPunk" class="char-avi" style="border-radius:50%;border:2px solid var(--gold);flex-shrink:0;">
+        <div>
+          <h2 class="sec-title" style="margin-bottom:.5rem;">Built by ProtonPunk</h2>
+          <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">CypherGang is one of XPR Network's original NFT projects, launched in 2021 by ProtonPunk (@0xCypherPunk). 1,777 unique hand-crafted NFTs, each one a fighter in the CypherBrawls ecosystem. Holders earn passive CYPHR tokens just for holding. Every CypherGang NFT is your identity, your fighter, and your key to the CypherBrawls arena.</p>
+          <div class="flex gap-sm wrap">
+            <a href="https://cyphergang.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">🔗 cyphergang.com</a>
+            <a href="https://x.com/0xCypherPunk" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @0xCypherPunk</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:rgba(124,58,237,0.05);border:1px solid rgba(124,58,237,0.25);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
+      <h2 class="sec-title">⚔ CypherBrawls</h2>
+      <img src="./g_cypher2.jpg?v=2" alt="CypherBrawls" style="width:100%;border-radius:10px;margin-bottom:1.1rem;object-fit:cover;max-height:200px;display:block;">
+      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">CypherBrawls is the tactical on-chain battle game built by ProtonPunk and CypherGang on XPR Network. Your CypherGang NFT is your fighter. Build your strategy, deploy to battle, and compete on-chain. The game that proves NFTs are more than art — they are weapons.</p>
+      <div class="flex gap-sm wrap">
+        <a href="https://cyphergang.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">🔗 cyphergang.com</a>
+      </div>
+    </div>
+
+    <div style="background:rgba(201,146,42,0.04);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
+      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem;">
+        <img src="./icon_cyphergang.jpg?v=2" alt="CypherGang" style="width:44px;height:44px;border-radius:8px;object-fit:contain;flex-shrink:0;">
+        <h2 class="sec-title" style="margin:0;">Get Your Fighter</h2>
+      </div>
+      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">CypherGang NFTs are available on soon.market and AtomicHub. Collection name: <span style="font-family:'Cinzel',serif;color:var(--gold-l);">zvapir55jvu4</span>. Each NFT is a unique hand-crafted fighter with its own traits and stats. Once you hold one, you earn passive CYPHR tokens and gain access to CypherBrawls.</p>
+      <div class="flex gap-sm wrap">
+        <a href="https://soon.market/collection/zvapir55jvu4" target="_blank" class="btn btn-o" style="font-size:.78rem;">🛒 soon.market</a>
+        <a href="https://www.atomichub.io/explorer/collection/xprnetwork/zvapir55jvu4" target="_blank" class="btn btn-o" style="font-size:.78rem;">⚛ AtomicHub</a>
+        <a href="https://t.me/CypherGang" target="_blank" class="btn btn-o" style="font-size:.78rem;">✈ CypherGang Telegram</a>
+      </div>
+    </div>
+
+    <div style="background:rgba(124,58,237,0.04);border:1px solid rgba(124,58,237,0.22);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
+      <h2 class="sec-title">💎 CYPHR Token</h2>
+      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin:0;">CYPHR is the native token of the CypherGang ecosystem. Earned passively by holding CypherGang NFTs. Used within the CypherBrawls game economy. Available on SimpleDEX on XPR Network.</p>
+    </div>
+
+    <div class="disc" style="background:rgba(124,58,237,0.07);border-color:rgba(124,58,237,0.3);">
+      <span>🏆</span>
+      <div>
+        <strong style="color:var(--text);">Hold a CypherGang NFT?</strong> Connect your WebAuth wallet on the Shields tab to unlock your CypherGang Guardian achievements.
+        <div style="margin-top:.65rem;"><button onclick="go('shields')" class="btn btn-o" style="font-size:.78rem;">Go to Shields →</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════ PAGE: KSTO ═══════ -->
+<div id="page-ksto" class="page">
+<div class="container">
+  <div class="section">
+    <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden;margin-bottom:2rem;">
+      <img src="./g_event.jpg?v=2" alt="" style="width:100%;height:220px;object-fit:cover;display:block;filter:brightness(0.32);">
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.5rem;">
+        <div class="sec-label" style="margin-bottom:.45rem;">Kulture Speaks Truth Onchain</div>
+        <h1 class="page-title" style="margin-bottom:.4rem;">KSTO COMMUNITY</h1>
+        <p class="page-sub" style="margin:0;font-size:.85rem;">Kulture Speaks Truth Onchain. The heartbeat of XPR Network.</p>
+      </div>
+    </div>
+
+    <div style="background:rgba(201,146,42,0.04);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
+      <div class="comm-card" style="align-items:flex-start;gap:1.1rem;">
+        <img src="./char_hulk.jpg?v=2" alt="Hulkwarrior" class="char-avi" style="border-radius:50%;border:2px solid var(--gold);flex-shrink:0;">
+        <div>
+          <h2 class="sec-title" style="margin-bottom:.5rem;">The Community</h2>
+          <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">KSTO (Kulture Speaks Truth Onchain) is one of the most active and passionate communities in the XPR Network ecosystem. Built around education, connection, and real participation — KSTO members show up every week to learn, build, and stand together. Every Wednesday at 8 PM EST, the community gathers on X Spaces to discuss Metallicus, XPR Network, WebAuth, and everything in between.</p>
+          <div class="flex gap-sm wrap">
+            <a href="https://t.me/KSTOX/1" target="_blank" class="btn btn-o" style="font-size:.78rem;">✈ KSTO Telegram</a>
+            <a href="https://x.com/Keep_Snipping" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @Keep_Snipping</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:rgba(201,146,42,0.04);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
+      <div style="text-align:center;margin-bottom:.9rem;">
+        <img src="./char_snippy.jpg?v=2" alt="Snippy" style="width:110px;height:110px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;display:inline-block;">
+      </div>
+      <h2 class="sec-title" style="text-align:center;">🦊 Snippy — The KSTO Mascot</h2>
+      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">Snippy is the beloved fox mascot of the KSTO community. Recognized across the entire XPR Network ecosystem, Snippy represents the spirit of the community — friendly, smart, and always showing up. Snippy NFTs are available on nftpacks.io. Holding a Snippy NFT is a badge of honor in the KSTO family.</p>
+      <div class="flex gap-sm wrap">
+        <a href="https://nftpacks.io" target="_blank" class="btn btn-o" style="font-size:.78rem;">🎁 nftpacks.io</a>
+        <a href="https://x.com/snipverse" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @snipverse</a>
+      </div>
+    </div>
+
+    <div style="background:rgba(201,146,42,0.04);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
+      <div class="comm-card" style="align-items:flex-start;gap:1.1rem;">
+        <img src="./char_funky.jpg?v=2" alt="Funky" class="char-avi" style="flex-shrink:0;">
+        <div>
+          <h2 class="sec-title" style="margin-bottom:.5rem;">🎨 Funkyverse — A KSTO Sub-Project</h2>
+          <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">Funkyverse is a creative community project living within the KSTO ecosystem. Funky NFTs are part of the XPR Network NFT family, available on nftpacks.io. Follow the Funkyverse journey and join the creative side of the KSTO community.</p>
+          <div class="flex gap-sm wrap">
+            <a href="https://x.com/funkyfVerse" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @funkyfVerse</a>
+            <a href="https://nftpacks.io" target="_blank" class="btn btn-o" style="font-size:.78rem;">🎁 nftpacks.io</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:rgba(124,58,237,0.04);border:1px solid rgba(124,58,237,0.22);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
+      <h2 class="sec-title">🎙 KSTO Spaces — Every Wednesday</h2>
+      <img src="./g_spaces.jpg?v=2" alt="KSTO Spaces" style="width:100%;border-radius:10px;margin-bottom:1.1rem;object-fit:cover;max-height:200px;display:block;">
+      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">Join the KSTO community every Wednesday at 8 PM EST on X Spaces. Topics include Metallicus updates, XPR Network news, WebAuth wallet tips, community projects, and everything in between. This is where the community comes alive.</p>
+      <div class="flex gap-sm wrap">
+        <a href="https://x.com/Keep_Snipping" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @Keep_Snipping on X</a>
+      </div>
+    </div>
+
+    <div style="background:rgba(56,189,248,0.04);border:1px solid rgba(56,189,248,0.2);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
+      <h2 class="sec-title">🌐 Snipverse</h2>
+      <img src="./g_snipverse.jpg?v=2" alt="Snipverse" style="width:100%;border-radius:10px;margin-bottom:1.1rem;object-fit:cover;max-height:200px;display:block;">
+      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">Snipverse is the Web3 social media platform built on XPR Network. The KSTO community is active on Snipverse — post, engage, and earn SNIPS tokens. Connect with your WebAuth wallet to join.</p>
+      <div class="flex gap-sm wrap">
+        <a href="https://snipverse.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">✦ snipverse.com</a>
+        <a href="https://x.com/snipverse" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @snipverse</a>
+      </div>
+    </div>
+
+    <div class="disc" style="background:rgba(201,146,42,0.06);border-color:rgba(201,146,42,0.3);">
+      <span>🏆</span>
+      <div>
+        <strong style="color:var(--text);">Hold Snippy or Funky NFTs?</strong> Connect your WebAuth wallet on the Shields tab to unlock your KSTO Guardian achievements.
+        <div style="margin-top:.65rem;"><button onclick="go('shields')" class="btn btn-o" style="font-size:.78rem;">Go to Shields →</button></div>
       </div>
     </div>
   </div>
@@ -1537,7 +1714,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 </template>
 
 <script>
-const PAGES=['home','guard','start','ecosystem','learn','shields','faq','community','creator','arena'];
+const PAGES=['home','guard','start','ecosystem','learn','shields','faq','community','cyphergang','ksto','creator','arena'];
 
 function go(id){
   PAGES.forEach(p=>{
