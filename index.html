@@ -508,9 +508,9 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <button class="nav-btn" id="t-learn" onclick="go('learn')">🎓 Academy</button>
     <button class="nav-btn" id="t-shields" onclick="go('shields')">🛡 Shields</button>
     <button class="nav-btn" id="t-faq" onclick="go('faq')">FAQ</button>
-    <button class="nav-btn" id="t-community" onclick="go('community')">Community</button>
-    <button class="nav-btn" id="t-cyphergang" onclick="go('cyphergang')">🔥 CypherGang</button>
     <button class="nav-btn" id="t-ksto" onclick="go('ksto')">🦊 KSTO</button>
+    <button class="nav-btn" id="t-cyphergang" onclick="go('cyphergang')">🔥 CypherGang</button>
+    <button class="nav-btn" id="t-snipverse" onclick="go('snipverse')">🌐 Snipverse</button>
     <button class="nav-btn" id="t-creator" onclick="go('creator')">Creator</button>
     <button class="nav-btn" id="t-arena" onclick="go('arena')">⚔ Stand Guard</button>
   </div>
@@ -528,9 +528,9 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <button class="mobile-nav-btn" onclick="closeMenu();go('learn')">🎓 Academy</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('shields')">🛡 Shields</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('faq')">❓ FAQ</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('community')">👥 Community</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('cyphergang')">🔥 CypherGang</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('ksto')">🦊 KSTO</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('cyphergang')">🔥 CypherGang</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('snipverse')">🌐 Snipverse</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('creator')">👤 Creator</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('arena')">⚔ Stand Guard</button>
   <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g mt2" style="justify-content:center;">⚔ Buy GUARD Token</a>
@@ -1433,24 +1433,26 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 <div id="page-cyphergang" class="page">
 <div class="container">
   <div class="section">
-    <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden;margin-bottom:2rem;">
-      <img src="./g_cypher1.jpg?v=2" alt="" style="width:100%;height:220px;object-fit:cover;display:block;filter:brightness(0.32);">
-      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.5rem;">
-        <div class="sec-label" style="margin-bottom:.45rem;">OG XPR Network NFT Project · Since 2021</div>
-        <h1 class="page-title" style="margin-bottom:.4rem;">CYPHERGANG &amp; CYPHERBRAWLS</h1>
-        <p class="page-sub" style="margin:0;font-size:.85rem;">The OG XPR Network NFT community. 1,777 hand-crafted fighters. One tactical battle game.</p>
+    <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden;margin-bottom:2rem;min-height:200px;background-image:url('./g_cypher1.jpg?v=2');background-size:cover;background-position:center;">
+      <div style="position:absolute;inset:0;background:rgba(8,11,18,0.85);"></div>
+      <div style="position:relative;z-index:1;text-align:center;padding:2.5rem 1.5rem;">
+        <div class="sec-label" style="margin-bottom:.5rem;">OG XPR Network NFT Community · Est. 2021</div>
+        <h1 class="page-title" style="margin-bottom:.4rem;">CYPHERGANG</h1>
+        <p class="page-sub" style="margin:0;">OG XPR Network NFT Community · Est. 2021</p>
       </div>
     </div>
 
     <div style="background:rgba(124,58,237,0.05);border:1px solid rgba(124,58,237,0.25);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
-      <div class="comm-card" style="align-items:flex-start;gap:1.1rem;">
-        <img src="./char_protonpunk.jpg?v=2" alt="ProtonPunk" class="char-avi" style="border-radius:50%;border:2px solid var(--gold);flex-shrink:0;">
-        <div>
-          <h2 class="sec-title" style="margin-bottom:.5rem;">Built by ProtonPunk</h2>
-          <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">CypherGang is one of XPR Network's original NFT projects, launched in 2021 by ProtonPunk (@0xCypherPunk). 1,777 unique hand-crafted NFTs, each one a fighter in the CypherBrawls ecosystem. Holders earn passive CYPHR tokens just for holding. Every CypherGang NFT is your identity, your fighter, and your key to the CypherBrawls arena.</p>
+      <div style="display:flex;gap:1.25rem;align-items:flex-start;flex-wrap:wrap;">
+        <img src="./char_protonpunk.jpg?v=2" alt="ProtonPunk" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--gold);flex-shrink:0;">
+        <div style="flex:1;min-width:200px;">
+          <h2 class="sec-title" style="margin-bottom:.2rem;">Built by ProtonPunk</h2>
+          <div style="font-size:.72rem;color:var(--pur-g);letter-spacing:.05em;margin-bottom:.75rem;font-family:'Cinzel',serif;">@0xCypherPunk</div>
+          <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">CypherGang is one of the original NFT projects on XPR Network, launched in 2021 by ProtonPunk. 1,777 unique hand-crafted NFTs — each one a fighter, an identity, and a passive income source. Holders earn CYPHR tokens automatically just for holding. No staking required. No lock-ups. Just hold and earn.</p>
           <div class="flex gap-sm wrap">
             <a href="https://cyphergang.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">🔗 cyphergang.com</a>
-            <a href="https://x.com/0xCypherPunk" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @0xCypherPunk</a>
+            <a href="https://x.com/CypherGangNFT" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @CypherGangNFT</a>
+            <a href="https://x.com/ProtonPunk" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @ProtonPunk</a>
           </div>
         </div>
       </div>
@@ -1458,36 +1460,39 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 
     <div style="background:rgba(124,58,237,0.05);border:1px solid rgba(124,58,237,0.25);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
       <h2 class="sec-title">⚔ CypherBrawls</h2>
-      <img src="./g_cypher2.jpg?v=2" alt="CypherBrawls" style="width:100%;border-radius:10px;margin-bottom:1.1rem;object-fit:cover;max-height:200px;display:block;">
-      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">CypherBrawls is the tactical on-chain battle game built by ProtonPunk and CypherGang on XPR Network. Your CypherGang NFT is your fighter. Build your strategy, deploy to battle, and compete on-chain. The game that proves NFTs are more than art — they are weapons.</p>
+      <img src="./g_cypher2.jpg?v=2" alt="CypherBrawls" style="width:100%;height:auto;display:block;border-radius:12px;margin-bottom:1.1rem;">
+      <div style="display:flex;align-items:flex-start;gap:.75rem;margin-bottom:.75rem;flex-wrap:wrap;">
+        <img src="./icon_cypherbrawls.jpg?v=2" alt="CypherBrawls" style="width:44px;height:44px;border-radius:8px;object-fit:contain;flex-shrink:0;">
+        <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin:0;flex:1;min-width:180px;">CypherBrawls is the tactical on-chain battle game built by ProtonPunk and the CypherGang community on XPR Network. Your CypherGang NFT is your fighter. Build your strategy, deploy to battle, earn XPR, and compete on-chain. CypherBrawls Season 2 is coming — stay tuned.</p>
+      </div>
       <div class="flex gap-sm wrap">
         <a href="https://cyphergang.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">🔗 cyphergang.com</a>
-      </div>
-    </div>
-
-    <div style="background:rgba(201,146,42,0.04);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
-      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem;">
-        <img src="./icon_cyphergang.jpg?v=2" alt="CypherGang" style="width:44px;height:44px;border-radius:8px;object-fit:contain;flex-shrink:0;">
-        <h2 class="sec-title" style="margin:0;">Get Your Fighter</h2>
-      </div>
-      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">CypherGang NFTs are available on soon.market and AtomicHub. Collection name: <span style="font-family:'Cinzel',serif;color:var(--gold-l);">zvapir55jvu4</span>. Each NFT is a unique hand-crafted fighter with its own traits and stats. Once you hold one, you earn passive CYPHR tokens and gain access to CypherBrawls.</p>
-      <div class="flex gap-sm wrap">
-        <a href="https://soon.market/collection/zvapir55jvu4" target="_blank" class="btn btn-o" style="font-size:.78rem;">🛒 soon.market</a>
-        <a href="https://www.atomichub.io/explorer/collection/xprnetwork/zvapir55jvu4" target="_blank" class="btn btn-o" style="font-size:.78rem;">⚛ AtomicHub</a>
         <a href="https://t.me/CypherGang" target="_blank" class="btn btn-o" style="font-size:.78rem;">✈ CypherGang Telegram</a>
       </div>
     </div>
 
-    <div style="background:rgba(124,58,237,0.04);border:1px solid rgba(124,58,237,0.22);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
+    <div style="background:rgba(201,146,42,0.04);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
       <h2 class="sec-title">💎 CYPHR Token</h2>
-      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin:0;">CYPHR is the native token of the CypherGang ecosystem. Earned passively by holding CypherGang NFTs. Used within the CypherBrawls game economy. Available on SimpleDEX on XPR Network.</p>
+      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin:0;">CYPHR is the native passive income token of the CypherGang ecosystem. Earned automatically by holding CypherGang NFTs — powered by the NFTWatchDAO system on XPR Network. The more NFTs you hold, the more CYPHR you earn. CYPHR fuels the CypherBrawls game economy.</p>
+    </div>
+
+    <div style="background:rgba(124,58,237,0.05);border:1px solid rgba(124,58,237,0.25);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
+      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem;">
+        <img src="./icon_cyphergang.jpg?v=2" alt="CypherGang" style="width:44px;height:44px;border-radius:8px;object-fit:contain;flex-shrink:0;">
+        <h2 class="sec-title" style="margin:0;">Get Your CypherGang NFT</h2>
+      </div>
+      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">CypherGang NFTs are available on soon.market and AtomicHub on XPR Network. Each NFT is unique and hand-crafted by ProtonPunk. Once you hold one, you start earning passive CYPHR tokens immediately.</p>
+      <div class="flex gap-sm wrap">
+        <a href="https://soon.market" target="_blank" class="btn btn-g" style="font-size:.78rem;">🛒 Buy on Soon.Market →</a>
+        <a href="https://eos.atomichub.io/explorer/collection/xpr-network/zvapir55jvu4" target="_blank" class="btn btn-o" style="font-size:.78rem;">⚛ View on AtomicHub →</a>
+      </div>
     </div>
 
     <div class="disc" style="background:rgba(124,58,237,0.07);border-color:rgba(124,58,237,0.3);">
       <span>🏆</span>
       <div>
         <strong style="color:var(--text);">Hold a CypherGang NFT?</strong> Connect your WebAuth wallet on the Shields tab to unlock your CypherGang Guardian achievements.
-        <div style="margin-top:.65rem;"><button onclick="go('shields')" class="btn btn-o" style="font-size:.78rem;">Go to Shields →</button></div>
+        <div style="margin-top:.65rem;"><button onclick="go('shields')" class="btn btn-o" style="font-size:.78rem;">Unlock Achievements →</button></div>
       </div>
     </div>
   </div>
@@ -1498,47 +1503,44 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 <div id="page-ksto" class="page">
 <div class="container">
   <div class="section">
-    <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden;margin-bottom:2rem;">
-      <img src="./g_event.jpg?v=2" alt="" style="width:100%;height:220px;object-fit:cover;display:block;filter:brightness(0.32);">
-      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.5rem;">
-        <div class="sec-label" style="margin-bottom:.45rem;">Kulture Speaks Truth Onchain</div>
+    <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden;margin-bottom:2rem;min-height:200px;background-image:url('./g_event.jpg?v=2');background-size:cover;background-position:center;">
+      <div style="position:absolute;inset:0;background:rgba(8,11,18,0.85);"></div>
+      <div style="position:relative;z-index:1;text-align:center;padding:2.5rem 1.5rem;">
+        <div class="sec-label" style="margin-bottom:.5rem;">Kulture Speaks Truth Onchain</div>
         <h1 class="page-title" style="margin-bottom:.4rem;">KSTO COMMUNITY</h1>
-        <p class="page-sub" style="margin:0;font-size:.85rem;">Kulture Speaks Truth Onchain. The heartbeat of XPR Network.</p>
+        <p class="page-sub" style="margin:0;">Kulture Speaks Truth Onchain</p>
       </div>
     </div>
 
     <div style="background:rgba(201,146,42,0.04);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
-      <div class="comm-card" style="align-items:flex-start;gap:1.1rem;">
-        <img src="./char_hulk.jpg?v=2" alt="Hulkwarrior" class="char-avi" style="border-radius:50%;border:2px solid var(--gold);flex-shrink:0;">
-        <div>
-          <h2 class="sec-title" style="margin-bottom:.5rem;">The Community</h2>
-          <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">KSTO (Kulture Speaks Truth Onchain) is one of the most active and passionate communities in the XPR Network ecosystem. Built around education, connection, and real participation — KSTO members show up every week to learn, build, and stand together. Every Wednesday at 8 PM EST, the community gathers on X Spaces to discuss Metallicus, XPR Network, WebAuth, and everything in between.</p>
-          <div class="flex gap-sm wrap">
-            <a href="https://t.me/KSTOX/1" target="_blank" class="btn btn-o" style="font-size:.78rem;">✈ KSTO Telegram</a>
-            <a href="https://x.com/Keep_Snipping" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @Keep_Snipping</a>
-          </div>
-        </div>
+      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem;">
+        <img src="./icon_ksto.jpg?v=2" alt="KSTO" style="width:48px;height:48px;border-radius:10px;object-fit:contain;flex-shrink:0;">
+        <h2 class="sec-title" style="margin:0;">The Community</h2>
+      </div>
+      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">KSTO (Kulture Speaks Truth Onchain) is one of the most active and passionate communities in the XPR Network ecosystem. A gathering place for builders, educators, traders, and holders who believe in the mission of XPR Network. Every Wednesday at 8 PM EST, the community comes together on X Spaces to discuss Metallicus updates, WebAuth wallet news, XPR Network developments, and the future of the ecosystem.</p>
+      <div class="flex gap-sm wrap">
+        <a href="https://t.me/KSTOX/1" target="_blank" class="btn btn-o" style="font-size:.78rem;">✈ KSTO Telegram</a>
+        <a href="https://x.com/Keep_Snipping" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @Keep_Snipping</a>
       </div>
     </div>
 
     <div style="background:rgba(201,146,42,0.04);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
-      <div style="text-align:center;margin-bottom:.9rem;">
-        <img src="./char_snippy.jpg?v=2" alt="Snippy" style="width:110px;height:110px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;display:inline-block;">
+      <h2 class="sec-title" style="text-align:center;margin-bottom:1rem;">🦊 Snippy — The KSTO Mascot</h2>
+      <div style="text-align:center;margin-bottom:1rem;">
+        <img src="./char_snippy.jpg?v=2" alt="Snippy" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--gold);display:inline-block;">
       </div>
-      <h2 class="sec-title" style="text-align:center;">🦊 Snippy — The KSTO Mascot</h2>
-      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">Snippy is the beloved fox mascot of the KSTO community. Recognized across the entire XPR Network ecosystem, Snippy represents the spirit of the community — friendly, smart, and always showing up. Snippy NFTs are available on nftpacks.io. Holding a Snippy NFT is a badge of honor in the KSTO family.</p>
+      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">Snippy is the beloved fox mascot of the KSTO community and one of the most recognized personalities across the entire XPR Network ecosystem. Snippy represents the spirit of the community — always present, always building, always snipping. Snippy NFTs are available on nftpacks.io and are a badge of honor in the KSTO family.</p>
       <div class="flex gap-sm wrap">
         <a href="https://nftpacks.io" target="_blank" class="btn btn-o" style="font-size:.78rem;">🎁 nftpacks.io</a>
-        <a href="https://x.com/snipverse" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @snipverse</a>
       </div>
     </div>
 
     <div style="background:rgba(201,146,42,0.04);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
-      <div class="comm-card" style="align-items:flex-start;gap:1.1rem;">
-        <img src="./char_funky.jpg?v=2" alt="Funky" class="char-avi" style="flex-shrink:0;">
-        <div>
-          <h2 class="sec-title" style="margin-bottom:.5rem;">🎨 Funkyverse — A KSTO Sub-Project</h2>
-          <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">Funkyverse is a creative community project living within the KSTO ecosystem. Funky NFTs are part of the XPR Network NFT family, available on nftpacks.io. Follow the Funkyverse journey and join the creative side of the KSTO community.</p>
+      <h2 class="sec-title" style="margin-bottom:1rem;">🎨 Funkyverse</h2>
+      <div style="display:flex;gap:1.25rem;align-items:flex-start;flex-wrap:wrap;">
+        <img src="./char_funky.jpg?v=2" alt="Funky" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--gold);flex-shrink:0;">
+        <div style="flex:1;min-width:200px;">
+          <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">Funkyverse is a creative sub-project living within the KSTO ecosystem. Funky NFTs are part of the XPR Network NFT family, available on nftpacks.io alongside Snippy NFTs. Follow Funkyverse on X for creative community content and updates.</p>
           <div class="flex gap-sm wrap">
             <a href="https://x.com/funkyfVerse" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @funkyfVerse</a>
             <a href="https://nftpacks.io" target="_blank" class="btn btn-o" style="font-size:.78rem;">🎁 nftpacks.io</a>
@@ -1548,21 +1550,11 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     </div>
 
     <div style="background:rgba(124,58,237,0.04);border:1px solid rgba(124,58,237,0.22);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
-      <h2 class="sec-title">🎙 KSTO Spaces — Every Wednesday</h2>
-      <img src="./g_spaces.jpg?v=2" alt="KSTO Spaces" style="width:100%;border-radius:10px;margin-bottom:1.1rem;object-fit:cover;max-height:200px;display:block;">
-      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">Join the KSTO community every Wednesday at 8 PM EST on X Spaces. Topics include Metallicus updates, XPR Network news, WebAuth wallet tips, community projects, and everything in between. This is where the community comes alive.</p>
+      <h2 class="sec-title">🎙 KSTO Spaces — Every Wednesday at 8 PM EST</h2>
+      <img src="./g_spaces.jpg?v=2" alt="KSTO Spaces" style="width:100%;height:auto;display:block;border-radius:12px;margin-bottom:1.1rem;">
+      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">Join the KSTO community every Wednesday at 8 PM EST on X Spaces. Topics include Metallicus updates, XPR Network news, WebAuth tips, NFT projects, community highlights, and open discussion. This is where the community comes alive — and where Guardians stand together.</p>
       <div class="flex gap-sm wrap">
-        <a href="https://x.com/Keep_Snipping" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @Keep_Snipping on X</a>
-      </div>
-    </div>
-
-    <div style="background:rgba(56,189,248,0.04);border:1px solid rgba(56,189,248,0.2);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
-      <h2 class="sec-title">🌐 Snipverse</h2>
-      <img src="./g_snipverse.jpg?v=2" alt="Snipverse" style="width:100%;border-radius:10px;margin-bottom:1.1rem;object-fit:cover;max-height:200px;display:block;">
-      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">Snipverse is the Web3 social media platform built on XPR Network. The KSTO community is active on Snipverse — post, engage, and earn SNIPS tokens. Connect with your WebAuth wallet to join.</p>
-      <div class="flex gap-sm wrap">
-        <a href="https://snipverse.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">✦ snipverse.com</a>
-        <a href="https://x.com/snipverse" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @snipverse</a>
+        <a href="https://x.com/Keep_Snipping" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ Follow @Keep_Snipping on X</a>
       </div>
     </div>
 
@@ -1570,7 +1562,83 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
       <span>🏆</span>
       <div>
         <strong style="color:var(--text);">Hold Snippy or Funky NFTs?</strong> Connect your WebAuth wallet on the Shields tab to unlock your KSTO Guardian achievements.
-        <div style="margin-top:.65rem;"><button onclick="go('shields')" class="btn btn-o" style="font-size:.78rem;">Go to Shields →</button></div>
+        <div style="margin-top:.65rem;"><button onclick="go('shields')" class="btn btn-o" style="font-size:.78rem;">Unlock Achievements →</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════ PAGE: SNIPVERSE ═══════ -->
+<div id="page-snipverse" class="page">
+<div class="container">
+  <div class="section">
+    <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden;margin-bottom:2rem;min-height:200px;background-image:url('./g_snipverse.jpg?v=2');background-size:cover;background-position:center;">
+      <div style="position:absolute;inset:0;background:rgba(8,11,18,0.85);"></div>
+      <div style="position:relative;z-index:1;text-align:center;padding:2.5rem 1.5rem;">
+        <div class="sec-label" style="margin-bottom:.5rem;">Web3 Social Media · Built on XPR Network</div>
+        <h1 class="page-title" style="margin-bottom:.4rem;">SNIPVERSE</h1>
+        <p class="page-sub" style="margin:0;">Web3 Social Media. Built on XPR Network. Get Paid to Post.</p>
+      </div>
+    </div>
+
+    <div style="background:rgba(56,189,248,0.04);border:1px solid rgba(56,189,248,0.22);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
+      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem;">
+        <img src="./icon_snipverse.jpg?v=2" alt="Snipverse" style="width:48px;height:48px;border-radius:10px;object-fit:contain;flex-shrink:0;">
+        <h2 class="sec-title" style="margin:0;">Social Media That Pays You</h2>
+      </div>
+      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">Snipverse is a Web3 social media platform built natively on XPR Network by founder Jervis Dent. Designed for crypto enthusiasts, NFT holders, and blockchain projects. Post, engage, and earn SNIPS tokens for every contribution. No passwords — sign in with your WebAuth wallet. Your XPR @username is your Snipverse identity. Snipverse 2.0 launched March 24, 2025 with a completely rebuilt experience.</p>
+      <div class="flex gap-sm wrap">
+        <a href="https://snipverse.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">✦ snipverse.com</a>
+        <a href="https://x.com/snipverse" target="_blank" class="btn btn-o" style="font-size:.78rem;">✕ @snipverse</a>
+      </div>
+    </div>
+
+    <div style="margin-bottom:1.75rem;">
+      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.85rem;">
+        <div class="card" style="padding:1.1rem;"><div style="font-size:1.4rem;margin-bottom:.4rem;">🔑</div><div style="font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:.25rem;">WebAuth Login</div><div style="font-size:.76rem;color:var(--text2);line-height:1.55;">No passwords or seed phrases. Sign in with your WebAuth wallet using biometrics.</div></div>
+        <div class="card" style="padding:1.1rem;"><div style="font-size:1.4rem;margin-bottom:.4rem;">💰</div><div style="font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:.25rem;">Earn SNIPS</div><div style="font-size:.76rem;color:var(--text2);line-height:1.55;">Get rewarded for posting, engaging, and contributing quality content.</div></div>
+        <div class="card" style="padding:1.1rem;"><div style="font-size:1.4rem;margin-bottom:.4rem;">💸</div><div style="font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:.25rem;">Tip Anyone</div><div style="font-size:.76rem;color:var(--text2);line-height:1.55;">Send tips in SNIPS, XPR, DOGE, BTC and other cryptocurrencies to anyone on the platform.</div></div>
+        <div class="card" style="padding:1.1rem;"><div style="font-size:1.4rem;margin-bottom:.4rem;">📈</div><div style="font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:.25rem;">Stake for More</div><div style="font-size:.76rem;color:var(--text2);line-height:1.55;">Stake SNIPS tokens to unlock higher membership levels and greater rewards.</div></div>
+        <div class="card" style="padding:1.1rem;"><div style="font-size:1.4rem;margin-bottom:.4rem;">🌐</div><div style="font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:.25rem;">Zero Fees</div><div style="font-size:.76rem;color:var(--text2);line-height:1.55;">Built on XPR Network — all transactions are instant and completely free.</div></div>
+        <div class="card" style="padding:1.1rem;"><div style="font-size:1.4rem;margin-bottom:.4rem;">🤖</div><div style="font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:.25rem;">Bot-Free</div><div style="font-size:.76rem;color:var(--text2);line-height:1.55;">WebAuth identity verification eliminates fake accounts and bots.</div></div>
+      </div>
+    </div>
+
+    <div style="background:rgba(56,189,248,0.04);border:1px solid rgba(56,189,248,0.22);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
+      <h2 class="sec-title">💎 SNIPS Token</h2>
+      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">SNIPS (Snipcoins) is the native utility token of Snipverse with a 100 billion max supply. Earn SNIPS by posting and engaging. Stake SNIPS to unlock premium membership levels with higher rewards. Available on Metal X and KuCoin.</p>
+      <div class="flex gap-sm wrap">
+        <a href="https://metalx.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">📈 Metal X</a>
+        <a href="https://kucoin.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">📈 KuCoin</a>
+      </div>
+    </div>
+
+    <div style="background:rgba(56,189,248,0.04);border:1px solid rgba(56,189,248,0.22);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
+      <h2 class="sec-title">Membership Levels</h2>
+      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin:0;">Snipverse uses a staking-based membership system. The more SNIPS you stake, the higher your tier — unlocking greater earning potential, exclusive platform features, and community recognition.</p>
+    </div>
+
+    <div style="background:rgba(201,146,42,0.04);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
+      <h2 class="sec-title">🚀 Join Snipverse Today</h2>
+      <ol style="font-size:.86rem;color:var(--text2);line-height:2.1;padding-left:1.25rem;margin-bottom:1.1rem;">
+        <li>Create your WebAuth wallet at <a href="https://webauth.com" target="_blank" style="color:var(--gold-l);">webauth.com</a> (free, 2 minutes)</li>
+        <li>Go to <a href="https://snipverse.com" target="_blank" style="color:var(--gold-l);">snipverse.com</a></li>
+        <li>Connect your WebAuth wallet</li>
+        <li>Set up your profile</li>
+        <li>Start posting and earning SNIPS</li>
+      </ol>
+      <div class="flex gap-sm wrap">
+        <a href="https://snipverse.com" target="_blank" class="btn btn-g" style="font-size:.78rem;">✦ Visit Snipverse →</a>
+        <a href="https://metalx.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">📈 Get SNIPS on Metal X →</a>
+      </div>
+    </div>
+
+    <div style="background:rgba(124,58,237,0.04);border:1px solid rgba(124,58,237,0.22);border-radius:var(--radius-lg);padding:1.75rem 2rem;">
+      <h2 class="sec-title">Find GUARD on Snipverse</h2>
+      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">The Metallicus Guardian community is active on Snipverse. Share your Guardian card, connect with fellow Guardians, and use #GUARD and #XPRNetwork to find us. Forge your Guardian identity on standguard.net, then bring it to Snipverse.</p>
+      <div class="flex gap-sm wrap">
+        <a href="https://snipverse.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">✦ snipverse.com</a>
       </div>
     </div>
   </div>
@@ -1693,7 +1761,9 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
         <a href="#" onclick="go('ecosystem');return false;">Ecosystem</a>
         <a href="#" onclick="go('learn');return false;">Academy</a>
         <a href="#" onclick="go('faq');return false;">FAQ</a>
-        <a href="#" onclick="go('community');return false;">Community</a>
+        <a href="#" onclick="go('ksto');return false;">KSTO</a>
+        <a href="#" onclick="go('cyphergang');return false;">CypherGang</a>
+        <a href="#" onclick="go('snipverse');return false;">Snipverse</a>
       </div>
       <div class="foot-col">
         <h4>Connect</h4>
@@ -1714,7 +1784,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 </template>
 
 <script>
-const PAGES=['home','guard','start','ecosystem','learn','shields','faq','community','cyphergang','ksto','creator','arena'];
+const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena'];
 
 function go(id){
   PAGES.forEach(p=>{
