@@ -4234,6 +4234,7 @@ var FG = {
   zoneIdx: 0, zoneAnnTimer: 0,
   comboStreak: 0, comboMult: 1, comboPulse: 0, comboLabel: '', comboBest: 0,
   isDaily: false, _rng: null, _nextPU: 220, _nextBarrier: 120, _barrierCount: 0,
+  _lastTopH: null,
   showTut: false,
   _tapHandler: null, _keyHandler: null, _resizeHandler: null,
 
@@ -4312,6 +4313,7 @@ var FG = {
     this._nextPU = 130 + Math.floor(Math.random() * 100);
     this._nextBarrier = FG_ZONES[0].spawnRate;
     this._barrierCount = 0;
+    this._lastTopH = null;
     if (daily) {
       var now = new Date();
       var seed = now.getFullYear()*10000 + (now.getMonth()+1)*100 + now.getDate();
@@ -4444,9 +4446,27 @@ var FG = {
     else { this.coin.angle = Math.min(0.262, this.coin.vy * 0.022); }
     this._addTrail();
 
-    // === Barrier spawn — variable rate per zone ===
+    // === Barrier spawn — variable rate per zone, gap-aligned for fairness ===
     if (this.frameCount >= this._nextBarrier) {
-      var topH = 60 + rng() * (h - this.gapSize - 90);
+      var minTopH = 50, maxTopH = h - this.gapSize - 50;
+      var topH;
+      if (this._lastTopH === null) {
+        // First barrier of a run: place gap near screen center
+        topH = Math.round(h / 2 - this.gapSize / 2) + Math.round((rng() - 0.5) * 60);
+      } else {
+        // Constrain new gap center relative to previous — physics-based limits:
+        // Going UP requires flapping (~130px reachable in the reaction window with 2 flaps).
+        // Going DOWN is free fall (~220px safe).
+        var prevCenter = this._lastTopH + this.gapSize / 2;
+        var maxUpShift   = 130; // max the player can reliably flap upward between barriers
+        var maxDownShift = 220; // free-fall is generous
+        var lo = Math.max(minTopH + this.gapSize / 2, prevCenter - maxUpShift);
+        var hi = Math.min(maxTopH + this.gapSize / 2, prevCenter + maxDownShift);
+        if (lo > hi) lo = hi; // degenerate guard
+        topH = Math.round(lo + rng() * (hi - lo) - this.gapSize / 2);
+      }
+      topH = Math.max(minTopH, Math.min(maxTopH, topH));
+      this._lastTopH = topH;
       var lbl = zone.lbls[Math.floor(rng() * zone.lbls.length)];
       this.barriers.push({x: w, topH: topH, lbl: lbl, passed: false, skipMe: this.skipNext});
       if (this.skipNext) this.skipNext = false;
@@ -4486,6 +4506,7 @@ var FG = {
           this.zoneAnnTimer = 2.0;
           this.shieldEntry = 1.5; // brief invincibility on zone entry
           this._nextBarrier = this.frameCount + FG_ZONES[newZone].spawnRate + 70; // breathing room
+          this._lastTopH = null; // reset gap continuity so zone-entry barrier can be placed freely
           this._boop('zone');
         }
         this._boop('point');
