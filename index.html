@@ -4839,6 +4839,7 @@ var FG = {
     c.save();
     c.translate(x, y); c.rotate(angle || 0);
     if (img && img.complete && img.naturalWidth > 0) {
+      c.globalCompositeOperation = 'screen';
       c.drawImage(img, -gw/2, -gh/2, gw, gh);
     } else {
       c.beginPath(); c.arc(0, 0, 22, 0, 6.283);
