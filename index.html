@@ -519,7 +519,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
 </head>
 <body>
-<!-- build: 2026-06-12-v3 -->
+<!-- build: 2026-06-12-v4 -->
 
 <!-- NAV -->
 <nav id="nav">
@@ -1847,6 +1847,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
       <p class="foot-disc">Metallicus Guardian (GUARD) is an independent, community-created project. It is not affiliated with, sponsored by, endorsed by, or officially connected to Metallicus, XPR Network, WebAuth, Metal Blockchain, or any other product, company, or project referenced on this site. All product names, logos, and trademarks are the property of their respective owners and are used here for identification and educational purposes only (nominative use). This site is an unofficial educational resource. Nothing here is financial advice. Crypto assets are highly speculative — do your own research.</p>
       <p style="font-size:.72rem;color:var(--text3);text-align:center;font-style:italic;margin-top:.4rem;">⚠ Community educational resource — not affiliated with or officially endorsed by Metallicus or XPR Network.</p>
       <span style="font-size:.7rem;color:var(--text3);white-space:nowrap;">© 2026 GUARD Community</span>
+      <span id="build-badge" style="font-size:.62rem;color:var(--text3);opacity:.42;margin-left:.6rem;white-space:nowrap;letter-spacing:.04em;font-family:monospace;"></span>
     </div>
   </div>
 </footer>
@@ -1854,8 +1855,11 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena'];
+const BUILD_VERSION='2026-06-12-v4';
+(function(){var b=document.getElementById('build-badge');if(b)b.textContent=BUILD_VERSION;})();
 
 function go(id){
+  if(location.hash!=='#'+id)location.hash=id;
   PAGES.forEach(p=>{
     const el=document.getElementById('page-'+p);
     const tb=document.getElementById('t-'+p);
@@ -1873,6 +1877,7 @@ function go(id){
   if(typeof trackPageVisit==='function') trackPageVisit(id);
   if(id==='arena'&&typeof arenaInit==='function'&&!window._arenaInited){window._arenaInited=true;setTimeout(arenaInit,30);}
 }
+window.addEventListener('hashchange',function(){var h=location.hash.replace(/^#/,'');if(PAGES.includes(h))go(h);});
 
 function toggleMenu(){document.getElementById('mob').classList.toggle('open');}
 function closeMenu(){document.getElementById('mob').classList.remove('open');}
@@ -4433,6 +4438,9 @@ function drawStart(){
   ctx.fillStyle='rgba(71,85,105,0.12)';rrect(CX-90,370,180,34,8);ctx.fill();ctx.strokeStyle='#334155';ctx.lineWidth=1;rrect(CX-90,370,180,34,8);ctx.stroke();
   ctx.fillStyle='#64748b';ctx.font='12px Cinzel,serif';ctx.fillText('❓  HOW TO PLAY',CX,387);
   ctx.textBaseline='alphabetic';
+  ctx.textAlign='right';ctx.fillStyle='rgba(100,116,139,0.4)';ctx.font='9px monospace';
+  ctx.fillText(BUILD_VERSION,CW-5,CH-4);
+  ctx.textAlign='center';
 }
 
 function drawGameOver(nb,gp){
@@ -4492,7 +4500,11 @@ window.arenaInit=arenaInit;
 resetWalletBarUI();
 
 // Try to restore session on page load
-window.addEventListener('load', () => { setTimeout(walletRestore, 1000); });
+window.addEventListener('load', () => {
+  setTimeout(walletRestore, 1000);
+  var h=location.hash.replace(/^#/,'');
+  if(PAGES.includes(h))go(h);
+});
 
 function scrollNav(amount){
   document.getElementById('navScroll').scrollBy({left:amount,behavior:'smooth'});
@@ -5139,6 +5151,10 @@ var FG = {
       var dTxt = this.pbDaily > 0 ? 'Daily: '+this.pbDaily : '';
       c.fillText([pbTxt,dTxt].filter(Boolean).join(' · '), w/2, h*0.92);
     }
+    c.textAlign = 'right'; c.textBaseline = 'alphabetic';
+    c.fillStyle = 'rgba(100,116,139,0.4)'; c.font = '9px monospace';
+    c.fillText(BUILD_VERSION, w-4, h-4);
+    c.textAlign = 'center'; c.textBaseline = 'middle';
   },
 
   _drawDead: function(w, h) {
