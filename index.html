@@ -69,7 +69,7 @@ button{cursor:pointer;font-family:'Inter',sans-serif;}
 .game-sel-btn.active{background:rgba(201,146,42,0.12);border-color:var(--gold);color:var(--gold-l);}
 
 /* PAGES */
-.page{display:none;min-height:100vh;padding-top:100px;}
+.page{display:none;min-height:100vh;padding-top:70px;}
 .page.active{display:block;}
 .container{max-width:1100px;margin:0 auto;padding:0 1.5rem;}
 .section{padding:4rem 0;}
@@ -550,10 +550,6 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   </div>
 </div>
 
-<!-- DISCLAIMER BANNER -->
-<div id="disc-banner" style="background:rgba(124,58,237,0.07);border-bottom:1px solid rgba(124,58,237,0.18);padding:.5rem 1.5rem;text-align:center;position:fixed;top:60px;left:0;right:0;z-index:999;">
-  <p style="font-size:.72rem;color:var(--text3);">⚠ Community educational resource — not affiliated with or officially endorsed by Metallicus or XPR Network.</p>
-</div>
 
 
 <!-- ═══════ PAGE: HOME ═══════ -->
@@ -1807,6 +1803,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     </div>
     <div class="foot-bottom">
       <p class="foot-disc">Metallicus Guardian (GUARD) is an independent, community-created project. It is not affiliated with, sponsored by, endorsed by, or officially connected to Metallicus, XPR Network, WebAuth, Metal Blockchain, or any other product, company, or project referenced on this site. All product names, logos, and trademarks are the property of their respective owners and are used here for identification and educational purposes only (nominative use). This site is an unofficial educational resource. Nothing here is financial advice. Crypto assets are highly speculative — do your own research.</p>
+      <p style="font-size:.72rem;color:var(--text3);text-align:center;font-style:italic;margin-top:.4rem;">⚠ Community educational resource — not affiliated with or officially endorsed by Metallicus or XPR Network.</p>
       <span style="font-size:.7rem;color:var(--text3);white-space:nowrap;">© 2026 GUARD Community</span>
     </div>
   </div>
@@ -3305,7 +3302,7 @@ function newG(daily){
 // ─── Init / resize ─────────────────────────────────────────────────────────────
 function arenaInit(){
   cvs=document.getElementById('arena-canvas');if(!cvs)return;
-  ctx=cvs.getContext('2d');cvs.width=CW;cvs.height=CH;
+  ctx=cvs.getContext('2d');
   resize();window.addEventListener('resize',resize);
   cvs.addEventListener('click',onTap);cvs.addEventListener('touchstart',onTouch,{passive:false});
   window.addEventListener('keydown',onKey);
@@ -3317,7 +3314,7 @@ function arenaInit(){
   if(!tutDone){g.phase='TUT';g.tutStep=1;}
   drawStatic();updatePBBar();
 }
-function resize(){if(!cvs)return;const c=document.getElementById('arena-container');const w=Math.min(CW,c?c.clientWidth:CW);cscale=w/CW;cvs.style.width=w+'px';cvs.style.height=Math.round(CH*cscale)+'px';}
+function resize(){if(!cvs)return;const c=document.getElementById('arena-container');const w=Math.min(CW,c?c.clientWidth:CW);cscale=w/CW;cvs.width=w;cvs.height=Math.round(CH*cscale);cvs.style.width=w+'px';cvs.style.height=Math.round(CH*cscale)+'px';if(g&&['TUT','START','PAUSED','GAME_OVER'].includes(g.phase))drawStatic();}
 
 // ─── Input ────────────────────────────────────────────────────────────────────
 function onTouch(e){e.preventDefault();const t=e.touches[0],r=cvs.getBoundingClientRect();tap((t.clientX-r.left)/cscale,(t.clientY-r.top)/cscale);}
@@ -3689,6 +3686,7 @@ function drawWaveZoneAnn(){
 }
 
 function draw(){
+  ctx.setTransform(cscale,0,0,cscale,0,0);
   ctx.clearRect(0,0,CW,CH);drawBg();
   if(g.phase==='DYING'){
     ctx.save();ctx.translate(g.shakeX,g.shakeY);drawPtl();ctx.restore();
@@ -4016,7 +4014,7 @@ function drawPauseOverlay(){
 // ─── Tutorial & static screens ────────────────────────────────────────────────
 function bgCanvas(){ctx.clearRect(0,0,CW,CH);const gr=ctx.createRadialGradient(CX,CY,0,CX,CY,CW*0.8);gr.addColorStop(0,'hsla(220,40%,10%,1)');gr.addColorStop(1,'hsla(190,60%,4%,1)');ctx.fillStyle=gr;ctx.fillRect(0,0,CW,CH);}
 function muteIcon(){ctx.save();ctx.font='15px sans-serif';ctx.textAlign='right';ctx.textBaseline='middle';ctx.globalAlpha=0.45;ctx.fillStyle='#fff';ctx.fillText(muted?'🔇':'🔊',CW-14,22);ctx.globalAlpha=1;ctx.restore();}
-function drawStatic(){if(!cvs||!ctx)return;if(g.phase==='TUT')drawTut(g.tutStep);else if(g.phase==='START')drawStart();else if(g.phase==='PAUSED')drawPauseOverlay();else if(g.phase==='GAME_OVER')drawGameOver(g._nb||false,g._gp||0);}
+function drawStatic(){if(!cvs||!ctx)return;ctx.setTransform(cscale,0,0,cscale,0,0);if(g.phase==='TUT')drawTut(g.tutStep);else if(g.phase==='START')drawStart();else if(g.phase==='PAUSED')drawPauseOverlay();else if(g.phase==='GAME_OVER')drawGameOver(g._nb||false,g._gp||0);}
 
 function drawTut(step){
   bgCanvas();muteIcon();
@@ -4485,23 +4483,19 @@ var FG = {
   },
 
   _spawnPU: function(w, h, rng) {
+    if (this.barriers.length === 0) return;
+    var safeX = w + 60;
+    // Skip if any barrier is within 120px horizontally of safeX
+    for (var i = 0; i < this.barriers.length; i++) {
+      if (Math.abs(this.barriers[i].x - safeX) < 120) return;
+    }
+    var last = this.barriers[this.barriers.length - 1];
+    var gapTop = last.topH + this.gapSize * 0.25;
+    var gapBottom = last.topH + this.gapSize * 0.75;
     var types = ['shield_boost','guardian_shield','double_points'];
     var type = types[Math.floor(rng() * 3)];
     var icons = {shield_boost:'⚡', guardian_shield:'🛡', double_points:'🔥'};
-    // Spawn inside the gap of an upcoming barrier, 70px before it, clear of pipes
-    for (var i = 0; i < this.barriers.length; i++) {
-      var b = this.barriers[i];
-      if (b.x > this.coin.x + 80 && b.x < w + 60) {
-        var safeTop = b.topH + this.gapSize * 0.22;
-        var safeBot = b.topH + this.gapSize * 0.78;
-        if (safeBot - safeTop > 20) {
-          this.powerups.push({x: b.x - 72, y: safeTop + rng()*(safeBot - safeTop), type: type, icon: icons[type], r: 14});
-          return;
-        }
-      }
-    }
-    // No suitable barrier on screen — spawn ahead in vertical center, well away from edges
-    this.powerups.push({x: w + 20, y: h*0.35 + rng()*(h*0.3), type: type, icon: icons[type], r: 14});
+    this.powerups.push({x: safeX, y: gapTop + rng() * (gapBottom - gapTop), type: type, icon: icons[type], r: 14});
   },
 
   _collectPU: function() {
