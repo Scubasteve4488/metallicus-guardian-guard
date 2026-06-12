@@ -71,8 +71,8 @@ button{cursor:pointer;font-family:'Inter',sans-serif;}
 .nav-dropdown-btn{display:flex;align-items:center;gap:.2rem;}
 .dd-caret{font-size:.6rem;display:inline-block;opacity:.7;transition:transform .15s;}
 .nav-dropdown.open>.nav-dropdown-btn .dd-caret{transform:rotate(180deg);}
-.nav-dd-panel{position:absolute;top:calc(100% + 4px);left:0;background:var(--bg2);border:1px solid rgba(201,146,42,0.35);border-top:none;border-radius:0 0 8px 8px;min-width:155px;padding:.2rem 0;opacity:0;transform:translateY(-5px);pointer-events:none;transition:opacity .15s,transform .15s;z-index:1100;}
-.nav-dropdown.open>.nav-dd-panel{opacity:1;transform:translateY(0);pointer-events:auto;}
+.nav-dd-panel{position:fixed;top:60px;left:0;background:var(--bg2);border:1px solid rgba(201,146,42,0.35);border-top:none;border-radius:0 0 8px 8px;min-width:155px;padding:.2rem 0;opacity:0;transform:translateY(-5px);pointer-events:none;transition:opacity .15s,transform .15s;z-index:1100;}
+.nav-dd-panel.open{opacity:1;transform:translateY(0);pointer-events:auto;}
 .nav-dd-item{display:block;width:100%;background:none;border:none;padding:.55rem 1rem;font-size:.75rem;font-weight:500;color:var(--text2);text-align:left;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;transition:color .15s,background .15s;}
 .nav-dd-item:hover{color:var(--gold-l);background:rgba(201,146,42,0.1);}
 
@@ -542,22 +542,12 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
       <button class="nav-btn active" id="t-home" onclick="go('home')">Home</button>
       <button class="nav-btn" id="t-guard" onclick="go('guard')">🛡 GUARD</button>
       <button class="nav-btn" id="t-ecosystem" onclick="go('ecosystem')">Ecosystem</button>
-      <div class="nav-dropdown" id="dd-learn" onmouseenter="openDropdown('dd-learn')" onmouseleave="closeAllDropdowns()">
-        <button class="nav-btn nav-dropdown-btn" id="t-learn-group" onclick="toggleDropdown('dd-learn')">Learn <span class="dd-caret">▾</span></button>
-        <div class="nav-dd-panel">
-          <button class="nav-dd-item" onclick="go('start');closeAllDropdowns()">🚀 New to XPR?</button>
-          <button class="nav-dd-item" onclick="go('learn');closeAllDropdowns()">🎓 Academy</button>
-          <button class="nav-dd-item" onclick="go('faq');closeAllDropdowns()">❓ FAQ</button>
-        </div>
+      <div class="nav-dropdown" id="dd-learn" onmouseenter="openDropdown('dd-learn')" onmouseleave="scheduleCloseDropdowns()">
+        <button class="nav-btn nav-dropdown-btn" id="t-learn-group" onclick="toggleDropdown('dd-learn',event)">Learn <span class="dd-caret">▾</span></button>
       </div>
       <button class="nav-btn" id="t-shields" onclick="go('shields')">🛡 Shields</button>
-      <div class="nav-dropdown" id="dd-communities" onmouseenter="openDropdown('dd-communities')" onmouseleave="closeAllDropdowns()">
-        <button class="nav-btn nav-dropdown-btn" id="t-communities-group" onclick="toggleDropdown('dd-communities')">Communities <span class="dd-caret">▾</span></button>
-        <div class="nav-dd-panel">
-          <button class="nav-dd-item" onclick="go('ksto');closeAllDropdowns()">🦊 KSTO</button>
-          <button class="nav-dd-item" onclick="go('cyphergang');closeAllDropdowns()">🔥 CypherGang</button>
-          <button class="nav-dd-item" onclick="go('snipverse');closeAllDropdowns()">🌐 Snipverse</button>
-        </div>
+      <div class="nav-dropdown" id="dd-communities" onmouseenter="openDropdown('dd-communities')" onmouseleave="scheduleCloseDropdowns()">
+        <button class="nav-btn nav-dropdown-btn" id="t-communities-group" onclick="toggleDropdown('dd-communities',event)">Communities <span class="dd-caret">▾</span></button>
       </div>
       <button class="nav-btn" id="t-creator" onclick="go('creator')">Creator</button>
       <button class="nav-btn" id="t-arena" onclick="go('arena')">⚔ Stand Guard</button>
@@ -568,6 +558,16 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <button id="wallet-btn" onclick="toggleWallet()" style="background:rgba(201,146,42,0.1);border:1px solid var(--border-gold);color:var(--gold-l);font-size:.72rem;padding:.35rem .8rem;border-radius:6px;cursor:pointer;white-space:nowrap;font-family:'Cinzel',serif;flex-shrink:0;line-height:1.4;">⚡ Connect</button>
   <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </nav>
+<div id="dd-learn-panel" class="nav-dd-panel" onmouseenter="cancelCloseDropdowns()" onmouseleave="scheduleCloseDropdowns()">
+  <button class="nav-dd-item" onclick="go('start');closeAllDropdowns()">🚀 New to XPR?</button>
+  <button class="nav-dd-item" onclick="go('learn');closeAllDropdowns()">🎓 Academy</button>
+  <button class="nav-dd-item" onclick="go('faq');closeAllDropdowns()">❓ FAQ</button>
+</div>
+<div id="dd-communities-panel" class="nav-dd-panel" onmouseenter="cancelCloseDropdowns()" onmouseleave="scheduleCloseDropdowns()">
+  <button class="nav-dd-item" onclick="go('ksto');closeAllDropdowns()">🦊 KSTO</button>
+  <button class="nav-dd-item" onclick="go('cyphergang');closeAllDropdowns()">🔥 CypherGang</button>
+  <button class="nav-dd-item" onclick="go('snipverse');closeAllDropdowns()">🌐 Snipverse</button>
+</div>
 
 <div class="mobile-nav" id="mob">
   <button onclick="closeMenu()" style="position:absolute;top:1rem;right:1.5rem;background:none;border:none;color:var(--gold-l);font-size:1.8rem;line-height:1;cursor:pointer;">✕</button>
@@ -4650,11 +4650,42 @@ window.addEventListener('load', () => {
 function scrollNav(amount){
   document.getElementById('navScroll').scrollBy({left:amount,behavior:'smooth'});
 }
-function openDropdown(id){document.querySelectorAll('.nav-dropdown').forEach(d=>d.classList.remove('open'));document.getElementById(id).classList.add('open');}
-function closeAllDropdowns(){document.querySelectorAll('.nav-dropdown').forEach(d=>d.classList.remove('open'));}
-function toggleDropdown(id){var dd=document.getElementById(id);var was=dd.classList.contains('open');closeAllDropdowns();if(!was)dd.classList.add('open');}
-function updateNavArrows(){var ns=document.getElementById('navScroll');if(!ns)return;var fits=ns.scrollWidth<=ns.clientWidth+2;document.querySelectorAll('.nav-arrow').forEach(function(a){a.style.opacity=fits?'0':'';a.style.pointerEvents=fits?'none':'';});}
-document.addEventListener('click',function(e){if(!e.target.closest('.nav-dropdown'))closeAllDropdowns();});
+var _DD_PANELS={'dd-learn':{btnId:'t-learn-group',panelId:'dd-learn-panel'},'dd-communities':{btnId:'t-communities-group',panelId:'dd-communities-panel'}};
+var _ddCloseTimer=null;
+function openDropdown(id){
+  clearTimeout(_ddCloseTimer);
+  document.querySelectorAll('.nav-dd-panel').forEach(function(p){p.classList.remove('open');});
+  document.querySelectorAll('.nav-dropdown').forEach(function(d){d.classList.remove('open');});
+  var cfg=_DD_PANELS[id];if(!cfg)return;
+  var btn=document.getElementById(cfg.btnId);
+  var panel=document.getElementById(cfg.panelId);
+  var ddEl=document.getElementById(id);
+  if(!btn||!panel)return;
+  panel.style.left=btn.getBoundingClientRect().left+'px';
+  panel.classList.add('open');
+  if(ddEl)ddEl.classList.add('open');
+}
+function closeAllDropdowns(){
+  clearTimeout(_ddCloseTimer);
+  document.querySelectorAll('.nav-dd-panel').forEach(function(p){p.classList.remove('open');});
+  document.querySelectorAll('.nav-dropdown').forEach(function(d){d.classList.remove('open');});
+}
+function scheduleCloseDropdowns(){_ddCloseTimer=setTimeout(closeAllDropdowns,120);}
+function cancelCloseDropdowns(){clearTimeout(_ddCloseTimer);}
+function toggleDropdown(id,e){
+  if(e)e.stopPropagation();
+  var cfg=_DD_PANELS[id];var panel=cfg&&document.getElementById(cfg.panelId);if(!panel)return;
+  var isOpen=panel.classList.contains('open');
+  closeAllDropdowns();
+  if(!isOpen)openDropdown(id);
+}
+function updateNavArrows(){
+  var ns=document.getElementById('navScroll');if(!ns)return;
+  var fits=ns.scrollWidth<=ns.clientWidth+2;
+  document.querySelectorAll('.nav-arrow').forEach(function(a){a.style.opacity=fits?'0':'';a.style.pointerEvents=fits?'none':'';});
+  for(var id in _DD_PANELS){var cfg=_DD_PANELS[id];var panel=document.getElementById(cfg.panelId);if(panel&&panel.classList.contains('open')){var btn=document.getElementById(cfg.btnId);if(btn)panel.style.left=btn.getBoundingClientRect().left+'px';}}
+}
+document.addEventListener('click',function(e){if(!e.target.closest('.nav-dropdown')&&!e.target.closest('.nav-dd-panel'))closeAllDropdowns();});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAllDropdowns();});
 
 // ============ FLAPPY GUARD ============
