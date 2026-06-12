@@ -519,7 +519,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
 </head>
 <body>
-<!-- build: 2026-06-12-v2 -->
+<!-- build: 2026-06-12-v3 -->
 
 <!-- NAV -->
 <nav id="nav">
@@ -1747,7 +1747,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <h1 style="font-family:'Cinzel Decorative','Cinzel',serif;text-align:center;font-size:clamp(1.8rem,5vw,2.8rem);color:var(--gold-l);margin:.2rem 0 .8rem;">GUARDIAN ARENA</h1>
     <div id="game-selector" style="display:flex;gap:.5rem;justify-content:center;margin-bottom:1.1rem;">
       <button id="sel-wave" class="game-sel-btn active" onclick="switchToWave()">⚔ Wave Survival</button>
-      <button id="sel-flappy" class="game-sel-btn" onclick="switchToFlappy()">🪙 Flappy GUARD</button>
+      <button id="sel-flappy" class="game-sel-btn" onclick="switchToFlappy()">🪙 GUARD Trials</button>
     </div>
     <div id="arena-container" style="position:relative;width:100%;max-width:600px;margin:0 auto;">
       <canvas id="arena-canvas" style="display:block;width:100%;border-radius:16px;border:1px solid rgba(201,146,42,0.25);cursor:crosshair;touch-action:none;-webkit-user-select:none;user-select:none;background:#080b12;"></canvas>
@@ -1761,7 +1761,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
       <div style="max-width:480px;margin:1.2rem auto 0;text-align:left;">
         <div class="card" style="border-color:rgba(201,146,42,0.25);padding:1.2rem 1.2rem 1rem;">
           <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:.4rem;margin-bottom:.25rem;">
-            <div class="sec-label" style="margin:0;">🪙 FLAPPY GUARD — Weekly Top Scores</div>
+            <div class="sec-label" style="margin:0;">🪙 GUARD TRIALS — Weekly Top Scores</div>
             <span style="font-size:.72rem;color:var(--text3);white-space:nowrap;">Reset every Monday</span>
           </div>
           <p id="fg-pb-text" style="font-size:.82rem;color:var(--gold-l);margin:.4rem 0 .8rem;word-break:break-word;">Your Best: — · Daily Best: —</p>
@@ -1774,7 +1774,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
               <div style="padding:.45rem .6rem;font-size:.7rem;color:var(--text3);font-family:'Cinzel',serif;border-bottom:1px solid rgba(255,255,255,0.05);text-align:right;">Date</div>
             </div>
             <div style="padding:1.4rem 1rem;text-align:center;">
-              <div style="font-size:.85rem;color:var(--text3);font-style:italic;">No scores yet — be the first Flappy GUARD champion</div>
+              <div style="font-size:.85rem;color:var(--text3);font-style:italic;">No scores yet — be the first GUARD Trials champion</div>
             </div>
           </div>
           <p style="font-size:.74rem;color:var(--text3);margin:.9rem 0 0;border-top:1px solid var(--border);padding-top:.7rem;">On-chain verified leaderboard with GUARD rewards coming — Category B</p>
@@ -2899,17 +2899,17 @@ async function fetchNftHoldings(actor) {
       const d = await r.json();
       if (d.data) {
         const cols = [...new Set(d.data.map(a => a.collection && a.collection.collection_name).filter(Boolean))];
-        console.log('[GUARD] NFT collections for', actor, ':', cols);
+        void cols;
       }
     }
-  } catch(e) { console.log('[GUARD] NFT collection log failed:', e && e.message); }
+  } catch(e) { /* NFT collection log suppressed */ }
 
   // Try multiple funky collection names in priority order
   const FUNKY_NAMES = ['genesisofunk', 'funkyfrags', 'funky', 'funkyverse', 'nftpacks'];
   let funkyCount = 0;
   for (const name of FUNKY_NAMES) {
     const c = await fetchNftCount(actor, name);
-    if (c > 0) { console.log('[GUARD] Funky NFTs found in collection:', name, '(count:', c + ')'); funkyCount = c; break; }
+    if (c > 0) { funkyCount = c; break; }
   }
 
   const [snippyCount, cypherCount] = await Promise.all([
@@ -2948,7 +2948,6 @@ async function fetchStakingData(actor) {
       else if (d.from === 'blastpad') totalOut += d.amount;
     }
     guardianStaked = Math.max(0, totalIn - totalOut);
-    console.log('[GUARD] Staked GUARD:', guardianStaked.toFixed(4));
   } catch(e) {
     console.warn('[GUARD] fetchStakingData error:', e.message);
     guardianStaked = 0;
@@ -4905,8 +4904,8 @@ var FG = {
     }
     if (candidates.length === 0) return;
     var chosen = candidates[Math.floor(rng() * candidates.length)];
-    var gapTop = chosen.topH + this.gapSize * 0.2;
-    var gapBottom = chosen.topH + this.gapSize * 0.8;
+    var gapTop = chosen.topH + this.gapSize * 0.25;
+    var gapBottom = chosen.topH + this.gapSize * 0.75;
     var pool = ['shield_boost','shield_boost','guardian_shield','double_points','slow_mo','shrink'];
     var type = pool[Math.floor(rng() * pool.length)];
     var icons = {shield_boost:'⚡', guardian_shield:'🛡', double_points:'🔥', slow_mo:'⏳', shrink:'🔮'};
@@ -5065,7 +5064,7 @@ var FG = {
     var y = 28;
     c.fillStyle = '#c9922a'; c.font = 'bold 18px "Cinzel Decorative",Cinzel,Arial,sans-serif';
     c.shadowBlur = 14; c.shadowColor = '#c9922a';
-    c.fillText('🪙  FLAPPY GUARD', w/2, y); c.shadowBlur = 0; y += 24;
+    c.fillText('🪙  GUARD TRIALS', w/2, y); c.shadowBlur = 0; y += 24;
     var lines = [
       ['#8899bb','12px','TAP to fly up — gravity pulls you down'],
       ['#8899bb','12px','Dodge the barriers to survive'],
@@ -5111,7 +5110,7 @@ var FG = {
     c.fillStyle = '#c9922a';
     c.font = 'bold 24px "Cinzel Decorative",Cinzel,Arial,sans-serif';
     c.shadowBlur = 16; c.shadowColor = '#c9922a';
-    c.fillText('FLAPPY GUARD', w/2, h*0.48);
+    c.fillText('GUARD TRIALS', w/2, h*0.48);
     c.shadowBlur = 0;
     c.fillStyle = '#8899bb'; c.font = '12px Arial,sans-serif';
     c.fillText('Fly through the blockchain', w/2, h*0.535);
@@ -5460,7 +5459,7 @@ var FG = {
 
   shareScore: function() {
     var zone = FG_ZONES[this.zoneIdx];
-    var msg = 'I scored '+this.score+' on Flappy GUARD — reached '+zone.name+' (zone '+this.zoneIdx+')!'+
+    var msg = 'I scored '+this.score+' on GUARD Trials — reached '+zone.name+' (zone '+this.zoneIdx+')!'+
       (this.isDaily?' [Daily Challenge]':'')+' 🪙⚡ #GUARD #XPRNetwork standguard.net';
     window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(msg), '_blank');
   },
