@@ -4185,14 +4185,30 @@ function scrollNav(amount){
 
 // ============ FLAPPY GUARD ============
 var FG_ZONES = [
-  {name:'SIMPLEDEX',     sub:'The On-Chain Exchange', score:0,  bg:'#04070f', pipe:'#0d4a6e', glow:'#22d3ee', lbls:['FUD','RUG'],          gap:145, spd:2.0},
-  {name:'BLASTPAD',      sub:'The Launch Platform',   score:10, bg:'#06041a', pipe:'#3b0764', glow:'#a855f7', lbls:['DUMP','HACK'],         gap:140, spd:2.4},
-  {name:'METAL X',       sub:'DeFi Layer',             score:20, bg:'#110800', pipe:'#7c2d12', glow:'#f97316', lbls:['DRAIN','SCAM'],        gap:135, spd:2.8},
-  {name:'WEBAUTH',       sub:'Identity Layer',         score:30, bg:'#021208', pipe:'#064e3b', glow:'#34d399', lbls:['PHISH','FAKE'],        gap:130, spd:3.2},
-  {name:'MTL DAO',       sub:'Governance Layer',       score:40, bg:'#0f0205', pipe:'#7f1d1d', glow:'#f43f5e', lbls:['VOTE-NO','SYBIL'],     gap:125, spd:3.6},
-  {name:'LOAN PROTOCOL', sub:'Borrow & Lend',          score:50, bg:'#021408', pipe:'#14532d', glow:'#4ade80', lbls:['LIQUIDATE','FLASH'],   gap:120, spd:4.0},
-  {name:'XPR NETWORK',   sub:'The Blockchain',         score:60, bg:'#080012', pipe:'#4c1d95', glow:'#8b5cf6', lbls:['51%','REORG'],         gap:115, spd:4.5},
-  {name:'METAL BLOCKCHAIN',sub:'The Foundation',       score:70, bg:'#0a0a0a', pipe:'#1c1c1c', glow:'#c9922a', lbls:['MEV','ECLIPSE'],       gap:110, spd:5.0},
+  {name:'SIMPLEDEX',      sub:'The On-Chain Exchange',  rank:'Cryptide Guardian',
+   score:0,  bg:'#010c16', pipe:'#0c3554', glow:'#22d3ee', accent:'#38bdf8',
+   lbls:['SWAP','FUD','SLIP'],           gapStart:152,gapEnd:140,spdStart:1.7,spdEnd:2.2,spawnRate:120},
+  {name:'BLASTPAD',       sub:'The Launch Platform',    rank:'Riftforge Guardian',
+   score:10, bg:'#04010e', pipe:'#2d0a5e', glow:'#a855f7', accent:'#c084fc',
+   lbls:['DUMP','HACK','BLAST'],         gapStart:138,gapEnd:126,spdStart:2.3,spdEnd:2.8,spawnRate:112},
+  {name:'METAL X',        sub:'DeFi Exchange Layer',    rank:'Helion Guardian',
+   score:20, bg:'#0d0600', pipe:'#6b2100', glow:'#f97316', accent:'#fb923c',
+   lbls:['DRAIN','ORDER','FLASH'],       gapStart:124,gapEnd:112,spdStart:2.9,spdEnd:3.5,spawnRate:104},
+  {name:'WEBAUTH',        sub:'Identity Layer',         rank:'Nebulon Guardian',
+   score:30, bg:'#010e07', pipe:'#054a2e', glow:'#34d399', accent:'#6ee7b7',
+   lbls:['PHISH','FAKE','LOCK'],         gapStart:110,gapEnd:99, spdStart:3.6,spdEnd:4.2,spawnRate:96},
+  {name:'MTL DAO',        sub:'Governance Layer',       rank:'Protonis Guardian',
+   score:40, bg:'#0d0102', pipe:'#6b0a1a', glow:'#f43f5e', accent:'#fb7185',
+   lbls:['VETO','SYBIL','VOTE-NO'],      gapStart:97, gapEnd:87, spdStart:4.3,spdEnd:5.0,spawnRate:92},
+  {name:'LOAN PROTOCOL',  sub:'Borrow & Lend',          rank:'Keystone Guardian',
+   score:50, bg:'#010b04', pipe:'#0f4019', glow:'#4ade80', accent:'#86efac',
+   lbls:['LIQUIDATE','MARGIN','FLASH'],  gapStart:85, gapEnd:76, spdStart:5.1,spdEnd:5.8,spawnRate:88},
+  {name:'XPR NETWORK',    sub:'The Blockchain',         rank:'Aegis Guardian',
+   score:60, bg:'#03000c', pipe:'#2d0b6e', glow:'#8b5cf6', accent:'#a78bfa',
+   lbls:['51%','REORG','ECLIPSE'],       gapStart:74, gapEnd:66, spdStart:5.9,spdEnd:6.8,spawnRate:84},
+  {name:'METAL BLOCKCHAIN',sub:'The Foundation',        rank:'Legend',
+   score:70, bg:'#040404', pipe:'#181818', glow:'#c9922a', accent:'#e8b84b',
+   lbls:['MEV','SHADOW','VOID'],         gapStart:64, gapEnd:57, spdStart:6.9,spdEnd:8.5,spawnRate:80},
 ];
 function _fgZoneForScore(s){for(var i=FG_ZONES.length-1;i>=0;i--){if(s>=FG_ZONES[i].score)return i;}return 0;}
 
@@ -4203,10 +4219,13 @@ var FG = {
   pb: parseInt(localStorage.getItem('fg_pb')||'0'),
   pbDaily: parseInt(localStorage.getItem('fg_daily_pb')||'0'),
   gp: 0,
-  speed: 2.0, gapSize: 145,
+  speed: 1.7, gapSize: 152,
   shield: false, shieldTimer: 0,
   skipNext: false,
   doublePoints: false, dpTimer: 0,
+  slowMo: false, slowMoTimer: 0,
+  shrink: false, shrinkTimer: 0,
+  shieldEntry: 0,
   particles: [], barriers: [], powerups: [], trailParticles: [],
   coin: {x:120, y:290, vy:0, angle:0, radius:22},
   gravity: 0.28, flapPower: -5.5,
@@ -4214,7 +4233,7 @@ var FG = {
   guardianImg: null,
   zoneIdx: 0, zoneAnnTimer: 0,
   comboStreak: 0, comboMult: 1, comboPulse: 0, comboLabel: '', comboBest: 0,
-  isDaily: false, _rng: null, _nextPU: 220, _barrierCount: 0,
+  isDaily: false, _rng: null, _nextPU: 220, _nextBarrier: 120, _barrierCount: 0,
   showTut: false,
   _tapHandler: null, _keyHandler: null, _resizeHandler: null,
 
@@ -4279,15 +4298,19 @@ var FG = {
     this.coin = {x: Math.round(w*0.25), y: Math.round(h*0.5), vy:0, angle:0, radius:22};
     this.barriers = []; this.particles = []; this.powerups = []; this.trailParticles = [];
     this.score = 0; this.gp = 0;
-    this.speed = 2.0; this.gapSize = 145;
+    this.speed = FG_ZONES[0].spdStart; this.gapSize = FG_ZONES[0].gapStart;
     this.frameCount = 0;
     this.shield = false; this.shieldTimer = 0;
     this.skipNext = false; this.doublePoints = false; this.dpTimer = 0;
+    this.slowMo = false; this.slowMoTimer = 0;
+    this.shrink = false; this.shrinkTimer = 0;
+    this.shieldEntry = 0;
     this.dead = false; this.started = false;
     this.zoneIdx = 0; this.zoneAnnTimer = 0;
     this.comboStreak = 0; this.comboMult = 1; this.comboPulse = 0; this.comboLabel = ''; this.comboBest = 0;
     this.isDaily = !!daily;
-    this._nextPU = 110 + Math.floor(Math.random() * 110);
+    this._nextPU = 130 + Math.floor(Math.random() * 100);
+    this._nextBarrier = FG_ZONES[0].spawnRate;
     this._barrierCount = 0;
     if (daily) {
       var now = new Date();
@@ -4385,65 +4408,94 @@ var FG = {
   update: function() {
     this.frameCount++;
     if (this.zoneAnnTimer > 0) this.zoneAnnTimer = Math.max(0, this.zoneAnnTimer - 1/60);
+    if (this.shieldEntry > 0) this.shieldEntry = Math.max(0, this.shieldEntry - 1/60);
     if (!this.started || this.dead) return;
     var w = this.canvas.width, h = this.canvas.height;
     var rng = this._rng || Math.random.bind(Math);
-    this.coin.vy += this.gravity;
+
+    // === Dynamic zone difficulty — speed and gap ramp within each zone ===
+    var zone = FG_ZONES[this.zoneIdx];
+    var nextZone = FG_ZONES[this.zoneIdx + 1];
+    var zoneEndScore = nextZone ? nextZone.score : zone.score + 30;
+    var zp = Math.min(1, Math.max(0, (this.score - zone.score) / (zoneEndScore - zone.score)));
+    var baseSpeed = zone.spdStart + (zone.spdEnd - zone.spdStart) * zp;
+    this.gapSize = Math.round(zone.gapStart + (zone.gapEnd - zone.gapStart) * zp);
+
+    // === Power-up timers ===
+    if (this.shield) { this.shieldTimer -= 1/60; if (this.shieldTimer <= 0) { this.shield = false; this.shieldTimer = 0; } }
+    if (this.doublePoints) { this.dpTimer -= 1/60; if (this.dpTimer <= 0) { this.doublePoints = false; this.dpTimer = 0; } }
+    if (this.slowMo) { this.slowMoTimer -= 1/60; if (this.slowMoTimer <= 0) { this.slowMo = false; this.slowMoTimer = 0; } }
+    if (this.shrink) { this.shrinkTimer -= 1/60; if (this.shrinkTimer <= 0) { this.shrink = false; this.shrinkTimer = 0; } }
+    if (this.comboPulse > 0) this.comboPulse = Math.max(0, this.comboPulse - 0.04);
+
+    // Apply slow-mo to speed and gravity
+    var spd = this.slowMo ? baseSpeed * 0.42 : baseSpeed;
+    var grav = this.slowMo ? this.gravity * 0.42 : this.gravity;
+
+    // === Physics ===
+    this.coin.vy += grav;
     if (this.coin.vy > 12) this.coin.vy = 12;
     this.coin.y += this.coin.vy;
     if (this.coin.vy < 0) { this.coin.angle = Math.max(-0.349, this.coin.vy * 0.063); }
     else { this.coin.angle = Math.min(0.262, this.coin.vy * 0.022); }
     this._addTrail();
-    if (this.shield) { this.shieldTimer -= 1/60; if (this.shieldTimer <= 0) { this.shield = false; this.shieldTimer = 0; } }
-    if (this.doublePoints) { this.dpTimer -= 1/60; if (this.dpTimer <= 0) { this.doublePoints = false; this.dpTimer = 0; } }
-    if (this.comboPulse > 0) this.comboPulse = Math.max(0, this.comboPulse - 0.04);
-    if (this.frameCount % 110 === 0) {
-      var zone = FG_ZONES[this.zoneIdx];
-      var topH = 60 + rng() * (h - zone.gap - 90);
+
+    // === Barrier spawn — variable rate per zone ===
+    if (this.frameCount >= this._nextBarrier) {
+      var topH = 60 + rng() * (h - this.gapSize - 90);
       var lbl = zone.lbls[Math.floor(rng() * zone.lbls.length)];
       this.barriers.push({x: w, topH: topH, lbl: lbl, passed: false, skipMe: this.skipNext});
       if (this.skipNext) this.skipNext = false;
       this._barrierCount++;
+      this._nextBarrier = this.frameCount + zone.spawnRate;
     }
-    if (this.frameCount === this._nextPU) {
+
+    // === Power-up spawn ===
+    if (this.frameCount >= this._nextPU) {
       this._spawnPU(w, h, rng);
-      this._nextPU = this.frameCount + 110 + Math.floor(rng() * 110);
+      this._nextPU = this.frameCount + 100 + Math.floor(rng() * 90);
     }
+
+    // === Barrier update + collision ===
     var bw = 52;
+    var hw = this.shrink ? 7 : 12;   // hitbox half-width
+    var hh = this.shrink ? 9 : 15;   // hitbox half-height
+    var invincible = this.shield || this.shieldEntry > 0;
     for (var i = this.barriers.length - 1; i >= 0; i--) {
       var b = this.barriers[i];
-      b.x -= this.speed;
+      b.x -= spd;
       if (b.x + bw < 0) { this.barriers.splice(i, 1); continue; }
-      if (!b.passed && b.x + bw < this.coin.x - 12) {
+      if (!b.passed && b.x + bw < this.coin.x - hw) {
         b.passed = true;
         var pts = this.doublePoints ? 2 : 1;
         this.score += pts; this.gp += pts;
         this.comboStreak++;
         if (this.comboStreak >= 8)      { this.comboMult = 5; this.comboLabel = '🔥 GUARDIAN MODE'; this._boop('guardian'); }
-        else if (this.comboStreak >= 5) { this.comboMult = 3; this.comboLabel = '⚡ x3 COMBO'; this._boop('combo'); }
-        else if (this.comboStreak >= 3) { this.comboMult = 2; this.comboLabel = '✦ x2 COMBO'; this._boop('combo'); }
+        else if (this.comboStreak >= 5) { this.comboMult = 3; this.comboLabel = '⚡ x3'; this._boop('combo'); }
+        else if (this.comboStreak >= 3) { this.comboMult = 2; this.comboLabel = '✦ x2'; this._boop('combo'); }
         else { this.comboMult = 1; this.comboLabel = ''; }
         this.comboPulse = 1;
         if (this.comboStreak > this.comboBest) this.comboBest = this.comboStreak;
         var newZone = _fgZoneForScore(this.score);
         if (newZone !== this.zoneIdx) {
           this.zoneIdx = newZone;
-          this.zoneAnnTimer = 2.5;
-          this.speed = FG_ZONES[newZone].spd;
-          this.gapSize = FG_ZONES[newZone].gap;
+          this.zoneAnnTimer = 3.0;
+          this.shieldEntry = 1.5; // brief invincibility on zone entry
+          this._nextBarrier = this.frameCount + FG_ZONES[newZone].spawnRate + 70; // breathing room
           this._boop('zone');
         }
         this._boop('point');
       }
-      if (!this.shield && !b.skipMe) {
+      if (!invincible && !b.skipMe) {
         var cx = this.coin.x, cy = this.coin.y;
-        if (cx + 12 > b.x && cx - 12 < b.x + bw) {
-          if (cy - 15 < b.topH || cy + 15 > b.topH + this.gapSize) { this.die(); return; }
+        if (cx + hw > b.x && cx - hw < b.x + bw) {
+          if (cy - hh < b.topH || cy + hh > b.topH + this.gapSize) { this.die(); return; }
         }
       }
     }
     this._collectPU();
-    if (this.coin.y - 15 < 0 || this.coin.y + 15 > h) { this.die(); return; }
+    var hh2 = this.shrink ? 9 : 15;
+    if (this.coin.y - hh2 < 0 || this.coin.y + hh2 > h) { this.die(); return; }
     for (var ti = this.trailParticles.length - 1; ti >= 0; ti--) {
       var tp = this.trailParticles[ti];
       tp.x += tp.vx; tp.y += tp.vy; tp.life--;
@@ -4455,7 +4507,7 @@ var FG = {
       if (pp.life <= 0) this.particles.splice(pi, 1);
     }
     for (var pui = this.powerups.length - 1; pui >= 0; pui--) {
-      this.powerups[pui].x -= this.speed;
+      this.powerups[pui].x -= spd;
       if (this.powerups[pui].x < -40) this.powerups.splice(pui, 1);
     }
   },
@@ -4480,16 +4532,16 @@ var FG = {
   _spawnPU: function(w, h, rng) {
     if (this.barriers.length === 0) return;
     var safeX = w + 60;
-    // Skip if any barrier is within 120px horizontally of safeX
     for (var i = 0; i < this.barriers.length; i++) {
       if (Math.abs(this.barriers[i].x - safeX) < 120) return;
     }
     var last = this.barriers[this.barriers.length - 1];
     var gapTop = last.topH + this.gapSize * 0.25;
     var gapBottom = last.topH + this.gapSize * 0.75;
-    var types = ['shield_boost','guardian_shield','double_points'];
-    var type = types[Math.floor(rng() * 3)];
-    var icons = {shield_boost:'⚡', guardian_shield:'🛡', double_points:'🔥'};
+    // Weighted pool: shield_boost most common, slow_mo rarer in early zones
+    var pool = ['shield_boost','shield_boost','guardian_shield','double_points','slow_mo','shrink'];
+    var type = pool[Math.floor(rng() * pool.length)];
+    var icons = {shield_boost:'⚡', guardian_shield:'🛡', double_points:'🔥', slow_mo:'⏳', shrink:'🔮'};
     this.powerups.push({x: safeX, y: gapTop + rng() * (gapBottom - gapTop), type: type, icon: icons[type], r: 14});
   },
 
@@ -4501,7 +4553,9 @@ var FG = {
       if (dx*dx + dy*dy < (cr + pu.r) * (cr + pu.r)) {
         if (pu.type === 'shield_boost') { this.skipNext = true; }
         else if (pu.type === 'guardian_shield') { this.shield = true; this.shieldTimer = 3; }
-        else if (pu.type === 'double_points') { this.doublePoints = true; this.dpTimer = 10; }
+        else if (pu.type === 'double_points') { this.doublePoints = true; this.dpTimer = 8; }
+        else if (pu.type === 'slow_mo') { this.slowMo = true; this.slowMoTimer = 5; }
+        else if (pu.type === 'shrink') { this.shrink = true; this.shrinkTimer = 7; }
         this._boop('pu');
         this.powerups.splice(i, 1);
       }
@@ -4547,14 +4601,70 @@ var FG = {
     var zone = FG_ZONES[this.zoneIdx];
     c.fillStyle = zone.bg;
     c.fillRect(0, 0, w, h);
-    for (var i = 0; i < 50; i++) {
-      var sx = (i*137 + this.frameCount*0.4) % w;
-      var sy = (i*73 + Math.floor(i/5)*17) % h;
-      c.globalAlpha = 0.18 + (Math.sin(i*2.3+this.frameCount*0.02)*0.5+0.5)*0.45;
-      c.fillStyle = '#ffffff'; c.fillRect(sx, sy, 1.5, 1.5);
+    // Zone-specific background particles
+    var fc = this.frameCount;
+    if (this.zoneIdx === 0) {
+      // SimpleDEX: drifting cyan grid nodes
+      for (var i = 0; i < 28; i++) {
+        var sx = (i*173 + fc*0.6) % w, sy = (i*97 + fc*0.2) % h;
+        c.globalAlpha = 0.12 + 0.08*Math.sin(i+fc*0.03);
+        c.fillStyle = '#22d3ee'; c.fillRect(sx, sy, 1.5, 1.5);
+      }
+    } else if (this.zoneIdx === 1) {
+      // BlastPad: purple sparkle bursts
+      for (var i = 0; i < 22; i++) {
+        var sx = (i*157 + fc*0.5) % w, sy = (i*113 + fc*0.3) % h;
+        c.globalAlpha = 0.10 + 0.10*Math.abs(Math.sin(i*0.7+fc*0.05));
+        c.fillStyle = i%2===0 ? '#a855f7' : '#7c3aed'; c.fillRect(sx, sy, 2, 2);
+      }
+    } else if (this.zoneIdx === 2) {
+      // MetalX: orange ember drift
+      for (var i = 0; i < 20; i++) {
+        var sx = (i*141 + fc*0.8) % w, sy = (i*89 - fc*0.4 + h) % h;
+        c.globalAlpha = 0.12 + 0.08*Math.sin(i+fc*0.04);
+        c.fillStyle = '#f97316'; c.fillRect(sx, sy, 1.5, 1.5);
+      }
+    } else if (this.zoneIdx === 3) {
+      // WebAuth: green matrix rain
+      for (var i = 0; i < 18; i++) {
+        var sx = (i*27) % w, sy = (i*43 + fc*1.2) % h;
+        c.globalAlpha = 0.10 + 0.10*Math.sin(i*1.3+fc*0.04);
+        c.fillStyle = '#34d399'; c.font = '8px monospace';
+        c.fillText(i%2===0?'1':'0', sx, sy);
+      }
+    } else if (this.zoneIdx === 4) {
+      // MTL DAO: red pulse rings
+      var t4 = fc*0.02;
+      for (var i = 0; i < 3; i++) {
+        var r4 = ((t4 + i*2.1) % 6.28) * 30 + 10;
+        c.globalAlpha = Math.max(0, 0.08 - r4/1200);
+        c.strokeStyle = '#f43f5e'; c.lineWidth = 1;
+        c.beginPath(); c.arc(w/2, h/2, r4, 0, 6.28); c.stroke();
+      }
+    } else if (this.zoneIdx === 5) {
+      // LOAN: green scanlines
+      for (var i = 0; i < h; i += 18) {
+        c.globalAlpha = 0.04; c.fillStyle = '#4ade80';
+        c.fillRect(0, (i + fc) % h, w, 1);
+      }
+    } else if (this.zoneIdx === 6) {
+      // XPR: deep purple nebula nodes
+      for (var i = 0; i < 30; i++) {
+        var sx = (i*131 + fc*0.3) % w, sy = (i*79 + fc*0.15) % h;
+        c.globalAlpha = 0.08 + 0.07*Math.sin(i*0.9+fc*0.025);
+        c.fillStyle = '#8b5cf6'; c.beginPath(); c.arc(sx, sy, 1.5, 0, 6.28); c.fill();
+      }
+    } else {
+      // Metal Blockchain: gold particle rain
+      for (var i = 0; i < 25; i++) {
+        var sx = (i*119 + fc*0.2) % w, sy = (i*67 + fc*0.7) % h;
+        c.globalAlpha = 0.08 + 0.08*Math.abs(Math.sin(i*1.1+fc*0.03));
+        c.fillStyle = '#c9922a'; c.fillRect(sx, sy, 2, 2);
+      }
     }
     c.globalAlpha = 1;
-    c.strokeStyle = 'rgba(201,146,42,0.35)'; c.lineWidth = 1;
+    // Zone-colored border lines
+    c.strokeStyle = zone.glow+'44'; c.lineWidth = 1;
     c.beginPath(); c.moveTo(0,0); c.lineTo(w,0); c.stroke();
     c.beginPath(); c.moveTo(0,h-1); c.lineTo(w,h-1); c.stroke();
 
@@ -4574,7 +4684,7 @@ var FG = {
     }
     this._drawBarriers(w, h);
     this._drawPUs();
-    this._drawGuardian(this.coin.x, this.coin.y, this.coin.angle, this.shield);
+    this._drawGuardian(this.coin.x, this.coin.y, this.coin.angle, this.shield || this.shieldEntry > 0, this.shrink);
     this._drawHUD(w, h);
     this._drawZoneAnn(w, h);
   },
@@ -4600,7 +4710,9 @@ var FG = {
       ['#ffe066','12px','POWER-UPS — collect mid-flight:'],
       ['#94a3b8','10px','⚡ Shield Boost — next barrier safe to pass through'],
       ['#94a3b8','10px','🛡 Guardian Shield — 3 seconds invincibility'],
-      ['#94a3b8','10px','🔥 Double Points — 2x score for 10 seconds'],
+      ['#94a3b8','10px','🔥 Double Points — 2x score for 8 seconds'],
+      ['#94a3b8','10px','⏳ Slow Mo — slows time for 5 seconds'],
+      ['#94a3b8','10px','🔮 Shrink — tiny hitbox for 7 seconds'],
       ['','',''],
       ['#ffe066','12px','COMBOS — pass barriers in a row:'],
       ['#94a3b8','10px','3 in a row = x2  |  5 = x3  |  8 = x5 🔥 GUARDIAN MODE'],
@@ -4701,28 +4813,53 @@ var FG = {
   _drawBarriers: function(w, h) {
     var c = this.ctx;
     var zone = FG_ZONES[this.zoneIdx];
-    var bw = 52;
+    var bw = 52, capW = 60, capH = 14;
     for (var bi = 0; bi < this.barriers.length; bi++) {
       var bar = this.barriers[bi];
-      var fill = bar.skipMe ? 'rgba(74,222,128,0.25)' : zone.pipe;
+      var fill   = bar.skipMe ? 'rgba(74,222,128,0.22)' : zone.pipe;
       var stroke = bar.skipMe ? '#4ade80' : zone.glow;
-      c.fillStyle = fill;
-      c.fillRect(bar.x, 0, bw, bar.topH);
-      c.strokeStyle = stroke;
-      c.shadowBlur = 8; c.shadowColor = stroke;
-      c.lineWidth = 2;
-      c.strokeRect(bar.x, 0, bw, bar.topH);
+      var accent = bar.skipMe ? '#4ade80' : (zone.accent || zone.glow);
       var botY = bar.topH + this.gapSize;
+      c.shadowBlur = 10; c.shadowColor = stroke; c.lineWidth = 1.5;
+
+      // Top pipe shaft
       c.fillStyle = fill;
-      c.fillRect(bar.x, botY, bw, h - botY);
+      c.fillRect(bar.x + 4, 0, bw - 8, bar.topH - capH);
       c.strokeStyle = stroke;
-      c.strokeRect(bar.x, botY, bw, h - botY);
+      c.strokeRect(bar.x + 4, 0, bw - 8, bar.topH - capH);
+
+      // Top pipe cap (wider, glowing)
+      c.fillStyle = accent + '55';
+      c.fillRect(bar.x - 4, bar.topH - capH, capW, capH);
+      c.fillStyle = fill;
+      c.fillRect(bar.x - 3, bar.topH - capH + 1, capW - 2, capH - 2);
+      c.strokeStyle = accent;
+      c.shadowBlur = 14;
+      c.strokeRect(bar.x - 4, bar.topH - capH, capW, capH);
+
+      // Bottom pipe cap
+      c.fillStyle = accent + '55';
+      c.fillRect(bar.x - 4, botY, capW, capH);
+      c.fillStyle = fill;
+      c.fillRect(bar.x - 3, botY + 1, capW - 2, capH - 2);
+      c.strokeStyle = accent;
+      c.strokeRect(bar.x - 4, botY, capW, capH);
       c.shadowBlur = 0;
-      c.fillStyle = stroke;
-      c.font = 'bold 9px Arial,sans-serif';
+
+      // Bottom pipe shaft
+      c.fillStyle = fill;
+      c.fillRect(bar.x + 4, botY + capH, bw - 8, h - botY - capH);
+      c.strokeStyle = stroke;
+      c.lineWidth = 1.5;
+      c.strokeRect(bar.x + 4, botY + capH, bw - 8, h - botY - capH);
+
+      // Label on cap faces
+      c.fillStyle = accent; c.shadowBlur = 6; c.shadowColor = accent;
+      c.font = 'bold 8px Arial,sans-serif';
       c.textAlign = 'center'; c.textBaseline = 'middle';
-      c.fillText(bar.lbl, bar.x+bw/2, Math.max(12, bar.topH-12));
-      c.fillText(bar.lbl, bar.x+bw/2, Math.min(h-12, botY+12));
+      c.fillText(bar.lbl, bar.x + bw/2, Math.max(8, bar.topH - capH - 8));
+      c.fillText(bar.lbl, bar.x + bw/2, Math.min(h - 8, botY + capH + 8));
+      c.shadowBlur = 0;
     }
   },
 
@@ -4765,14 +4902,24 @@ var FG = {
     c.textAlign = 'left'; c.fillStyle = zone.glow;
     c.font = 'bold 9px Arial,sans-serif'; c.textBaseline = 'top';
     c.fillText(zone.name, 6, 6);
-    var yOff = 18;
-    if (this.shield) {
+    c.fillStyle = zone.glow + 'aa'; c.font = '8px Arial,sans-serif';
+    c.fillText(zone.rank, 6, 17);
+    var yOff = 30;
+    if (this.shield || this.shieldEntry > 0) {
       c.fillStyle = '#c084fc'; c.font = 'bold 10px Arial,sans-serif';
-      c.fillText('🛡 '+Math.ceil(this.shieldTimer)+'s', 6, yOff); yOff += 14;
+      c.fillText('🛡 '+(this.shield ? Math.ceil(this.shieldTimer)+'s' : 'ENTRY'), 6, yOff); yOff += 14;
     }
     if (this.skipNext) {
       c.fillStyle = '#4ade80'; c.font = 'bold 10px Arial,sans-serif';
       c.fillText('⚡ SAFE', 6, yOff); yOff += 14;
+    }
+    if (this.slowMo) {
+      c.fillStyle = '#38bdf8'; c.font = 'bold 10px Arial,sans-serif';
+      c.fillText('⏳ '+Math.ceil(this.slowMoTimer)+'s', 6, yOff); yOff += 14;
+    }
+    if (this.shrink) {
+      c.fillStyle = '#a78bfa'; c.font = 'bold 10px Arial,sans-serif';
+      c.fillText('🔮 '+Math.ceil(this.shrinkTimer)+'s', 6, yOff); yOff += 14;
     }
     if (this.doublePoints) {
       c.fillStyle = '#fbbf24'; c.font = 'bold 10px Arial,sans-serif';
@@ -4792,22 +4939,45 @@ var FG = {
 
   _drawZoneAnn: function(w, h) {
     if (this.zoneAnnTimer <= 0) return;
-    var t = this.zoneAnnTimer, maxT = 2.5;
-    var fade = t > maxT-0.28 ? (maxT-t)/0.28 : t < 0.35 ? t/0.35 : 1;
+    var t = this.zoneAnnTimer, maxT = 3.0;
+    var fade = t > maxT-0.3 ? (maxT-t)/0.3 : t < 0.4 ? t/0.4 : 1;
     var zone = FG_ZONES[this.zoneIdx];
     var c = this.ctx;
     c.save();
+    c.globalAlpha = fade * 0.92;
+    // Full-height overlay for dramatic zone entry
+    c.fillStyle = zone.bg + 'ee';
+    c.fillRect(0, 0, w, h);
+    // Glow bar
     c.globalAlpha = fade;
-    c.fillStyle = 'rgba(0,0,0,0.82)';
-    c.fillRect(0, h/2-52, w, 104);
+    var gr = c.createLinearGradient(0, h/2-60, 0, h/2+60);
+    gr.addColorStop(0, 'rgba(0,0,0,0)');
+    gr.addColorStop(0.5, zone.glow+'22');
+    gr.addColorStop(1, 'rgba(0,0,0,0)');
+    c.fillStyle = gr; c.fillRect(0, h/2-60, w, 120);
     c.textAlign = 'center'; c.textBaseline = 'middle';
-    c.fillStyle = zone.glow;
-    c.font = 'bold 22px "Cinzel Decorative",Cinzel,Arial,sans-serif';
-    c.shadowBlur = 20; c.shadowColor = zone.glow;
-    c.fillText('ENTERING '+zone.name, w/2, h/2-14);
+    // Zone number badge
+    c.fillStyle = zone.glow+'33';
+    c.beginPath(); c.arc(w/2, h/2-42, 20, 0, 6.28); c.fill();
+    c.fillStyle = zone.glow; c.font = 'bold 14px Arial,sans-serif';
+    c.fillText('Z'+(this.zoneIdx+1), w/2, h/2-42);
+    // Main title
+    c.shadowBlur = 28; c.shadowColor = zone.glow;
+    c.fillStyle = '#ffffff';
+    c.font = 'bold 20px "Cinzel Decorative",Cinzel,Arial,sans-serif';
+    c.fillText(zone.name, w/2, h/2-8);
     c.shadowBlur = 0;
-    c.fillStyle = '#a78bfa'; c.font = '12px Cinzel,Arial,sans-serif';
+    // Subtitle
+    c.fillStyle = zone.glow; c.font = '11px Cinzel,Arial,sans-serif';
     c.fillText(zone.sub, w/2, h/2+14);
+    // Rank
+    c.fillStyle = '#8899bb'; c.font = '9px Arial,sans-serif';
+    c.fillText(zone.rank, w/2, h/2+30);
+    // Shield entry indicator
+    if (this.shieldEntry > 0) {
+      c.fillStyle = '#a855f7'; c.font = 'bold 9px Arial,sans-serif';
+      c.fillText('🛡 ZONE SHIELD ACTIVE', w/2, h/2+46);
+    }
     c.restore();
   },
 
@@ -4821,10 +4991,10 @@ var FG = {
     c.closePath();
   },
 
-  _drawGuardian: function(x, y, angle, shielded) {
+  _drawGuardian: function(x, y, angle, shielded, shrunk) {
     var c = this.ctx;
     var img = this.guardianImg;
-    var gh = 52, gw = 78;
+    var gh = shrunk ? 36 : 52, gw = shrunk ? 54 : 78;
     if (img && img.complete && img.naturalWidth > 0) {
       gw = Math.round(gh * img.naturalWidth / img.naturalHeight);
     }
