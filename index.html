@@ -52,9 +52,9 @@ button{cursor:pointer;font-family:'Inter',sans-serif;}
 .nav-links::-webkit-scrollbar{display:none;}
 .nav-btn{background:none;border:none;padding:.4rem .7rem;font-size:.75rem;font-weight:500;color:var(--text2);border-radius:6px;transition:all .2s;white-space:nowrap;}
 .nav-btn:hover,.nav-btn.active{color:var(--gold-l);background:rgba(201,146,42,0.08);}
-.nav-arrow{background:none;border:none;color:var(--gold-l);font-size:1.6rem;cursor:pointer;padding:0 0.5rem;flex-shrink:0;line-height:1;opacity:0.8;}
+.nav-arrow{background:none;border:none;color:var(--gold-l);font-size:1.6rem;cursor:pointer;padding:0 .4rem;flex-shrink:0;line-height:1;opacity:.8;}
 .nav-arrow:hover{opacity:1;}
-#navScroll{display:flex;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth;gap:0.25rem;flex:1;}
+#navScroll{display:flex;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;scroll-behavior:smooth;gap:.25rem;flex:1;min-width:0;}
 #navScroll::-webkit-scrollbar{display:none;}
 .nav-cta{background:var(--gold);color:#000!important;font-weight:700;font-size:.78rem;padding:.4rem 1rem;border-radius:6px;border:none;white-space:nowrap;transition:all .2s;flex-shrink:0;}
 .nav-cta:hover{background:var(--gold-l);transform:translateY(-1px);}
@@ -267,7 +267,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
   .grid-2,.grid-3{grid-template-columns:1fr;}
   .lore-grid{grid-template-columns:1fr;}
   .foot-top{grid-template-columns:1fr 1fr;}
-  .nav-links{display:none;}.hamburger{display:flex;}
+  .nav-links{display:none;}.hamburger{display:flex;}.nav-arrow{display:none;}
   #wallet-btn{display:none;}
   .nav-brand span{font-size:.78rem;}
   #nav{padding:0 1rem;gap:.5rem;}
@@ -528,7 +528,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <span>Metallicus Guardian</span>
   </div>
   <div class="nav-links">
-    <button class="nav-arrow" onclick="scrollNav(-150)">&#8249;</button>
+    <button class="nav-arrow" onclick="scrollNav(-180)">&#8249;</button>
     <div id="navScroll">
       <button class="nav-btn active" id="t-home" onclick="go('home')">Home</button>
       <button class="nav-btn" id="t-guard" onclick="go('guard')">🛡 GUARD</button>
@@ -543,7 +543,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
       <button class="nav-btn" id="t-creator" onclick="go('creator')">Creator</button>
       <button class="nav-btn" id="t-arena" onclick="go('arena')">⚔ Stand Guard</button>
     </div>
-    <button class="nav-arrow" onclick="scrollNav(150)">&#8250;</button>
+    <button class="nav-arrow" onclick="scrollNav(180)">&#8250;</button>
   </div>
   <a href="https://simpledex.fun/token/172" target="_blank" class="nav-cta">⚔ <span class="buytext">Buy GUARD</span></a>
   <button id="wallet-btn" onclick="toggleWallet()" style="background:rgba(201,146,42,0.1);border:1px solid var(--border-gold);color:var(--gold-l);font-size:.72rem;padding:.35rem .8rem;border-radius:6px;cursor:pointer;white-space:nowrap;font-family:'Cinzel',serif;flex-shrink:0;line-height:1.4;">⚡ Connect</button>
@@ -993,11 +993,13 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <div class="sec-label mt4">Core Infrastructure</div>
     <div class="grid grid-auto mt2 mb4">
       <a href="https://metallicus.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>⚒</span><h3 style="margin:0;">Metallicus</h3></div><p>The U.S. fintech (founded 2016) building a regulated Digital Asset Banking Network — the company behind everything here.</p><span class="card-link">metallicus.com</span></a>
+      <a href="https://metallicus.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🏦</span><h3 style="margin:0;">The Digital Banking Network</h3></div><p>Metallicus has unified its ecosystem under The Digital Banking Network — a regulatory-first blockchain network purpose-built for banks and credit unions. TDBN connects financial institutions for instant, compliant, on-chain settlement, with Metal Blockchain as its foundation.</p><span class="card-link">metallicus.com</span></a>
+      <a href="https://metallicus.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🤝</span><h3 style="margin:0;">Bonifii Acquisition</h3></div><p>Metallicus acquired Bonifii, bringing 80+ US credit unions into the ecosystem. Credit unions gain access to digital asset infrastructure, identity solutions, and instant settlement through The Digital Banking Network — one of the largest real-world banking integrations in crypto.</p><span class="card-link">metallicus.com</span></a>
       <a href="https://xprnetwork.org" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><img src="./img_xprlogo.png?v=2" style="width:22px;height:22px;border-radius:5px;"><h3 style="margin:0;">XPR Network</h3></div><p>The Layer 1 blockchain. Zero gas fees, 4,000+ TPS, human-readable @names, and built-in on-chain identity.</p><span class="card-link">xprnetwork.org</span></a>
-      <a href="https://metalblockchain.org" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🔗</span><h3 style="margin:0;">Metal Blockchain</h3></div><p>A BSA-ready Layer 0 built for banks and financial institutions — private subnets, digital identity, compliance-first.</p><span class="card-link">metalblockchain.org</span></a>
+      <a href="https://metalblockchain.org" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🔗</span><h3 style="margin:0;">Metal Blockchain</h3></div><p>A BSA-ready Layer 0 built for banks and financial institutions — private subnets, digital identity, compliance-first. Bitcoin Virtual Machine testnet is live on Metal Blockchain — bringing Bitcoin programmability to the ecosystem.</p><span class="card-link">metalblockchain.org</span></a>
       <a href="https://webauth.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><img src="./img_webauthlogo.png?v=2" style="width:22px;height:22px;border-radius:5px;"><h3 style="margin:0;">WebAuth Wallet</h3></div><p>The official non-custodial wallet. Biometric login, no seed phrases, free to create. Your gateway to XPR Network.</p><span class="card-link">webauth.com</span></a>
       <a href="https://webauth.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🔮</span><h3 style="margin:0;">WebAuth 3.0 <span style="font-size:.7rem;color:var(--pur-g);font-weight:400;">(Coming Soon)</span></h3></div><p>Next-gen WebAuth — passkey support, address book, unified multichain portfolio, AI assistant, and biometric key recovery.</p><span class="card-link">webauth.com</span></a>
-      <a href="https://metalx.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🔗</span><h3 style="margin:0;">Metal L2</h3></div><p>Metal X going multichain — Metal L2 brings Metallicus DeFi to a new layer in 2025, expanding beyond XPR Network.</p><span class="card-link">metalx.com</span></a>
+      <a href="https://metalx.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🔗</span><h3 style="margin:0;">Metal L2</h3></div><p>An Ethereum Layer 2 built on the OP Stack, connecting Ethereum liquidity to The Digital Banking Network.</p><span class="card-link">metalx.com</span></a>
       <a href="https://metallicus.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🏛</span><h3 style="margin:0;">FedNow Integration</h3></div><p>Metallicus is the first blockchain company integrated with the US Federal Reserve's FedNow instant payment system — bridging crypto and US banking.</p><span class="card-link">metallicus.com</span></a>
     </div>
 
