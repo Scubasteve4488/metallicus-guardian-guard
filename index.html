@@ -4186,28 +4186,28 @@ function scrollNav(amount){
 // ============ FLAPPY GUARD ============
 var FG_ZONES = [
   {name:'SIMPLEDEX',      sub:'The On-Chain Exchange',  rank:'Cryptide Guardian',
-   score:0,  bg:'#010c16', pipe:'#0c3554', glow:'#22d3ee', accent:'#38bdf8',
+   score:0,   bg:'#010c16', pipe:'#0c3554', glow:'#22d3ee', accent:'#38bdf8',
    lbls:['SWAP','FUD','SLIP'],           gapStart:152,gapEnd:140,spdStart:1.7,spdEnd:2.2,spawnRate:120},
   {name:'BLASTPAD',       sub:'The Launch Platform',    rank:'Riftforge Guardian',
-   score:10, bg:'#04010e', pipe:'#2d0a5e', glow:'#a855f7', accent:'#c084fc',
+   score:30,  bg:'#04010e', pipe:'#2d0a5e', glow:'#a855f7', accent:'#c084fc',
    lbls:['DUMP','HACK','BLAST'],         gapStart:138,gapEnd:126,spdStart:2.3,spdEnd:2.8,spawnRate:112},
   {name:'METAL X',        sub:'DeFi Exchange Layer',    rank:'Helion Guardian',
-   score:20, bg:'#0d0600', pipe:'#6b2100', glow:'#f97316', accent:'#fb923c',
+   score:60,  bg:'#0d0600', pipe:'#6b2100', glow:'#f97316', accent:'#fb923c',
    lbls:['DRAIN','ORDER','FLASH'],       gapStart:124,gapEnd:112,spdStart:2.9,spdEnd:3.5,spawnRate:104},
   {name:'WEBAUTH',        sub:'Identity Layer',         rank:'Nebulon Guardian',
-   score:30, bg:'#010e07', pipe:'#054a2e', glow:'#34d399', accent:'#6ee7b7',
+   score:90,  bg:'#010e07', pipe:'#054a2e', glow:'#34d399', accent:'#6ee7b7',
    lbls:['PHISH','FAKE','LOCK'],         gapStart:110,gapEnd:99, spdStart:3.6,spdEnd:4.2,spawnRate:96},
   {name:'MTL DAO',        sub:'Governance Layer',       rank:'Protonis Guardian',
-   score:40, bg:'#0d0102', pipe:'#6b0a1a', glow:'#f43f5e', accent:'#fb7185',
+   score:120, bg:'#0d0102', pipe:'#6b0a1a', glow:'#f43f5e', accent:'#fb7185',
    lbls:['VETO','SYBIL','VOTE-NO'],      gapStart:97, gapEnd:87, spdStart:4.3,spdEnd:5.0,spawnRate:92},
   {name:'LOAN PROTOCOL',  sub:'Borrow & Lend',          rank:'Keystone Guardian',
-   score:50, bg:'#010b04', pipe:'#0f4019', glow:'#4ade80', accent:'#86efac',
+   score:150, bg:'#010b04', pipe:'#0f4019', glow:'#4ade80', accent:'#86efac',
    lbls:['LIQUIDATE','MARGIN','FLASH'],  gapStart:85, gapEnd:76, spdStart:5.1,spdEnd:5.8,spawnRate:88},
   {name:'XPR NETWORK',    sub:'The Blockchain',         rank:'Aegis Guardian',
-   score:60, bg:'#03000c', pipe:'#2d0b6e', glow:'#8b5cf6', accent:'#a78bfa',
+   score:180, bg:'#03000c', pipe:'#2d0b6e', glow:'#8b5cf6', accent:'#a78bfa',
    lbls:['51%','REORG','ECLIPSE'],       gapStart:74, gapEnd:66, spdStart:5.9,spdEnd:6.8,spawnRate:84},
   {name:'METAL BLOCKCHAIN',sub:'The Foundation',        rank:'Legend',
-   score:70, bg:'#040404', pipe:'#181818', glow:'#c9922a', accent:'#e8b84b',
+   score:210, bg:'#040404', pipe:'#181818', glow:'#c9922a', accent:'#e8b84b',
    lbls:['MEV','SHADOW','VOID'],         gapStart:64, gapEnd:57, spdStart:6.9,spdEnd:8.5,spawnRate:80},
 ];
 function _fgZoneForScore(s){for(var i=FG_ZONES.length-1;i>=0;i--){if(s>=FG_ZONES[i].score)return i;}return 0;}
@@ -4420,7 +4420,7 @@ var FG = {
     // === Dynamic zone difficulty — speed and gap ramp within each zone ===
     var zone = FG_ZONES[this.zoneIdx];
     var nextZone = FG_ZONES[this.zoneIdx + 1];
-    var zoneEndScore = nextZone ? nextZone.score : zone.score + 30;
+    var zoneEndScore = nextZone ? nextZone.score : zone.score + 90;
     var zp = Math.min(1, Math.max(0, (this.score - zone.score) / (zoneEndScore - zone.score)));
     var baseSpeed = zone.spdStart + (zone.spdEnd - zone.spdStart) * zp;
     this.gapSize = Math.round(zone.gapStart + (zone.gapEnd - zone.gapStart) * zp);
@@ -4434,7 +4434,7 @@ var FG = {
 
     // Apply slow-mo to speed and gravity
     var spd = this.slowMo ? baseSpeed * 0.42 : baseSpeed;
-    var grav = this.slowMo ? this.gravity * 0.42 : this.gravity;
+    var grav = this.slowMo ? this.gravity * 0.68 : this.gravity;
 
     // === Physics ===
     this.coin.vy += grav;
@@ -4483,7 +4483,7 @@ var FG = {
         var newZone = _fgZoneForScore(this.score);
         if (newZone !== this.zoneIdx) {
           this.zoneIdx = newZone;
-          this.zoneAnnTimer = 3.0;
+          this.zoneAnnTimer = 2.0;
           this.shieldEntry = 1.5; // brief invincibility on zone entry
           this._nextBarrier = this.frameCount + FG_ZONES[newZone].spawnRate + 70; // breathing room
           this._boop('zone');
@@ -4958,45 +4958,34 @@ var FG = {
 
   _drawZoneAnn: function(w, h) {
     if (this.zoneAnnTimer <= 0) return;
-    var t = this.zoneAnnTimer, maxT = 3.0;
-    var fade = t > maxT-0.3 ? (maxT-t)/0.3 : t < 0.4 ? t/0.4 : 1;
+    var t = this.zoneAnnTimer, maxT = 2.0;
+    var fade = t > maxT-0.25 ? (maxT-t)/0.25 : t < 0.35 ? t/0.35 : 1;
     var zone = FG_ZONES[this.zoneIdx];
     var c = this.ctx;
+    var bH = 68; // top banner height only — gameplay remains fully visible
     c.save();
-    c.globalAlpha = fade * 0.92;
-    // Full-height overlay for dramatic zone entry
-    c.fillStyle = zone.bg + 'ee';
-    c.fillRect(0, 0, w, h);
-    // Glow bar
+    // Banner background
+    c.globalAlpha = fade * 0.82;
+    c.fillStyle = zone.bg;
+    c.fillRect(0, 0, w, bH);
+    // Glow accent line along bottom edge
     c.globalAlpha = fade;
-    var gr = c.createLinearGradient(0, h/2-60, 0, h/2+60);
-    gr.addColorStop(0, 'rgba(0,0,0,0)');
-    gr.addColorStop(0.5, zone.glow+'22');
-    gr.addColorStop(1, 'rgba(0,0,0,0)');
-    c.fillStyle = gr; c.fillRect(0, h/2-60, w, 120);
+    c.fillStyle = zone.glow + '88';
+    c.fillRect(0, bH - 2, w, 2);
     c.textAlign = 'center'; c.textBaseline = 'middle';
-    // Zone number badge
-    c.fillStyle = zone.glow+'33';
-    c.beginPath(); c.arc(w/2, h/2-42, 20, 0, 6.28); c.fill();
-    c.fillStyle = zone.glow; c.font = 'bold 14px Arial,sans-serif';
-    c.fillText('Z'+(this.zoneIdx+1), w/2, h/2-42);
-    // Main title
-    c.shadowBlur = 28; c.shadowColor = zone.glow;
+    // Zone label
+    c.fillStyle = zone.glow; c.font = 'bold 9px Arial,sans-serif';
+    c.fillText('ZONE '+(this.zoneIdx+1)+' — ENTERING', w/2, 13);
+    // Zone name
+    c.shadowBlur = 14; c.shadowColor = zone.glow;
     c.fillStyle = '#ffffff';
-    c.font = 'bold 20px "Cinzel Decorative",Cinzel,Arial,sans-serif';
-    c.fillText(zone.name, w/2, h/2-8);
+    c.font = 'bold 15px "Cinzel Decorative",Cinzel,Arial,sans-serif';
+    c.fillText(zone.name, w/2, 33);
     c.shadowBlur = 0;
-    // Subtitle
-    c.fillStyle = zone.glow; c.font = '11px Cinzel,Arial,sans-serif';
-    c.fillText(zone.sub, w/2, h/2+14);
-    // Rank
-    c.fillStyle = '#8899bb'; c.font = '9px Arial,sans-serif';
-    c.fillText(zone.rank, w/2, h/2+30);
-    // Shield entry indicator
-    if (this.shieldEntry > 0) {
-      c.fillStyle = '#a855f7'; c.font = 'bold 9px Arial,sans-serif';
-      c.fillText('🛡 ZONE SHIELD ACTIVE', w/2, h/2+46);
-    }
+    // Subtitle + optional shield notice on same line
+    c.fillStyle = zone.accent; c.font = '9px Cinzel,Arial,sans-serif';
+    var sub = zone.sub + (this.shieldEntry > 0 ? '  ·  🛡 ZONE SHIELD' : '');
+    c.fillText(sub, w/2, 52);
     c.restore();
   },
 
