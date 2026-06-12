@@ -48,8 +48,7 @@ button{cursor:pointer;font-family:'Inter',sans-serif;}
 .nav-brand{display:flex;align-items:center;gap:.6rem;cursor:pointer;flex-shrink:0;}
 .nav-brand img{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--gold);object-fit:cover;}
 .nav-brand span{font-family:'Cinzel Decorative','Cinzel',serif;font-size:.95rem;font-weight:700;color:var(--gold-l);letter-spacing:.08em;}
-.nav-links{display:flex;align-items:center;gap:.1rem;flex:1;overflow-x:auto;scrollbar-width:none;}
-.nav-links::-webkit-scrollbar{display:none;}
+.nav-links{display:flex;align-items:center;gap:.1rem;flex:1;overflow:visible;}
 .nav-btn{background:none;border:none;padding:.4rem .7rem;font-size:.75rem;font-weight:500;color:var(--text2);border-radius:6px;transition:all .2s;white-space:nowrap;}
 .nav-btn:hover,.nav-btn.active{color:var(--gold-l);background:rgba(201,146,42,0.08);}
 .nav-arrow{background:none;border:none;color:var(--gold-l);font-size:1.6rem;cursor:pointer;padding:0 .4rem;flex-shrink:0;line-height:1;opacity:.8;}
@@ -67,6 +66,15 @@ button{cursor:pointer;font-family:'Inter',sans-serif;}
 .game-sel-btn{background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text2);padding:.45rem 1.2rem;border-radius:8px;font-size:.8rem;font-family:'Cinzel',serif;cursor:pointer;transition:all .2s;white-space:nowrap;}
 .game-sel-btn:hover{color:var(--gold-l);border-color:rgba(201,146,42,0.4);}
 .game-sel-btn.active{background:rgba(201,146,42,0.12);border-color:var(--gold);color:var(--gold-l);}
+/* DROPDOWN NAV */
+.nav-dropdown{position:relative;display:inline-flex;align-items:center;}
+.nav-dropdown-btn{display:flex;align-items:center;gap:.2rem;}
+.dd-caret{font-size:.6rem;display:inline-block;opacity:.7;transition:transform .15s;}
+.nav-dropdown.open>.nav-dropdown-btn .dd-caret{transform:rotate(180deg);}
+.nav-dd-panel{position:absolute;top:calc(100% + 4px);left:0;background:var(--bg2);border:1px solid rgba(201,146,42,0.35);border-top:none;border-radius:0 0 8px 8px;min-width:155px;padding:.2rem 0;opacity:0;transform:translateY(-5px);pointer-events:none;transition:opacity .15s,transform .15s;z-index:1100;}
+.nav-dropdown.open>.nav-dd-panel{opacity:1;transform:translateY(0);pointer-events:auto;}
+.nav-dd-item{display:block;width:100%;background:none;border:none;padding:.55rem 1rem;font-size:.75rem;font-weight:500;color:var(--text2);text-align:left;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;transition:color .15s,background .15s;}
+.nav-dd-item:hover{color:var(--gold-l);background:rgba(201,146,42,0.1);}
 
 /* PAGES */
 .page{display:none;min-height:100vh;padding-top:70px;}
@@ -533,14 +541,24 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <div id="navScroll">
       <button class="nav-btn active" id="t-home" onclick="go('home')">Home</button>
       <button class="nav-btn" id="t-guard" onclick="go('guard')">🛡 GUARD</button>
-      <button class="nav-btn" id="t-start" onclick="go('start')">Start Here</button>
       <button class="nav-btn" id="t-ecosystem" onclick="go('ecosystem')">Ecosystem</button>
-      <button class="nav-btn" id="t-learn" onclick="go('learn')">🎓 Academy</button>
+      <div class="nav-dropdown" id="dd-learn" onmouseenter="openDropdown('dd-learn')" onmouseleave="closeAllDropdowns()">
+        <button class="nav-btn nav-dropdown-btn" id="t-learn-group" onclick="toggleDropdown('dd-learn')">Learn <span class="dd-caret">▾</span></button>
+        <div class="nav-dd-panel">
+          <button class="nav-dd-item" onclick="go('start');closeAllDropdowns()">🚀 New to XPR?</button>
+          <button class="nav-dd-item" onclick="go('learn');closeAllDropdowns()">🎓 Academy</button>
+          <button class="nav-dd-item" onclick="go('faq');closeAllDropdowns()">❓ FAQ</button>
+        </div>
+      </div>
       <button class="nav-btn" id="t-shields" onclick="go('shields')">🛡 Shields</button>
-      <button class="nav-btn" id="t-faq" onclick="go('faq')">FAQ</button>
-      <button class="nav-btn" id="t-ksto" onclick="go('ksto')">🦊 KSTO</button>
-      <button class="nav-btn" id="t-cyphergang" onclick="go('cyphergang')">🔥 CypherGang</button>
-      <button class="nav-btn" id="t-snipverse" onclick="go('snipverse')">🌐 Snipverse</button>
+      <div class="nav-dropdown" id="dd-communities" onmouseenter="openDropdown('dd-communities')" onmouseleave="closeAllDropdowns()">
+        <button class="nav-btn nav-dropdown-btn" id="t-communities-group" onclick="toggleDropdown('dd-communities')">Communities <span class="dd-caret">▾</span></button>
+        <div class="nav-dd-panel">
+          <button class="nav-dd-item" onclick="go('ksto');closeAllDropdowns()">🦊 KSTO</button>
+          <button class="nav-dd-item" onclick="go('cyphergang');closeAllDropdowns()">🔥 CypherGang</button>
+          <button class="nav-dd-item" onclick="go('snipverse');closeAllDropdowns()">🌐 Snipverse</button>
+        </div>
+      </div>
       <button class="nav-btn" id="t-creator" onclick="go('creator')">Creator</button>
       <button class="nav-btn" id="t-arena" onclick="go('arena')">⚔ Stand Guard</button>
     </div>
@@ -1905,6 +1923,7 @@ const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','
 const BUILD_VERSION='2026-06-12-v4';
 (function(){var b=document.getElementById('build-badge');if(b)b.textContent=BUILD_VERSION;})();
 
+const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
   if(location.hash!=='#'+id)location.hash=id;
   PAGES.forEach(p=>{
@@ -1913,10 +1932,12 @@ function go(id){
     if(el){el.classList.remove('active');el.style.display='';}
     if(tb)tb.classList.remove('active');
   });
+  document.querySelectorAll('.nav-dropdown-btn').forEach(b=>b.classList.remove('active'));
   const pg=document.getElementById('page-'+id);
   const tb=document.getElementById('t-'+id);
   if(pg){pg.classList.add('active');}
   if(tb)tb.classList.add('active');
+  const _pbId=_DD_PARENT[id];if(_pbId){const _pb=document.getElementById(_pbId);if(_pb)_pb.classList.add('active');}
   window.scrollTo({top:0,behavior:'instant'});
   rev();
   const TAB_ACHS = {guard:'lorekeeper', ecosystem:'ecosystem_scout'};
@@ -4622,11 +4643,19 @@ window.addEventListener('load', () => {
   if(PAGES.includes(h))go(h);
   updatePlaysUI();
   setInterval(updatePlaysUI, 60000);
+  updateNavArrows();
+  window.addEventListener('resize', updateNavArrows);
 });
 
 function scrollNav(amount){
   document.getElementById('navScroll').scrollBy({left:amount,behavior:'smooth'});
 }
+function openDropdown(id){document.querySelectorAll('.nav-dropdown').forEach(d=>d.classList.remove('open'));document.getElementById(id).classList.add('open');}
+function closeAllDropdowns(){document.querySelectorAll('.nav-dropdown').forEach(d=>d.classList.remove('open'));}
+function toggleDropdown(id){var dd=document.getElementById(id);var was=dd.classList.contains('open');closeAllDropdowns();if(!was)dd.classList.add('open');}
+function updateNavArrows(){var ns=document.getElementById('navScroll');if(!ns)return;var fits=ns.scrollWidth<=ns.clientWidth+2;document.querySelectorAll('.nav-arrow').forEach(function(a){a.style.opacity=fits?'0':'';a.style.pointerEvents=fits?'none':'';});}
+document.addEventListener('click',function(e){if(!e.target.closest('.nav-dropdown'))closeAllDropdowns();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAllDropdowns();});
 
 // ============ FLAPPY GUARD ============
 var FG_ZONES = [
