@@ -307,6 +307,11 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 .shard-slot-miss{color:var(--text3);font-size:.65rem;line-height:1;}
 .shard-row-info{flex:1;min-width:0;}
 .shard-forged-badge{background:rgba(201,146,42,0.14);border:1px solid rgba(201,146,42,0.45);color:var(--gold-l);font-size:.6rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;letter-spacing:.06em;white-space:nowrap;}
+.shard-forge-btn{background:linear-gradient(135deg,rgba(201,146,42,0.2),rgba(232,184,75,0.1));border:1px solid rgba(201,146,42,0.65);color:#e8b84b;font-family:'Cinzel',serif;font-size:.7rem;font-weight:700;padding:.35rem .9rem;border-radius:6px;cursor:pointer;letter-spacing:.08em;animation:forgePulse 1.5s infinite;white-space:nowrap;margin-top:.4rem;display:inline-block;min-height:36px;}
+.shard-forge-btn:active{opacity:.7;}
+.shard-forged-img{width:48px;height:48px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.shard-forged-img img{width:100%;height:100%;object-fit:contain;}
+.shard-row-ready{border-color:rgba(201,146,42,0.45);}
 .shard-drop-hint{font-size:.58rem;color:var(--text3);margin-top:.2rem;line-height:1.4;}
 /* ── FORGE OVERLAY ── */
 #shield-forge-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.97);flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;padding:1.5rem;}
@@ -1218,6 +1223,16 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <div class="sec-label" style="text-align:center;">Collectibles</div>
     <h2 class="sec-title" style="text-align:center;">Shield Shards</h2>
     <p style="text-align:center;font-size:.83rem;color:var(--text2);margin-bottom:1.25rem;max-width:540px;margin-left:auto;margin-right:auto;">Collect 5 shards to forge each shield. Shards drop in GUARD Trials and Wave Survival. Forge a shield to unlock it as an alternative path to that rank.</p>
+    <details style="max-width:540px;margin:0 auto 1.25rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.6rem .85rem;">
+      <summary style="cursor:pointer;font-size:.72rem;font-weight:600;color:var(--text2);letter-spacing:.04em;user-select:none;list-style:none;display:flex;align-items:center;gap:.4rem;">
+        <span style="font-size:.8rem;">ℹ</span> How shards drop
+      </summary>
+      <div style="margin-top:.6rem;font-size:.68rem;color:var(--text3);line-height:1.65;">
+        <div style="margin-bottom:.45rem;"><strong style="color:var(--text2);">GUARD Trials</strong> — Every 5th barrier in each zone has a 10% chance to drop a shard for that zone's shield. Max 2 random drops per run. Boss barriers always drop their zone's shard.</div>
+        <div style="margin-bottom:.45rem;"><strong style="color:var(--text2);">Wave Survival</strong> — Boss kills on waves 5, 10, 15, 20, 25 and 50 guarantee a shard drop. Regular enemies on waves 1–4 have a 3% chance to drop a Cryptide shard. Max 2 random drops per run.</div>
+        <div><strong style="color:var(--text2);">Forging</strong> — Once you collect all 5 shards for a shield, tap the <strong style="color:#e8b84b;">⚒ FORGE</strong> button to trigger the forge ceremony. Forging that shield unlocks it as an alternative rank path — no GUARD balance required.</div>
+      </div>
+    </details>
     <div id="shard-display" class="shard-section"></div>
     <p style="font-size:.65rem;color:var(--text3);text-align:center;margin-top:.5rem;">Shard progress is stored locally in your browser — it will not transfer between devices.</p>
 
@@ -2128,11 +2143,11 @@ var ShardTracker = {
     var s = this._get(shieldName);
     if (s.owned.includes(shardNum)) return false;
     s.owned.push(shardNum); s.owned.sort(function(a,b){return a-b;});
-    if (s.owned.length >= 5 && !s.forged) s.forged = true;
     this.save();
     return true;
   },
-  isForged: function(n) { var s=this._get(n); return s.forged||s.owned.length>=5; },
+  forge: function(name) { var s=this._get(name); s.forged=true; this.save(); },
+  isForged: function(n) { return this._get(n).forged===true; },
   ownedCount: function(n) { return this._get(n).owned.length; },
   hasShard: function(n, num) { return this._get(n).owned.includes(num); },
   allOwned: function(n) { return this.ownedCount(n) >= 5; },
@@ -2159,27 +2174,43 @@ function renderShardDisplay() {
   el.innerHTML = SHIELDS.map(function(sh, si) {
     var forged = ShardTracker.isForged(sh.name);
     var count = ShardTracker.ownedCount(sh.name);
-    var slots = '';
-    for (var i = 1; i <= 5; i++) {
-      var has = ShardTracker.hasShard(sh.name, i);
-      slots += '<div class="shard-slot' + (has?' owned':'') + '">' +
-        (has ? '<img src="./shard_'+sh.name.toLowerCase()+'_'+i+'.png" alt="shard '+i+'">' : '<span class="shard-slot-miss">?</span>') +
-        '</div>';
+    var readyToForge = (count >= 5 && !forged);
+    var leftCol;
+    if (forged) {
+      leftCol = '<div class="shard-forged-img"><img src="' + sh.img + '" alt="' + sh.name + '"></div>';
+    } else {
+      var slots = '';
+      for (var i = 1; i <= 5; i++) {
+        var has = ShardTracker.hasShard(sh.name, i);
+        slots += '<div class="shard-slot' + (has?' owned':'') + '">' +
+          (has ? '<img src="./shard_'+sh.name.toLowerCase()+'_'+i+'.png" alt="shard '+i+'">' : '<span class="shard-slot-miss">?</span>') +
+          '</div>';
+      }
+      leftCol = '<div class="shard-slot-group">' + slots + '</div>';
     }
     var hint = si === 0
       ? 'Drops in GUARD Trials (Zone 1) and Wave Survival (Waves 1–4)'
       : si <= 5
         ? 'Drops in GUARD Trials (Zone '+(si+1)+') and Wave Survival (Wave '+([5,10,15,20,25][si-1])+')'
         : 'Drops in GUARD Trials (Zone 7–8) and Wave Survival (Wave 50)';
-    return '<div class="shard-grid-row">' +
-      '<div class="shard-slot-group">' + slots + '</div>' +
+    var badge = forged
+      ? '<span class="shard-forged-badge">⚔ FORGED</span>'
+      : (readyToForge
+          ? '<span style="font-size:.68rem;color:#e8b84b;">5/5</span>'
+          : '<span style="font-size:.68rem;color:var(--text3);">'+count+'/5</span>');
+    var forgeBtn = readyToForge
+      ? '<button class="shard-forge-btn" onclick="manualForge(\''+sh.name+'\')">⚒ FORGE</button>'
+      : '';
+    return '<div class="shard-grid-row' + (readyToForge ? ' shard-row-ready' : '') + '">' +
+      leftCol +
       '<div class="shard-row-info">' +
-        '<div style="display:flex;align-items:center;gap:.5rem;">' +
+        '<div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;">' +
           '<span style="font-size:.82rem;font-weight:600;color:var(--text1);">' + sh.name + '</span>' +
           '<span style="font-size:.72rem;color:var(--text3);">' + sh.title + '</span>' +
-          (forged ? '<span class="shard-forged-badge">⚔ FORGED</span>' : '<span style="font-size:.68rem;color:var(--text3);">'+count+'/5</span>') +
+          badge +
         '</div>' +
         '<div class="shard-drop-hint">' + hint + '</div>' +
+        forgeBtn +
       '</div>' +
     '</div>';
   }).join('');
@@ -3029,10 +3060,8 @@ function triggerShieldForge(shieldName) {
   for (var i = 1; i <= 5; i++) shardImgs.push(getShardImg(sh.name, i));
   var ctx2 = cvs.getContext('2d');
   _sfT = 0;
+  var _sfFanfarePlayed = false;
   if (_sfAnimFrame) cancelAnimationFrame(_sfAnimFrame);
-  // Also unlock the forge achievement
-  unlockAch('forge_' + sh.name.toLowerCase());
-  renderShardDisplay();
   function animStep() {
     _sfT += 1/60;
     ctx2.clearRect(0, 0, 300, 300);
@@ -3056,6 +3085,11 @@ function triggerShieldForge(shieldName) {
         ctx2.drawImage(img, -22, -22, 44, 44); ctx2.restore();
       }
     } else if (_sfT < 2.5) {
+      // Fanfare on phase entry
+      if (!_sfFanfarePlayed) {
+        _sfFanfarePlayed = true;
+        try { initAC(); multiNote([523,659,784,1047],[0,120,240,360],0.45,'triangle',0.18); } catch(e) {}
+      }
       // Converge + burst
       var t2 = _sfT - 1.0;
       var burstEase = Math.min(1, t2 * 2.5);
@@ -3095,6 +3129,14 @@ function dismissShieldForge() {
   var ov = document.getElementById('shield-forge-overlay');
   if (ov) ov.classList.remove('active');
   if (_sfAnimFrame) { cancelAnimationFrame(_sfAnimFrame); _sfAnimFrame = null; }
+  renderShardDisplay();
+  try { renderProgress(guardianBalance); } catch(e) {}
+}
+function manualForge(shieldName) {
+  if (!ShardTracker.allOwned(shieldName)) return;
+  ShardTracker.forge(shieldName);
+  unlockAch('forge_' + shieldName.toLowerCase());
+  triggerShieldForge(shieldName);
 }
 async function walletConnect() {
   try {
@@ -3500,7 +3542,7 @@ function newG(daily){
     _nb:false,_gp:0,
     _prePause:null,rng,
     zoneAnn:null,abilVfx:[],
-    wsShards:[], _wsShardForged:null};
+    wsShards:[], _wsRandShards:0};
 }
 
 // ─── Init / resize ─────────────────────────────────────────────────────────────
@@ -3642,9 +3684,9 @@ function killEnemy(en,idx){
         g.enemies.push(mkEnemy('boss',p,g.rng,{mhp:5,hp:5,r:28,lbl:'FUD',pts:50,vt:'fudmaster',splitGen:1}));
       }
     }
-    // Boss wave shard drop
+    // Boss wave shard drop (guaranteed — doesn't count against cap)
     const bossShardName = WS_BOSS_SHARDS[g.wave];
-    if (bossShardName) wsSpawnShard(en.pos.x, en.pos.y, bossShardName);
+    if (bossShardName) wsSpawnShard(en.pos.x, en.pos.y, bossShardName, true);
   } else if(['breach','voidhacker','shadowdrain'].includes(en.type)){
     ach('boss_slayer');g.bossFlash=0.5;
     flt('⚔ '+en.lbl+' DEFEATED!',CX,CY-54,'#f5c842',18);
@@ -3655,8 +3697,8 @@ function killEnemy(en,idx){
     }
   } else {
     tryDrop(en.pos.x,en.pos.y);
-    // Waves 1-4: 10% chance to drop Cryptide shard
-    if (g.wave <= 4 && Math.random() < 0.10) wsSpawnShard(en.pos.x, en.pos.y, 'Cryptide');
+    // Waves 1-4: 3% chance to drop Cryptide shard (capped at 2 random drops per run)
+    if (g.wave <= 4 && Math.random() < 0.03) wsSpawnShard(en.pos.x, en.pos.y, 'Cryptide', false);
   }
   g.enemies.splice(idx,1);
   ach('first_blood');
@@ -3675,10 +3717,12 @@ function breakCombo(){if(g.combo>=5){snd('combo_break');flt('COMBO BROKEN',CX,78
 
 // ── Wave Survival shard drops (Part 4) ──
 var WS_BOSS_SHARDS = {5:'Riftforge',10:'Helion',15:'Nebulon',20:'Protonis',25:'Keystone',50:'Aegis'};
-function wsSpawnShard(x, y, shieldName) {
+function wsSpawnShard(x, y, shieldName, isBoss) {
   if (ShardTracker.allOwned(shieldName)) return;
+  if (!isBoss && g._wsRandShards >= 2) return; // 2-per-run cap on random drops
   var sNum = ShardTracker.nextMissing(shieldName);
   if (!sNum) return;
+  if (!isBoss) g._wsRandShards++;
   g.wsShards.push({x:x, y:y, shieldName:shieldName, shardNum:sNum, life:5.0, angle:0});
 }
 function wsUpdateShards(dt) {
@@ -3713,12 +3757,13 @@ function wsTapShards(cx, cy) {
       var isNew = ShardTracker.collectShard(s.shieldName, s.shardNum);
       if (isNew) {
         var cnt = ShardTracker.ownedCount(s.shieldName);
-        flt('+SHARD: '+s.shieldName+' ('+cnt+'/5)', s.x, s.y-24, '#e8b84b', 13);
-        snd('powerup');
-        if (ShardTracker.allOwned(s.shieldName)) {
-          g._wsShardForged = s.shieldName;
-          flt('⚔ SHIELD FORGED!', CX, CY-60, '#e8b84b', 17);
+        if (cnt >= 5) {
+          flt('⛒ '+s.shieldName+' ready to forge!', s.x, s.y-24, '#e8b84b', 13);
+          flt('Visit the Shields tab', CX, CY-54, '#a78bfa', 11);
+        } else {
+          flt('+SHARD: '+s.shieldName+' ('+cnt+'/5)', s.x, s.y-24, '#e8b84b', 13);
         }
+        snd('powerup');
         renderShardDisplay();
       }
       g.wsShards.splice(i, 1);
@@ -3796,7 +3841,6 @@ function update(dt){
       const pb=JSON.parse(localStorage.getItem('guard_arena_pb')||'{}');
       g._nb=g.score>(pb.score||0);
       if(g._nb)localStorage.setItem('guard_arena_pb',JSON.stringify({score:g.score,wave:g.wave}));
-      if(g._wsShardForged){const _sfn=g._wsShardForged;setTimeout(function(){triggerShieldForge(_sfn);},1800);}
       g._gp=Math.floor(g.score/50);
       updatePBBar();
     }
@@ -4502,7 +4546,7 @@ var FG = {
   zoneIdx: 0, zoneAnnTimer: 0,
   comboStreak: 0, comboMult: 1, comboPulse: 0, comboLabel: '', comboBest: 0,
   isDaily: false, _rng: null, _nextPU: 220, _nextBarrier: 120, _barrierCount: 0,
-  _lastTopH: null, shardDrops: [], _floats: [], _runNewShard: null,
+  _lastTopH: null, shardDrops: [], _floats: [], _runNewShard: null, _randShardsDropped: 0,
   showTut: false,
   _tapHandler: null, _keyHandler: null, _resizeHandler: null,
 
@@ -4565,7 +4609,7 @@ var FG = {
     var w = this.canvas ? this.canvas.width : 480;
     var h = this.canvas ? this.canvas.height : 580;
     this.coin = {x: Math.round(w*0.25), y: Math.round(h*0.5), vy:0, angle:0, radius:22};
-    this.barriers = []; this.particles = []; this.powerups = []; this.trailParticles = []; this.shardDrops = []; this._floats = []; this._runNewShard = null;
+    this.barriers = []; this.particles = []; this.powerups = []; this.trailParticles = []; this.shardDrops = []; this._floats = []; this._runNewShard = null; this._randShardsDropped = 0;
     this.score = 0; this.gp = 0;
     this.speed = FG_ZONES[0].spdStart; this.gapSize = FG_ZONES[0].gapStart;
     this.frameCount = 0;
@@ -4752,9 +4796,9 @@ var FG = {
           // All 5 shards owned → drop Double Points instead
           var dpX = w + 26, dpY = topH + this.gapSize * 0.5;
           this.powerups.push({x:dpX, y:dpY, type:'double_points', icon:'🔥', r:14});
-        } else if (rng() < 0.10) {
+        } else if (this._randShardsDropped < 2 && rng() < 0.10) {
           var sNum = ShardTracker.nextMissing(shName);
-          if (sNum) this._spawnShardAt(w, topH, topH + this.gapSize, shieldIdx, sNum, rng);
+          if (sNum) { this._spawnShardAt(w, topH, topH + this.gapSize, shieldIdx, sNum, rng); this._randShardsDropped++; }
         }
       }
       this._nextBarrier = this.frameCount + zone.spawnRate;
@@ -4903,11 +4947,6 @@ var FG = {
       if (this.score > this.pb) { this.pb = this.score; localStorage.setItem('fg_pb', String(this.pb)); }
     }
     this._updatePbDisplay();
-    // Trigger forge animation if a shard was completed this run
-    if (this._runNewShard && this._runNewShard.forged) {
-      var rns = this._runNewShard;
-      setTimeout(function() { triggerShieldForge(rns.shieldName); }, 1800);
-    }
   },
 
   _updatePbDisplay: function() {
@@ -5218,11 +5257,13 @@ var FG = {
         var sh = SHIELDS[sd.shieldIdx];
         var isNew = ShardTracker.collectShard(sh.name, sd.shardNum);
         if (isNew) {
-          this._runNewShard = {shieldName: sh.name, shardNum: sd.shardNum};
-          if (ShardTracker.allOwned(sh.name)) this._runNewShard.forged = true;
-          // Float text
           var cnt = ShardTracker.ownedCount(sh.name);
-          this._addFloat('+SHARD: '+sh.name+' ('+cnt+'/5)', sd.x, sd.y - 20, '#e8b84b');
+          if (cnt >= 5) {
+            this._addFloat('⚒ '+sh.name+' ready to forge!', sd.x, sd.y - 20, '#e8b84b');
+            this._addFloat('Visit the Shields tab', sd.x, sd.y - 34, '#a78bfa');
+          } else {
+            this._addFloat('+SHARD: '+sh.name+' ('+cnt+'/5)', sd.x, sd.y - 20, '#e8b84b');
+          }
           this._boop('pu');
           renderShardDisplay();
         }
