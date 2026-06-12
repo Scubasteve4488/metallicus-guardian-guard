@@ -4109,7 +4109,7 @@ function drawStart(){
   ctx.fillStyle='#1e293b';ctx.font='10px Cinzel,serif';ctx.fillText('Daily Challenge resets in '+dailyLeft(),CX,238);
   // PLAY NORMAL: rrect top=250 → center y=274 (48px tall)
   ctx.fillStyle='rgba(201,146,42,0.18)';rrect(CX-90,250,180,48,8);ctx.fill();ctx.strokeStyle='#c9922a';ctx.lineWidth=1.5;rrect(CX-90,250,180,48,8);ctx.stroke();
-  ctx.fillStyle='#e8b84b';ctx.font='bold 14px Cinzel,serif';ctx.textBaseline='middle';ctx.fillText('▶  PLAY — Normal Mode',CX,274);
+  ctx.fillStyle='#e8b84b';ctx.font='bold 14px Cinzel,serif';ctx.textBaseline='middle';ctx.fillText('▶  PLAY NORMAL',CX,274);
   // DAILY: rrect top=308 → center y=334 (52px tall: button 44px + subtitle)
   ctx.fillStyle='rgba(124,58,237,0.18)';rrect(CX-90,308,180,52,8);ctx.fill();ctx.strokeStyle='#7c3aed';ctx.lineWidth=1.5;rrect(CX-90,308,180,52,8);ctx.stroke();
   ctx.fillStyle='#b78df5';ctx.font='bold 13px Cinzel,serif';ctx.fillText('📅  DAILY CHALLENGE',CX,328);
@@ -4362,6 +4362,10 @@ var FG = {
         else if (sx >= w/2-90 && sx <= w/2+90 && sy >= h*0.72-18 && sy <= h*0.72+18) {
           this.reset(true); this.started = true; this.coin.vy = this.flapPower; this._boop('flap');
         }
+        // HOW TO PLAY button: h*0.82 ±15
+        else if (sx >= w/2-70 && sx <= w/2+70 && sy >= h*0.82-15 && sy <= h*0.82+15) {
+          this.showTut = true;
+        }
         // Anywhere else: do nothing
       } else {
         // Spacebar: start normal game
@@ -4530,19 +4534,27 @@ var FG = {
   },
 
   _spawnPU: function(w, h, rng) {
-    if (this.barriers.length === 0) return;
-    var safeX = w + 60;
+    var bw = 52;
+    // Find on-screen barriers ahead of the player with no existing powerup nearby
+    var candidates = [];
     for (var i = 0; i < this.barriers.length; i++) {
-      if (Math.abs(this.barriers[i].x - safeX) < 120) return;
+      var b = this.barriers[i];
+      if (b.x > this.coin.x + 80 && b.x < w - 20) {
+        var tooClose = false;
+        for (var j = 0; j < this.powerups.length; j++) {
+          if (Math.abs(this.powerups[j].x - (b.x + bw/2)) < 80) { tooClose = true; break; }
+        }
+        if (!tooClose) candidates.push(b);
+      }
     }
-    var last = this.barriers[this.barriers.length - 1];
-    var gapTop = last.topH + this.gapSize * 0.25;
-    var gapBottom = last.topH + this.gapSize * 0.75;
-    // Weighted pool: shield_boost most common, slow_mo rarer in early zones
+    if (candidates.length === 0) return;
+    var chosen = candidates[Math.floor(rng() * candidates.length)];
+    var gapTop = chosen.topH + this.gapSize * 0.2;
+    var gapBottom = chosen.topH + this.gapSize * 0.8;
     var pool = ['shield_boost','shield_boost','guardian_shield','double_points','slow_mo','shrink'];
     var type = pool[Math.floor(rng() * pool.length)];
     var icons = {shield_boost:'⚡', guardian_shield:'🛡', double_points:'🔥', slow_mo:'⏳', shrink:'🔮'};
-    this.powerups.push({x: safeX, y: gapTop + rng() * (gapBottom - gapTop), type: type, icon: icons[type], r: 14});
+    this.powerups.push({x: chosen.x + bw/2, y: gapTop + rng() * (gapBottom - gapTop), type: type, icon: icons[type], r: 14});
   },
 
   _collectPU: function() {
@@ -4758,11 +4770,18 @@ var FG = {
     this._rrect(w/2-90, h*0.72-18, 180, 36, 8); c.stroke();
     c.fillStyle = '#a78bfa'; c.font = 'bold 13px Arial,sans-serif';
     c.fillText('🗓  DAILY CHALLENGE', w/2, h*0.72);
+    // HOW TO PLAY button
+    c.fillStyle = 'rgba(71,85,105,0.15)';
+    this._rrect(w/2-70, h*0.82-15, 140, 30, 8); c.fill();
+    c.strokeStyle = 'rgba(100,116,139,0.6)'; c.lineWidth = 1;
+    this._rrect(w/2-70, h*0.82-15, 140, 30, 8); c.stroke();
+    c.fillStyle = '#64748b'; c.font = '12px Arial,sans-serif';
+    c.fillText('❓  HOW TO PLAY', w/2, h*0.82);
     if (this.pb > 0 || this.pbDaily > 0) {
-      c.fillStyle = '#667788'; c.font = '11px Arial,sans-serif';
+      c.fillStyle = '#445566'; c.font = '11px Arial,sans-serif';
       var pbTxt = this.pb > 0 ? 'Best: '+this.pb : '';
       var dTxt = this.pbDaily > 0 ? 'Daily: '+this.pbDaily : '';
-      c.fillText([pbTxt,dTxt].filter(Boolean).join(' · '), w/2, h*0.84);
+      c.fillText([pbTxt,dTxt].filter(Boolean).join(' · '), w/2, h*0.92);
     }
   },
 
