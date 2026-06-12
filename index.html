@@ -278,6 +278,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
   .foot-top{grid-template-columns:1fr;}
   .tab-btn{padding:.5rem .7rem;font-size:.76rem;}
 }
+@media(max-width:500px){.plays-bar-row{flex-direction:column !important;gap:.5rem !important;}}
 
 /* ── SHIELD TIMELINE ── */
 .shield-timeline{display:flex;gap:.65rem;overflow-x:auto;padding:.5rem 0 1.25rem;scrollbar-width:none;}
@@ -794,6 +795,11 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
       <button onclick="walletConnect()" id="guard-connect-btn" class="btn btn-o" style="display:inline-flex;">⚡ Connect Wallet</button>
     </div>
     <p id="live-status" style="text-align:center;font-size:.72rem;color:var(--text3);margin-top:1rem;">Loading supply from the chain…</p>
+  </div>
+
+  <div style="max-width:600px;margin:1.4rem auto;padding:1.1rem 1.3rem;background:rgba(201,146,42,0.06);border:1px solid rgba(201,146,42,0.28);border-radius:12px;text-align:center;">
+    <p style="font-size:.82rem;color:var(--text2);margin:0 0 .7rem;line-height:1.6;">GUARD holders receive exclusive benefits on standguard.net — including game rewards coming with smart contract deployment.</p>
+    <button onclick="go('arena')" style="background:linear-gradient(135deg,rgba(201,146,42,0.22),rgba(201,146,42,0.12));border:1px solid rgba(201,146,42,0.5);color:var(--gold-l);font-family:'Cinzel',serif;font-size:.82rem;font-weight:700;padding:.65rem 1.4rem;border-radius:9px;cursor:pointer;">⚔ Play Now — 3 Free Plays Daily</button>
   </div>
 
   <div class="warn"><span>⚠</span><div>GUARD is a speculative community meme token. Price is driven entirely by community demand and can rise or fall sharply. Never invest more than you can afford to lose. Not financial advice. For live supply, price, and market data, always check SimpleDEX directly.</div></div>
@@ -1745,6 +1751,19 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <div class="section" style="padding-bottom:2rem;">
     <div class="sec-label" style="text-align:center;">Guardian Arena · GUARD Ecosystem</div>
     <h1 style="font-family:'Cinzel Decorative','Cinzel',serif;text-align:center;font-size:clamp(1.8rem,5vw,2.8rem);color:var(--gold-l);margin:.2rem 0 .8rem;">GUARDIAN ARENA</h1>
+    <div id="plays-bar" style="max-width:600px;margin:0 auto 1.1rem;background:rgba(14,9,36,0.85);border:1px solid rgba(201,146,42,0.35);border-radius:14px;padding:1rem 1.2rem .85rem;text-align:center;">
+      <div style="font-size:.62rem;font-family:'Cinzel',serif;letter-spacing:.15em;color:var(--text3);text-transform:uppercase;margin-bottom:.4rem;">Free Plays Today</div>
+      <div class="plays-bar-row" style="display:flex;align-items:center;justify-content:center;gap:.85rem;flex-wrap:wrap;">
+        <span id="plays-count" style="font-family:'Cinzel Decorative','Cinzel',serif;font-size:2rem;color:var(--gold-l);line-height:1;text-shadow:0 0 18px rgba(201,146,42,0.7);">3/3</span>
+        <div id="plays-dots" style="display:flex;gap:.45rem;align-items:center;">
+          <span class="play-dot" style="width:14px;height:14px;border-radius:50%;background:#c9922a;box-shadow:0 0 10px rgba(201,146,42,0.8);display:inline-block;transition:all .3s;"></span>
+          <span class="play-dot" style="width:14px;height:14px;border-radius:50%;background:#c9922a;box-shadow:0 0 10px rgba(201,146,42,0.8);display:inline-block;transition:all .3s;"></span>
+          <span class="play-dot" style="width:14px;height:14px;border-radius:50%;background:#c9922a;box-shadow:0 0 10px rgba(201,146,42,0.8);display:inline-block;transition:all .3s;"></span>
+        </div>
+      </div>
+      <div id="plays-reset" style="font-size:.7rem;color:var(--text3);margin-top:.5rem;">Resets in <span id="plays-countdown">—</span></div>
+      <div style="font-size:.63rem;color:var(--text3);opacity:.6;margin-top:.3rem;font-style:italic;">GUARD holder benefits coming soon — exclusive rewards with smart contract</div>
+    </div>
     <div id="game-selector" style="display:flex;gap:.5rem;justify-content:center;margin-bottom:1.1rem;">
       <button id="sel-wave" class="game-sel-btn active" onclick="switchToWave()">⚔ Wave Survival</button>
       <button id="sel-flappy" class="game-sel-btn" onclick="switchToFlappy()">🪙 GUARD Trials</button>
@@ -1809,8 +1828,32 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
         <p style="font-size:.74rem;color:var(--text3);margin:.9rem 0 0;border-top:1px solid var(--border);padding-top:.7rem;">On-chain verified leaderboard with GUARD rewards coming with smart contract deployment — Category B</p>
       </div>
     </div>
+    <div style="max-width:600px;margin:1.5rem auto 0;padding:1.2rem 1.4rem;background:rgba(124,58,237,0.07);border:1px solid rgba(124,58,237,0.28);border-radius:14px;">
+      <div style="font-family:'Cinzel',serif;font-size:.82rem;color:var(--pur-g);font-weight:700;letter-spacing:.04em;margin-bottom:.5rem;">⚡ GUARD Play Rewards — Coming Soon</div>
+      <p style="font-size:.8rem;color:var(--text2);margin:0 0 .9rem;line-height:1.6;">Premium plays, weekly leaderboard prizes, and GUARD token rewards are in development as part of the Guardian smart contract deployment on XPR Network. GUARD holders will receive exclusive game benefits.</p>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+        <a href="https://simpledex.fun/token/172" target="_blank" style="padding:.55rem 1.1rem;background:rgba(201,146,42,0.15);border:1px solid rgba(201,146,42,0.4);border-radius:8px;color:var(--gold-l);font-size:.8rem;text-decoration:none;white-space:nowrap;">Get GUARD on SimpleDEX</a>
+        <a href="https://blastpad.io/staking-pool?poolId=791" target="_blank" style="padding:.55rem 1.1rem;background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.35);border-radius:8px;color:var(--pur-g);font-size:.8rem;text-decoration:none;white-space:nowrap;">Stake on BlastPad</a>
+      </div>
+      <p style="font-size:.67rem;color:var(--text3);margin:.9rem 0 0;font-style:italic;">GUARD is a community token on XPR Network. Rewards require smart contract deployment — in development. Not financial advice.</p>
+    </div>
   </div>
 </div>
+</div>
+
+<div id="no-plays-overlay" style="display:none;position:fixed;inset:0;background:rgba(4,7,18,0.97);z-index:9999;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;box-sizing:border-box;text-align:center;">
+  <div style="max-width:400px;width:100%;">
+    <div style="font-size:3.2rem;margin-bottom:.7rem;">🛡</div>
+    <div style="font-family:'Cinzel Decorative','Cinzel',serif;font-size:1.3rem;color:var(--gold-l);text-shadow:0 0 24px rgba(201,146,42,0.6);margin-bottom:.6rem;letter-spacing:.05em;">DAILY PLAYS USED</div>
+    <p style="font-size:.88rem;color:var(--text2);margin:.4rem 0 1rem;">You've used your 3 free plays for today.</p>
+    <div style="font-family:'Cinzel',serif;font-size:.85rem;color:var(--pur-g);margin-bottom:1.2rem;">Resets in <span id="npo-countdown" style="font-weight:700;"></span></div>
+    <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,146,42,0.6),transparent);margin:1.2rem 0;"></div>
+    <p style="font-size:.8rem;color:var(--text3);font-style:italic;margin:0 0 .6rem;">GUARD holders get exclusive benefits — coming soon</p>
+    <div id="npo-balance" style="display:none;font-size:.78rem;color:var(--gold-l);font-family:'Cinzel',serif;margin:.4rem 0 .6rem;"></div>
+    <a href="https://simpledex.fun/token/172" target="_blank" style="display:inline-block;margin:.75rem 0 .5rem;padding:.7rem 1.6rem;background:linear-gradient(135deg,rgba(201,146,42,0.22),rgba(201,146,42,0.12));border:1px solid rgba(201,146,42,0.5);border-radius:10px;color:var(--gold-l);font-family:'Cinzel',serif;font-size:.85rem;text-decoration:none;">Buy GUARD on SimpleDEX →</a>
+    <p style="font-size:.72rem;color:var(--text3);margin:1rem 0 1.2rem;">Come back tomorrow for 3 more free plays.</p>
+    <button onclick="document.getElementById('no-plays-overlay').style.display='none';" style="background:rgba(30,41,59,0.6);border:1px solid rgba(71,85,105,0.4);color:var(--text3);padding:.55rem 1.4rem;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:inherit;">✕ Close</button>
+  </div>
 </div>
 
 <!-- FOOTER TEMPLATE -->
@@ -1824,6 +1867,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
       </div>
       <div class="foot-col">
         <h4>Navigate</h4>
+        <a href="#" onclick="go('home');return false;">Home</a>
         <a href="#" onclick="go('guard');return false;">GUARD</a>
         <a href="#" onclick="go('start');return false;">Start Here</a>
         <a href="#" onclick="go('ecosystem');return false;">Ecosystem</a>
@@ -1832,6 +1876,9 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
         <a href="#" onclick="go('ksto');return false;">KSTO</a>
         <a href="#" onclick="go('cyphergang');return false;">CypherGang</a>
         <a href="#" onclick="go('snipverse');return false;">Snipverse</a>
+        <a href="#" onclick="go('shields');return false;">Shields</a>
+        <a href="#" onclick="go('creator');return false;">Creator</a>
+        <a href="#" onclick="go('arena');return false;">Stand Guard</a>
       </div>
       <div class="foot-col">
         <h4>Connect</h4>
@@ -2161,6 +2208,75 @@ var ShardTracker = {
   nextMissing: function(n) { var o=this._get(n).owned; for(var i=1;i<=5;i++){if(!o.includes(i))return i;} return null; }
 };
 ShardTracker.load();
+
+var PlaysTracker = {
+  DAILY_FREE: 3,
+  KEY: 'guard_plays',
+  getData: function() {
+    var today = new Date().toISOString().split('T')[0];
+    var stored = JSON.parse(localStorage.getItem(this.KEY) || '{}');
+    if (stored.date !== today) {
+      var fresh = { date: today, used: 0 };
+      localStorage.setItem(this.KEY, JSON.stringify(fresh));
+      return fresh;
+    }
+    return stored;
+  },
+  getRemaining: function() { return Math.max(0, this.DAILY_FREE - this.getData().used); },
+  usePlay: function() {
+    var d = this.getData(); d.used++;
+    localStorage.setItem(this.KEY, JSON.stringify(d));
+  },
+  hasPlaysRemaining: function() { return this.getRemaining() > 0; },
+  resetTime: function() {
+    var now = new Date(); var mid = new Date(now);
+    mid.setUTCHours(24, 0, 0, 0);
+    var ms = mid - now;
+    return Math.floor(ms / 3600000) + 'h ' + Math.floor((ms % 3600000) / 60000) + 'm';
+  }
+};
+
+function updatePlaysUI() {
+  var rem = PlaysTracker.getRemaining();
+  var ct = document.getElementById('plays-count');
+  var dots = document.querySelectorAll('.play-dot');
+  var cd = document.getElementById('plays-countdown');
+  var npoCD = document.getElementById('npo-countdown');
+  var t = PlaysTracker.resetTime();
+  if (ct) ct.textContent = rem + '/' + PlaysTracker.DAILY_FREE;
+  if (dots) dots.forEach(function(d, i) {
+    d.style.background = i < rem ? '#c9922a' : '#1e293b';
+    d.style.boxShadow = i < rem ? '0 0 10px rgba(201,146,42,0.8)' : 'none';
+  });
+  if (cd) cd.textContent = t;
+  if (npoCD) npoCD.textContent = t;
+}
+
+function showNoPlaysScreen() {
+  var overlay = document.getElementById('no-plays-overlay');
+  if (!overlay) return;
+  updatePlaysUI();
+  var balEl = document.getElementById('npo-balance');
+  if (balEl) {
+    if (typeof walletActor !== 'undefined' && walletActor && typeof guardianRank !== 'undefined') {
+      balEl.style.display = 'block';
+      balEl.textContent = 'Connected: @' + walletActor + ' · Guardian Rank ' + (guardianRank + 1);
+    } else {
+      balEl.style.display = 'none';
+    }
+  }
+  overlay.style.display = 'flex';
+}
+
+function checkAndUsePlay(startFn) {
+  if (PlaysTracker.hasPlaysRemaining()) {
+    PlaysTracker.usePlay();
+    updatePlaysUI();
+    startFn();
+  } else {
+    showNoPlaysScreen();
+  }
+}
 
 var _shardImgCache = {};
 function getShardImg(shieldName, shardNum) {
@@ -3617,9 +3733,9 @@ function tapTut(cx,cy){
 }
 function tapStart(cx,cy){
   // PLAY NORMAL: rrect(CX-90,250,180,48) → center(CX,274)
-  if(inBtn(cx,cy,CX,274,180,48))startGame(false);
+  if(inBtn(cx,cy,CX,274,180,48))checkAndUsePlay(function(){startGame(false);});
   // DAILY:       rrect(CX-90,308,180,52) → center(CX,334)
-  else if(inBtn(cx,cy,CX,334,180,52))startGame(true);
+  else if(inBtn(cx,cy,CX,334,180,52))checkAndUsePlay(function(){startGame(true);});
   // HOW TO PLAY: rrect(CX-90,370,180,34) → center(CX,387)
   else if(inBtn(cx,cy,CX,387,180,34)){g.phase='TUT';g.tutStep=1;drawStatic();}
 }
@@ -3634,12 +3750,12 @@ function tapGO(cx,cy){
     // CP RESUME: rrect(CX-90,278,180,44) → center(CX,300)
     if(inBtn(cx,cy,CX,300,180,44)){resumeCheckpoint();return;}
     // PLAY AGAIN: rrect(CX-90,332,180,44) → center(CX,354)
-    if(inBtn(cx,cy,CX,354,180,44)){startGame(g.daily);return;}
+    if(inBtn(cx,cy,CX,354,180,44)){const _d=g.daily;checkAndUsePlay(function(){startGame(_d);});return;}
     // MAIN MENU: rrect(CX-90,387,180,38) → center(CX,406)
     if(inBtn(cx,cy,CX,406,180,38)){localStorage.removeItem('guard_arena_cp');stopLoop();g=newG(false);drawStatic();return;}
   } else {
     // PLAY AGAIN: rrect(CX-90,314,180,44) → center(CX,336)
-    if(inBtn(cx,cy,CX,336,180,44)){startGame(g.daily);return;}
+    if(inBtn(cx,cy,CX,336,180,44)){const _d=g.daily;checkAndUsePlay(function(){startGame(_d);});return;}
     // MAIN MENU: rrect(CX-90,368,180,38) → center(CX,387)
     if(inBtn(cx,cy,CX,387,180,38)){stopLoop();g=newG(false);drawStatic();return;}
   }
@@ -4504,6 +4620,8 @@ window.addEventListener('load', () => {
   setTimeout(walletRestore, 1000);
   var h=location.hash.replace(/^#/,'');
   if(PAGES.includes(h))go(h);
+  updatePlaysUI();
+  setInterval(updatePlaysUI, 60000);
 });
 
 function scrollNav(amount){
@@ -4682,14 +4800,15 @@ var FG = {
     }
     // Start screen
     if (!this.started && !this.dead) {
+      var _fg = this;
       if (sx !== null) {
         // PLAY button: h*0.60 ±20
         if (sx >= w/2-80 && sx <= w/2+80 && sy >= h*0.60-20 && sy <= h*0.60+20) {
-          this.reset(false); this.started = true; this.coin.vy = this.flapPower; this._boop('flap');
+          checkAndUsePlay(function(){_fg.reset(false);_fg.started=true;_fg.coin.vy=_fg.flapPower;_fg._boop('flap');});
         }
         // DAILY button: h*0.72 ±18
         else if (sx >= w/2-90 && sx <= w/2+90 && sy >= h*0.72-18 && sy <= h*0.72+18) {
-          this.reset(true); this.started = true; this.coin.vy = this.flapPower; this._boop('flap');
+          checkAndUsePlay(function(){_fg.reset(true);_fg.started=true;_fg.coin.vy=_fg.flapPower;_fg._boop('flap');});
         }
         // HOW TO PLAY button: h*0.82 ±15
         else if (sx >= w/2-70 && sx <= w/2+70 && sy >= h*0.82-15 && sy <= h*0.82+15) {
@@ -4698,25 +4817,26 @@ var FG = {
         // Anywhere else: do nothing
       } else {
         // Spacebar: start normal game
-        this.reset(false); this.started = true; this.coin.vy = this.flapPower; this._boop('flap');
+        checkAndUsePlay(function(){_fg.reset(false);_fg.started=true;_fg.coin.vy=_fg.flapPower;_fg._boop('flap');});
       }
       return;
     }
     // Dead screen
     if (this.dead) {
+      var _fg2 = this;
       if (sx !== null) {
         // PLAY AGAIN: h*0.69 ±18
         if (sx >= w/2-70 && sx <= w/2+70 && sy >= h*0.69-18 && sy <= h*0.69+18) {
-          this.reset(this.isDaily); return;
+          var _d1 = this.isDaily; checkAndUsePlay(function(){_fg2.reset(_d1);}); return;
         }
         // DAILY: h*0.80 ±17 (normal mode only)
         if (!this.isDaily && sx >= w/2-90 && sx <= w/2+90 && sy >= h*0.80-17 && sy <= h*0.80+17) {
-          this.reset(true); return;
+          checkAndUsePlay(function(){_fg2.reset(true);}); return;
         }
         // Anywhere else: do nothing
       } else {
         // Spacebar: restart
-        this.reset(this.isDaily);
+        var _d2 = this.isDaily; checkAndUsePlay(function(){_fg2.reset(_d2);});
       }
       return;
     }
