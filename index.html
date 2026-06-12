@@ -4414,7 +4414,7 @@ var FG = {
       var b = this.barriers[i];
       b.x -= this.speed;
       if (b.x + bw < 0) { this.barriers.splice(i, 1); continue; }
-      if (!b.passed && b.x + bw < this.coin.x - 20) {
+      if (!b.passed && b.x + bw < this.coin.x - 12) {
         b.passed = true;
         var pts = this.doublePoints ? 2 : 1;
         this.score += pts; this.gp += pts;
@@ -4437,13 +4437,13 @@ var FG = {
       }
       if (!this.shield && !b.skipMe) {
         var cx = this.coin.x, cy = this.coin.y;
-        if (cx + 20 > b.x && cx - 20 < b.x + bw) {
-          if (cy - 25 < b.topH || cy + 25 > b.topH + this.gapSize) { this.die(); return; }
+        if (cx + 12 > b.x && cx - 12 < b.x + bw) {
+          if (cy - 15 < b.topH || cy + 15 > b.topH + this.gapSize) { this.die(); return; }
         }
       }
     }
     this._collectPU();
-    if (this.coin.y - 25 < 0 || this.coin.y + 25 > h) { this.die(); return; }
+    if (this.coin.y - 15 < 0 || this.coin.y + 15 > h) { this.die(); return; }
     for (var ti = this.trailParticles.length - 1; ti >= 0; ti--) {
       var tp = this.trailParticles[ti];
       tp.x += tp.vx; tp.y += tp.vy; tp.life--;
@@ -4824,7 +4824,7 @@ var FG = {
   _drawGuardian: function(x, y, angle, shielded) {
     var c = this.ctx;
     var img = this.guardianImg;
-    var gh = 80, gw = 120;
+    var gh = 52, gw = 78;
     if (img && img.complete && img.naturalWidth > 0) {
       gw = Math.round(gh * img.naturalWidth / img.naturalHeight);
     }
