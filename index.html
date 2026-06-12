@@ -2102,12 +2102,12 @@ renderGuardianCount();
 // ===== SHIELDS — THE PATH OF THE GUARDIAN =====
 const SHIELDS = [
   {name:'Cryptide',  title:'Initiate',   emoji:'🌊', img:'./shield_cryptide.png',  req:0,          lore:'New to the ecosystem. A stable foundation and a defensive footing — learning the way. Every Guardian begins here.'},
-  {name:'Riftforge', title:'Defender',   emoji:'🌋', img:'./shield_riftforge.png', req:25000,      lore:'The first awakening of power — bold and uncontrolled. Stepping forward to defend the community for the first time.'},
-  {name:'Helion',    title:'Sentinel',   emoji:'☀️', img:'./shield_helion.png',    req:150000,     lore:'Power under control. Light, guidance, and standing watch — actively protecting others, not just yourself.'},
-  {name:'Nebulon',   title:'Ascendant',  emoji:'🌌', img:'./shield_nebulon.png',   req:750000,     lore:'Cosmic scale begins. Mysterious and advanced — risen beyond the basic defender into something far greater.'},
-  {name:'Protonis',  title:'Architect',  emoji:'⚛️', img:'./shield_protonis.png',  req:2500000,    lore:'The shield most tied to XPR Network. Technological and intentional — elite ecosystem knowledge and standing.'},
-  {name:'Keystone',  title:'Gatekeeper', emoji:'🔑', img:'./shield_keystone.png',  req:7500000,    lore:'Near-final form. Custodian energy — keeper of access, protector of keys, guardian of the gate.'},
-  {name:'Aegis',     title:'Guardian',   emoji:'🛡️', img:'./shield_aegis.png',     req:15000000,   lore:'God-tier. The final evolution — vault, protection, eternity. The fusion of all shields. To bear Aegis is to BE the Guardian.'},
+  {name:'Riftforge', title:'Defender',   emoji:'🌋', img:'./shield_riftforge.png', req:10000,      lore:'The first awakening of power — bold and uncontrolled. Stepping forward to defend the community for the first time.'},
+  {name:'Helion',    title:'Sentinel',   emoji:'☀️', img:'./shield_helion.png',    req:200000,     lore:'Power under control. Light, guidance, and standing watch — actively protecting others, not just yourself.'},
+  {name:'Nebulon',   title:'Ascendant',  emoji:'🌌', img:'./shield_nebulon.png',   req:1500000,    lore:'Cosmic scale begins. Mysterious and advanced — risen beyond the basic defender into something far greater.'},
+  {name:'Protonis',  title:'Architect',  emoji:'⚛️', img:'./shield_protonis.png',  req:5000000,    lore:'The shield most tied to XPR Network. Technological and intentional — elite ecosystem knowledge and standing.'},
+  {name:'Keystone',  title:'Gatekeeper', emoji:'🔑', img:'./shield_keystone.png',  req:10000000,   lore:'Near-final form. Custodian energy — keeper of access, protector of keys, guardian of the gate.'},
+  {name:'Aegis',     title:'Guardian',   emoji:'🛡️', img:'./shield_aegis.png',     req:20000000,   lore:'God-tier. The final evolution — vault, protection, eternity. The fusion of all shields. To bear Aegis is to BE the Guardian.'},
 ];
 const RANK_THRESHOLDS = SHIELDS.map(s => s.req);
 
@@ -2205,12 +2205,12 @@ const ACH_CATS = [
   },
   { id:'holding', label:'Holding Achievements', icon:'🪙',
     items:[
-      {id:'holder_1', label:'Holder I',   desc:'Hold or stake 25,000 GUARD (combined)',     icon:'🪙', req:25000},
-      {id:'holder_2', label:'Holder II',  desc:'Hold or stake 150,000 GUARD (combined)',    icon:'🪙', req:150000},
-      {id:'holder_3', label:'Holder III', desc:'Hold or stake 750,000 GUARD (combined)',    icon:'🪙', req:750000},
-      {id:'holder_4', label:'Holder IV',  desc:'Hold or stake 2,500,000 GUARD (combined)',  icon:'🪙', req:2500000},
-      {id:'holder_5', label:'Holder V',   desc:'Hold or stake 7,500,000 GUARD (combined)',  icon:'🪙', req:7500000},
-      {id:'holder_6', label:'Holder VI',  desc:'Hold or stake 15,000,000 GUARD (combined)', icon:'🪙', req:15000000},
+      {id:'holder_1', label:'Holder I',   desc:'Hold or stake 10,000 GUARD (combined)',     icon:'🪙', req:10000},
+      {id:'holder_2', label:'Holder II',  desc:'Hold or stake 200,000 GUARD (combined)',    icon:'🪙', req:200000},
+      {id:'holder_3', label:'Holder III', desc:'Hold or stake 1,500,000 GUARD (combined)',  icon:'🪙', req:1500000},
+      {id:'holder_4', label:'Holder IV',  desc:'Hold or stake 5,000,000 GUARD (combined)',  icon:'🪙', req:5000000},
+      {id:'holder_5', label:'Holder V',   desc:'Hold or stake 10,000,000 GUARD (combined)', icon:'🪙', req:10000000},
+      {id:'holder_6', label:'Holder VI',  desc:'Hold or stake 20,000,000 GUARD (combined)', icon:'🪙', req:20000000},
     ]
   },
   { id:'lp', label:'LP Achievements', icon:'💧',
@@ -2300,8 +2300,8 @@ function calcGuardianScore(bal){
   // Holdings: piecewise-linear 0–85% based on absolute GUARD balance
   let hold=0;
   if(bal>=1){
-    const BP=[[0,0],[1,2],[25000,15],[150000,25],[750000,35],[2500000,50],[7500000,70],[15000000,85]];
-    if(bal>=15000000){hold=85;}
+    const BP=[[0,0],[1,2],[10000,15],[200000,25],[1500000,35],[5000000,50],[10000000,70],[20000000,85]];
+    if(bal>=20000000){hold=85;}
     else{
       for(let i=1;i<BP.length;i++){
         if(bal<=BP[i][0]){
@@ -2469,52 +2469,52 @@ function getRankReqs(rankIdx, bal){
   }
   const map = {
     1:[
-      {label:'Hold 25,000 GUARD',      detail: guardMet ? bal.toLocaleString()+' GUARD held ✓' : bal.toLocaleString()+' / 25,000',    met:guardMet, progress:guardPct},
-      lpReq(25),
+      {label:'Hold 10,000 GUARD',       detail: guardMet ? bal.toLocaleString()+' GUARD held ✓' : bal.toLocaleString()+' / 10,000',     met:guardMet, progress:guardPct},
+      lpReq(10),
       htReq(7),
-      stakeReq(10000),
+      stakeReq(5000),
       shardReq(1),
     ],
     2:[
-      {label:'Hold 150,000 GUARD',     detail: bal>=150000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 150,000',      met:bal>=150000,  progress:Math.min(100,Math.round(bal/1500))},
+      {label:'Hold 200,000 GUARD',      detail: bal>=200000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 200,000',       met:bal>=200000,  progress:Math.min(100,Math.round(bal/2000))},
       lpReq(100),
       htReq(14),
-      stakeReq(50000),
+      stakeReq(65000),
       shardReq(2),
-      {label:'Complete profile setup', detail:cs, met:false, soon:true},
+      {label:'Complete profile setup',  detail:cs, met:false, soon:true},
     ],
     3:[
-      {label:'Hold 750,000 GUARD',     detail: bal>=750000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 750,000',      met:bal>=750000,  progress:Math.min(100,Math.round(bal/7500))},
-      lpReq(250),
+      {label:'Hold 1,500,000 GUARD',    detail: bal>=1500000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 1,500,000',    met:bal>=1500000, progress:Math.min(100,Math.round(bal/15000))},
+      lpReq(400),
       htReq(45),
-      stakeReq(150000),
+      stakeReq(300000),
       shardReq(3),
       {label:'Complete Start Here tutorial', detail:cs, met:false, soon:true},
     ],
     4:[
-      {label:'Hold 2,500,000 GUARD',   detail: bal>=2500000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 2,500,000',   met:bal>=2500000, progress:Math.min(100,Math.round(bal/25000))},
-      lpReq(750),
+      {label:'Hold 5,000,000 GUARD',    detail: bal>=5000000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 5,000,000',    met:bal>=5000000, progress:Math.min(100,Math.round(bal/50000))},
+      lpReq(1500),
       htReq(90),
-      stakeReq(500000),
+      stakeReq(1000000),
       shardReq(4),
       {label:'Complete 3 site missions',detail:cs, met:false, soon:true},
     ],
     5:[
-      {label:'Hold 7,500,000 GUARD',   detail: bal>=7500000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 7,500,000',   met:bal>=7500000, progress:Math.min(100,Math.round(bal/75000))},
-      lpReq(2000),
+      {label:'Hold 10,000,000 GUARD',   detail: bal>=10000000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 10,000,000',  met:bal>=10000000,progress:Math.min(100,Math.round(bal/100000))},
+      lpReq(3000),
       htReq(180),
-      stakeReq(1500000),
+      stakeReq(2000000),
       shardReq(5),
-      {label:'Earn 5 achievements',    detail:cs, met:false, soon:true},
+      {label:'Earn 5 achievements',     detail:cs, met:false, soon:true},
     ],
     6:[
-      {label:'Hold 15,000,000 GUARD',  detail: bal>=15000000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 15,000,000', met:bal>=15000000,progress:Math.min(100,Math.round(bal/150000))},
-      lpReq(5000),
+      {label:'Hold 20,000,000 GUARD',   detail: bal>=20000000 ? bal.toLocaleString()+' held ✓' : bal.toLocaleString()+' / 20,000,000',  met:bal>=20000000,progress:Math.min(100,Math.round(bal/200000))},
+      lpReq(7500),
       htReq(365),
-      stakeReq(5000000),
+      stakeReq(7000000),
       shardReq(6),
       {label:'Complete all shield quests', detail:cs, met:false, soon:true},
-      {label:'Earn 10 achievements',   detail:cs, met:false, soon:true},
+      {label:'Earn 10 achievements',    detail:cs, met:false, soon:true},
       {label:'Maintain Rank 6 for 90+ days', detail:cs, met:false, soon:true},
     ],
   };
