@@ -48,11 +48,13 @@ button{cursor:pointer;font-family:'Inter',sans-serif;}
 .nav-brand{display:flex;align-items:center;gap:.6rem;cursor:pointer;flex-shrink:0;}
 .nav-brand img{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--gold);object-fit:cover;}
 .nav-brand span{font-family:'Cinzel Decorative','Cinzel',serif;font-size:.95rem;font-weight:700;color:var(--gold-l);letter-spacing:.08em;}
-.nav-links{display:flex;align-items:center;gap:.1rem;flex:1;overflow:visible;}
+.nav-links{display:flex;align-items:center;gap:.1rem;flex:1;overflow:hidden;position:relative;}
 .nav-btn{background:none;border:none;padding:.4rem .7rem;font-size:.75rem;font-weight:500;color:var(--text2);border-radius:6px;transition:all .2s;white-space:nowrap;}
 .nav-btn:hover,.nav-btn.active{color:var(--gold-l);background:rgba(201,146,42,0.08);}
-.nav-arrow{background:none;border:none;color:var(--gold-l);font-size:1.6rem;cursor:pointer;padding:0 .4rem;flex-shrink:0;line-height:1;opacity:.8;}
-.nav-arrow:hover{opacity:1;}
+.nav-arrow{position:absolute;top:0;bottom:0;width:52px;display:flex;align-items:center;border:none;cursor:pointer;z-index:10;color:var(--gold-l);font-size:1.3rem;transition:opacity .18s;padding:0;}
+.nav-arrow:hover{color:#fff;}
+.nav-links>.nav-arrow:first-child{left:0;background:linear-gradient(to right,rgba(8,11,18,.97) 55%,transparent);justify-content:flex-start;padding-left:10px;}
+.nav-links>.nav-arrow:last-child{right:0;background:linear-gradient(to left,rgba(8,11,18,.97) 55%,transparent);justify-content:flex-end;padding-right:10px;}
 #navScroll{display:flex;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;scroll-behavior:smooth;gap:.25rem;flex:1;min-width:0;}
 #navScroll::-webkit-scrollbar{display:none;}
 .nav-cta{background:var(--gold);color:#000!important;font-weight:700;font-size:.78rem;padding:.4rem 1rem;border-radius:6px;border:none;white-space:nowrap;transition:all .2s;flex-shrink:0;}
@@ -4751,6 +4753,7 @@ window.addEventListener('load', () => {
   setInterval(updatePlaysUI, 60000);
   updateNavArrows();
   window.addEventListener('resize', updateNavArrows);
+  var _ns=document.getElementById('navScroll');if(_ns)_ns.addEventListener('scroll',updateNavArrows,{passive:true});
 });
 
 function scrollNav(amount){
@@ -4788,7 +4791,11 @@ function toggleDropdown(id,e){
 function updateNavArrows(){
   var ns=document.getElementById('navScroll');if(!ns)return;
   var fits=ns.scrollWidth<=ns.clientWidth+2;
-  document.querySelectorAll('.nav-arrow').forEach(function(a){a.style.opacity=fits?'0':'';a.style.pointerEvents=fits?'none':'';});
+  var atStart=ns.scrollLeft<=2;
+  var atEnd=ns.scrollLeft>=ns.scrollWidth-ns.clientWidth-2;
+  var arrows=document.querySelectorAll('.nav-arrow');
+  if(arrows[0]){arrows[0].style.opacity=(fits||atStart)?'0':'1';arrows[0].style.pointerEvents=(fits||atStart)?'none':'';}
+  if(arrows[1]){arrows[1].style.opacity=(fits||atEnd)?'0':'1';arrows[1].style.pointerEvents=(fits||atEnd)?'none':'';}
   for(var id in _DD_PANELS){var cfg=_DD_PANELS[id];var panel=document.getElementById(cfg.panelId);if(panel&&panel.classList.contains('open')){var btn=document.getElementById(cfg.btnId);if(btn)panel.style.left=btn.getBoundingClientRect().left+'px';}}
 }
 document.addEventListener('click',function(e){if(!e.target.closest('.nav-dropdown')&&!e.target.closest('.nav-dd-panel'))closeAllDropdowns();});
