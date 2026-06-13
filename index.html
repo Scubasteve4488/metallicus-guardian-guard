@@ -528,7 +528,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
 </head>
 <body>
-<!-- build: 2026-06-12-v5 -->
+<!-- build: 2026-06-12-v6 -->
 
 <!-- NAV -->
 <nav id="nav">
@@ -1314,7 +1314,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
         <div class="gc-watermark">standguard.net</div>
       </div>
     </div>
-    <button class="gc-share-btn" onclick="shareGuardianCard()">🐦 Share on X</button>
+    <button class="gc-share-btn" onclick="shareGuardianCard()">𝕏 Share on X</button>
 
     <!-- HALL OF GUARDIANS -->
     <div class="div-g" style="margin:2rem 0 1.5rem;"></div>
@@ -1405,7 +1405,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
             <input id="nom-nominee" class="nom-input" type="text" placeholder="@their-handle" maxlength="50" autocomplete="off">
             <textarea id="nom-reason" class="nom-textarea" maxlength="280" placeholder="Why do they deserve the spotlight? (max 280 chars)"></textarea>
             <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
-              <button onclick="submitNomination()" class="btn btn-g" style="font-size:.82rem;">🐦 Nominate on X →</button>
+              <button onclick="submitNomination()" class="btn btn-g" style="font-size:.82rem;">𝕏 Nominate on X →</button>
               <button onclick="toggleNomForm()" class="btn btn-o" style="font-size:.82rem;">Cancel</button>
             </div>
           </div>
@@ -1808,7 +1808,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <div id="flappy-game-container" style="display:none;text-align:center;">
       <canvas id="fg-canvas" style="display:block;margin:0 auto;border-radius:12px;border:1px solid rgba(201,146,42,0.3);max-width:100%;touch-action:none;-webkit-user-select:none;user-select:none;cursor:pointer;"></canvas>
       <div style="margin-top:.75rem;">
-        <button onclick="FG.shareScore()" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;padding:.6rem 1.4rem;border-radius:8px;font-size:.85rem;cursor:pointer;">🐦 Share Score</button>
+        <button onclick="FG.shareScore()" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;padding:.6rem 1.4rem;border-radius:8px;font-size:.85rem;cursor:pointer;">𝕏 Share on X</button>
       </div>
       <!-- Flappy GUARD leaderboard -->
       <div style="max-width:480px;margin:1.2rem auto 0;text-align:left;">
@@ -1936,7 +1936,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena'];
-const BUILD_VERSION='2026-06-12-v5';
+const BUILD_VERSION='2026-06-12-v6';
 (function(){var b=document.getElementById('build-badge');if(b)b.textContent=BUILD_VERSION;})();
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
@@ -2168,7 +2168,7 @@ function submitNomination() {
 
   const handle = nominee.startsWith('@') ? nominee : '@' + nominee;
   const tweet  = `I nominate ${handle} for Guardian Spotlight on standguard.net — ${reason} #GUARD #XPRNetwork`;
-  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet), '_blank');
+  window.open('https://x.com/intent/tweet?text=' + encodeURIComponent(tweet), '_blank');
   setStatus('✅ Tweet opened! Post it to submit your nomination.', 'var(--green)');
 }
 
@@ -2878,7 +2878,7 @@ function shareGuardianCard(){
   const s = SHIELDS[guardianRank];
   const handle = walletActor ? ' (@' + walletActor + ')' : '';
   const txt = 'I am a ' + s.name + ' Guardian' + handle + '. Stand GUARD. ⚡🛡 #GUARD #XPRNetwork #MetallicusGuardian standguard.net';
-  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(txt), '_blank');
+  window.open('https://x.com/intent/tweet?text=' + encodeURIComponent(txt), '_blank');
 }
 function resetRank(){ guardianRank=0; saveRank(); renderShield(); renderProgress(guardianBalance); }
 function jumpRank(i){ if(i<=guardianRank){ guardianRank=i; saveRank(); renderShield(); } }
@@ -3602,6 +3602,7 @@ const ALL_ABS=['bash','ring','slow','strike','fortify'];
 const AB_CD={bash:30,ring:45,slow:60,strike:90,fortify:120};
 const PUD={hp:{emoji:'❤️',col:'#ef4444',glow:'rgba(239,68,68,0.7)'},ab:{emoji:'⚡',col:'#f5c842',glow:'rgba(245,200,66,0.7)'},pts:{emoji:'🔥',col:'#f97316',glow:'rgba(249,115,22,0.7)'}};
 const ACH_NAMES={first_blood:'First Blood',wave5:'Wave Rider',wave10:'Wave Veteran',score1k:'Legendary Defender',untouchable:'Untouchable',boss_slayer:'Boss Slayer',daily_warrior:'Daily Warrior'};
+const ACH_DESC={first_blood:'First kill of the run',wave5:'Survived to Wave 5',wave10:'Survived to Wave 10',score1k:'Scored 1,000+ points',untouchable:'Cleared a wave with no damage',boss_slayer:'Defeated a boss',daily_warrior:'Completed a Daily Challenge'};
 
 // ─── Zone data ────────────────────────────────────────────────────────────────
 const WAVE_ZONES=[
@@ -3686,12 +3687,16 @@ function buildWave(w,rng){
   }
   const cnt=w===1?8:w===2?11:w===3?14:w===4?17:w<20?Math.min(17+(w-4)*3,60):Math.min(19+(w-4)*3,80);
   const mix=getMix(w),gap=spawnGap(w),q=[];
-  let delay=0;
+  const targetDur=Math.max(18,cnt*gap);
+  const baseInterval=targetDur/cnt;
+  let slot=0;
   for(let i=0;i<cnt;){
     const r=rng();
     let type=r<mix.sw?'swarm':r<mix.sw+mix.ha?'hack':r<mix.sw+mix.ha+mix.ru?'rug':'fud';
-    if(type==='swarm'){for(let j=0;j<5;j++)q.push({type:'swarm',delay:delay+j*0.12});delay+=gap*1.3;i+=1;}
-    else{const gs=w<=3?1:w<=9?Math.min(3,1+(rng()*3|0)):w<=19?3:Math.min(4,2+(rng()*3|0));for(let k=0;k<gs&&i+k<cnt;k++)q.push({type,delay:delay+k*0.08});i+=gs;delay+=gap;}
+    const jitter=(rng()-0.5)*0.3*baseInterval;
+    const delay=Math.max(0,slot*baseInterval+jitter);
+    if(type==='swarm'){for(let j=0;j<5;j++)q.push({type:'swarm',delay:delay+j*0.12});slot+=Math.ceil(gap*1.3/baseInterval)||1;i+=1;}
+    else{const gs=w<=3?1:w<=9?Math.min(3,1+(rng()*3|0)):w<=19?3:Math.min(4,2+(rng()*3|0));for(let k=0;k<gs&&i+k<cnt;k++)q.push({type,delay:delay+k*0.08});i+=gs;slot++;}
   }
   return q;
 }
@@ -3711,7 +3716,7 @@ function newG(daily){
     abLeft:0,timeSlow:false,tsT:0,
     fort:false,ftT:0,ftBonus:0,
     doublePts:false,dpT:0,
-    combo:0,comboMult:1,comboPulseT:0,comboLastMult:0,comboBreakT:0,
+    combo:0,comboMult:1,comboPulseT:0,lastComboKillT:0,
     kills:{fud:0,hack:0,rug:0,swarm:0,boss:0,breach:0,voidhacker:0,shadowdrain:0},
     waveBonus:0,comboBonus:0,perfectWaves:0,
     bgHue:220,achs:[],allAbi:0,
@@ -3848,10 +3853,13 @@ function killEnemy(en,idx){
   const cm=comboMult();
   if(cm>g.comboMult&&cm>1){g.comboMult=cm;snd('combo');flt('COMBO ×'+cm,CX,58,'#f5c842',18);}
   else g.comboMult=Math.max(1,cm);
-  if(cm!==g.comboLastMult){g.comboPulseT=performance.now();g.comboLastMult=cm;}
+  if(cm!==g.comboMult){g.comboPulseT=performance.now();}
+  if(g.comboMult>1)g.lastComboKillT=performance.now();
   const dp=g.doublePts?2:1;
-  const earned=(en.pts||10)*g.comboMult*dp;
-  const bonus=earned-(en.pts||10);
+  const basePts=en.pts||1;
+  const multBonus=0.5*(g.comboMult-1);
+  const earned=Math.round(basePts*(1+multBonus)*dp);
+  const bonus=Math.round(basePts*multBonus*dp);
   g.score+=earned;
   if(bonus>0)g.comboBonus+=bonus;
   g.kills[en.type]=(g.kills[en.type]||0)+1;
@@ -3899,7 +3907,7 @@ function bossHit(en){
   if(!en.m2&&en.hp<=h3){en.m2=true;for(let i=0;i<3;i++)g.enemies.push(mkEnemy('fud',edge(g.rng),g.rng));}
 }
 function comboMult(){const c=g.combo;return c>=8?5:c>=7?4:c>=6?3:c>=5?2:1;}
-function breakCombo(){if(g.combo>=5){snd('combo_break');flt('COMBO BROKEN',CX,78,'#ef4444',15);g.comboBreakT=performance.now();}g.combo=0;g.comboMult=1;g.comboLastMult=0;}
+function breakCombo(){if(g.combo>=5){snd('combo_break');flt('COMBO BROKEN',CX,78,'#ef4444',15);}g.combo=0;g.comboMult=1;g.lastComboKillT=0;}
 
 // ── Wave Survival shard drops (Part 4) ──
 var WS_BOSS_SHARDS = {5:'Riftforge',10:'Helion',15:'Nebulon',20:'Protonis',25:'Keystone',50:'Aegis'};
@@ -4073,12 +4081,19 @@ function update(dt){
     g.phT-=dt;
     if(g.phT<=0){
       const isBoss=g.wave%5===0,doChoice=!isBoss&&g.wave%3===0&&g.wave>0;
-      if(doChoice)g.phase='CHOICE';else startCountdown();
+      if(doChoice){
+        if(g.hp>=g.mhp+MAX_HP_BONUS){
+          g.doublePts=true;g.dpT=999;
+          flt('HP FULL — 2× POINTS NEXT WAVE',CX,100,'#f5c842',15);
+          startCountdown();
+        } else {g.phase='CHOICE';}
+      } else startCountdown();
     }
     updPUs(dt);return;
   }
   if(g.phase==='CHOICE')return;
   // PLAYING
+  if(g.comboMult>1&&performance.now()-g.lastComboKillT>2000){g.combo=0;g.comboMult=1;}
   const sm=g.timeSlow?0.5:1;
   const xtra=g.wave<=4?1:Math.min(1+(g.wave-4)*0.04,3);
   g.wt+=dt;
@@ -4131,6 +4146,14 @@ function updPUs(dt){
 function waveOK(){
   snd('wave_ok');
   g._fillRound=0;
+  // Auto-collect remaining powerups
+  for(let i=g.pus.length-1;i>=0;i--){collectPU(g.pus[i],i);}
+  // Auto-collect remaining shards
+  if(g.wsShards&&g.wsShards.length){
+    g.wsShards.forEach(()=>{if(typeof ShardTracker!=='undefined')ShardTracker.collectShard();});
+    g.wsShards=[];
+    if(typeof renderShardDisplay!=='undefined')renderShardDisplay();
+  }
   if(g.wNoDmg){
     g.perfectWaves++;const bonus=g.wave*5;g.score+=bonus;g.waveBonus+=bonus;
     flt('PERFECT! +'+bonus,CX,CY-40,'#22c55e',17);ach('untouchable');
@@ -4366,27 +4389,26 @@ function drawHUD(){
   ctx.font='bold 13px Cinzel,serif';ctx.fillStyle='#b78df5';ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillText('WAVE '+g.wave,14,18);
   // Score — top-right (leave room for pause/mute)
   ctx.fillStyle='#e8b84b';ctx.textAlign='right';ctx.fillText('SCORE '+g.score,CW-86,18);
-  // Shield HP — top-center as ⬡ symbols
-  const mhp=Math.min(10,g.mhp+(g.ftBonus||0));
+  // Shield HP — top-center as solid shield shapes
+  const baseHp=g.mhp;const bonusHp=g.ftBonus||0;const mhp=Math.min(10,baseHp+bonusHp);
   const curHp=Math.min(g.hp,mhp);
   const hpCol=g.hp<=1?'#ef4444':g.hp<=2?'#f97316':'#c9922a';
-  const shW=16,totalShW=(mhp-1)*shW,shStartX=CX-totalShW/2;
-  ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  const shR=6,shW=16,totalShW=(mhp-1)*shW,shStartX=CX-totalShW/2;
   for(let i=0;i<mhp;i++){
     const filled=i<curHp;
-    ctx.globalAlpha=filled?(g.hp<=1?0.6+0.4*Math.abs(Math.sin(performance.now()/180)):1):0.22;
-    ctx.fillStyle=filled?hpCol:'#c9922a';
-    ctx.shadowBlur=filled?7:0;ctx.shadowColor=hpCol;
-    ctx.fillText('⬡',shStartX+i*shW,34);
+    const isBonus=i>=baseHp;
+    const col=isBonus?'#a855f7':filled?hpCol:'rgba(201,146,42,0.35)';
+    const alpha=filled?(g.hp<=1?0.6+0.4*Math.abs(Math.sin(performance.now()/180)):1):0.28;
+    drawHpShield(shStartX+i*shW,34,shR,col,alpha);
   }
   ctx.globalAlpha=1;ctx.shadowBlur=0;
-  if(g.mhp+(g.ftBonus||0)>10){ctx.font='9px Cinzel,serif';ctx.fillStyle='#c9922a';ctx.textAlign='left';ctx.fillText('+',CX+totalShW/2+10,37);}
+  if(g.mhp+(g.ftBonus||0)>10){ctx.font='9px Cinzel,serif';ctx.fillStyle='#c9922a';ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillText('+',CX+totalShW/2+10,37);}
   // Combo counter — centered, below wave/score
   {
-    const cm=g.combo>=5?comboMult():(g.comboLastMult||1);
-    const showCombo=g.combo>=5||(g.comboBreakT>0&&performance.now()-g.comboBreakT<1500);
-    if(showCombo&&cm>=2){
-      const fadeAlpha=g.combo<5?Math.max(0,1-(performance.now()-g.comboBreakT)/1500):1;
+    const cm=g.comboMult;
+    const timeSinceKill=performance.now()-g.lastComboKillT;
+    if(cm>=2&&g.lastComboKillT>0&&timeSinceKill<2000){
+      const fadeAlpha=timeSinceKill<1500?1:Math.max(0,1-(timeSinceKill-1500)/500);
       const cc=cm===5?'#e8b84b':['#fff','#f5c842','#f97316','#ef4444','#a855f7'][cm-1];
       const elapsed=(performance.now()-g.comboPulseT)/1000;
       const sc=elapsed<0.35?1+0.12*(1-elapsed/0.35):1;
@@ -4405,6 +4427,12 @@ function drawHUD(){
   if(['PLAYING','COUNTDOWN','BOSS_WARN','WAVE_OK','CHOICE'].includes(g.phase))ctx.fillText('⏸',CW-58,22);
   ctx.globalAlpha=1;ctx.restore();
 }
+function drawHpShield(x,y,r,col,alpha){
+  ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=col;ctx.shadowBlur=alpha>0.5?7:0;ctx.shadowColor=col;
+  ctx.beginPath();ctx.moveTo(x,y-r);ctx.lineTo(x+r*0.82,y-r*0.48);ctx.lineTo(x+r*0.82,y+r*0.12);
+  ctx.quadraticCurveTo(x+r*0.48,y+r*0.86,x,y+r);ctx.quadraticCurveTo(x-r*0.48,y+r*0.86,x-r*0.82,y+r*0.12);
+  ctx.lineTo(x-r*0.82,y-r*0.48);ctx.closePath();ctx.fill();ctx.restore();
+}
 function drawAbBtn(){
   const bw=180,bh=44,bx=CW-bw-10,by=CH-bh-10;
   ctx.save();ctx.globalAlpha=0.82;
@@ -4412,7 +4440,7 @@ function drawAbBtn(){
     ctx.fillStyle='rgba(30,30,50,0.6)';rrect(bx,by,bw,bh,8);ctx.fill();
     ctx.strokeStyle='rgba(255,255,255,0.07)';ctx.lineWidth=1;rrect(bx,by,bw,bh,8);ctx.stroke();
     ctx.fillStyle='#334155';ctx.font='bold 9px Cinzel,serif';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText('NO ABILITY — REACH RIFTFORGE',CX,by+bh/2);ctx.restore();return;
+    ctx.fillText('NO ABILITY — REACH RIFTFORGE',bx+bw/2,by+bh/2);ctx.restore();return;
   }
   const ready=g.abLeft<=0;
   ctx.fillStyle=ready?'rgba(201,146,42,0.85)':'rgba(40,40,60,0.72)';rrect(bx,by,bw,bh,8);ctx.fill();
@@ -4426,7 +4454,7 @@ function drawAbBtn(){
   ctx.fillStyle=ready?'#000':'#888';
   ctx.font='bold 11px Cinzel,serif';
   ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText(ready?'▶ '+lbl:lbl+' '+Math.ceil(g.abLeft)+'s',CX,by+bh/2);ctx.restore();
+  ctx.fillText(ready?'▶ '+lbl:lbl+' '+Math.ceil(g.abLeft)+'s',bx+bw/2,by+bh/2);ctx.restore();
 }
 
 function drawAbVfx(){
@@ -4655,7 +4683,18 @@ function drawGameOver(nb,gp){
   ctx.fillStyle='#334155';ctx.font='10px Cinzel,serif';ctx.fillText('Points contribute to Guardian Score on the Shields tab',CX,ny);ny+=18;
   if(g.perfectWaves>0){ctx.fillStyle='#22c55e';ctx.font='12px Cinzel,serif';ctx.fillText('🌟 '+g.perfectWaves+' perfect wave'+(g.perfectWaves!==1?'s':''),CX,ny);ny+=18;}
   const earned=g.achs.filter(k=>ACH_NAMES[k]);
-  if(earned.length){ctx.fillStyle='#e8b84b';ctx.font='10px Cinzel,serif';ctx.fillText('🏆 '+earned.map(k=>ACH_NAMES[k]).join(' · '),CX,ny);ny+=18;}
+  if(earned.length){
+    const allAchs=JSON.parse(localStorage.getItem('guard_achs_all')||'[]');
+    earned.forEach(k=>{
+      const isNew=!allAchs.includes(k);
+      ctx.fillStyle='#e8b84b';ctx.font='bold 10px Cinzel,serif';
+      ctx.fillText('🏆 '+ACH_NAMES[k]+(isNew?' ★NEW':''),CX,ny);ny+=13;
+      ctx.fillStyle='#94a3b8';ctx.font='9px Cinzel,serif';
+      ctx.fillText(ACH_DESC[k]||'',CX,ny);ny+=14;
+    });
+    const fresh=earned.filter(k=>!allAchs.includes(k));
+    if(fresh.length){localStorage.setItem('guard_achs_all',JSON.stringify([...new Set([...allAchs,...fresh])]));}
+  }
   if(nb){ctx.fillStyle='#22c55e';ctx.font='bold 13px "Cinzel Decorative",Cinzel,serif';ctx.shadowBlur=10;ctx.shadowColor='#22c55e';ctx.fillText('✦ NEW PERSONAL BEST ✦',CX,ny);ctx.shadowBlur=0;}
   // Waiting indicator during stats-reveal period
   if(g.goTimer>0){
@@ -4828,10 +4867,9 @@ var FG = {
     var _lastPointerT = 0;
     this._tapHandler = function(e) {
       e.preventDefault();
-      // Deduplicate: if pointerdown just fired, ignore the following touchstart
       var now = Date.now();
-      if (e.type === 'touchstart' && now - _lastPointerT < 120) return;
-      if (e.type === 'pointerdown') _lastPointerT = now;
+      if (now - _lastPointerT < 600) return;
+      _lastPointerT = now;
       self._onTap(e);
     };
     this._keyHandler = function(e) {
@@ -5072,8 +5110,7 @@ var FG = {
       if (b.x + bw < 0) { this.barriers.splice(i, 1); continue; }
       if (!b.passed && b.x + bw < this.coin.x - hw) {
         b.passed = true;
-        var pts = this.doublePoints ? 2 : 1;
-        this.score += pts; this.gp += pts;
+        this.score += 1; this.gp = Math.floor(this.score / 5);
         this.comboStreak++;
         if (this.comboStreak >= 8)      { this.comboMult = 5; this.comboLabel = '🔥 GUARDIAN MODE'; this._boop('guardian'); }
         else if (this.comboStreak >= 5) { this.comboMult = 3; this.comboLabel = '⚡ x3'; this._boop('combo'); }
@@ -5697,9 +5734,8 @@ var FG = {
 
   shareScore: function() {
     var zone = FG_ZONES[this.zoneIdx];
-    var msg = 'I scored '+this.score+' on GUARD Trials — reached '+zone.name+' (zone '+this.zoneIdx+')!'+
-      (this.isDaily?' [Daily Challenge]':'')+' 🪙⚡ #GUARD #XPRNetwork standguard.net';
-    window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(msg), '_blank');
+    var msg = 'I scored '+this.score+' on GUARD Trials — reached '+zone.name+' (zone '+this.zoneIdx+')! 🪙⚡ #GUARD #XPRNetwork standguard.net';
+    window.open('https://x.com/intent/tweet?text='+encodeURIComponent(msg), '_blank');
   },
 
   _boop: function(type) {
