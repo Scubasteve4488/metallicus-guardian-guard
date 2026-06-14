@@ -80,6 +80,10 @@ button{cursor:pointer;font-family:'Inter',sans-serif;}
 .mobile-nav.open{display:flex;}
 .mobile-nav-btn{background:none;border:none;padding:.85rem 1rem;font-size:.92rem;color:var(--text2);text-align:left;border-radius:var(--radius);border-bottom:1px solid var(--border);transition:all .2s;}
 .mobile-nav-btn:hover,.mobile-nav-btn.active{color:var(--gold-l);background:var(--bg3);}
+.mob-acc-hdr{display:flex!important;justify-content:space-between;align-items:center;width:100%;}
+.mob-acc-caret{color:var(--gold-l);font-size:.8rem;transition:transform .2s;flex-shrink:0;}
+.mob-acc-body{border-left:2px solid rgba(201,146,42,0.3);margin-left:.5rem;padding-left:.25rem;}
+.mob-acc-item{padding-left:1.5rem!important;font-size:.86rem;}
 .game-sel-btn{background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text2);padding:.45rem 1.2rem;border-radius:8px;font-size:.8rem;font-family:'Cinzel',serif;cursor:pointer;transition:all .2s;white-space:nowrap;}
 .game-sel-btn:hover{color:var(--gold-l);border-color:rgba(201,146,42,0.4);}
 .game-sel-btn.active{background:rgba(201,146,42,0.12);border-color:var(--gold);color:var(--gold-l);}
@@ -487,8 +491,8 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   #flappy-game-container{overflow:hidden;}
 }
 /* FULLSCREEN GAME */
-#arena-container:-webkit-full-screen,#arena-container:fullscreen,#flappy-game-container:-webkit-full-screen,#flappy-game-container:fullscreen{display:flex!important;flex-direction:column;align-items:center;justify-content:center;background:#080b12;padding:0;max-width:none!important;width:100%;height:100%;}
-.fs-exit-btn{display:none;position:fixed;top:12px;right:12px;z-index:99999;background:rgba(0,0,0,0.8);border:2px solid rgba(201,146,42,0.75);color:#e8b84b;border-radius:50%;width:56px;height:56px;font-size:1.3rem;cursor:pointer;align-items:center;justify-content:center;line-height:1;padding:0;touch-action:manipulation;pointer-events:all;}
+#arena-container:-webkit-full-screen,#arena-container:fullscreen,#flappy-game-container:-webkit-full-screen,#flappy-game-container:fullscreen{display:flex!important;flex-direction:column;align-items:center;justify-content:center;background:#080b12;padding:0;max-width:none!important;width:100vw!important;height:100vh!important;}
+.fs-exit-btn{display:none;position:fixed;top:10px;right:10px;z-index:999999;background:rgba(0,0,0,0.85);border:2px solid rgba(201,146,42,0.85);color:#e8b84b;border-radius:50%;width:72px;height:72px;font-size:1.5rem;cursor:pointer;align-items:center;justify-content:center;line-height:1;padding:0;touch-action:manipulation;pointer-events:all;}
 /* GUARDIAN GUIDES */
 .gg-list{display:flex;flex-direction:column;gap:.45rem;max-width:740px;margin:0 auto;}
 .gg-item{border:1px solid rgba(201,146,42,0.18);border-radius:10px;background:rgba(255,255,255,0.02);overflow:hidden;}
@@ -653,19 +657,25 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 <div class="mobile-nav" id="mob">
   <button onclick="closeMenu()" style="position:absolute;top:1rem;right:1.5rem;background:none;border:none;color:var(--gold-l);font-size:1.8rem;line-height:1;cursor:pointer;">✕</button>
   <button class="mobile-nav-btn" onclick="go('home');closeMenu()">🏠 Home</button>
-  <button class="mobile-nav-btn" onclick="go('guard');closeMenu()">🛡 GUARD Token</button>
-  <button class="mobile-nav-btn" onclick="go('newtoguard');closeMenu()">🛡 New to GUARD?</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('start')">🚀 New to XPR?</button>
+  <button class="mobile-nav-btn" onclick="go('guard');closeMenu()">🛡 GUARD</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('arena')">⚔ Stand Guard</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('ecosystem')">🌐 Ecosystem</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('shields')">🛡 Shields</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('learn')">🎓 Academy</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('faq')">❓ FAQ</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('ksto')">🦊 KSTO</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('cyphergang')">🔥 CypherGang</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('snipverse')">🌐 Snipverse</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('creator')">👤 Creator</button>
-  <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g mt2" style="justify-content:center;">⚔ Buy GUARD Token</a>
+  <button class="mobile-nav-btn mob-acc-hdr" onclick="toggleMobAcc('mob-acc-learn')">🎓 Learn <span class="mob-acc-caret" id="caret-mob-acc-learn">▾</span></button>
+  <div class="mob-acc-body" id="mob-acc-learn" style="display:none;">
+    <button class="mobile-nav-btn mob-acc-item" onclick="go('newtoguard');closeMenu()">🛡 New to GUARD?</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('start')">🚀 New to XPR?</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('learn')">🎓 Academy</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('faq')">❓ FAQ</button>
+  </div>
+  <button class="mobile-nav-btn mob-acc-hdr" onclick="toggleMobAcc('mob-acc-comm')">🌐 Communities <span class="mob-acc-caret" id="caret-mob-acc-comm">▾</span></button>
+  <div class="mob-acc-body" id="mob-acc-comm" style="display:none;">
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('ksto')">🦊 KSTO</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('cyphergang')">🔥 CypherGang</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('snipverse')">🌐 Snipverse</button>
+  </div>
+  <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g mt2" style="justify-content:center;">⚔ Buy GUARD</a>
   <button id="mob-wallet-connect-btn" onclick="walletConnect();closeMenu();" class="mobile-nav-btn" style="color:var(--gold-l);border-color:var(--border-gold);border-top:1px solid var(--border-gold);margin-top:.75rem;padding-top:.75rem;text-align:center;width:100%;">⚡ Connect Wallet</button>
   <div id="mob-wallet-disconnect" style="display:none;border-top:1px solid var(--border-gold);margin-top:.75rem;padding-top:.75rem;">
     <div style="font-size:.75rem;color:var(--text3);text-align:center;padding:.4rem 1rem .5rem;">Connected: <span id="mob-wallet-actor" style="color:var(--gold-l);font-family:'Cinzel',serif;"></span></div>
@@ -699,20 +709,6 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
         <button class="btn btn-o btn-hero" onclick="go('shields')">Explore the Ecosystem →</button>
       </div>
     </div>
-  </div>
-</div>
-<!-- LIVE GUARD PRICE BAR -->
-<div class="price-bar">
-  <div class="pb-inner">
-    <div class="pb-live"><span class="pb-dot"></span>LIVE</div>
-    <div class="pb-stat"><span class="pb-label">GUARD</span><span id="hp-price" class="pb-val">—</span></div>
-    <span class="pb-sep">|</span>
-    <div class="pb-stat pb-hide-sm"><span class="pb-label">Mkt Cap</span><span id="hp-mcap" class="pb-val">—</span></div>
-    <span class="pb-sep pb-hide-sm">|</span>
-    <div class="pb-stat"><span class="pb-label">Supply</span><span id="hp-supply" class="pb-val">—</span></div>
-    <span class="pb-sep pb-hide-sm">|</span>
-    <div class="pb-stat pb-hide-sm"><span class="pb-label">24h Vol</span><span id="hp-vol" class="pb-val">—</span></div>
-    <div class="pb-link"><a href="https://simpledex.fun/token/172" target="_blank" rel="noopener">SimpleDEX →</a></div>
   </div>
 </div>
 <!-- ECO STATS BAR -->
@@ -805,8 +801,8 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   </div>
   <div class="div"></div>
   <div class="section reveal">
-    <div class="sec-label">GUARD Token</div>
-    <h2 class="sec-title">About the GUARD Token</h2>
+    <div class="sec-label">GUARD</div>
+    <h2 class="sec-title">About GUARD</h2>
     <p style="font-size:.9rem;color:var(--text2);margin-bottom:1.5rem;max-width:620px;line-height:1.7;">GUARD (Metallicus Guardian) launched on SimpleDEX via a fair bonding-curve launch and has since graduated to a live XPR/GUARD liquidity pool. For real-time supply, price, and market data, always check SimpleDEX directly — figures change constantly.</p>
     <div class="grid grid-2" style="align-items:start;">
       <div>
@@ -2094,11 +2090,11 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <div id="arena-container" style="position:relative;width:100%;max-width:600px;margin:0 auto;">
       <canvas id="arena-canvas" style="display:block;width:100%;border-radius:16px;border:1px solid rgba(201,146,42,0.25);cursor:crosshair;touch-action:none;-webkit-user-select:none;user-select:none;background:#080b12;"></canvas>
       <div id="ws-combo-badge"></div>
-      <button class="fs-exit-btn" onclick="exitFullscreenGame()" title="Exit fullscreen">✕</button>
+      <button class="fs-exit-btn" onclick="exitFullscreenGame()" ontouchend="exitFullscreenGame();event.preventDefault();" title="Exit fullscreen">✕</button>
     </div>
     <div id="flappy-game-container" style="display:none;text-align:center;position:relative;">
       <canvas id="fg-canvas" style="display:block;margin:0 auto;border-radius:12px;border:1px solid rgba(201,146,42,0.3);max-width:100%;touch-action:none;-webkit-user-select:none;user-select:none;cursor:pointer;"></canvas>
-      <button class="fs-exit-btn" onclick="exitFullscreenGame()" title="Exit fullscreen">✕</button>
+      <button class="fs-exit-btn" onclick="exitFullscreenGame()" ontouchend="exitFullscreenGame();event.preventDefault();" title="Exit fullscreen">✕</button>
       <div style="margin-top:.75rem;">
         <button onclick="FG.shareScore()" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;padding:.6rem 1.4rem;border-radius:8px;font-size:.85rem;cursor:pointer;">𝕏 Share on X</button>
       </div>
@@ -2278,6 +2274,7 @@ function mbnActive(id){
 
 function toggleMenu(){document.getElementById('mob').classList.toggle('open');}
 function closeMenu(){document.getElementById('mob').classList.remove('open');}
+function toggleMobAcc(id){var body=document.getElementById(id);var open=body.style.display==='block';document.querySelectorAll('.mob-acc-body').forEach(function(b){b.style.display='none';});document.querySelectorAll('.mob-acc-caret').forEach(function(c){c.textContent='▾';});if(!open){body.style.display='block';var caret=document.getElementById('caret-'+id);if(caret)caret.textContent='▴';}}
 
 function ecoTab(id){
   const ids=['metallicus','xpr','metalblockchain','webauth','metalx','loan','xmd','simpledex','blastpad','alcor','metalpay','metaldao','nfttools'];
@@ -2497,12 +2494,8 @@ async function fetchEcoStats(){
   // 4. Render
   if(lpXpr>0){setStat('es-lp',fmtNum(lpXpr)+' XPR');}else setStat('es-lp','N/A');
   setStat('es-burned','334.84 GUARD');
-  // 5. Price — sync from price bar (populated by fetchHomePrice which runs concurrently)
-  setTimeout(function(){
-    var p=document.getElementById('hp-price');
-    if(p&&p.textContent&&p.textContent!=='—')setStat('es-price',p.textContent);
-    else setStat('es-price','N/A');
-  },3000);
+  // 5. Price — set by fetchHomePrice which runs concurrently; leave N/A as placeholder
+  setStat('es-price','N/A');
 }
 fetchEcoStats();
 setInterval(fetchEcoStats,300000);
@@ -4197,9 +4190,15 @@ function arenaInit(){
 }
 function resize(){
   if(!cvs)return;
-  var w=Math.min(CW,window.innerWidth-16);
-  var h=Math.round(CH*w/CW);
-  if(h>window.innerHeight-180){h=window.innerHeight-180;w=Math.round(CW*h/CH);}
+  var isFS=!!(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement);
+  var w,h;
+  if(isFS){
+    h=window.innerHeight;w=Math.round(CW*h/CH);
+    if(w>window.innerWidth){w=window.innerWidth;h=Math.round(CH*w/CW);}
+  }else{
+    w=Math.min(CW,window.innerWidth-16);h=Math.round(CH*w/CW);
+    if(h>window.innerHeight-180){h=window.innerHeight-180;w=Math.round(CW*h/CH);}
+  }
   cscale=w/CW;
   cvs.width=w;cvs.height=h;cvs.style.width=w+'px';cvs.style.height=h+'px';
   if(g&&['TUT','START','PAUSED','GAME_OVER'].includes(g.phase))drawStatic();
@@ -4285,7 +4284,7 @@ function tapChoice(cx,cy){
 }
 function tryRequestFullscreen(el){if(!el)return;try{var _p=el.requestFullscreen?el.requestFullscreen():el.webkitRequestFullscreen?el.webkitRequestFullscreen():el.mozRequestFullScreen?el.mozRequestFullScreen():el.msRequestFullscreen?el.msRequestFullscreen():null;if(_p&&typeof _p.catch==='function')_p.catch(function(){});}catch(e){}}
 function exitFullscreenGame(){try{if(document.exitFullscreen)document.exitFullscreen();else if(document.webkitExitFullscreen)document.webkitExitFullscreen();else if(document.mozCancelFullScreen)document.mozCancelFullScreen();else if(document.msExitFullscreen)document.msExitFullscreen();}catch(e){}}
-(function(){function _fsch(){var isFS=!!(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement);document.querySelectorAll('.fs-exit-btn').forEach(function(b){b.style.display=isFS?'flex':'none';});if(isFS){setTimeout(function(){try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}},150);}}['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(function(ev){document.addEventListener(ev,_fsch);});}());
+(function(){var _fsEl=null;function _fsch(){var isFS=!!(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement);document.querySelectorAll('.fs-exit-btn').forEach(function(b){b.style.display=isFS?'flex':'none';});if(isFS){_fsEl=document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement;setTimeout(function(){try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}},150);}else{_fsEl=null;}}['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(function(ev){document.addEventListener(ev,_fsch);});document.addEventListener('visibilitychange',function(){if(!document.hidden&&_fsEl){try{tryRequestFullscreen(_fsEl);}catch(e){}}});}());
 function updateStartStep4(){var _connected=typeof walletActor!=='undefined'&&walletActor;var _yes='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:#4ade80;"><span>✓</span><span>Wallet connected as <strong>@'+walletActor+'</strong></span></div>';var _no='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:var(--text3);"><span>○</span><span>No wallet connected yet</span></div>';var check=document.getElementById('start-step4-check');var btn=document.getElementById('start-connect-btn');if(check)check.innerHTML=_connected?_yes:_no;if(btn)btn.style.display=_connected?'none':'';var ntgCheck=document.getElementById('ntg-step4-check');var ntgBtn=document.getElementById('ntg-connect-btn');if(ntgCheck)ntgCheck.innerHTML=_connected?_yes:_no;if(ntgBtn)ntgBtn.style.display=_connected?'none':'';}
 function toggleMute(){muted=!muted;localStorage.setItem('guard_arena_mute',muted?'1':'0');if(g&&['START','TUT','GAME_OVER','PAUSED'].includes(g.phase))drawStatic();}
 function togglePause(){
@@ -5366,7 +5365,8 @@ var FG = {
     this._tapHandler = function(e) {
       e.preventDefault();
       var now = Date.now();
-      if (now - _lastPointerT < 600) return;
+      var thresh = self.started ? 100 : 600;
+      if (now - _lastPointerT < thresh) return;
       _lastPointerT = now;
       self._onTap(e);
     };
@@ -5391,13 +5391,19 @@ var FG = {
     if (!this.canvas) return;
     var cont = document.getElementById('flappy-game-container');
     if (!cont || cont.style.display === 'none') return;
-    var cw = Math.min(480, (cont.clientWidth || 480) - 16);
-    var ch = Math.round(580 * cw / 480);
-    if (ch > window.innerHeight - 180) { ch = window.innerHeight - 180; cw = Math.round(480 * ch / 580); }
-    this.canvas.width = cw;
-    this.canvas.height = ch;
-    this.coin.x = Math.round(cw * 0.25);
-    if (!this.started) this.coin.y = Math.round(ch * 0.5);
+    var isFS=!!(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement);
+    var cw,ch;
+    if(isFS){
+      ch=window.innerHeight;cw=Math.round(480*ch/580);
+      if(cw>window.innerWidth){cw=window.innerWidth;ch=Math.round(580*cw/480);}
+    }else{
+      cw=Math.min(480,(cont.clientWidth||480)-16);ch=Math.round(580*cw/480);
+      if(ch>window.innerHeight-180){ch=window.innerHeight-180;cw=Math.round(480*ch/580);}
+    }
+    this.canvas.width=cw;
+    this.canvas.height=ch;
+    this.coin.x=Math.round(cw*0.25);
+    if(!this.started)this.coin.y=Math.round(ch*0.5);
   },
 
   reset: function(daily) {
