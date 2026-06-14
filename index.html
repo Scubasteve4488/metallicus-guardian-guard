@@ -475,15 +475,32 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 @keyframes pageFadeIn{from{opacity:0}to{opacity:1}}
 .page.active{display:block;animation:pageFadeIn .15s ease-out both;}
 /* MOBILE BOTTOM NAV */
-#mobile-bottom-nav{display:none;}
+#mobile-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;}
 .mbn-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:.18rem;background:none;border:none;padding:.4rem .3rem;cursor:pointer;color:var(--text3);transition:color .18s;min-width:0;-webkit-tap-highlight-color:transparent;}
 .mbn-btn.active,.mbn-btn:active{color:var(--gold-l);}
-.mbn-icon{font-size:1.25rem;line-height:1;}
-.mbn-label{font-size:.58rem;font-weight:600;letter-spacing:.03em;font-family:'Cinzel',serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:64px;}
+.mbn-icon{font-size:1.1rem;line-height:1;}
+.mbn-label{font-size:.55rem;font-weight:600;letter-spacing:.02em;font-family:'Cinzel',serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 @media(max-width:768px){
-  #mobile-bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:990;height:62px;background:rgba(8,11,18,0.98);border-top:1px solid rgba(201,146,42,0.35);justify-content:space-around;align-items:stretch;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+  #mobile-bottom-nav{display:flex;z-index:990;height:62px;background:rgba(8,11,18,0.98);border-top:1px solid rgba(201,146,42,0.35);justify-content:space-around;align-items:stretch;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
   .page{padding-bottom:70px;}
 }
+/* FULLSCREEN GAME */
+#arena-container:-webkit-full-screen,#arena-container:fullscreen,#flappy-game-container:-webkit-full-screen,#flappy-game-container:fullscreen{display:flex!important;flex-direction:column;align-items:center;justify-content:center;background:#080b12;padding:0;max-width:none!important;width:100%;height:100%;}
+.fs-exit-btn{display:none;position:absolute;top:10px;right:10px;z-index:9999;background:rgba(0,0,0,0.6);border:1px solid rgba(201,146,42,0.5);color:#e8b84b;border-radius:50%;width:32px;height:32px;font-size:1rem;cursor:pointer;align-items:center;justify-content:center;line-height:1;padding:0;}
+:-webkit-full-screen .fs-exit-btn,:fullscreen .fs-exit-btn{display:flex;}
+/* GUARDIAN GUIDES */
+.gg-list{display:flex;flex-direction:column;gap:.45rem;max-width:740px;margin:0 auto;}
+.gg-item{border:1px solid rgba(201,146,42,0.18);border-radius:10px;background:rgba(255,255,255,0.02);overflow:hidden;}
+.gg-item.gg-guard{border-color:rgba(201,146,42,0.12);background:rgba(201,146,42,0.025);}
+.gg-summary{display:flex;align-items:center;padding:.85rem 1rem;cursor:pointer;list-style:none;font-family:'Cinzel',serif;font-size:.82rem;font-weight:600;letter-spacing:.04em;color:var(--text);gap:.5rem;user-select:none;-webkit-user-select:none;}
+.gg-summary::-webkit-details-marker{display:none;}
+.gg-summary::after{content:'▸';margin-left:auto;color:var(--gold);font-size:.75rem;transition:transform .2s;flex-shrink:0;}
+.gg-item[open] .gg-summary::after{transform:rotate(90deg);}
+.gg-item.gg-guard .gg-summary{color:var(--text2);}
+.gg-body{padding:.1rem 1rem 1rem;border-top:1px solid rgba(255,255,255,0.05);}
+.gg-body ol{padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.55rem;color:var(--text2);font-size:.84rem;line-height:1.7;}
+.gg-body ol a{color:var(--gold-l);text-decoration:none;}
+.gg-body ol a:hover{text-decoration:underline;}
 @keyframes comboPulse{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.15)}}
 #ws-combo-badge{position:absolute;left:50%;transform:translateX(-50%);top:8.7%;pointer-events:none;display:none;opacity:0;font-family:'Cinzel',serif;font-weight:bold;text-align:center;white-space:nowrap;transition:opacity .4s;z-index:5;}
 #ws-combo-badge.combo-pulse{animation:comboPulse .2s ease-out;}
@@ -574,7 +591,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
 </head>
 <body>
-<!-- build: 2026-06-13-v4 -->
+<!-- build: 2026-06-14-v1 -->
 <!-- GLOBAL TICKER BAR -->
 <div id="ticker-bar">
   <div class="ticker-inner">
@@ -994,84 +1011,77 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 <div id="page-start" class="page">
 <div class="container">
   <div class="section">
-    <div class="sec-label">Onboarding</div>
+    <div class="sec-label">New to XPR Network?</div>
     <h1 class="page-title">Start Here</h1>
-    <p class="page-sub">New to XPR Network? Follow these steps in order. You can be up and running in under 15 minutes.</p>
-    <div class="info"><span>💡</span><div>All tools are <strong>free to use</strong>. XPR Network has zero gas fees and WebAuth wallet creation costs nothing. You only need funds if you want to trade or invest.</div></div>
+    <p class="page-sub">Follow these 6 steps in order. You'll be trading, staking, and playing in under 15 minutes — for free.</p>
     <div class="steps mt4">
+
       <div class="step reveal">
         <div class="step-l"><div class="step-n">1</div><div class="step-line"></div></div>
         <div class="step-body">
-          <h3>Create Your WebAuth Wallet</h3>
-          <p>WebAuth is the official XPR Network wallet. It uses Face ID or fingerprint instead of seed phrases — far more secure and accessible. Visit <a href="https://webauth.com" target="_blank">webauth.com</a> to get started.</p>
-          <a href="https://www.youtube.com/watch?v=ICsvNdv83B8" target="_blank" class="card flex gap mt2" style="max-width:460px;padding:1rem;text-decoration:none;align-items:center;">
-            <div class="vthumb" style="width:110px;height:62px;flex-shrink:0;border-radius:6px;overflow:hidden;"><img src="https://img.youtube.com/vi/ICsvNdv83B8/mqdefault.jpg?v=2" alt=""><div class="vplay" style="width:30px;height:30px;font-size:.8rem;"></div></div>
-            <div><div style="font-size:.82rem;font-weight:600;color:var(--text);">WebAuth Wallet Creation Tutorial</div><div style="font-size:.7rem;color:var(--text3);">BloxProd · KSTO Community</div></div>
-          </a>
-          <a href="https://webauth.com" target="_blank" class="btn btn-g mt2" style="font-size:.8rem;">Create Wallet →</a>
+          <h3>What is XPR Network?</h3>
+          <p>XPR Network is a fast, <strong>zero-fee</strong> blockchain built for real apps — DeFi, gaming, identity, and payments. Every transaction settles in under 1 second with no gas fees, ever. It runs on Delegated Proof of Stake, meaning elected Block Producers (like BloxProd) validate all activity. GUARD is a community token built on top of this network.</p>
+          <div class="flex gap-sm wrap mt2">
+            <a href="https://xprnetwork.org" target="_blank" class="btn btn-o" style="font-size:.78rem;">XPR Network →</a>
+            <button class="btn btn-o" style="font-size:.78rem;" onclick="go('ecosystem')">🌐 Explore Ecosystem</button>
+          </div>
         </div>
       </div>
+
       <div class="step reveal">
         <div class="step-l"><div class="step-n">2</div><div class="step-line"></div></div>
         <div class="step-body">
-          <h3>Complete Identity Verification (KYC)</h3>
-          <p>Unlock regulated features like lending and fiat on-ramps by verifying your identity through WebAuth. Quick to complete and recommended for full ecosystem access.</p>
-          <a href="https://www.youtube.com/watch?v=7FPGUytwi8Y" target="_blank" class="card flex gap mt2" style="max-width:460px;padding:1rem;text-decoration:none;align-items:center;">
-            <div class="vthumb" style="width:110px;height:62px;flex-shrink:0;border-radius:6px;overflow:hidden;"><img src="https://img.youtube.com/vi/7FPGUytwi8Y/mqdefault.jpg?v=2" alt=""><div class="vplay" style="width:30px;height:30px;font-size:.8rem;"></div></div>
-            <div><div style="font-size:.82rem;font-weight:600;color:var(--text);">XPR Network KYC Tutorial</div><div style="font-size:.7rem;color:var(--text3);">BloxProd · KSTO Community</div></div>
+          <h3>Create Your WebAuth Wallet</h3>
+          <p>WebAuth is the official XPR Network wallet. It uses your device's Face ID or fingerprint instead of a seed phrase — far more secure and easier to recover. Go to <a href="https://webauth.com" target="_blank">webauth.com</a> to create your account and pick your permanent @username.</p>
+          <a href="https://www.youtube.com/watch?v=ICsvNdv83B8" target="_blank" class="card flex gap mt2" style="max-width:460px;padding:1rem;text-decoration:none;align-items:center;">
+            <div class="vthumb" style="width:110px;height:62px;flex-shrink:0;border-radius:6px;overflow:hidden;"><img src="https://img.youtube.com/vi/ICsvNdv83B8/mqdefault.jpg?v=2" alt="WebAuth setup"><div class="vplay" style="width:30px;height:30px;font-size:.8rem;"></div></div>
+            <div><div style="font-size:.82rem;font-weight:600;color:var(--text);">WebAuth Wallet Setup Tutorial</div><div style="font-size:.7rem;color:var(--text3);">BloxProd · Full walkthrough</div></div>
           </a>
+          <a href="https://webauth.com" target="_blank" class="btn btn-g mt2" style="font-size:.8rem;">Create Wallet at webauth.com →</a>
         </div>
       </div>
+
       <div class="step reveal">
         <div class="step-l"><div class="step-n">3</div><div class="step-line"></div></div>
         <div class="step-body">
-          <h3>Fund Your Wallet</h3>
-          <p>Use <a href="https://metalpay.com" target="_blank">Metal Pay</a> to buy XPR with USD — the easiest fiat on-ramp. You can also transfer from KuCoin or other exchanges that support XPR.</p>
-          <a href="https://www.youtube.com/watch?v=vAB28FdWvBs" target="_blank" class="card flex gap mt2" style="max-width:460px;padding:1rem;text-decoration:none;align-items:center;">
-            <div class="vthumb" style="width:110px;height:62px;flex-shrink:0;border-radius:6px;overflow:hidden;"><img src="https://img.youtube.com/vi/vAB28FdWvBs/mqdefault.jpg?v=2" alt=""><div class="vplay" style="width:30px;height:30px;font-size:.8rem;"></div></div>
-            <div><div style="font-size:.82rem;font-weight:600;color:var(--text);">Send & Receive Crypto on XPR Network</div><div style="font-size:.7rem;color:var(--text3);">BloxProd · KSTO Community</div></div>
-          </a>
-          <a href="https://metalpay.com" target="_blank" class="btn btn-o mt2" style="font-size:.8rem;">Metal Pay →</a>
+          <h3>Get Your First GUARD</h3>
+          <p>Once your wallet is ready, buy GUARD on SimpleDEX — the native DEX on XPR Network. Trade XPR for GUARD in seconds with zero fees. Need XPR first? Use <a href="https://metalpay.com" target="_blank">Metal Pay</a> to buy XPR with USD, or transfer from an exchange like KuCoin.</p>
+          <div class="flex gap-sm wrap mt2">
+            <a href="https://simpledex.fun/pool/187" target="_blank" class="btn btn-g" style="font-size:.8rem;">Buy GUARD on SimpleDEX →</a>
+            <a href="https://metalpay.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">Metal Pay (Buy XPR) →</a>
+          </div>
+          <div class="info mt2"><span>💡</span><div>GUARD is a <strong>community memecoin</strong> — not a financial product. Only spend what you're comfortable with. It powers Guardian ranks and arena gameplay on this site.</div></div>
         </div>
       </div>
+
       <div class="step reveal">
         <div class="step-l"><div class="step-n">4</div><div class="step-line"></div></div>
         <div class="step-body">
-          <h3>Explore Ecosystem Tools</h3>
-          <p>Wallet set up, funded and ready. Now explore trading on MetalX or Alcor, stake XPR or METAL for yield, or buy GUARD on SimpleDEX.</p>
-          <div class="flex gap-sm wrap mt2">
-            <button class="btn btn-o" style="font-size:.78rem;" onclick="go('ecosystem')">🌐 Ecosystem →</button>
-            <button class="btn btn-o" style="font-size:.78rem;" onclick="go('learn')">🎬 Learn →</button>
-          </div>
+          <h3>Connect Your Wallet</h3>
+          <p>Connect your WebAuth wallet to standguard.net to unlock your Guardian rank, track your GUARD balance, and play the daily arena. Hit Connect in the top right — it opens a WebAuth popup, just approve it.</p>
+          <div id="start-step4-check" style="margin-top:.85rem;"></div>
+          <button class="btn btn-g mt2" onclick="walletConnect()" id="start-connect-btn" style="font-size:.85rem;">Connect WebAuth Wallet →</button>
         </div>
       </div>
+
       <div class="step reveal">
-        <div class="step-l"><div class="step-n">5</div></div>
+        <div class="step-l"><div class="step-n">5</div><div class="step-line"></div></div>
         <div class="step-body">
-          <h3>Join the Community</h3>
-          <p>The XPR Network community is active and welcoming. Join the KSTO Telegram, connect on Snipverse, and follow creators like BloxProd for ongoing education.</p>
-          <div class="flex gap-sm wrap mt2">
-            <a href="https://t.me/KSTOX/1" target="_blank" class="btn btn-o" style="font-size:.78rem;">✈ KSTO Telegram</a>
-            <a href="https://snipverse.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">✦ Snipverse</a>
-          </div>
+          <h3>Check Your Shield Rank</h3>
+          <p>Your Shield Rank is determined by how many GUARD you hold (wallet + staked on BlastPad). Head to the Shields tab to see your current rank, the next threshold, and exactly how many GUARD you need to get there.</p>
+          <button class="btn btn-o mt2" style="font-size:.8rem;" onclick="go('shields')">🛡 View Shield Ranks →</button>
         </div>
       </div>
-    </div>
-    <div class="div mt4"></div>
-    <div class="section-sm reveal">
-      <div class="sec-label" style="justify-content:center;text-align:center;">Quick Reference</div>
-      <h2 class="sec-title" style="text-align:center;">Your First Steps in XPR Network</h2>
-      <div class="card mt3" style="max-width:640px;margin:0 auto;">
-        <ol style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.85rem;color:var(--text2);font-size:.9rem;line-height:1.6;">
-          <li><strong style="color:var(--text);">Create WebAuth Wallet</strong> — <a href="https://webauth.com" target="_blank">webauth.com</a></li>
-          <li><strong style="color:var(--text);">Choose @username</strong> — your permanent on-chain identity</li>
-          <li><strong style="color:var(--text);">Complete KYC verification</strong> — inside WebAuth to unlock full features</li>
-          <li><strong style="color:var(--text);">Get XPR</strong> — via Metal Pay, KuCoin, or other exchanges that support XPR</li>
-          <li><strong style="color:var(--text);">Explore Metal X</strong> — for gas-free DeFi, swaps, and yield</li>
-          <li><strong style="color:var(--text);">Join the community</strong> — KSTO Telegram, Snipverse, <a href="https://x.com/Keep_Snipping" target="_blank">@Keep_Snipping</a></li>
-          <li><strong style="color:var(--text);">Buy GUARD on SimpleDEX</strong> — and claim your Guardian rank on the Shields tab</li>
-        </ol>
+
+      <div class="step reveal">
+        <div class="step-l"><div class="step-n">6</div></div>
+        <div class="step-body">
+          <h3>Play Your First Game</h3>
+          <p>Guardian Arena has two games: <strong>Wave Survival</strong> — defend your position against endless enemy waves — and <strong>GUARD Trials</strong>, a fast reflex coin game. Play free anytime; connect your wallet to unlock the daily scored mode with leaderboard tracking.</p>
+          <button class="btn btn-g mt2" style="font-size:.8rem;" onclick="go('arena')">⚔ Open Guardian Arena →</button>
+        </div>
       </div>
+
     </div>
     <div class="disc mt3"><span>ℹ</span><div>Crypto assets carry risk. Only invest what you can afford to lose. This guide is educational only — not financial advice.</div></div>
   </div>
@@ -1224,6 +1234,127 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
         </div>
       </div>
     </div>
+
+    <!-- GUARDIAN GUIDES ACCORDION -->
+    <div class="div mt4"></div>
+    <div class="section-sm reveal">
+      <div class="sec-label" style="justify-content:center;text-align:center;">Written Guides</div>
+      <h2 class="sec-title" style="text-align:center;">Guardian Guides</h2>
+      <p style="text-align:center;color:var(--text3);font-size:.84rem;margin-bottom:1.5rem;">Plain English walkthroughs. Click any guide to expand it.</p>
+
+      <div class="gg-list">
+        <details class="gg-item reveal">
+          <summary class="gg-summary">🔑 How to Set Up Your WebAuth Wallet</summary>
+          <div class="gg-body"><ol>
+            <li>Go to <a href="https://webauth.com" target="_blank">webauth.com</a> on your phone or desktop.</li>
+            <li>Tap <strong>Create Account</strong> and choose a permanent @username — this is your on-chain identity, pick carefully.</li>
+            <li>Register your device using Face ID or fingerprint — no seed phrase needed.</li>
+            <li>Confirm your email for account recovery backup.</li>
+            <li>Your wallet is live. Your @username is now a permanent XPR Network address you can receive tokens to.</li>
+          </ol></div>
+        </details>
+        <details class="gg-item reveal">
+          <summary class="gg-summary">🪪 How to Complete Identity Verification (KYC)</summary>
+          <div class="gg-body"><ol>
+            <li>Open the WebAuth app or go to <a href="https://webauth.com" target="_blank">webauth.com</a> and log in.</li>
+            <li>Tap your profile icon and select <strong>Verify Identity</strong>.</li>
+            <li>Choose your country and follow the prompts to upload your government-issued ID.</li>
+            <li>Take a selfie for the liveness check — the whole process takes about 5 minutes.</li>
+            <li>Once approved (usually within minutes), you unlock lending, fiat on-ramps, and full DeFi access.</li>
+          </ol></div>
+        </details>
+        <details class="gg-item reveal">
+          <summary class="gg-summary">💱 How to Trade on MetalX</summary>
+          <div class="gg-body"><ol>
+            <li>Go to <a href="https://metalx.com" target="_blank">metalx.com</a> and connect your WebAuth wallet.</li>
+            <li>Select the asset you want to trade from and the asset you want to receive.</li>
+            <li>Enter the amount and review the exchange rate — all trades are zero gas fee.</li>
+            <li>Confirm in your WebAuth app with your biometric.</li>
+            <li>Your new balance appears instantly in your wallet.</li>
+          </ol></div>
+        </details>
+        <details class="gg-item reveal">
+          <summary class="gg-summary">📈 How to Use Alcor DEX</summary>
+          <div class="gg-body"><ol>
+            <li>Go to <a href="https://alcor.exchange" target="_blank">alcor.exchange</a> and connect your WebAuth wallet.</li>
+            <li>Browse the market list or search for a trading pair (e.g. GUARD/XPR).</li>
+            <li>Use <strong>Swap</strong> for instant market buys, or <strong>Limit Order</strong> to set your own price.</li>
+            <li>Confirm each trade via WebAuth biometric — no gas fees.</li>
+            <li>To earn fees as a liquidity provider, go to <strong>Pools</strong>, select a pair, deposit both assets.</li>
+          </ol></div>
+        </details>
+        <details class="gg-item reveal">
+          <summary class="gg-summary">🔒 How to Stake XPR for Rewards</summary>
+          <div class="gg-body"><ol>
+            <li>Open <a href="https://webauth.com" target="_blank">webauth.com</a> or the WebAuth app and log in.</li>
+            <li>Go to <strong>Earn</strong> or <strong>Stake</strong> from your dashboard.</li>
+            <li>Choose <strong>XPR Staking</strong>, enter the amount, and select your lock duration.</li>
+            <li>Confirm with your biometric — rewards begin accumulating immediately.</li>
+            <li>Claim your staking rewards anytime from the same Earn screen.</li>
+          </ol></div>
+        </details>
+        <details class="gg-item reveal">
+          <summary class="gg-summary">⚡ How to Buy GUARD on SimpleDEX</summary>
+          <div class="gg-body"><ol>
+            <li>Make sure you have XPR in your wallet — buy via <a href="https://metalpay.com" target="_blank">Metal Pay</a> or transfer from an exchange that supports XPR.</li>
+            <li>Go to <a href="https://simpledex.fun/pool/187" target="_blank">simpledex.fun/pool/187</a> (the GUARD/XPR pool).</li>
+            <li>Connect your WebAuth wallet using the Connect button.</li>
+            <li>Enter the amount of XPR you want to swap and confirm the GUARD you'll receive.</li>
+            <li>Approve the transaction in WebAuth — GUARD lands in your wallet instantly, zero fees.</li>
+          </ol></div>
+        </details>
+        <details class="gg-item reveal">
+          <summary class="gg-summary">🚀 How to Use BlastPad Staking Pools</summary>
+          <div class="gg-body"><ol>
+            <li>Go to <a href="https://blastpad.io" target="_blank">blastpad.io</a> and connect your WebAuth wallet.</li>
+            <li>Browse the available staking pools — look for Pool 791 to stake GUARD.</li>
+            <li>Enter the amount you want to stake and review the lock duration (if any).</li>
+            <li>Approve via WebAuth biometric — your staked balance is visible in the pool immediately.</li>
+            <li>Return to claim rewards anytime; unstake when your lock period ends.</li>
+          </ol></div>
+        </details>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:.75rem;margin:2rem 0 1.25rem;opacity:.7;">
+        <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(201,146,42,0.5));"></div>
+        <div style="font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.15em;color:var(--gold-l);white-space:nowrap;">GUARD COMMUNITY TOKEN</div>
+        <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(201,146,42,0.5),transparent);"></div>
+      </div>
+
+      <div class="gg-list">
+        <details class="gg-item gg-guard reveal">
+          <summary class="gg-summary">🛡 What Is GUARD and How Does It Work?</summary>
+          <div class="gg-body"><ol>
+            <li>GUARD is a community memecoin on XPR Network — created by the community, for the community. Not affiliated with Metallicus or the XPR Network core team.</li>
+            <li>Your GUARD balance (wallet + staked on BlastPad) determines your <strong>Guardian Shield Rank</strong>, from Cryptide (entry level) up to Aegis (top tier).</li>
+            <li>Your Shield Rank unlocks different abilities in the Guardian Arena Wave Survival game.</li>
+            <li>GUARD is tradeable on SimpleDEX and Alcor DEX with zero fees on XPR Network.</li>
+            <li>Never invest more than you're comfortable losing — GUARD is a community token, not a financial instrument.</li>
+          </ol></div>
+        </details>
+        <details class="gg-item gg-guard reveal">
+          <summary class="gg-summary">🏅 How to Claim Your Guardian Shield Rank</summary>
+          <div class="gg-body"><ol>
+            <li>Buy GUARD on SimpleDEX (see guide above) so it's in your WebAuth wallet.</li>
+            <li>Connect your WebAuth wallet on this site using the Connect button in the top right.</li>
+            <li>Your wallet balance plus any GUARD staked on BlastPad is automatically read from the XPR Network chain.</li>
+            <li>Your Shield Rank updates instantly — go to the <strong>Shields</strong> tab to see your rank and the next threshold.</li>
+            <li>Share your Guardian card with the share button on the Shields tab to show your rank on X.</li>
+          </ol></div>
+        </details>
+        <details class="gg-item gg-guard reveal">
+          <summary class="gg-summary">⚔ How to Play the Guardian Arena</summary>
+          <div class="gg-body"><ol>
+            <li>Go to the <strong>Games</strong> tab (or tap ⚔ in the mobile bottom nav).</li>
+            <li>Choose <strong>Wave Survival</strong> (defend against enemy waves) or <strong>GUARD Trials</strong> (reflex coin game).</li>
+            <li>Tap <strong>Play</strong> to start a free-play session anytime — no wallet needed.</li>
+            <li>Connect your wallet to unlock <strong>Daily Mode</strong> — one scored run per day with on-chain verification and leaderboard tracking.</li>
+            <li>Your Guardian Shield Rank determines your starting ability in Wave Survival — higher rank means a stronger ability from wave 1.</li>
+          </ol></div>
+        </details>
+      </div>
+    </div>
+
   </div>
 </div>
 </div>
@@ -1881,9 +2012,11 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <div id="arena-container" style="position:relative;width:100%;max-width:600px;margin:0 auto;">
       <canvas id="arena-canvas" style="display:block;width:100%;border-radius:16px;border:1px solid rgba(201,146,42,0.25);cursor:crosshair;touch-action:none;-webkit-user-select:none;user-select:none;background:#080b12;"></canvas>
       <div id="ws-combo-badge"></div>
+      <button class="fs-exit-btn" onclick="exitFullscreenGame()" title="Exit fullscreen">✕</button>
     </div>
-    <div id="flappy-game-container" style="display:none;text-align:center;">
+    <div id="flappy-game-container" style="display:none;text-align:center;position:relative;">
       <canvas id="fg-canvas" style="display:block;margin:0 auto;border-radius:12px;border:1px solid rgba(201,146,42,0.3);max-width:100%;touch-action:none;-webkit-user-select:none;user-select:none;cursor:pointer;"></canvas>
+      <button class="fs-exit-btn" onclick="exitFullscreenGame()" title="Exit fullscreen">✕</button>
       <div style="margin-top:.75rem;">
         <button onclick="FG.shareScore()" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;padding:.6rem 1.4rem;border-radius:8px;font-size:.85rem;cursor:pointer;">𝕏 Share on X</button>
       </div>
@@ -2013,7 +2146,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena'];
-const BUILD_VERSION='2026-06-13-v4';
+const BUILD_VERSION='2026-06-14-v1';
 (function(){var b=document.getElementById('build-badge');if(b)b.textContent=BUILD_VERSION;})();
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
@@ -3694,6 +3827,7 @@ function onGuardBalanceLoaded(actor, bal) {
 
   // Fire on-chain data queries (LP position, hold time, NFT holdings)
   if (walletActor) fetchOnChainData(walletActor);
+  updateStartStep4();
 }
 
 function onWalletDisconnected() {
@@ -3753,6 +3887,7 @@ function onWalletDisconnected() {
   ];
   saveUnlockedAchs(getUnlockedAchs().filter(id => !WALLET_ACHS.includes(id)));
   renderAchievements();
+  updateStartStep4();
 }
 
 // ===== GUARDIAN ARENA GAME v3 =====
@@ -3995,7 +4130,7 @@ function tapTut(cx,cy){
 }
 function tapStart(cx,cy){
   // PLAY: rrect(CX-90,238,180,48) → center(CX,262)
-  if(inBtn(cx,cy,CX,262,180,48))checkAndUsePlay('ws',function(){startGame(false);});
+  if(inBtn(cx,cy,CX,262,180,48))checkAndUsePlay('ws',function(){if(window.innerWidth<=768)tryRequestFullscreen(document.getElementById('arena-container'));startGame(false);});
   // HOW TO PLAY: rrect(CX-90,294,180,34) → center(CX,311)
   else if(inBtn(cx,cy,CX,311,180,34)){g.phase='TUT';g.tutStep=1;drawStatic();}
 }
@@ -4026,6 +4161,9 @@ function tapChoice(cx,cy){
   // B: rrect(CX+15,210,170,70) → center (CX+100, 245)
   else if(inBtn(cx,cy,CX+100,245,170,70))applyChoice('B');
 }
+function tryRequestFullscreen(el){if(!el)return;try{if(el.requestFullscreen)el.requestFullscreen();else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen();else if(el.mozRequestFullScreen)el.mozRequestFullScreen();else if(el.msRequestFullscreen)el.msRequestFullscreen();}catch(e){}}
+function exitFullscreenGame(){try{if(document.exitFullscreen)document.exitFullscreen();else if(document.webkitExitFullscreen)document.webkitExitFullscreen();else if(document.mozCancelFullScreen)document.mozCancelFullScreen();else if(document.msExitFullscreen)document.msExitFullscreen();}catch(e){}}
+function updateStartStep4(){var check=document.getElementById('start-step4-check');var btn=document.getElementById('start-connect-btn');if(!check)return;if(typeof walletActor!=='undefined'&&walletActor){check.innerHTML='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:#4ade80;"><span>✓</span><span>Wallet connected as <strong>@'+walletActor+'</strong></span></div>';if(btn)btn.style.display='none';}else{check.innerHTML='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:var(--text3);"><span>○</span><span>No wallet connected yet</span></div>';if(btn)btn.style.display='';}}
 function toggleMute(){muted=!muted;localStorage.setItem('guard_arena_mute',muted?'1':'0');if(g&&['START','TUT','GAME_OVER','PAUSED'].includes(g.phase))drawStatic();}
 function togglePause(){
   if(!g||['START','TUT','GAME_OVER'].includes(g.phase))return;
@@ -4964,6 +5102,7 @@ window.addEventListener('load', () => {
   updateNavArrows();
   window.addEventListener('resize', updateNavArrows);
   var _ns=document.getElementById('navScroll');if(_ns)_ns.addEventListener('scroll',updateNavArrows,{passive:true});
+  setTimeout(updateStartStep4, 1200);
 });
 
 function scrollNav(amount){
@@ -5188,7 +5327,7 @@ var FG = {
       if (sx !== null) {
         // PLAY button: h*0.60 ±20
         if (sx >= w/2-80 && sx <= w/2+80 && sy >= h*0.60-20 && sy <= h*0.60+20) {
-          checkAndUsePlay('fg',function(){_fg.reset(false);_fg.started=true;_fg.coin.vy=_fg.flapPower;_fg._boop('flap');});
+          checkAndUsePlay('fg',function(){if(window.innerWidth<=768)tryRequestFullscreen(document.getElementById('flappy-game-container'));_fg.reset(false);_fg.started=true;_fg.coin.vy=_fg.flapPower;_fg._boop('flap');});
         }
         // HOW TO PLAY button: h*0.72 ±15
         else if (sx >= w/2-70 && sx <= w/2+70 && sy >= h*0.72-15 && sy <= h*0.72+15) {
