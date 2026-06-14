@@ -2670,27 +2670,39 @@ var PlaysTracker = {
 };
 
 function updatePlaysUI() {
-  var remWS = PlaysTracker.getRemaining('ws');
-  var remFG = PlaysTracker.getRemaining('fg');
   var ctWS = document.getElementById('plays-count-ws');
   var ctFG = document.getElementById('plays-count-fg');
   var dotsWS = document.querySelectorAll('.play-dot-ws');
   var dotsFG = document.querySelectorAll('.play-dot-fg');
   var cd = document.getElementById('plays-countdown');
   var npoCD = document.getElementById('npo-countdown');
+  var playsReset = document.getElementById('plays-reset');
+  if (isDevMode()) {
+    if (ctWS) ctWS.textContent = '∞';
+    if (ctFG) ctFG.textContent = '∞';
+    dotsWS.forEach(function(d){d.style.background='#c9922a';d.style.boxShadow='0 0 8px rgba(201,146,42,0.8)';});
+    dotsFG.forEach(function(d){d.style.background='#7c3aed';d.style.boxShadow='0 0 8px rgba(124,58,237,0.8)';});
+    if (playsReset) playsReset.innerHTML='<span style="color:#c9922a;font-family:\'Cinzel\',serif;font-size:.7rem;letter-spacing:.05em;">DEV MODE — Unlimited Plays</span>';
+    if (cd) cd.textContent='—';
+    if (npoCD) npoCD.textContent='—';
+    return;
+  }
+  var remWS = PlaysTracker.getRemaining('ws');
+  var remFG = PlaysTracker.getRemaining('fg');
   var t = PlaysTracker.resetTime();
   if (ctWS) ctWS.textContent = remWS + '/3';
   if (ctFG) ctFG.textContent = remFG + '/3';
-  if (dotsWS) dotsWS.forEach(function(d, i) {
+  dotsWS.forEach(function(d, i) {
     d.style.background = i < remWS ? '#c9922a' : '#1e293b';
     d.style.boxShadow = i < remWS ? '0 0 8px rgba(201,146,42,0.8)' : 'none';
   });
-  if (dotsFG) dotsFG.forEach(function(d, i) {
+  dotsFG.forEach(function(d, i) {
     d.style.background = i < remFG ? '#7c3aed' : '#1e293b';
     d.style.boxShadow = i < remFG ? '0 0 8px rgba(124,58,237,0.8)' : 'none';
   });
   if (cd) cd.textContent = t;
   if (npoCD) npoCD.textContent = t;
+  if (playsReset) playsReset.innerHTML='Resets in <span id="plays-countdown">'+t+'</span>';
 }
 
 function showNoPlaysScreen(game) {
@@ -2711,11 +2723,13 @@ function showNoPlaysScreen(game) {
   overlay.style.display = 'flex';
 }
 
+function isDevMode(){return typeof walletActor!=='undefined'&&walletActor==='scubasteve44';}
 var _playDebounceT = 0;
 function checkAndUsePlay(game, startFn) {
   var now = Date.now();
   if (now - _playDebounceT < 600) return;
   _playDebounceT = now;
+  if (isDevMode()) { startFn(); return; }
   if (PlaysTracker.hasPlaysRemaining(game)) {
     PlaysTracker.usePlay(game);
     updatePlaysUI();
@@ -3892,6 +3906,7 @@ function onWalletConnected(actor) {
 
   // Track unique guardian connection for home page counter
   trackGuardianWallet(actor);
+  updatePlaysUI();
 }
 
 function onGuardBalanceLoaded(actor, bal) {
@@ -3994,6 +4009,7 @@ function onWalletDisconnected() {
   // Achievements are permanent — once earned they persist across sessions and wallet changes
   renderAchievements();
   updateStartStep4();
+  updatePlaysUI();
 }
 
 // ===== GUARDIAN ARENA GAME v3 =====
@@ -4237,7 +4253,7 @@ function tapTut(cx,cy){
   }
 }
 function tapStart(cx,cy){
-  if(inBtn(cx,cy,CX,_wsPlayBtnCy,180,48))checkAndUsePlay('ws',function(){if(window.innerWidth<=768)tryRequestFullscreen(document.getElementById('arena-container'));startGame(false);});
+  if(inBtn(cx,cy,CX,_wsPlayBtnCy,180,48))checkAndUsePlay('ws',function(){startGame(false);if(window.innerWidth<=768)tryRequestFullscreen(document.getElementById('arena-container'));});
   else if(inBtn(cx,cy,CX,_wsHowBtnCy,180,34)){g.phase='TUT';g.tutStep=1;drawStatic();}
 }
 function tapPause(cx,cy){
@@ -4267,7 +4283,7 @@ function tapChoice(cx,cy){
   // B: rrect(CX+15,210,170,70) → center (CX+100, 245)
   else if(inBtn(cx,cy,CX+100,245,170,70))applyChoice('B');
 }
-function tryRequestFullscreen(el){if(!el)return;try{if(el.requestFullscreen)el.requestFullscreen();else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen();else if(el.mozRequestFullScreen)el.mozRequestFullScreen();else if(el.msRequestFullscreen)el.msRequestFullscreen();}catch(e){}}
+function tryRequestFullscreen(el){if(!el)return;try{var _p=el.requestFullscreen?el.requestFullscreen():el.webkitRequestFullscreen?el.webkitRequestFullscreen():el.mozRequestFullScreen?el.mozRequestFullScreen():el.msRequestFullscreen?el.msRequestFullscreen():null;if(_p&&typeof _p.catch==='function')_p.catch(function(){});}catch(e){}}
 function exitFullscreenGame(){try{if(document.exitFullscreen)document.exitFullscreen();else if(document.webkitExitFullscreen)document.webkitExitFullscreen();else if(document.mozCancelFullScreen)document.mozCancelFullScreen();else if(document.msExitFullscreen)document.msExitFullscreen();}catch(e){}}
 (function(){function _fsch(){var isFS=!!(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement);document.querySelectorAll('.fs-exit-btn').forEach(function(b){b.style.display=isFS?'flex':'none';});if(isFS){setTimeout(function(){try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}},150);}}['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(function(ev){document.addEventListener(ev,_fsch);});}());
 function updateStartStep4(){var _connected=typeof walletActor!=='undefined'&&walletActor;var _yes='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:#4ade80;"><span>✓</span><span>Wallet connected as <strong>@'+walletActor+'</strong></span></div>';var _no='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:var(--text3);"><span>○</span><span>No wallet connected yet</span></div>';var check=document.getElementById('start-step4-check');var btn=document.getElementById('start-connect-btn');if(check)check.innerHTML=_connected?_yes:_no;if(btn)btn.style.display=_connected?'none':'';var ntgCheck=document.getElementById('ntg-step4-check');var ntgBtn=document.getElementById('ntg-connect-btn');if(ntgCheck)ntgCheck.innerHTML=_connected?_yes:_no;if(ntgBtn)ntgBtn.style.display=_connected?'none':'';}
@@ -4685,6 +4701,7 @@ function draw(){
   drawHUD();
   if(g.phase==='PLAYING')drawAbBtn();
   drawWaveZoneAnn();
+  if(isDevMode())drawArenaDevBadge();
 }
 function drawBg(){
   const wz=g?getWaveZone(g.wave):WAVE_ZONES[0];
@@ -5021,7 +5038,8 @@ function drawPauseOverlay(){
 
 // ─── Tutorial & static screens ────────────────────────────────────────────────
 function bgCanvas(){ctx.clearRect(0,0,CW,CH);const gr=ctx.createRadialGradient(CX,CY,0,CX,CY,CW*0.8);gr.addColorStop(0,'hsla(220,40%,10%,1)');gr.addColorStop(1,'hsla(190,60%,4%,1)');ctx.fillStyle=gr;ctx.fillRect(0,0,CW,CH);}
-function muteIcon(){ctx.save();ctx.font='15px sans-serif';ctx.textAlign='right';ctx.textBaseline='middle';ctx.globalAlpha=0.45;ctx.fillStyle='#fff';ctx.fillText(muted?'🔇':'🔊',CW-14,22);ctx.globalAlpha=1;ctx.restore();}
+function muteIcon(){ctx.save();ctx.font='15px sans-serif';ctx.textAlign='right';ctx.textBaseline='middle';ctx.globalAlpha=0.45;ctx.fillStyle='#fff';ctx.fillText(muted?'🔇':'🔊',CW-14,22);ctx.globalAlpha=1;ctx.restore();if(isDevMode())drawArenaDevBadge();}
+function drawArenaDevBadge(){ctx.save();ctx.fillStyle='rgba(201,146,42,0.92)';rrect(7,7,46,19,4);ctx.fill();ctx.fillStyle='#0f172a';ctx.font='bold 9px "Cinzel",sans-serif';ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText('DEV',13,16.5);ctx.restore();}
 function drawStatic(){if(!cvs||!ctx)return;ctx.setTransform(cscale,0,0,cscale,0,0);if(g.phase==='TUT')drawTut(g.tutStep);else if(g.phase==='START')drawStart();else if(g.phase==='PAUSED')drawPauseOverlay();else if(g.phase==='GAME_OVER')drawGameOver(g._nb||false,g._gp||0);}
 
 function drawTut(step){
@@ -5448,7 +5466,7 @@ var FG = {
       if (sx !== null) {
         // PLAY button: h*0.60 ±20
         if (sx >= w/2-80 && sx <= w/2+80 && sy >= h*0.60-20 && sy <= h*0.60+20) {
-          checkAndUsePlay('fg',function(){if(window.innerWidth<=768)tryRequestFullscreen(document.getElementById('flappy-game-container'));_fg.reset(false);_fg.started=true;_fg.coin.vy=_fg.flapPower;_fg._boop('flap');});
+          checkAndUsePlay('fg',function(){_fg.reset(false);_fg.started=true;_fg.coin.vy=_fg.flapPower;_fg._boop('flap');if(window.innerWidth<=768)tryRequestFullscreen(document.getElementById('flappy-game-container'));});
         }
         // HOW TO PLAY button: h*0.72 ±15
         else if (sx >= w/2-70 && sx <= w/2+70 && sy >= h*0.72-15 && sy <= h*0.72+15) {
@@ -5815,6 +5833,7 @@ var FG = {
       }
       c.globalAlpha = 1;
       this._drawDead(w, h);
+      if(isDevMode())this._fgDevBadge(c,w);
       return;
     }
     this._drawBarriers(w, h);
@@ -5823,6 +5842,7 @@ var FG = {
     this._drawGuardian(this.coin.x, this.coin.y, this.coin.angle, this.shield || this.shieldEntry > 0, this.shrink);
     this._drawHUD(w, h);
     this._drawZoneAnn(w, h);
+    if(isDevMode())this._fgDevBadge(c,w);
   },
 
   _drawTutorial: function(w, h) {
@@ -5910,6 +5930,18 @@ var FG = {
     c.fillStyle = 'rgba(100,116,139,0.4)'; c.font = '9px monospace';
     c.fillText(BUILD_VERSION, w-4, h-4);
     c.textAlign = 'center'; c.textBaseline = 'middle';
+    if(isDevMode())this._fgDevBadge(c,w);
+  },
+
+  _fgDevBadge: function(c,w){
+    c.save();
+    var bx=6,by=6,bw=46,bh=19,r=4;
+    c.fillStyle='rgba(201,146,42,0.92)';
+    this._rrect(bx,by,bw,bh,r);c.fill();
+    c.fillStyle='#0f172a';c.font='bold 9px "Cinzel",sans-serif';
+    c.textAlign='left';c.textBaseline='middle';
+    c.fillText('DEV',bx+8,by+bh/2);
+    c.restore();
   },
 
   _drawDead: function(w, h) {
