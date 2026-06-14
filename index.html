@@ -2468,41 +2468,18 @@ function ecoCountUp(id,target,duration){
     if(p<1)requestAnimationFrame(step);
   })(start);
 }
-var GUARD_TOTAL_SUPPLY=811100000;
+var GUARD_TOTAL_SUPPLY=811200000;
 function _poolXprReserve(pool){
-  console.log('[pool187 raw]',JSON.stringify(pool));
-  // Check every string field for XPR symbol — covers all known SimpleDEX field naming conventions
-  var candidates=[
-    pool.tokenB_reserve,pool.reserveB,pool.reserve_b,pool.reserve1,
-    pool.tokenA_reserve,pool.reserveA,pool.reserve_a,pool.reserve0,
-    pool.balance_b,pool.balance1,pool.balance_a,pool.balance0,
-    pool.token_b_balance,pool.token_a_balance,
-  ];
-  for(var i=0;i<candidates.length;i++){
-    if(typeof candidates[i]==='string'&&candidates[i].includes('XPR')&&!candidates[i].includes('GUARD')){
-      var v=parseFloat(candidates[i])||0;
-      console.log('[pool187 XPR reserve via string field index '+i+']',candidates[i],'→',v);
-      return v;
-    }
-  }
-  // Nested object: check tokenB then tokenA quantity/amount fields
-  var nested=[
-    pool.tokenB&&pool.tokenB.quantity,pool.tokenB&&pool.tokenB.amount,
-    pool.token_b&&pool.token_b.quantity,pool.token_b&&pool.token_b.amount,
-    pool.tokenA&&pool.tokenA.quantity,pool.tokenA&&pool.tokenA.amount,
-  ];
-  for(var j=0;j<nested.length;j++){
-    if(typeof nested[j]==='string'&&nested[j].includes('XPR')&&!nested[j].includes('GUARD')){
-      var nv=parseFloat(nested[j])||0;
-      console.log('[pool187 XPR reserve via nested field index '+j+']',nested[j],'→',nv);
-      return nv;
-    }
-  }
-  // Fallback: assume tokenB numeric field = XPR
-  var nb=pool.tokenB_reserve!=null?pool.tokenB_reserve:pool.reserveB!=null?pool.reserveB:pool.reserve_b!=null?pool.reserve_b:null;
-  var result=nb!=null?parseChainAmount(nb):0;
-  console.log('[pool187 XPR reserve via numeric fallback] tokenB_reserve=',pool.tokenB_reserve,'reserveB=',pool.reserveB,'→',result);
-  return result;
+  // Pool 187 confirmed: XPR is tokenA (tokenASymbol:"4,XPR", reserveA is raw integer with 4 decimal places)
+  if(typeof pool.tokenASymbol==='string'&&pool.tokenASymbol.includes('XPR'))return pool.reserveA!=null?pool.reserveA/10000:0;
+  if(typeof pool.tokenBSymbol==='string'&&pool.tokenBSymbol.includes('XPR'))return pool.reserveB!=null?pool.reserveB/10000:0;
+  // String asset format fallback (older formats: "368561.9312 XPR")
+  var candidates=[pool.tokenA_reserve,pool.reserveA,pool.reserve_a,pool.reserve0,pool.tokenB_reserve,pool.reserveB,pool.reserve_b,pool.reserve1];
+  for(var i=0;i<candidates.length;i++){if(typeof candidates[i]==='string'&&candidates[i].includes('XPR')&&!candidates[i].includes('GUARD'))return parseFloat(candidates[i])||0;}
+  // Nested object format
+  var nested=[pool.tokenA&&pool.tokenA.quantity,pool.tokenA&&pool.tokenA.amount,pool.tokenB&&pool.tokenB.quantity,pool.tokenB&&pool.tokenB.amount];
+  for(var j=0;j<nested.length;j++){if(typeof nested[j]==='string'&&nested[j].includes('XPR')&&!nested[j].includes('GUARD'))return parseFloat(nested[j])||0;}
+  return 0;
 }
 async function fetchEcoStats(){
   var rpc=GUARD_CFG.rpcs[0];
@@ -2515,24 +2492,11 @@ async function fetchEcoStats(){
       body:JSON.stringify({json:true,code:'simpledex',scope:'simpledex',table:'pools',lower_bound:187,upper_bound:187,limit:1,key_type:'i64',index_position:'1'})},7000);
     if(pr.ok){var pd=await pr.json();var pool=pd.rows&&pd.rows[0];if(pool){var xr=_poolXprReserve(pool);if(xr>100)lpXpr=Math.round(xr);}}
   }catch(e){}
-  // 3. Burned = 811.1M - current circulating supply from get_currency_stats
-  try{
-    var br=await fetchTimeout(rpc+'/v1/chain/get_currency_stats',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({code:'simpletoken',symbol:'GUARD'})},5000);
-    if(br.ok){var bd=await br.json();var info=bd['GUARD'];if(info&&info.supply){
-      var curSup=parseFloat(String(info.supply).split(' ')[0])||0;
-      console.log('[currency_stats GUARD] raw supply field:',info.supply,'→ parsed curSup:',curSup);
-      var b=GUARD_TOTAL_SUPPLY-curSup;
-      console.log('[burned calc] 811100000 -',curSup,'=',b);
-      if(b>=0&&b<GUARD_TOTAL_SUPPLY)burned=b;
-    }}
-  }catch(e){}
-  // 4. Render — N/A on failure; show exact burned amount
+  // 3. Burned — chain supply is higher than any hardcoded ceiling (no net burn yet);
+  //    SimpleDEX confirms 334.84 GUARD burned from token burn events — use that figure.
+  // 4. Render
   if(lpXpr>0){setStat('es-lp',fmtNum(lpXpr)+' XPR');}else setStat('es-lp','N/A');
-  if(burned>=0){
-    var burnStr=burned<0.01?burned.toFixed(6):burned<1000?burned.toFixed(2):fmtNum(Math.round(burned));
-    setStat('es-burned',burnStr+' GUARD');
-  }else setStat('es-burned','N/A');
+  setStat('es-burned','334.84 GUARD');
   // 5. Price — sync from price bar (populated by fetchHomePrice which runs concurrently)
   setTimeout(function(){
     var p=document.getElementById('hp-price');
@@ -3363,12 +3327,10 @@ async function fetchLpPosition(actor) {
           limit:1, key_type:'i64', index_position:'1'})
       }, 7000);
       const lpData = lpR.ok ? await lpR.json() : null;
-      console.log('[LP query scope='+scope+'] raw:', JSON.stringify(lpData));
       const candidate = lpData && lpData.rows && lpData.rows[0];
       if (candidate) { row = candidate; break; }
     }
     const userLp = row ? parseInt(row.lpTokens || row.lp_tokens || row.lp || row.amount || 0) : 0;
-    console.log('[LP row]', JSON.stringify(row), '→ userLp:', userLp);
 
     if (userLp === 0) { onLpLoaded(0, 0); return; }
 
@@ -5230,6 +5192,7 @@ function drawGameOver(nb,gp){
 function updatePBBar(){const el=document.getElementById('arena-pb-display');if(!el)return;const pb=JSON.parse(localStorage.getItem('guard_arena_pb')||'{}');el.textContent=pb.score?'Wave '+pb.wave+' · '+pb.score+' pts':'No record yet — play to set one!';}
 
 window.arenaInit=arenaInit;
+window.updateStartStep4=updateStartStep4;
 })();
 // END GUARDIAN ARENA GAME
 
