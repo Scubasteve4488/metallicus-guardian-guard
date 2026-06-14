@@ -590,7 +590,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
 </head>
 <body>
-<!-- build: 2026-06-14-v3 -->
+<!-- build: 2026-06-14-v4 -->
 <!-- GLOBAL TICKER BAR -->
 <div id="ticker-bar">
   <div class="ticker-inner">
@@ -716,10 +716,10 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 <!-- ECO STATS BAR -->
 <div id="eco-stats-bar">
   <div class="eco-stats-inner">
-    <div class="eco-sc"><div class="eco-si">👥</div><div class="eco-sv" id="es-holders">…</div><div class="eco-sl">GUARD Holders</div></div>
+    <div class="eco-sc"><div class="eco-si">🪙</div><div class="eco-sv" id="es-supply">811.1M</div><div class="eco-sl">Total Supply</div></div>
     <div class="eco-sc"><div class="eco-si">💧</div><div class="eco-sv" id="es-lp">…</div><div class="eco-sl">XPR in Pool 187</div></div>
-    <div class="eco-sc"><div class="eco-si">🔥</div><div class="eco-sv" id="es-staked">…</div><div class="eco-sl">Staked (BlastPad)</div></div>
-    <div class="eco-sc"><div class="eco-si">♻</div><div class="eco-sv" id="es-burned">…</div><div class="eco-sl">Total Burned</div></div>
+    <div class="eco-sc"><div class="eco-si">🔥</div><div class="eco-sv" id="es-burned">…</div><div class="eco-sl">Total Burned</div></div>
+    <div class="eco-sc"><div class="eco-si">⚡</div><div class="eco-sv" id="es-price">…</div><div class="eco-sl">GUARD Price</div></div>
   </div>
 </div>
 <div class="container">
@@ -2226,7 +2226,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-14-v3';
+const BUILD_VERSION='2026-06-14-v4';
 (function(){var b=document.getElementById('build-badge');if(b)b.textContent=BUILD_VERSION;})();
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
@@ -2414,7 +2414,9 @@ async function fetchHomePrice() {
 
   // Update price bar
   const fmt = n => n >= 1e9 ? '$' + (n/1e9).toFixed(2)+'B' : n >= 1e6 ? '$' + (n/1e6).toFixed(2)+'M' : n >= 1e3 ? '$' + (n/1e3).toFixed(1)+'K' : '$' + n.toFixed(2);
-  setStat('hp-price', price > 0 ? (price < 0.000001 ? '$' + price.toExponential(2) : price < 0.01 ? '$' + price.toFixed(8) : price < 1 ? '$' + price.toFixed(6) : '$' + price.toFixed(4)) : '—');
+  const _priceStr = price > 0 ? (price < 0.000001 ? '$' + price.toExponential(2) : price < 0.01 ? '$' + price.toFixed(8) : price < 1 ? '$' + price.toFixed(6) : '$' + price.toFixed(4)) : '—';
+  setStat('hp-price', _priceStr);
+  setStat('es-price', price > 0 ? _priceStr : 'N/A');
   setStat('hp-supply', supply > 0 ? fmtNum(supply) : '—');
   setStat('hp-mcap',   price > 0 && supply > 0 ? fmt(price * supply) : '—');
   setStat('hp-vol',    vol   > 0 ? fmt(vol)   : '—');
@@ -2478,43 +2480,37 @@ function _poolXprReserve(pool){
 }
 async function fetchEcoStats(){
   var rpc=GUARD_CFG.rpcs[0];
-  var holders=-1,lpXpr=0,staked=-1,burned=-1,curSup=0;
-  // 1. Holders from SimpleDEX token API
-  try{
-    var r=await fetchTimeout('https://api.simpledex.fun/v1/tokens/172',{},6000);
-    if(r.ok){var d=await r.json();var h=parseInt(d.holderCount||d.holder_count||d.holders||d.totalHolders||0)||0;holders=h>=5&&h<200000?h:0;}
-  }catch(e){}
-  // 2. Pool 187 XPR reserve (tokenB = XPR in GUARD/XPR pair)
+  var lpXpr=0,burned=-1;
+  // 1. Total supply — hardcoded (known accurate)
+  setStat('es-supply','811.1M');
+  // 2. Pool 187 XPR reserve — detect XPR by asset string containing 'XPR'
   try{
     var pr=await fetchTimeout(rpc+'/v1/chain/get_table_rows',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({json:true,code:'simpledex',scope:'simpledex',table:'pools',lower_bound:187,upper_bound:187,limit:1,key_type:'i64',index_position:'1'})},7000);
     if(pr.ok){var pd=await pr.json();var pool=pd.rows&&pd.rows[0];if(pool){var xr=_poolXprReserve(pool);if(xr>100)lpXpr=Math.round(xr);}}
   }catch(e){}
-  // 3. Total staked = blastpad account GUARD balance in simpletoken
-  try{
-    var sr=await fetchTimeout(rpc+'/v1/chain/get_table_rows',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({json:true,code:'simpletoken',scope:'blastpad',table:'accounts',limit:200})},6000);
-    if(sr.ok){var sd=await sr.json();var row=(sd.rows||[]).find(function(r){return typeof r.balance==='string'&&r.balance.includes('GUARD');});if(row){var st=parseFloat(row.balance)||0;staked=st>0?st:0;}}
-  }catch(e){}
-  // 4. Burned = 811.1M - current circulating supply
+  // 3. Burned = 811.1M - current circulating supply from get_currency_stats
   try{
     var br=await fetchTimeout(rpc+'/v1/chain/get_currency_stats',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({code:'simpletoken',symbol:'GUARD'})},5000);
     if(br.ok){var bd=await br.json();var info=bd['GUARD'];if(info&&info.supply){
-      curSup=parseFloat(String(info.supply).split(' ')[0])||0;
+      var curSup=parseFloat(String(info.supply).split(' ')[0])||0;
       var b=GUARD_TOTAL_SUPPLY-curSup;
-      burned=b>0&&b<GUARD_TOTAL_SUPPLY?Math.round(b):0;
+      if(b>=0&&b<GUARD_TOTAL_SUPPLY)burned=b;
     }}
   }catch(e){}
-  // Render — N/A for failed/unreasonable values
-  var anim=_ecoFirstLoad;_ecoFirstLoad=false;
-  if(holders>0){if(anim)ecoCountUp('es-holders',holders,1300);else setStat('es-holders',fmtNum(holders));}else setStat('es-holders','N/A');
-  if(lpXpr>0){
-    if(anim){ecoCountUp('es-lp',lpXpr,1300);setTimeout(function(){var el=document.getElementById('es-lp');if(el&&!isNaN(parseInt(el.textContent.replace(/[^0-9]/g,''))))el.textContent=fmtNum(lpXpr)+' XPR';},1350);}
-    else setStat('es-lp',fmtNum(lpXpr)+' XPR');
-  }else setStat('es-lp','N/A');
-  if(staked>=0&&staked>0){if(anim)ecoCountUp('es-staked',staked,1300);else setStat('es-staked',fmtNum(Math.round(staked)));}else setStat('es-staked','N/A');
-  if(burned>0){if(anim)ecoCountUp('es-burned',burned,1300);else setStat('es-burned',fmtNum(burned));}else setStat('es-burned','N/A');
+  // 4. Render — N/A on failure; show exact burned amount
+  if(lpXpr>0){setStat('es-lp',fmtNum(lpXpr)+' XPR');}else setStat('es-lp','N/A');
+  if(burned>=0){
+    var burnStr=burned<0.01?burned.toFixed(6):burned<1000?burned.toFixed(2):fmtNum(Math.round(burned));
+    setStat('es-burned',burnStr+' GUARD');
+  }else setStat('es-burned','N/A');
+  // 5. Price — sync from price bar (populated by fetchHomePrice which runs concurrently)
+  setTimeout(function(){
+    var p=document.getElementById('hp-price');
+    if(p&&p.textContent&&p.textContent!=='—')setStat('es-price',p.textContent);
+    else setStat('es-price','N/A');
+  },3000);
 }
 fetchEcoStats();
 setInterval(fetchEcoStats,300000);
@@ -3174,11 +3170,14 @@ function renderAchievements(){
 
 function toggleAchCat(hdr){ hdr.nextElementSibling.classList.toggle('open'); }
 
+function computeShardRank(){
+  // Rank = index of the highest forged shield (sequential from rank 0 = Cryptide default)
+  for(var _i=SHIELDS.length-1;_i>=0;_i--){if(ShardTracker.isForged(SHIELDS[_i].name))return _i;}
+  return 0;
+}
 async function loadRank(){
-  try{
-    const r = await window.storage.get('guardian_rank');
-    if(r && r.value!=null) guardianRank = Math.min(6, Math.max(0, parseInt(r.value)||0));
-  }catch(e){ guardianRank = 0; }
+  // Rank is always derived from shard forge state, not balance
+  guardianRank = computeShardRank();
   try{
     const h = await window.storage.get('guardian_handle');
     if(h && h.value){ const el=document.getElementById('guardian-handle'); if(el) el.value=h.value; }
@@ -3357,7 +3356,10 @@ async function fetchLpPosition(actor) {
 
     // Constant-product AMM: total pool value = 2 × XPR reserve
     const userShare = userLp / totalLp;
+    // Sanity: userShare must be ≤1; xprEquivalent capped at 1M (personal LP cannot exceed full pool)
+    if (userShare > 1 || userShare < 0) { onLpLoaded(0, 0); return; }
     const xprEquivalent = Math.round(userShare * 2 * xprReserve);
+    if (xprEquivalent > 1000000) { onLpLoaded(0, 0); return; } // clearly wrong — show nothing
     onLpLoaded(userLp, xprEquivalent);
   } catch(e) {
     onLpLoaded(0, 0);
@@ -3713,6 +3715,9 @@ function manualForge(shieldName) {
   if (!ShardTracker.allOwned(shieldName)) return;
   ShardTracker.forge(shieldName);
   unlockAch('forge_' + shieldName.toLowerCase());
+  // Rank advances when a shield is forged
+  var newRank = computeShardRank();
+  if (newRank !== guardianRank) { guardianRank = newRank; renderShield(); }
   triggerShieldForge(shieldName);
 }
 async function walletConnect() {
@@ -3780,6 +3785,7 @@ function resetWalletBarUI() {
 }
 
 async function walletRestore() {
+  if (walletActor) return; // walletConnect already ran — skip to prevent race
   if (localStorage.getItem('wallet_explicitly_disconnected') === 'true') {
     resetWalletBarUI();
     return;
@@ -3810,25 +3816,43 @@ async function walletRestore() {
   }
 }
 
+var _guardBalLoading = false;
+var _guardLastConfirmedBal = -1; // -1=never loaded, >=0=confirmed value
 async function fetchGuardBalance(actor) {
-  for (const rpc of DAPP_CONFIG.endpoints) {
-    try {
-      const r = await fetchTimeout(rpc + '/v1/chain/get_currency_balance', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: 'simpletoken', account: actor, symbol: 'GUARD' }),
-      }, 5000);
-      if (r.ok) {
-        const data = await r.json();
-        const balStr = data && data[0] ? data[0] : '0 GUARD';
-        const bal = parseFloat(balStr.split(' ')[0]) || 0;
-        onGuardBalanceLoaded(actor, bal);
-        return bal;
-      }
-    } catch(e) { /* try next */ }
+  if (_guardBalLoading) return;
+  _guardBalLoading = true;
+  try {
+    for (const rpc of DAPP_CONFIG.endpoints) {
+      try {
+        const r = await fetchTimeout(rpc + '/v1/chain/get_currency_balance', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: 'simpletoken', account: actor, symbol: 'GUARD' }),
+        }, 5000);
+        if (r.ok) {
+          const data = await r.json();
+          const balStr = data && data[0] ? data[0] : null;
+          const bal = balStr ? (parseFloat(balStr.split(' ')[0]) || 0) : 0;
+          if (bal > 0) {
+            _guardLastConfirmedBal = bal;
+            onGuardBalanceLoaded(actor, bal);
+            return bal;
+          }
+          // bal === 0 from a valid response — only display if no previous non-zero balance
+          if (_guardLastConfirmedBal <= 0) {
+            _guardLastConfirmedBal = 0;
+            onGuardBalanceLoaded(actor, 0);
+          }
+          return 0;
+        }
+      } catch(e) { /* try next rpc */ }
+    }
+    // All RPCs failed — don't overwrite a previously confirmed balance
+    if (_guardLastConfirmedBal < 0) onGuardBalanceLoaded(actor, 0);
+    return 0;
+  } finally {
+    _guardBalLoading = false;
   }
-  onGuardBalanceLoaded(actor, 0);
-  return 0;
 }
 
 function getRankForBalance(bal) {
@@ -3878,19 +3902,22 @@ function onGuardBalanceLoaded(actor, bal) {
   const shieldBal = document.getElementById('shield-guard-bal');
   if (shieldBal) shieldBal.textContent = fmtBal;
 
-  // Unlock rank based on balance
-  const unlockedRank = getRankForBalance(bal);
+  // Rank is always from shard progression — balance shows eligibility only
+  const shardRank = computeShardRank();
+  if (shardRank !== guardianRank) { guardianRank = shardRank; renderShield(); }
+  const eligibleRank = getRankForBalance(bal);
   const rankUnlockEl = document.getElementById('shield-rank-unlock');
-
-  if (unlockedRank > guardianRank) {
-    guardianRank = unlockedRank;
-    saveRank();
-    renderShield();
-    if (rankUnlockEl) rankUnlockEl.textContent = '🎉 Rank unlocked: ' + SHIELDS[unlockedRank].title + ' — ' + SHIELDS[unlockedRank].name;
-  } else if (unlockedRank === guardianRank) {
-    if (rankUnlockEl) rankUnlockEl.textContent = '✅ ' + SHIELDS[unlockedRank].name + ' · ' + SHIELDS[unlockedRank].title + (unlockedRank < 6 ? ' — hold ' + RANK_THRESHOLDS[unlockedRank+1].toLocaleString() + ' GUARD to advance' : ' — maximum rank!');
-  } else {
-    if (rankUnlockEl) rankUnlockEl.textContent = '✅ Rank ' + (unlockedRank+1) + ' · ' + SHIELDS[unlockedRank].name + (unlockedRank < 6 ? ' — hold ' + RANK_THRESHOLDS[unlockedRank+1].toLocaleString() + ' GUARD to advance' : '');
+  if (rankUnlockEl) {
+    if (guardianRank >= 6) {
+      rankUnlockEl.textContent = '✅ Maximum rank — Aegis Guardian';
+    } else if (eligibleRank > guardianRank) {
+      rankUnlockEl.textContent = '✨ Balance qualifies for ' + SHIELDS[eligibleRank].name + ' · forge ' + SHIELDS[guardianRank + 1].name + ' shards to advance rank';
+    } else if (eligibleRank === guardianRank && guardianRank < 6) {
+      rankUnlockEl.textContent = '🛡 Hold ' + RANK_THRESHOLDS[guardianRank + 1].toLocaleString() + ' GUARD to qualify for ' + SHIELDS[guardianRank + 1].name;
+    } else {
+      const nextEl = eligibleRank < 6 ? SHIELDS[eligibleRank + 1] : null;
+      rankUnlockEl.textContent = nextEl ? '○ Hold ' + nextEl.req.toLocaleString() + ' GUARD for ' + nextEl.name + ' eligibility' : '';
+    }
   }
 
   // Update Guardian card handle with wallet name if empty
@@ -3900,9 +3927,9 @@ function onGuardBalanceLoaded(actor, bal) {
     renderCard();
   }
 
-  // Update new systems
+  // Update systems
   updateHoldingAchs(bal);
-  if (unlockedRank >= 1) unlockAch('shielded');
+  if (eligibleRank >= 1) unlockAch('shielded');
   renderTimeline();
   renderProgress(bal);
   trackGuardianInHall(actor, guardianRank);
@@ -3954,6 +3981,7 @@ function onWalletDisconnected() {
   guardianDaysHeld = -1;
   guardianNfts = {snippy:0, funky:0, cyphergang:0};
   guardianStaked = -1;
+  _guardLastConfirmedBal = -1;
 
   // Re-render rank visuals back to Cryptide
   renderShield();
