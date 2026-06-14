@@ -299,8 +299,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
   .grid-2,.grid-3{grid-template-columns:1fr;}
   .lore-grid{grid-template-columns:1fr;}
   .foot-top{grid-template-columns:1fr 1fr;}
-  .nav-links{display:none;}.hamburger{display:flex;}.nav-arrow{display:none;}
-  #wallet-btn{display:none;}
   .nav-brand span{font-size:.78rem;}
   #nav{padding:0 1rem;gap:.5rem;}
   .nav-cta{font-size:.7rem;padding:.4rem .7rem;}
@@ -483,6 +481,10 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 @media(max-width:768px){
   #mobile-bottom-nav{display:flex;z-index:990;height:62px;background:rgba(8,11,18,0.98);border-top:1px solid rgba(201,146,42,0.35);justify-content:space-around;align-items:stretch;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
   .page{padding-bottom:70px;}
+  .nav-links{display:none;}.hamburger{display:flex;}.nav-arrow{display:none;}
+  #wallet-btn{display:none;}
+  #arena-container{overflow:hidden;}
+  #flappy-game-container{overflow:hidden;}
 }
 /* FULLSCREEN GAME */
 #arena-container:-webkit-full-screen,#arena-container:fullscreen,#flappy-game-container:-webkit-full-screen,#flappy-game-container:fullscreen{display:flex!important;flex-direction:column;align-items:center;justify-content:center;background:#080b12;padding:0;max-width:none!important;width:100%;height:100%;}
@@ -693,7 +695,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
       <p class="hero-cin-tagline">Every Wallet Is A Shield. Every User Holds A Key.</p>
       <div class="hero-guardians">🛡 <span id="guardian-count">—</span> Guardians Standing</div>
       <div class="hero-cin-btns">
-        <button class="btn btn-g btn-hero" onclick="walletConnect()">Connect Wallet ⚡</button>
+        <button class="btn btn-g btn-hero" id="home-connect-btn" onclick="walletConnect()">Connect Wallet ⚡</button>
         <button class="btn btn-o btn-hero" onclick="go('shields')">Explore the Ecosystem →</button>
       </div>
     </div>
@@ -2468,15 +2470,39 @@ function ecoCountUp(id,target,duration){
 }
 var GUARD_TOTAL_SUPPLY=811100000;
 function _poolXprReserve(pool){
-  // Detect XPR reserve by symbol in string-format fields; tokenB=XPR for GUARD/XPR pair
-  var fields=[pool.tokenB_reserve,pool.reserveB,pool.reserve1,pool.tokenA_reserve,pool.reserveA,pool.reserve0];
-  for(var i=0;i<fields.length;i++){if(typeof fields[i]==='string'&&fields[i].includes('XPR'))return parseFloat(fields[i])||0;}
-  // Nested object format
-  if(pool.tokenB&&typeof pool.tokenB.amount==='string'&&pool.tokenB.amount.includes('XPR'))return parseFloat(pool.tokenB.amount)||0;
-  if(pool.tokenA&&typeof pool.tokenA.amount==='string'&&pool.tokenA.amount.includes('XPR'))return parseFloat(pool.tokenA.amount)||0;
-  // Fallback: assume tokenB=XPR (numeric)
-  var nb=pool.tokenB_reserve!=null?pool.tokenB_reserve:pool.reserveB!=null?pool.reserveB:null;
-  return nb!=null?parseChainAmount(nb):0;
+  console.log('[pool187 raw]',JSON.stringify(pool));
+  // Check every string field for XPR symbol — covers all known SimpleDEX field naming conventions
+  var candidates=[
+    pool.tokenB_reserve,pool.reserveB,pool.reserve_b,pool.reserve1,
+    pool.tokenA_reserve,pool.reserveA,pool.reserve_a,pool.reserve0,
+    pool.balance_b,pool.balance1,pool.balance_a,pool.balance0,
+    pool.token_b_balance,pool.token_a_balance,
+  ];
+  for(var i=0;i<candidates.length;i++){
+    if(typeof candidates[i]==='string'&&candidates[i].includes('XPR')&&!candidates[i].includes('GUARD')){
+      var v=parseFloat(candidates[i])||0;
+      console.log('[pool187 XPR reserve via string field index '+i+']',candidates[i],'→',v);
+      return v;
+    }
+  }
+  // Nested object: check tokenB then tokenA quantity/amount fields
+  var nested=[
+    pool.tokenB&&pool.tokenB.quantity,pool.tokenB&&pool.tokenB.amount,
+    pool.token_b&&pool.token_b.quantity,pool.token_b&&pool.token_b.amount,
+    pool.tokenA&&pool.tokenA.quantity,pool.tokenA&&pool.tokenA.amount,
+  ];
+  for(var j=0;j<nested.length;j++){
+    if(typeof nested[j]==='string'&&nested[j].includes('XPR')&&!nested[j].includes('GUARD')){
+      var nv=parseFloat(nested[j])||0;
+      console.log('[pool187 XPR reserve via nested field index '+j+']',nested[j],'→',nv);
+      return nv;
+    }
+  }
+  // Fallback: assume tokenB numeric field = XPR
+  var nb=pool.tokenB_reserve!=null?pool.tokenB_reserve:pool.reserveB!=null?pool.reserveB:pool.reserve_b!=null?pool.reserve_b:null;
+  var result=nb!=null?parseChainAmount(nb):0;
+  console.log('[pool187 XPR reserve via numeric fallback] tokenB_reserve=',pool.tokenB_reserve,'reserveB=',pool.reserveB,'→',result);
+  return result;
 }
 async function fetchEcoStats(){
   var rpc=GUARD_CFG.rpcs[0];
@@ -2495,7 +2521,9 @@ async function fetchEcoStats(){
       body:JSON.stringify({code:'simpletoken',symbol:'GUARD'})},5000);
     if(br.ok){var bd=await br.json();var info=bd['GUARD'];if(info&&info.supply){
       var curSup=parseFloat(String(info.supply).split(' ')[0])||0;
+      console.log('[currency_stats GUARD] raw supply field:',info.supply,'→ parsed curSup:',curSup);
       var b=GUARD_TOTAL_SUPPLY-curSup;
+      console.log('[burned calc] 811100000 -',curSup,'=',b);
       if(b>=0&&b<GUARD_TOTAL_SUPPLY)burned=b;
     }}
   }catch(e){}
@@ -3324,16 +3352,23 @@ async function fetchOnChainData(actor) {
 async function fetchLpPosition(actor) {
   const endpoint = DAPP_CONFIG.endpoints[0];
   try {
-    // Step 1: user LP row for pool 187
-    const lpR = await fetchTimeout(endpoint + '/v1/chain/get_table_rows', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({json:true, code:'simpledex', scope:actor,
-        table:'lp', lower_bound:187, upper_bound:187,
-        limit:1, key_type:'i64', index_position:'1'})
-    }, 7000);
-    const lpData = lpR.ok ? await lpR.json() : null;
-    const row = lpData && lpData.rows && lpData.rows[0];
-    const userLp = row ? parseInt(row.lpTokens || row.lp_tokens || 0) : 0;
+    // Step 1: user LP row for pool 187 — try actor scope then pool-id scopes as fallbacks
+    let row = null;
+    const lpScopes = [actor, '187', 187];
+    for (const scope of lpScopes) {
+      const lpR = await fetchTimeout(endpoint + '/v1/chain/get_table_rows', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({json:true, code:'simpledex', scope:scope,
+          table:'lp', lower_bound:187, upper_bound:187,
+          limit:1, key_type:'i64', index_position:'1'})
+      }, 7000);
+      const lpData = lpR.ok ? await lpR.json() : null;
+      console.log('[LP query scope='+scope+'] raw:', JSON.stringify(lpData));
+      const candidate = lpData && lpData.rows && lpData.rows[0];
+      if (candidate) { row = candidate; break; }
+    }
+    const userLp = row ? parseInt(row.lpTokens || row.lp_tokens || row.lp || row.amount || 0) : 0;
+    console.log('[LP row]', JSON.stringify(row), '→ userLp:', userLp);
 
     if (userLp === 0) { onLpLoaded(0, 0); return; }
 
@@ -3870,9 +3905,11 @@ function onWalletConnected(actor) {
   const btn = document.getElementById('wallet-btn');
   if (btn) { btn.textContent = '⚡ @' + actor; btn.style.color = 'var(--gold-l)'; }
 
-  // Hide connect button on GUARD page
+  // Hide connect buttons (GUARD page + home hero)
   const gcb = document.getElementById('guard-connect-btn');
   if (gcb) gcb.style.display = 'none';
+  const hcb = document.getElementById('home-connect-btn');
+  if (hcb) hcb.style.display = 'none';
 
   // Mobile menu — driven by body class
   document.body.classList.add('wallet-on');
@@ -3951,9 +3988,11 @@ function onWalletDisconnected() {
   // Mobile menu — driven by body class
   document.body.classList.remove('wallet-on');
 
-  // GUARD page connect button
+  // Restore connect buttons (GUARD page + home hero)
   const gcb = document.getElementById('guard-connect-btn');
   if (gcb) gcb.style.display = 'inline-flex';
+  const hcb = document.getElementById('home-connect-btn');
+  if (hcb) hcb.style.display = '';
 
   // Shields page — hide rank display, show connect prompt
   const prompt = document.getElementById('shield-wallet-prompt');
