@@ -3170,6 +3170,7 @@ function computeShardRank(){
 async function loadRank(){
   // Rank is always derived from shard forge state, not balance
   guardianRank = computeShardRank();
+  try{localStorage.setItem('sg_rank',String(guardianRank));}catch(e){}
   try{
     const h = await window.storage.get('guardian_handle');
     if(h && h.value){ const el=document.getElementById('guardian-handle'); if(el) el.value=h.value; }
@@ -3181,7 +3182,7 @@ async function loadRank(){
   try{if(localStorage.getItem('ksto_member')==='true') unlockAch('com_ksto1');}catch(e){}
   try{if(localStorage.getItem('ksto_active')==='true') unlockAch('com_ksto2');}catch(e){}
 }
-async function saveRank(){ try{ await window.storage.set('guardian_rank', String(guardianRank)); }catch(e){} }
+async function saveRank(){ try{ await window.storage.set('guardian_rank', String(guardianRank)); }catch(e){} try{localStorage.setItem('sg_rank',String(guardianRank));}catch(e){} }
 
 function renderShield(){
   const s = SHIELDS[guardianRank];
@@ -3714,7 +3715,7 @@ function manualForge(shieldName) {
   unlockAch('forge_' + shieldName.toLowerCase());
   // Rank advances when a shield is forged
   var newRank = computeShardRank();
-  if (newRank !== guardianRank) { guardianRank = newRank; renderShield(); }
+  if (newRank !== guardianRank) { guardianRank = newRank; try{localStorage.setItem('sg_rank',String(guardianRank));}catch(e){} renderShield(); }
   triggerShieldForge(shieldName);
 }
 async function walletConnect() {
@@ -3903,7 +3904,7 @@ function onGuardBalanceLoaded(actor, bal) {
 
   // Rank is always from shard progression — balance shows eligibility only
   const shardRank = computeShardRank();
-  if (shardRank !== guardianRank) { guardianRank = shardRank; renderShield(); }
+  if (shardRank !== guardianRank) { guardianRank = shardRank; try{localStorage.setItem('sg_rank',String(guardianRank));}catch(e){} renderShield(); }
   const eligibleRank = getRankForBalance(bal);
   const rankUnlockEl = document.getElementById('shield-rank-unlock');
   if (rankUnlockEl) {
@@ -4073,6 +4074,7 @@ function snd(type){
 // ─── State ────────────────────────────────────────────────────────────────────
 let cvs,ctx,cscale=1,g=null,raf=null,lastT=0,coinImg=null,coinLoaded=false,coinAngle=0;
 let _comboBadgeMult=0,_comboBadgeFadeT=null;
+let _wsPlayBtnCy=262,_wsHowBtnCy=311;
 
 // ─── Seeded RNG ───────────────────────────────────────────────────────────────
 function lcg(seed){let s=seed>>>0;return()=>{s=(Math.imul(1664525,s)+1013904223)>>>0;return s/0x100000000;};}
@@ -4128,7 +4130,8 @@ function buildWave(w,rng){
 
 // ─── New game state ───────────────────────────────────────────────────────────
 function newG(daily){
-  const rank=typeof guardianRank!=='undefined'?Math.min(6,guardianRank):0;
+  var _sgFallback=0;try{var _sgStr=localStorage.getItem('sg_rank');if(_sgStr!==null)_sgFallback=Math.min(6,Math.max(0,parseInt(_sgStr)||0));}catch(e){}
+  const rank=typeof guardianRank!=='undefined'?Math.min(6,guardianRank):_sgFallback;
   const cfg=RC[rank];
   const dseed=parseInt(new Date().toISOString().slice(0,10).replace(/-/g,''));
   const rng=lcg(daily?dseed:(Math.random()*0xFFFFFFFF)|0);
@@ -4234,10 +4237,8 @@ function tapTut(cx,cy){
   }
 }
 function tapStart(cx,cy){
-  // PLAY: rrect(CX-90,238,180,48) → center(CX,262)
-  if(inBtn(cx,cy,CX,262,180,48))checkAndUsePlay('ws',function(){if(window.innerWidth<=768)tryRequestFullscreen(document.getElementById('arena-container'));startGame(false);});
-  // HOW TO PLAY: rrect(CX-90,294,180,34) → center(CX,311)
-  else if(inBtn(cx,cy,CX,311,180,34)){g.phase='TUT';g.tutStep=1;drawStatic();}
+  if(inBtn(cx,cy,CX,_wsPlayBtnCy,180,48))checkAndUsePlay('ws',function(){if(window.innerWidth<=768)tryRequestFullscreen(document.getElementById('arena-container'));startGame(false);});
+  else if(inBtn(cx,cy,CX,_wsHowBtnCy,180,34)){g.phase='TUT';g.tutStep=1;drawStatic();}
 }
 function tapPause(cx,cy){
   if(inBtn(cx,cy,CX,280,180,44))togglePause();
@@ -4268,7 +4269,7 @@ function tapChoice(cx,cy){
 }
 function tryRequestFullscreen(el){if(!el)return;try{if(el.requestFullscreen)el.requestFullscreen();else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen();else if(el.mozRequestFullScreen)el.mozRequestFullScreen();else if(el.msRequestFullscreen)el.msRequestFullscreen();}catch(e){}}
 function exitFullscreenGame(){try{if(document.exitFullscreen)document.exitFullscreen();else if(document.webkitExitFullscreen)document.webkitExitFullscreen();else if(document.mozCancelFullScreen)document.mozCancelFullScreen();else if(document.msExitFullscreen)document.msExitFullscreen();}catch(e){}}
-(function(){function _fsch(){var isFS=!!(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement);document.querySelectorAll('.fs-exit-btn').forEach(function(b){b.style.display=isFS?'flex':'none';});}['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(function(ev){document.addEventListener(ev,_fsch);});}());
+(function(){function _fsch(){var isFS=!!(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement);document.querySelectorAll('.fs-exit-btn').forEach(function(b){b.style.display=isFS?'flex':'none';});if(isFS){setTimeout(function(){try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}},150);}}['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(function(ev){document.addEventListener(ev,_fsch);});}());
 function updateStartStep4(){var _connected=typeof walletActor!=='undefined'&&walletActor;var _yes='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:#4ade80;"><span>✓</span><span>Wallet connected as <strong>@'+walletActor+'</strong></span></div>';var _no='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:var(--text3);"><span>○</span><span>No wallet connected yet</span></div>';var check=document.getElementById('start-step4-check');var btn=document.getElementById('start-connect-btn');if(check)check.innerHTML=_connected?_yes:_no;if(btn)btn.style.display=_connected?'none':'';var ntgCheck=document.getElementById('ntg-step4-check');var ntgBtn=document.getElementById('ntg-connect-btn');if(ntgCheck)ntgCheck.innerHTML=_connected?_yes:_no;if(ntgBtn)ntgBtn.style.display=_connected?'none':'';}
 function toggleMute(){muted=!muted;localStorage.setItem('guard_arena_mute',muted?'1':'0');if(g&&['START','TUT','GAME_OVER','PAUSED'].includes(g.phase))drawStatic();}
 function togglePause(){
@@ -5107,24 +5108,35 @@ function drawStart(){
   else{ctx.beginPath();ctx.arc(CX,97,56,0,Math.PI*2);ctx.fillStyle=rc.primary+'22';ctx.fill();}
   ctx.restore();
   ctx.save();ctx.beginPath();ctx.arc(CX,97,58,0,Math.PI*2);ctx.strokeStyle=rc.primary;ctx.lineWidth=2;ctx.shadowBlur=18;ctx.shadowColor=rc.primary;ctx.stroke();ctx.restore();
+  // Dynamic font sizes (logical px in the cscale-transformed canvas space)
   const S=cscale;
-  const fTitle=Math.max(22,Math.ceil(20/S))+'px';
-  const fRank=Math.max(12,Math.ceil(14/S))+'px';
-  const fHint=Math.max(10,Math.ceil(11/S))+'px';
-  const fBtn=Math.max(14,Math.ceil(16/S))+'px';
-  const fSm=Math.max(12,Math.ceil(12/S))+'px';
+  const szTitle=Math.max(22,Math.ceil(20/S));
+  const szRank=Math.max(12,Math.ceil(14/S));
+  const szHint=Math.max(10,Math.ceil(11/S));
+  const szBtn=Math.max(14,Math.ceil(16/S));
+  const szSm=Math.max(12,Math.ceil(12/S));
+  // Dynamic Y layout starting below coin bottom (97+58=155)
+  const yTitle=155+Math.round(szTitle*0.85)+4;
+  const yRank=yTitle+Math.round(szRank)+4;
+  const yHint1=yRank+Math.round(szHint)+3;
+  const yHint2=yHint1+Math.round(szHint)+3;
+  const playTop=yHint2+Math.round(szHint*0.4)+8;
+  const playCy=playTop+24;
+  const howTop=playCy+24+8;
+  const howCy=howTop+17;
+  _wsPlayBtnCy=playCy;_wsHowBtnCy=howCy;
   ctx.textAlign='center';ctx.textBaseline='alphabetic';
-  ctx.shadowBlur=12;ctx.shadowColor='#c9922a';ctx.fillStyle='#e8b84b';ctx.font='bold '+fTitle+' "Cinzel Decorative",Cinzel,serif';ctx.fillText('GUARDIAN ARENA',CX,170);
-  ctx.shadowBlur=0;ctx.fillStyle='#b78df5';ctx.font=fRank+' Cinzel,serif';ctx.fillText(rn+' — '+cfg.hp+' Shield HP'+(cfg.ab?' — '+cfg.abN:''),CX,192);
-  ctx.fillStyle='#334155';ctx.font=fHint+' Cinzel,serif';ctx.fillText('Score 1,000 pts = +200 Guardian Points',CX,208);
+  ctx.shadowBlur=12;ctx.shadowColor='#c9922a';ctx.fillStyle='#e8b84b';ctx.font='bold '+szTitle+'px "Cinzel Decorative",Cinzel,serif';ctx.fillText('GUARDIAN ARENA',CX,yTitle);
+  ctx.shadowBlur=0;ctx.fillStyle='#b78df5';ctx.font=szRank+'px Cinzel,serif';ctx.fillText(rn+' — '+cfg.hp+' Shield HP'+(cfg.ab?' — '+cfg.abN:''),CX,yRank);
+  ctx.fillStyle='rgba(255,255,255,0.7)';ctx.font=szHint+'px Cinzel,serif';ctx.fillText('Score 1,000 pts = +200 Guardian Points',CX,yHint1);
   const pb=JSON.parse(localStorage.getItem('guard_arena_pb')||'{}');
-  ctx.fillStyle='#475569';ctx.font=fHint+' Cinzel,serif';ctx.fillText(pb.score?'Best: Wave '+pb.wave+' · Score '+pb.score:'No record yet',CX,224);
-  // PLAY: rrect top=238 → center y=262 (48px tall)
-  ctx.fillStyle='rgba(201,146,42,0.18)';rrect(CX-90,238,180,48,8);ctx.fill();ctx.strokeStyle='#c9922a';ctx.lineWidth=1.5;rrect(CX-90,238,180,48,8);ctx.stroke();
-  ctx.fillStyle='#e8b84b';ctx.font='bold '+fBtn+' Cinzel,serif';ctx.textBaseline='middle';ctx.fillText('▶  PLAY',CX,262);
-  // HOW TO PLAY: rrect top=294 → center y=311 (34px tall)
-  ctx.fillStyle='rgba(71,85,105,0.12)';rrect(CX-90,294,180,34,8);ctx.fill();ctx.strokeStyle='#334155';ctx.lineWidth=1;rrect(CX-90,294,180,34,8);ctx.stroke();
-  ctx.fillStyle='#64748b';ctx.font=fSm+' Cinzel,serif';ctx.fillText('❓  HOW TO PLAY',CX,311);
+  ctx.fillStyle='rgba(255,255,255,0.55)';ctx.font=szHint+'px Cinzel,serif';ctx.fillText(pb.score?'Best: Wave '+pb.wave+' · Score '+pb.score:'No record yet',CX,yHint2);
+  // PLAY button
+  ctx.fillStyle='rgba(201,146,42,0.18)';rrect(CX-90,playTop,180,48,8);ctx.fill();ctx.strokeStyle='#c9922a';ctx.lineWidth=1.5;rrect(CX-90,playTop,180,48,8);ctx.stroke();
+  ctx.fillStyle='#e8b84b';ctx.font='bold '+szBtn+'px Cinzel,serif';ctx.textBaseline='middle';ctx.fillText('▶  PLAY',CX,playCy);
+  // HOW TO PLAY button
+  ctx.fillStyle='rgba(71,85,105,0.12)';rrect(CX-90,howTop,180,34,8);ctx.fill();ctx.strokeStyle='rgba(148,163,184,0.5)';ctx.lineWidth=1;rrect(CX-90,howTop,180,34,8);ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font=szSm+'px Cinzel,serif';ctx.fillText('❓  HOW TO PLAY',CX,howCy);
   ctx.textBaseline='alphabetic';
   ctx.textAlign='right';ctx.fillStyle='rgba(100,116,139,0.4)';ctx.font='9px monospace';
   ctx.fillText(BUILD_VERSION,CW-5,CH-4);
@@ -5310,7 +5322,7 @@ var FG = {
   isDaily: false, _rng: null, _nextPU: 220, _nextBarrier: 120, _barrierCount: 0,
   _lastTopH: null, shardDrops: [], _floats: [], _runNewShard: null, _randShardsDropped: 0,
   showTut: false,
-  _tapHandler: null, _keyHandler: null, _resizeHandler: null,
+  _tapHandler: null, _keyHandler: null, _resizeHandler: null, _orientHandler: null,
 
   init: function(canvas) {
     this.stop();
@@ -5347,10 +5359,12 @@ var FG = {
       }
     };
     this._resizeHandler = function() { self._resize(); };
+    this._orientHandler = function() { setTimeout(function(){ self._resize(); }, 80); };
     this.canvas.addEventListener('pointerdown', this._tapHandler);
     this.canvas.addEventListener('touchstart', this._tapHandler, {passive:false});
     document.addEventListener('keydown', this._keyHandler);
     window.addEventListener('resize', this._resizeHandler);
+    window.addEventListener('orientationchange', this._orientHandler);
     var loop = function() { self.animFrame = requestAnimationFrame(loop); self.update(); self.draw(); };
     loop();
   },
@@ -5477,7 +5491,8 @@ var FG = {
     }
     if (this._keyHandler) document.removeEventListener('keydown', this._keyHandler);
     if (this._resizeHandler) window.removeEventListener('resize', this._resizeHandler);
-    this._tapHandler = null; this._keyHandler = null; this._resizeHandler = null;
+    if (this._orientHandler) window.removeEventListener('orientationchange', this._orientHandler);
+    this._tapHandler = null; this._keyHandler = null; this._resizeHandler = null; this._orientHandler = null;
   },
 
   update: function() {
@@ -5870,7 +5885,7 @@ var FG = {
     c.shadowBlur = 16; c.shadowColor = '#c9922a';
     c.fillText('GUARD TRIALS', w/2, h*0.48);
     c.shadowBlur = 0;
-    c.fillStyle = '#8899bb'; c.font = fgSub+' Arial,sans-serif';
+    c.fillStyle = 'rgba(255,255,255,0.75)'; c.font = fgSub+' Arial,sans-serif';
     c.fillText('Fly through the blockchain', w/2, h*0.535);
     c.fillStyle = 'rgba(201,146,42,0.18)';
     this._rrect(w/2-80, h*0.60-20, 160, 40, 8); c.fill();
@@ -5883,10 +5898,10 @@ var FG = {
     this._rrect(w/2-70, h*0.72-15, 140, 30, 8); c.fill();
     c.strokeStyle = 'rgba(100,116,139,0.6)'; c.lineWidth = 1;
     this._rrect(w/2-70, h*0.72-15, 140, 30, 8); c.stroke();
-    c.fillStyle = '#64748b'; c.font = fgSm+' Arial,sans-serif';
+    c.fillStyle = 'rgba(255,255,255,0.6)'; c.font = fgSm+' Arial,sans-serif';
     c.fillText('❓  HOW TO PLAY', w/2, h*0.72);
     if (this.pb > 0 || this.pbDaily > 0) {
-      c.fillStyle = '#445566'; c.font = '11px Arial,sans-serif';
+      c.fillStyle = 'rgba(255,255,255,0.5)'; c.font = '11px Arial,sans-serif';
       var pbTxt = this.pb > 0 ? 'Best: '+this.pb : '';
       var dTxt = this.pbDaily > 0 ? 'Daily: '+this.pbDaily : '';
       c.fillText([pbTxt,dTxt].filter(Boolean).join(' · '), w/2, h*0.92);
