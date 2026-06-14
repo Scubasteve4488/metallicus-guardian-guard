@@ -43,8 +43,23 @@ button{cursor:pointer;font-family:'Inter',sans-serif;}
 ::-webkit-scrollbar-track{background:var(--bg2);}
 ::-webkit-scrollbar-thumb{background:var(--border-gold);border-radius:3px;}
 
+/* GLOBAL TICKER */
+#ticker-bar{position:fixed;top:0;left:0;right:0;z-index:1001;height:26px;background:rgba(4,7,14,0.99);border-bottom:1px solid rgba(201,146,42,0.18);display:flex;align-items:center;}
+.ticker-inner{max-width:1200px;margin:0 auto;padding:0 1rem;display:flex;align-items:center;gap:.55rem;width:100%;min-width:0;}
+.ticker-dot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);animation:pbDot 1.8s ease-in-out infinite;flex-shrink:0;}
+#ticker-price{font-family:'Cinzel',serif;font-size:.7rem;font-weight:700;color:var(--gold-l);}
+#ticker-change{font-size:.68rem;font-weight:600;letter-spacing:.02em;}
+.tch-pos{color:#22c55e;}.tch-neg{color:#ef4444;}
+.ticker-sep{color:rgba(255,255,255,0.15);font-size:.6rem;}
+.ticker-lbl{font-size:.62rem;color:var(--text3);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ticker-link{font-size:.62rem;color:var(--pur-g);text-decoration:none;white-space:nowrap;flex-shrink:0;transition:color .15s;}
+.ticker-link:hover{color:var(--gold-l);}
+.t-sm{display:inline;}
+@keyframes tickerPulse{0%,100%{color:var(--gold-l);}50%{color:#fff;text-shadow:0 0 10px rgba(201,146,42,.9);}}
+#ticker-price.tpulse{animation:tickerPulse .7s ease-in-out;}
+@media(max-width:600px){.t-sm{display:none;}}
 /* NAV */
-#nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:60px;background:rgba(8,11,18,0.97);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.5rem;gap:1rem;backdrop-filter:blur(12px);}
+#nav{position:fixed;top:26px;left:0;right:0;z-index:1000;height:60px;background:rgba(8,11,18,0.97);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.5rem;gap:1rem;backdrop-filter:blur(12px);}
 .nav-brand{display:flex;align-items:center;gap:.6rem;cursor:pointer;flex-shrink:0;}
 .nav-brand img{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--gold);object-fit:cover;}
 .nav-brand span{font-family:'Cinzel Decorative','Cinzel',serif;font-size:.95rem;font-weight:700;color:var(--gold-l);letter-spacing:.08em;}
@@ -79,7 +94,15 @@ button{cursor:pointer;font-family:'Inter',sans-serif;}
 .nav-dd-item:hover{color:var(--gold-l);background:rgba(201,146,42,0.1);}
 
 /* PAGES */
-.page{display:none;min-height:100vh;padding-top:70px;}
+.page{display:none;min-height:100vh;padding-top:96px;}
+/* ECO STATS BAR */
+#eco-stats-bar{background:rgba(4,7,14,0.55);border-bottom:1px solid rgba(201,146,42,0.1);padding:.8rem 0;}
+.eco-stats-inner{max-width:1100px;margin:0 auto;padding:0 1.5rem;display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;}
+.eco-sc{text-align:center;padding:.4rem .25rem;}
+.eco-si{font-size:1.1rem;line-height:1;margin-bottom:.15rem;}
+.eco-sv{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--gold-l);line-height:1.2;}
+.eco-sl{font-size:.55rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-top:.1rem;}
+@media(max-width:600px){.eco-stats-inner{grid-template-columns:1fr 1fr;row-gap:.6rem;}}
 .container{max-width:1100px;margin:0 auto;padding:0 1.5rem;}
 .section{padding:4rem 0;}
 .section-sm{padding:2rem 0;}
@@ -551,7 +574,18 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
 </head>
 <body>
-<!-- build: 2026-06-13-v3 -->
+<!-- build: 2026-06-13-v4 -->
+<!-- GLOBAL TICKER BAR -->
+<div id="ticker-bar">
+  <div class="ticker-inner">
+    <span class="ticker-dot"></span>
+    <span id="ticker-price">—</span>
+    <span id="ticker-change"></span>
+    <span class="ticker-sep t-sm">·</span>
+    <span class="ticker-lbl t-sm">GUARD · SimpleDEX Pool 187</span>
+    <a href="https://simpledex.fun/pool/187" target="_blank" rel="noopener" class="ticker-link t-sm">Trade →</a>
+  </div>
+</div>
 <!-- LOADING SCREEN -->
 <div id="loading-screen">
   <img src="./shield_aegis.png" id="loading-shield" alt="GUARD">
@@ -659,6 +693,15 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <span class="pb-sep pb-hide-sm">|</span>
     <div class="pb-stat pb-hide-sm"><span class="pb-label">24h Vol</span><span id="hp-vol" class="pb-val">—</span></div>
     <div class="pb-link"><a href="https://simpledex.fun/token/172" target="_blank" rel="noopener">SimpleDEX →</a></div>
+  </div>
+</div>
+<!-- ECO STATS BAR -->
+<div id="eco-stats-bar">
+  <div class="eco-stats-inner">
+    <div class="eco-sc"><div class="eco-si">👥</div><div class="eco-sv" id="es-holders">—</div><div class="eco-sl">GUARD Holders</div></div>
+    <div class="eco-sc"><div class="eco-si">💧</div><div class="eco-sv" id="es-lp">—</div><div class="eco-sl">LP Pool Depth</div></div>
+    <div class="eco-sc"><div class="eco-si">🔥</div><div class="eco-sv" id="es-staked">—</div><div class="eco-sl">Staked (BlastPad)</div></div>
+    <div class="eco-sc"><div class="eco-si">♻</div><div class="eco-sv" id="es-burned">—</div><div class="eco-sl">Total Burned</div></div>
   </div>
 </div>
 <div class="container">
@@ -1970,7 +2013,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena'];
-const BUILD_VERSION='2026-06-13-v3';
+const BUILD_VERSION='2026-06-13-v4';
 (function(){var b=document.getElementById('build-badge');if(b)b.textContent=BUILD_VERSION;})();
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
@@ -2101,7 +2144,7 @@ loadLiveData();
 
 // ===== HOME PAGE PRICE BAR =====
 async function fetchHomePrice() {
-  let price = 0, vol = 0, supply = 0;
+  let price = 0, vol = 0, supply = 0, change24h = 0;
 
   // 1. Supply from chain
   for (const rpc of GUARD_CFG.rpcs) {
@@ -2123,8 +2166,9 @@ async function fetchHomePrice() {
     const r = await fetchTimeout('https://api.simpledex.fun/v1/tokens/172', {}, 6000);
     if (r.ok) {
       const d = await r.json();
-      price = parseFloat(d.priceUsd || d.price_usd || d.usdPrice || d.price || 0) || 0;
-      vol   = parseFloat(d.volume24h || d.volume_24h || d.volumeUsd || d.volume || 0) || 0;
+      price     = parseFloat(d.priceUsd || d.price_usd || d.usdPrice || d.price || 0) || 0;
+      vol       = parseFloat(d.volume24h || d.volume_24h || d.volumeUsd || d.volume || 0) || 0;
+      change24h = parseFloat(d.priceChange24h || d.change24h || d.price_change_24h || d.changePercent24h || d.change_percent_24h || 0) || 0;
     }
   } catch(e) {}
 
@@ -2163,9 +2207,94 @@ async function fetchHomePrice() {
   setStat('hp-vol',    vol   > 0 ? fmt(vol)   : '—');
   // Sync supply to GUARD page stat too
   if (supply > 0) setStat('stat-supply', fmtNum(supply));
+  // Update global ticker
+  updateTicker(price, change24h);
 }
 fetchHomePrice();
 setInterval(fetchHomePrice, 60000);
+
+// ===== GLOBAL TICKER =====
+function fmtPrice(p){
+  if(p<=0)return '—';
+  if(p<0.000001)return '$'+p.toExponential(2);
+  if(p<0.01)return '$'+p.toFixed(8);
+  if(p<1)return '$'+p.toFixed(6);
+  return '$'+p.toFixed(4);
+}
+function updateTicker(price, change24h){
+  var el=document.getElementById('ticker-price');
+  if(!el)return;
+  var newTxt=fmtPrice(price);
+  if(el.textContent!==newTxt){
+    el.textContent=newTxt;
+    el.classList.remove('tpulse');void el.offsetWidth;el.classList.add('tpulse');
+  }
+  var chEl=document.getElementById('ticker-change');
+  if(chEl){
+    if(change24h!==0){
+      var sign=change24h>=0?'+':'';
+      chEl.textContent=sign+change24h.toFixed(2)+'%';
+      chEl.className=change24h>=0?'tch-pos':'tch-neg';
+    }else{chEl.textContent='';chEl.className='';}
+  }
+}
+
+// ===== ECO STATS BAR =====
+var _ecoFirstLoad=true;
+function ecoCountUp(id,target,duration){
+  var el=document.getElementById(id);if(!el)return;
+  var start=performance.now();
+  (function step(now){
+    var p=Math.min((now-start)/duration,1);
+    var e=1-Math.pow(1-p,3);
+    el.textContent=fmtNum(Math.round(target*e));
+    if(p<1)requestAnimationFrame(step);
+  })(start);
+}
+async function fetchEcoStats(){
+  var rpc=GUARD_CFG.rpcs[0];
+  var holders=0,lpXpr=0,staked=0,burned=0,maxSup=0,curSup=0;
+  // 1. Holders + extras from SimpleDEX token API
+  try{
+    var r=await fetchTimeout('https://api.simpledex.fun/v1/tokens/172',{},6000);
+    if(r.ok){var d=await r.json();holders=parseInt(d.holderCount||d.holder_count||d.holders||d.totalHolders||0)||0;}
+  }catch(e){}
+  // 2. Pool 187 depth
+  try{
+    var pr=await fetchTimeout(rpc+'/v1/chain/get_table_rows',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({json:true,code:'simpledex',scope:'simpledex',table:'pools',lower_bound:187,upper_bound:187,limit:1,key_type:'i64',index_position:'1'})},7000);
+    if(pr.ok){var pd=await pr.json();var pool=pd.rows&&pd.rows[0];if(pool){
+      var rawX=pool.tokenA_reserve!=null?pool.tokenA_reserve:pool.reserveA!=null?pool.reserveA:pool.reserve1!=null?pool.reserve1:(pool.tokenA&&(pool.tokenA.reserve!=null?pool.tokenA.reserve:pool.tokenA.amount))||0;
+      lpXpr=Math.round(parseChainAmount(rawX)*2);
+    }}
+  }catch(e){}
+  // 3. Total staked = blastpad account's GUARD balance
+  try{
+    var sr=await fetchTimeout(rpc+'/v1/chain/get_table_rows',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({json:true,code:'simpletoken',scope:'blastpad',table:'accounts',limit:50})},6000);
+    if(sr.ok){var sd=await sr.json();var row=(sd.rows||[]).find(function(r){return typeof r.balance==='string'&&r.balance.includes('GUARD');});if(row)staked=parseFloat(row.balance)||0;}
+  }catch(e){}
+  // 4. Burned = max_supply - circulating supply
+  try{
+    var br=await fetchTimeout(rpc+'/v1/chain/get_currency_stats',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({code:'simpletoken',symbol:'GUARD'})},5000);
+    if(br.ok){var bd=await br.json();var info=bd['GUARD'];if(info&&info.max_supply&&info.supply){
+      maxSup=parseFloat(String(info.max_supply).split(' ')[0]);curSup=parseFloat(String(info.supply).split(' ')[0]);
+      if(maxSup>curSup)burned=maxSup-curSup;
+    }}
+  }catch(e){}
+  // Render
+  var anim=_ecoFirstLoad;_ecoFirstLoad=false;
+  if(holders>0){if(anim)ecoCountUp('es-holders',holders,1300);else setStat('es-holders',fmtNum(holders));}else setStat('es-holders','—');
+  if(lpXpr>0){
+    if(anim){ecoCountUp('es-lp',lpXpr,1300);setTimeout(function(){var el=document.getElementById('es-lp');if(el&&!isNaN(parseInt(el.textContent.replace(/[^0-9]/g,''))))el.textContent=fmtNum(lpXpr)+' XPR';},1350);}
+    else setStat('es-lp',fmtNum(lpXpr)+' XPR');
+  }else setStat('es-lp','—');
+  if(staked>0){if(anim)ecoCountUp('es-staked',staked,1300);else setStat('es-staked',fmtNum(Math.round(staked)));}else setStat('es-staked','—');
+  if(burned>0){if(anim)ecoCountUp('es-burned',burned,1300);else setStat('es-burned',fmtNum(Math.round(burned)));}else setStat('es-burned','—');
+}
+fetchEcoStats();
+setInterval(fetchEcoStats,300000);
 
 // ===== HALL OF GUARDIANS (localStorage — on-chain version coming with XPR Network smart contract) =====
 function trackGuardianInHall(actor, rank) {
