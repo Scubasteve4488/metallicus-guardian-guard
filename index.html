@@ -590,7 +590,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
 </head>
 <body>
-<!-- build: 2026-06-14-v2 -->
+<!-- build: 2026-06-14-v3 -->
 <!-- GLOBAL TICKER BAR -->
 <div id="ticker-bar">
   <div class="ticker-inner">
@@ -619,16 +619,16 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <div id="navScroll">
       <button class="nav-btn active" id="t-home" onclick="go('home')">Home</button>
       <button class="nav-btn" id="t-guard" onclick="go('guard')">🛡 GUARD</button>
+      <button class="nav-btn" id="t-arena" onclick="go('arena')">⚔ Stand Guard</button>
       <button class="nav-btn" id="t-ecosystem" onclick="go('ecosystem')">Ecosystem</button>
+      <button class="nav-btn" id="t-shields" onclick="go('shields')">🛡 Shields</button>
       <div class="nav-dropdown" id="dd-learn" onmouseenter="openDropdown('dd-learn')" onmouseleave="scheduleCloseDropdowns()">
         <button class="nav-btn nav-dropdown-btn" id="t-learn-group" onclick="toggleDropdown('dd-learn',event)">Learn <span class="dd-caret">▾</span></button>
       </div>
-      <button class="nav-btn" id="t-shields" onclick="go('shields')">🛡 Shields</button>
       <div class="nav-dropdown" id="dd-communities" onmouseenter="openDropdown('dd-communities')" onmouseleave="scheduleCloseDropdowns()">
         <button class="nav-btn nav-dropdown-btn" id="t-communities-group" onclick="toggleDropdown('dd-communities',event)">Communities <span class="dd-caret">▾</span></button>
       </div>
       <button class="nav-btn" id="t-creator" onclick="go('creator')">Creator</button>
-      <button class="nav-btn" id="t-arena" onclick="go('arena')">⚔ Stand Guard</button>
     </div>
     <button class="nav-arrow" onclick="scrollNav(180)">&#8250;</button>
   </div>
@@ -637,6 +637,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </nav>
 <div id="dd-learn-panel" class="nav-dd-panel" onmouseenter="cancelCloseDropdowns()" onmouseleave="scheduleCloseDropdowns()">
+  <button class="nav-dd-item" onclick="go('newtoguard');closeAllDropdowns()">🛡 New to GUARD?</button>
   <button class="nav-dd-item" onclick="go('start');closeAllDropdowns()">🚀 New to XPR?</button>
   <button class="nav-dd-item" onclick="go('learn');closeAllDropdowns()">🎓 Academy</button>
   <button class="nav-dd-item" onclick="go('faq');closeAllDropdowns()">❓ FAQ</button>
@@ -651,16 +652,17 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <button onclick="closeMenu()" style="position:absolute;top:1rem;right:1.5rem;background:none;border:none;color:var(--gold-l);font-size:1.8rem;line-height:1;cursor:pointer;">✕</button>
   <button class="mobile-nav-btn" onclick="go('home');closeMenu()">🏠 Home</button>
   <button class="mobile-nav-btn" onclick="go('guard');closeMenu()">🛡 GUARD Token</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('start')">🚀 Start Here</button>
+  <button class="mobile-nav-btn" onclick="go('newtoguard');closeMenu()">🛡 New to GUARD?</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('start')">🚀 New to XPR?</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('arena')">⚔ Stand Guard</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('ecosystem')">🌐 Ecosystem</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('learn')">🎓 Academy</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('shields')">🛡 Shields</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('learn')">🎓 Academy</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('faq')">❓ FAQ</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('ksto')">🦊 KSTO</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('cyphergang')">🔥 CypherGang</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('snipverse')">🌐 Snipverse</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('creator')">👤 Creator</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('arena')">⚔ Stand Guard</button>
   <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g mt2" style="justify-content:center;">⚔ Buy GUARD Token</a>
   <button id="mob-wallet-connect-btn" onclick="walletConnect();closeMenu();" class="mobile-nav-btn" style="color:var(--gold-l);border-color:var(--border-gold);border-top:1px solid var(--border-gold);margin-top:.75rem;padding-top:.75rem;text-align:center;width:100%;">⚡ Connect Wallet</button>
   <div id="mob-wallet-disconnect" style="display:none;border-top:1px solid var(--border-gold);margin-top:.75rem;padding-top:.75rem;">
@@ -1087,6 +1089,85 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 </div>
 </div>
 
+<!-- ═══════ PAGE: NEW TO GUARD? ═══════ -->
+<div id="page-newtoguard" class="page">
+<div class="container">
+  <div class="section">
+    <div class="sec-label">Already on XPR Network?</div>
+    <h1 class="page-title">New to GUARD?</h1>
+    <p class="page-sub">Already have a WebAuth wallet and know your way around XPR Network? Follow these 6 steps to get into GUARD — from your first buy to your first Arena game.</p>
+    <div class="steps mt4">
+
+      <div class="step reveal">
+        <div class="step-l"><div class="step-n">1</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <h3>What is GUARD?</h3>
+          <p>GUARD is a community memecoin built on XPR Network — zero gas fees, instant transfers, and fully on-chain. It powers the Guardian rank system on this site: your GUARD balance determines your Shield rank, and you can play the Guardian Arena game. GUARD was launched on SimpleDEX (the community token launchpad on XPR) and is traded freely against XPR in Pool 187.</p>
+          <div class="flex gap-sm wrap mt2">
+            <button class="btn btn-o" style="font-size:.78rem;" onclick="go('guard')">🛡 View GUARD Token Page</button>
+            <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-o" style="font-size:.78rem;">SimpleDEX Token Page →</a>
+          </div>
+          <div class="info mt2"><span>ℹ</span><div>GUARD is a community memecoin, not a financial product. Only spend what you're comfortable losing.</div></div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-l"><div class="step-n">2</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <h3>Buy GUARD on SimpleDEX</h3>
+          <p>Head to SimpleDEX Pool 187 and swap XPR for GUARD. The trade is instant, zero-fee, and fully on-chain. No KYC required beyond what your WebAuth wallet already has. You can buy as little or as much as you like.</p>
+          <div class="flex gap-sm wrap mt2">
+            <a href="https://simpledex.fun/pool/187" target="_blank" class="btn btn-g" style="font-size:.8rem;">Buy GUARD — SimpleDEX Pool 187 →</a>
+          </div>
+          <div class="info mt2"><span>💡</span><div>Need XPR first? Swap or buy XPR via <a href="https://webauth.com" target="_blank" style="color:var(--gold-l);">WebAuth Wallet</a> or <a href="https://metalpay.com" target="_blank" style="color:var(--gold-l);">Metal Pay</a>.</div></div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-l"><div class="step-n">3</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <h3>Stake GUARD on BlastPad (Optional)</h3>
+          <p>You can optionally stake your GUARD on BlastPad Pool 791. Staked GUARD counts toward your Guardian rank just like wallet GUARD — so staking doesn't reduce your rank. Staking earns you additional rewards and helps secure the ecosystem.</p>
+          <div class="flex gap-sm wrap mt2">
+            <a href="https://blastpad.io" target="_blank" class="btn btn-o" style="font-size:.78rem;">BlastPad Staking →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-l"><div class="step-n">4</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <h3>Connect Your Wallet Here</h3>
+          <p>Connect your WebAuth wallet to standguard.net to unlock your Guardian rank and enable scored Arena play. Hit <strong>Connect</strong> in the top right — it opens a WebAuth popup, approve it to link.</p>
+          <div id="ntg-step4-check" style="margin-top:.85rem;"></div>
+          <button class="btn btn-g mt2" onclick="walletConnect()" id="ntg-connect-btn" style="font-size:.85rem;">Connect WebAuth Wallet →</button>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-l"><div class="step-n">5</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <h3>Claim Your Shield Rank</h3>
+          <p>Your Shield Rank is set by your total GUARD (wallet + staked). Once connected, head to the Shields tab to see your current rank — Cryptide, Riftforge, Helion, and up through Aegis at the top. Each rank has a unique shield image. Collect and forge shards to unlock an alternative rank path.</p>
+          <button class="btn btn-o mt2" style="font-size:.8rem;" onclick="go('shields')">🛡 View Your Shield Rank →</button>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-l"><div class="step-n">6</div></div>
+        <div class="step-body">
+          <h3>Play Guardian Arena</h3>
+          <p>Guardian Arena has two games: <strong>Wave Survival</strong> — defend your position against endless enemy waves — and <strong>GUARD Trials</strong>, a fast reflex coin-collecting game. Play free anytime; connect wallet to unlock daily scored mode and leaderboard tracking.</p>
+          <button class="btn btn-g mt2" style="font-size:.8rem;" onclick="go('arena')">⚔ Open Guardian Arena →</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="disc mt3"><span>ℹ</span><div>GUARD is a community memecoin on XPR Network. Not financial advice. Only invest what you can afford to lose.</div></div>
+  </div>
+</div>
+</div>
+
 <!-- ═══════ PAGE: ECOSYSTEM ═══════ -->
 <div id="page-ecosystem" class="page">
 <div class="container">
@@ -1140,9 +1221,9 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <!-- 🎮 COMMUNITY & CULTURE -->
     <div style="font-family:'Cinzel',serif;font-size:.92rem;font-weight:700;color:var(--gold-l);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid rgba(201,146,42,0.3);padding-bottom:.5rem;margin:2rem 0 1rem;">🎮 Community &amp; Culture</div>
     <div class="grid grid-auto mb3">
-      <a href="https://x.com/Keep_Snipping" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🎙</span><h3 style="margin:0;">KSTO</h3></div><p>Kulture Speaks Truth Onchain — community events, weekly Spaces, and the cultural backbone of XPR Network. Follow @Keep_Snipping on X.</p><span class="card-link">@Keep_Snipping</span></a>
-      <a href="https://snipverse.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🌐</span><h3 style="margin:0;">Snipverse</h3></div><p>XPR Network's community social platform — post content, earn SNIPS, and connect with the ecosystem. Built on-chain.</p><span class="card-link">snipverse.com</span></a>
-      <a href="https://soon.market" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🤖</span><h3 style="margin:0;">CypherGang</h3></div><p>A flagship NFT collection on XPR Network — 500 unique CypherGang characters. Trade and collect on soon.market.</p><span class="card-link">soon.market</span></a>
+      <a href="https://x.com/Keep_Snipping" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><img src="./icon_ksto.jpg?v=2" style="width:22px;height:22px;border-radius:5px;object-fit:cover;flex-shrink:0;"><h3 style="margin:0;">KSTO</h3></div><p>Kulture Speaks Truth Onchain — community events, weekly Spaces, and the cultural backbone of XPR Network. Follow @Keep_Snipping on X.</p><span class="card-link">@Keep_Snipping</span></a>
+      <a href="https://snipverse.com" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><img src="./icon_snipverse.jpg?v=2" style="width:22px;height:22px;border-radius:5px;object-fit:cover;flex-shrink:0;"><h3 style="margin:0;">Snipverse</h3></div><p>XPR Network's community social platform — post content, earn SNIPS, and connect with the ecosystem. Built on-chain.</p><span class="card-link">snipverse.com</span></a>
+      <a href="https://soon.market" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><img src="./icon_cyphergang.jpg?v=2" style="width:22px;height:22px;border-radius:5px;object-fit:cover;flex-shrink:0;"><h3 style="margin:0;">CypherGang</h3></div><p>A flagship NFT collection on XPR Network — 500 unique CypherGang characters. Trade and collect on soon.market.</p><span class="card-link">soon.market</span></a>
       <a href="https://nftclaimhub.io" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>✂️</span><h3 style="margin:0;">Snippy</h3></div><p>The Snippy NFT collection — earn Snippy rewards through Snipverse activity and claim them via NFT Claim Hub. Built by BloxProd.</p><span class="card-link">nftclaimhub.io</span></a>
       <a href="https://soon.market" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🛒</span><h3 style="margin:0;">soon.market</h3></div><p>NFT marketplace on XPR Network (Atomic Assets standard). Home to CypherGang, Snippy, and more.</p><span class="card-link">soon.market</span></a>
       <a href="https://nftclaimhub.io" target="_blank" class="card"><div class="flex gap-sm" style="align-items:center;margin-bottom:.5rem;"><span>🎁</span><h3 style="margin:0;">NFT Claim Hub</h3></div><p>Claim NFT rewards including Snippy and KSTO rewards for Snipverse activity. Non-custodial — built by BloxProd.</p><span class="card-link">nftclaimhub.io</span></a>
@@ -1384,10 +1465,10 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
       <div id="shield-wallet-info" style="background:rgba(201,146,42,0.06);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:.85rem 1.5rem;text-align:center;max-width:560px;margin:0 auto 1.25rem;">
         <div style="font-size:.65rem;color:var(--text3);font-family:'Cinzel',serif;letter-spacing:.14em;margin-bottom:.2rem;">CONNECTED AS</div>
         <div id="shield-wallet-actor" style="font-family:'Cinzel',serif;font-size:1.05rem;color:var(--gold-l);margin-bottom:.2rem;"></div>
-        <div style="font-size:.82rem;color:var(--text2);">GUARD Balance: <span id="shield-guard-bal" style="color:var(--pur-g);font-weight:600;">checking…</span></div>
+        <div style="font-size:.82rem;color:var(--text2);">GUARD Balance: <span id="shield-guard-bal" style="color:var(--pur-g);font-weight:600;">—</span></div>
         <div style="font-size:.74rem;color:var(--text3);margin-top:.2rem;display:flex;gap:.85rem;flex-wrap:wrap;justify-content:center;">
-          <span id="shield-lp-display">LP: checking…</span>
-          <span id="shield-days-display">Hold time: checking…</span>
+          <span id="shield-lp-display"></span>
+          <span id="shield-days-display"></span>
         </div>
         <div id="shield-rank-unlock" style="font-size:.75rem;color:var(--green);margin-top:.2rem;min-height:.9rem;"></div>
         <div style="margin-top:.6rem;">
@@ -2144,11 +2225,11 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 </template>
 
 <script>
-const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena'];
-const BUILD_VERSION='2026-06-14-v2';
+const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
+const BUILD_VERSION='2026-06-14-v3';
 (function(){var b=document.getElementById('build-badge');if(b)b.textContent=BUILD_VERSION;})();
 
-const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
+const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
   if(location.hash!=='#'+id)location.hash=id;
   PAGES.forEach(p=>{
@@ -2174,7 +2255,7 @@ function go(id){
 window.addEventListener('hashchange',function(){var h=location.hash.replace(/^#/,'');if(PAGES.includes(h))go(h);});
 
 // ── Mobile bottom nav ──────────────────────────────────────────────────────────
-const _MBN={home:'mbn-home',shields:'mbn-shields',arena:'mbn-arena',ecosystem:'mbn-ecosystem',start:'mbn-start'};
+const _MBN={home:'mbn-home',shields:'mbn-shields',arena:'mbn-arena',ecosystem:'mbn-ecosystem',guard:'mbn-guard'};
 function mbnActive(id){
   document.querySelectorAll('.mbn-btn').forEach(function(b){b.classList.remove('active');});
   var k=_MBN[id];if(k){var b=document.getElementById(k);if(b)b.classList.add('active');}
@@ -3860,13 +3941,13 @@ function onWalletDisconnected() {
 
   // Clear all balance/status displays
   const shieldBal = document.getElementById('shield-guard-bal');
-  if (shieldBal) shieldBal.textContent = 'checking…';
+  if (shieldBal) shieldBal.textContent = '—';
   const rankUnlockEl = document.getElementById('shield-rank-unlock');
   if (rankUnlockEl) rankUnlockEl.textContent = '';
   const lpDisp = document.getElementById('shield-lp-display');
-  if (lpDisp) { lpDisp.textContent = 'LP: checking…'; lpDisp.style.color = ''; }
+  if (lpDisp) { lpDisp.textContent = ''; lpDisp.style.color = ''; }
   const daysDisp = document.getElementById('shield-days-display');
-  if (daysDisp) { daysDisp.textContent = 'Hold time: checking…'; daysDisp.style.color = ''; }
+  if (daysDisp) { daysDisp.textContent = ''; daysDisp.style.color = ''; }
 
   // Reset on-chain data state
   guardianLpXpr = -1;
@@ -3880,17 +3961,7 @@ function onWalletDisconnected() {
   renderTimeline();
   renderProgress(0);
 
-  // Revoke all wallet-gated achievements from localStorage
-  const WALLET_ACHS = [
-    'first_steps',
-    'holder_1','holder_2','holder_3','holder_4','holder_5','holder_6',
-    'lp_1','lp_2','lp_3','lp_4','lp_5',
-    'stake_1','stake_2','stake_3','stake_4','stake_5','stake_6','stake_7',
-    'loy_7','loy_30','loy_90','loy_180','loy_365',
-    'com_sn1','com_sn2','com_fn1','com_fn2','com_cg1','com_cg2',
-    // com_ksto1 and com_ksto2 are NOT revoked — they are self-verified and persist across sessions
-  ];
-  saveUnlockedAchs(getUnlockedAchs().filter(id => !WALLET_ACHS.includes(id)));
+  // Achievements are permanent — once earned they persist across sessions and wallet changes
   renderAchievements();
   updateStartStep4();
 }
@@ -4169,7 +4240,7 @@ function tapChoice(cx,cy){
 function tryRequestFullscreen(el){if(!el)return;try{if(el.requestFullscreen)el.requestFullscreen();else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen();else if(el.mozRequestFullScreen)el.mozRequestFullScreen();else if(el.msRequestFullscreen)el.msRequestFullscreen();}catch(e){}}
 function exitFullscreenGame(){try{if(document.exitFullscreen)document.exitFullscreen();else if(document.webkitExitFullscreen)document.webkitExitFullscreen();else if(document.mozCancelFullScreen)document.mozCancelFullScreen();else if(document.msExitFullscreen)document.msExitFullscreen();}catch(e){}}
 (function(){function _fsch(){var isFS=!!(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement);document.querySelectorAll('.fs-exit-btn').forEach(function(b){b.style.display=isFS?'flex':'none';});}['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(function(ev){document.addEventListener(ev,_fsch);});}());
-function updateStartStep4(){var check=document.getElementById('start-step4-check');var btn=document.getElementById('start-connect-btn');if(!check)return;if(typeof walletActor!=='undefined'&&walletActor){check.innerHTML='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:#4ade80;"><span>✓</span><span>Wallet connected as <strong>@'+walletActor+'</strong></span></div>';if(btn)btn.style.display='none';}else{check.innerHTML='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:var(--text3);"><span>○</span><span>No wallet connected yet</span></div>';if(btn)btn.style.display='';}}
+function updateStartStep4(){var _connected=typeof walletActor!=='undefined'&&walletActor;var _yes='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:#4ade80;"><span>✓</span><span>Wallet connected as <strong>@'+walletActor+'</strong></span></div>';var _no='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:var(--text3);"><span>○</span><span>No wallet connected yet</span></div>';var check=document.getElementById('start-step4-check');var btn=document.getElementById('start-connect-btn');if(check)check.innerHTML=_connected?_yes:_no;if(btn)btn.style.display=_connected?'none':'';var ntgCheck=document.getElementById('ntg-step4-check');var ntgBtn=document.getElementById('ntg-connect-btn');if(ntgCheck)ntgCheck.innerHTML=_connected?_yes:_no;if(ntgBtn)ntgBtn.style.display=_connected?'none':'';}
 function toggleMute(){muted=!muted;localStorage.setItem('guard_arena_mute',muted?'1':'0');if(g&&['START','TUT','GAME_OVER','PAUSED'].includes(g.phase))drawStatic();}
 function togglePause(){
   if(!g||['START','TUT','GAME_OVER'].includes(g.phase))return;
@@ -6227,7 +6298,7 @@ function switchToWave() {
   <button class="mbn-btn" id="mbn-shields" onclick="go('shields')"><span class="mbn-icon">🛡</span><span class="mbn-label">Shields</span></button>
   <button class="mbn-btn" id="mbn-arena" onclick="go('arena')"><span class="mbn-icon">⚔</span><span class="mbn-label">Games</span></button>
   <button class="mbn-btn" id="mbn-ecosystem" onclick="go('ecosystem')"><span class="mbn-icon">🌐</span><span class="mbn-label">Ecosystem</span></button>
-  <button class="mbn-btn" id="mbn-start" onclick="go('start')"><span class="mbn-icon">🚀</span><span class="mbn-label">New to XPR?</span></button>
+  <button class="mbn-btn" id="mbn-guard" onclick="go('guard')"><span class="mbn-icon">🛡</span><span class="mbn-label">GUARD</span></button>
 </nav>
 </body>
 </html>
