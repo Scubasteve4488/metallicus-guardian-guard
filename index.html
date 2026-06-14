@@ -80,7 +80,6 @@ button{cursor:pointer;font-family:'Inter',sans-serif;}
 
 /* PAGES */
 .page{display:none;min-height:100vh;padding-top:70px;}
-.page.active{display:block;}
 .container{max-width:1100px;margin:0 auto;padding:0 1.5rem;}
 .section{padding:4rem 0;}
 .section-sm{padding:2rem 0;}
@@ -443,6 +442,25 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 .pb-live{display:flex;align-items:center;gap:.35rem;font-size:.6rem;font-weight:700;letter-spacing:.14em;color:var(--text3);flex-shrink:0;}
 .pb-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pbDot 1.8s ease-in-out infinite;flex-shrink:0;}
 @keyframes pbDot{0%,100%{opacity:1;}50%{opacity:.3;}}
+/* LOADING SCREEN */
+#loading-screen{position:fixed;inset:0;z-index:99999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;transition:opacity .5s ease;}
+#loading-shield{width:110px;height:110px;object-fit:contain;animation:loadingPulse 1.8s ease-in-out infinite;}
+@keyframes loadingPulse{0%,100%{filter:drop-shadow(0 0 8px rgba(201,146,42,.25));transform:scale(1);}50%{filter:drop-shadow(0 0 32px rgba(201,146,42,.75));transform:scale(1.07);}}
+#loading-bar-wrap{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.08);}
+#loading-bar{height:100%;width:0%;background:linear-gradient(to right,#c9922a,#e8b84b);transition:width 1.5s linear;}
+/* PAGE FADE */
+@keyframes pageFadeIn{from{opacity:0}to{opacity:1}}
+.page.active{display:block;animation:pageFadeIn .15s ease-out both;}
+/* MOBILE BOTTOM NAV */
+#mobile-bottom-nav{display:none;}
+.mbn-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:.18rem;background:none;border:none;padding:.4rem .3rem;cursor:pointer;color:var(--text3);transition:color .18s;min-width:0;-webkit-tap-highlight-color:transparent;}
+.mbn-btn.active,.mbn-btn:active{color:var(--gold-l);}
+.mbn-icon{font-size:1.25rem;line-height:1;}
+.mbn-label{font-size:.58rem;font-weight:600;letter-spacing:.03em;font-family:'Cinzel',serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:64px;}
+@media(max-width:768px){
+  #mobile-bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:990;height:62px;background:rgba(8,11,18,0.98);border-top:1px solid rgba(201,146,42,0.35);justify-content:space-around;align-items:stretch;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+  .page{padding-bottom:70px;}
+}
 @keyframes comboPulse{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.15)}}
 #ws-combo-badge{position:absolute;left:50%;transform:translateX(-50%);top:8.7%;pointer-events:none;display:none;opacity:0;font-family:'Cinzel',serif;font-weight:bold;text-align:center;white-space:nowrap;transition:opacity .4s;z-index:5;}
 #ws-combo-badge.combo-pulse{animation:comboPulse .2s ease-out;}
@@ -533,7 +551,12 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
 </head>
 <body>
-<!-- build: 2026-06-13-v2 -->
+<!-- build: 2026-06-13-v3 -->
+<!-- LOADING SCREEN -->
+<div id="loading-screen">
+  <img src="./shield_aegis.png" id="loading-shield" alt="GUARD">
+  <div id="loading-bar-wrap"><div id="loading-bar"></div></div>
+</div>
 
 <!-- NAV -->
 <nav id="nav">
@@ -1947,7 +1970,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena'];
-const BUILD_VERSION='2026-06-13-v2';
+const BUILD_VERSION='2026-06-13-v3';
 (function(){var b=document.getElementById('build-badge');if(b)b.textContent=BUILD_VERSION;})();
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
@@ -1971,8 +1994,29 @@ function go(id){
   if(TAB_ACHS[id]) unlockAch(TAB_ACHS[id]);
   if(typeof trackPageVisit==='function') trackPageVisit(id);
   if(id==='arena'&&typeof arenaInit==='function'&&!window._arenaInited){window._arenaInited=true;setTimeout(arenaInit,30);}
+  mbnActive(id);
 }
 window.addEventListener('hashchange',function(){var h=location.hash.replace(/^#/,'');if(PAGES.includes(h))go(h);});
+
+// ── Mobile bottom nav ──────────────────────────────────────────────────────────
+const _MBN={home:'mbn-home',shields:'mbn-shields',arena:'mbn-arena',ecosystem:'mbn-ecosystem',start:'mbn-start'};
+function mbnActive(id){
+  document.querySelectorAll('.mbn-btn').forEach(function(b){b.classList.remove('active');});
+  var k=_MBN[id];if(k){var b=document.getElementById(k);if(b)b.classList.add('active');}
+}
+
+// ── Loading screen ─────────────────────────────────────────────────────────────
+(function(){
+  if(sessionStorage.getItem('_sg_loaded')){var ls=document.getElementById('loading-screen');if(ls)ls.style.display='none';return;}
+  sessionStorage.setItem('_sg_loaded','1');
+  requestAnimationFrame(function(){var bar=document.getElementById('loading-bar');if(bar)bar.style.width='100%';});
+  setTimeout(function(){
+    var ls=document.getElementById('loading-screen');
+    if(!ls)return;
+    ls.style.opacity='0';
+    setTimeout(function(){ls.style.display='none';},520);
+  },1550);
+})();
 
 function toggleMenu(){document.getElementById('mob').classList.toggle('open');}
 function closeMenu(){document.getElementById('mob').classList.remove('open');}
@@ -5903,5 +5947,13 @@ function switchToWave() {
     </div>
   </div>
 </div>
+<!-- MOBILE BOTTOM NAV -->
+<nav id="mobile-bottom-nav" aria-label="Quick navigation">
+  <button class="mbn-btn active" id="mbn-home" onclick="go('home')"><span class="mbn-icon">🏠</span><span class="mbn-label">Home</span></button>
+  <button class="mbn-btn" id="mbn-shields" onclick="go('shields')"><span class="mbn-icon">🛡</span><span class="mbn-label">Shields</span></button>
+  <button class="mbn-btn" id="mbn-arena" onclick="go('arena')"><span class="mbn-icon">⚔</span><span class="mbn-label">Games</span></button>
+  <button class="mbn-btn" id="mbn-ecosystem" onclick="go('ecosystem')"><span class="mbn-icon">🌐</span><span class="mbn-label">Ecosystem</span></button>
+  <button class="mbn-btn" id="mbn-start" onclick="go('start')"><span class="mbn-icon">🚀</span><span class="mbn-label">New to XPR?</span></button>
+</nav>
 </body>
 </html>
