@@ -626,13 +626,13 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
       <button class="nav-btn active" id="t-home" onclick="go('home')">Home</button>
       <button class="nav-btn" id="t-guard" onclick="go('guard')">🛡 GUARD</button>
       <button class="nav-btn" id="t-arena" onclick="go('arena')">⚔ Stand Guard</button>
-      <button class="nav-btn" id="t-ecosystem" onclick="go('ecosystem')">Ecosystem</button>
       <button class="nav-btn" id="t-shields" onclick="go('shields')">🛡 Shields</button>
-      <div class="nav-dropdown" id="dd-learn" onmouseenter="openDropdown('dd-learn')" onmouseleave="scheduleCloseDropdowns()">
-        <button class="nav-btn nav-dropdown-btn" id="t-learn-group" onclick="toggleDropdown('dd-learn',event)">Learn <span class="dd-caret">▾</span></button>
-      </div>
       <div class="nav-dropdown" id="dd-communities" onmouseenter="openDropdown('dd-communities')" onmouseleave="scheduleCloseDropdowns()">
         <button class="nav-btn nav-dropdown-btn" id="t-communities-group" onclick="toggleDropdown('dd-communities',event)">Communities <span class="dd-caret">▾</span></button>
+      </div>
+      <button class="nav-btn" id="t-ecosystem" onclick="go('ecosystem')">Ecosystem</button>
+      <div class="nav-dropdown" id="dd-learn" onmouseenter="openDropdown('dd-learn')" onmouseleave="scheduleCloseDropdowns()">
+        <button class="nav-btn nav-dropdown-btn" id="t-learn-group" onclick="toggleDropdown('dd-learn',event)">Learn <span class="dd-caret">▾</span></button>
       </div>
       <button class="nav-btn" id="t-creator" onclick="go('creator')">Creator</button>
     </div>
@@ -659,9 +659,14 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <button class="mobile-nav-btn" onclick="go('home');closeMenu()">🏠 Home</button>
   <button class="mobile-nav-btn" onclick="go('guard');closeMenu()">🛡 GUARD</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('arena')">⚔ Stand Guard</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('ecosystem')">🌐 Ecosystem</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('shields')">🛡 Shields</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('creator')">👤 Creator</button>
+  <button class="mobile-nav-btn mob-acc-hdr" onclick="toggleMobAcc('mob-acc-comm')">🌐 Communities <span class="mob-acc-caret" id="caret-mob-acc-comm">▾</span></button>
+  <div class="mob-acc-body" id="mob-acc-comm" style="display:none;">
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('ksto')">🦊 KSTO</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('cyphergang')">🔥 CypherGang</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('snipverse')">🌐 Snipverse</button>
+  </div>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('ecosystem')">🌐 Ecosystem</button>
   <button class="mobile-nav-btn mob-acc-hdr" onclick="toggleMobAcc('mob-acc-learn')">🎓 Learn <span class="mob-acc-caret" id="caret-mob-acc-learn">▾</span></button>
   <div class="mob-acc-body" id="mob-acc-learn" style="display:none;">
     <button class="mobile-nav-btn mob-acc-item" onclick="go('newtoguard');closeMenu()">🛡 New to GUARD?</button>
@@ -669,12 +674,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('learn')">🎓 Academy</button>
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('faq')">❓ FAQ</button>
   </div>
-  <button class="mobile-nav-btn mob-acc-hdr" onclick="toggleMobAcc('mob-acc-comm')">🌐 Communities <span class="mob-acc-caret" id="caret-mob-acc-comm">▾</span></button>
-  <div class="mob-acc-body" id="mob-acc-comm" style="display:none;">
-    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('ksto')">🦊 KSTO</button>
-    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('cyphergang')">🔥 CypherGang</button>
-    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('snipverse')">🌐 Snipverse</button>
-  </div>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('creator')">👤 Creator</button>
   <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g mt2" style="justify-content:center;">⚔ Buy GUARD</a>
   <button id="mob-wallet-connect-btn" onclick="walletConnect();closeMenu();" class="mobile-nav-btn" style="color:var(--gold-l);border-color:var(--border-gold);border-top:1px solid var(--border-gold);margin-top:.75rem;padding-top:.75rem;text-align:center;width:100%;">⚡ Connect Wallet</button>
   <div id="mob-wallet-disconnect" style="display:none;border-top:1px solid var(--border-gold);margin-top:.75rem;padding-top:.75rem;">
@@ -2224,7 +2224,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-14-v4';
+const BUILD_VERSION='2026-06-14-v5';
 (function(){var b=document.getElementById('build-badge');if(b)b.textContent=BUILD_VERSION;})();
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
@@ -4005,6 +4005,35 @@ function onWalletDisconnected() {
   updatePlaysUI();
 }
 
+// ─── Audio ────────────────────────────────────────────────────────────────────
+let AC=null,muted=localStorage.getItem('guard_arena_mute')==='1';
+function initAC(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}}
+function multiNote(freqs,stepMs,dur,waveType,vol){freqs.forEach((f,i)=>setTimeout(()=>{if(muted||!AC)return;try{const o=AC.createOscillator(),gn=AC.createGain();o.connect(gn);gn.connect(AC.destination);o.type=waveType||'triangle';o.frequency.value=f;const t=AC.currentTime;gn.gain.setValueAtTime(vol||0.09,t);gn.gain.exponentialRampToValueAtTime(0.001,t+dur);o.start(t);o.stop(t+dur+0.05);}catch(e){}},i*stepMs));}
+function snd(type){
+  if(muted||!AC)return;
+  try{
+    const actx=AC,now=actx.currentTime;
+    if(type==='wave_ok'){multiNote([440,550,660],120,0.18,'triangle',0.09);return;}
+    if(type==='hp_restore'){multiNote([523,659,784],110,0.14,'sine',0.08);return;}
+    const osc=actx.createOscillator(),gn=actx.createGain();
+    osc.connect(gn);gn.connect(actx.destination);
+    gn.gain.setValueAtTime(0.13,now);
+    if(type==='tap'){osc.type='square';osc.frequency.value=440;gn.gain.setValueAtTime(0.07,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.07);}
+    else if(type==='kill'){osc.type='sine';osc.frequency.setValueAtTime(600,now);osc.frequency.exponentialRampToValueAtTime(200,now+0.14);gn.gain.setValueAtTime(0.09,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.18);}
+    else if(type==='dmg'){osc.type='sawtooth';osc.frequency.value=80;gn.gain.setValueAtTime(0.15,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.28);}
+    else if(type==='boss_warn'){osc.type='sawtooth';osc.frequency.setValueAtTime(200,now);osc.frequency.exponentialRampToValueAtTime(700,now+0.6);gn.gain.setValueAtTime(0.10,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.75);}
+    else if(type==='ability'){osc.type='sine';osc.frequency.setValueAtTime(300,now);osc.frequency.exponentialRampToValueAtTime(900,now+0.3);gn.gain.exponentialRampToValueAtTime(0.001,now+0.38);}
+    else if(type==='combo'){osc.type='triangle';osc.frequency.setValueAtTime(400,now);osc.frequency.exponentialRampToValueAtTime(800,now+0.13);gn.gain.setValueAtTime(0.10,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.2);}
+    else if(type==='combo_break'){osc.type='sawtooth';osc.frequency.setValueAtTime(600,now);osc.frequency.exponentialRampToValueAtTime(80,now+0.28);gn.gain.setValueAtTime(0.12,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.35);}
+    else if(type==='game_over'){osc.type='sawtooth';osc.frequency.setValueAtTime(380,now);osc.frequency.exponentialRampToValueAtTime(45,now+0.7);gn.gain.setValueAtTime(0.14,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.8);}
+    else if(type==='powerup'){osc.type='sine';osc.frequency.setValueAtTime(800,now);osc.frequency.exponentialRampToValueAtTime(1200,now+0.12);gn.gain.setValueAtTime(0.09,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.18);}
+    else if(type==='countdown'){osc.type='triangle';osc.frequency.value=660;gn.gain.setValueAtTime(0.13,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.15);}
+    else if(type==='go'){osc.type='triangle';osc.frequency.value=880;gn.gain.setValueAtTime(0.15,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.25);}
+    else{osc.stop();return;}
+    osc.start(now);osc.stop(now+0.85);
+  }catch(e){}
+}
+
 // ===== GUARDIAN ARENA GAME v3 =====
 ;(function(){
 'use strict';
@@ -4050,35 +4079,6 @@ const WAVE_ZONES=[
   {start:35,name:'METAL BLOCKCHAIN',sub:'The Foundation',         h1:'hsla(0,6%,5%,1)',     h2:'hsla(0,4%,2%,1)'},
 ];
 function getWaveZone(wave){for(let i=WAVE_ZONES.length-1;i>=0;i--){if(wave>=WAVE_ZONES[i].start)return WAVE_ZONES[i];}return WAVE_ZONES[0];}
-
-// ─── Audio ────────────────────────────────────────────────────────────────────
-let AC=null,muted=localStorage.getItem('guard_arena_mute')==='1';
-function initAC(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}}
-function multiNote(freqs,stepMs,dur,waveType,vol){freqs.forEach((f,i)=>setTimeout(()=>{if(muted||!AC)return;try{const o=AC.createOscillator(),gn=AC.createGain();o.connect(gn);gn.connect(AC.destination);o.type=waveType||'triangle';o.frequency.value=f;const t=AC.currentTime;gn.gain.setValueAtTime(vol||0.13,t);gn.gain.exponentialRampToValueAtTime(0.001,t+dur);o.start(t);o.stop(t+dur+0.05);}catch(e){}},i*stepMs));}
-function snd(type){
-  if(muted||!AC)return;
-  try{
-    const actx=AC,now=actx.currentTime;
-    if(type==='wave_ok'){multiNote([440,550,660],120,0.18,'triangle',0.13);return;}
-    if(type==='hp_restore'){multiNote([523,659,784],110,0.14,'sine',0.11);return;}
-    const osc=actx.createOscillator(),gn=actx.createGain();
-    osc.connect(gn);gn.connect(actx.destination);
-    gn.gain.setValueAtTime(0.18,now);
-    if(type==='tap'){osc.type='square';osc.frequency.value=440;gn.gain.setValueAtTime(0.1,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.07);}
-    else if(type==='kill'){osc.type='sine';osc.frequency.setValueAtTime(600,now);osc.frequency.exponentialRampToValueAtTime(200,now+0.14);gn.gain.setValueAtTime(0.13,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.18);}
-    else if(type==='dmg'){osc.type='sawtooth';osc.frequency.value=80;gn.gain.setValueAtTime(0.22,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.28);}
-    else if(type==='boss_warn'){osc.type='sawtooth';osc.frequency.setValueAtTime(200,now);osc.frequency.exponentialRampToValueAtTime(700,now+0.9);gn.gain.setValueAtTime(0.14,now);gn.gain.exponentialRampToValueAtTime(0.001,now+1.1);}
-    else if(type==='ability'){osc.type='sine';osc.frequency.setValueAtTime(300,now);osc.frequency.exponentialRampToValueAtTime(900,now+0.3);gn.gain.exponentialRampToValueAtTime(0.001,now+0.38);}
-    else if(type==='combo'){osc.type='triangle';osc.frequency.setValueAtTime(400,now);osc.frequency.exponentialRampToValueAtTime(800,now+0.13);gn.gain.setValueAtTime(0.14,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.2);}
-    else if(type==='combo_break'){osc.type='sawtooth';osc.frequency.setValueAtTime(600,now);osc.frequency.exponentialRampToValueAtTime(80,now+0.28);gn.gain.setValueAtTime(0.17,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.35);}
-    else if(type==='game_over'){osc.type='sawtooth';osc.frequency.setValueAtTime(380,now);osc.frequency.exponentialRampToValueAtTime(45,now+1.4);gn.gain.setValueAtTime(0.2,now);gn.gain.exponentialRampToValueAtTime(0.001,now+1.6);}
-    else if(type==='powerup'){osc.type='sine';osc.frequency.setValueAtTime(800,now);osc.frequency.exponentialRampToValueAtTime(1200,now+0.12);gn.gain.setValueAtTime(0.13,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.18);}
-    else if(type==='countdown'){osc.type='triangle';osc.frequency.value=660;gn.gain.setValueAtTime(0.18,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.18);}
-    else if(type==='go'){osc.type='triangle';osc.frequency.value=880;gn.gain.setValueAtTime(0.22,now);gn.gain.exponentialRampToValueAtTime(0.001,now+0.28);}
-    else{osc.stop();return;}
-    osc.start(now);osc.stop(now+1.8);
-  }catch(e){}
-}
 
 // ─── State ────────────────────────────────────────────────────────────────────
 let cvs,ctx,cscale=1,g=null,raf=null,lastT=0,coinImg=null,coinLoaded=false,coinAngle=0;
@@ -4140,7 +4140,7 @@ function buildWave(w,rng){
 // ─── New game state ───────────────────────────────────────────────────────────
 function newG(daily){
   var _sgFallback=0;try{var _sgStr=localStorage.getItem('sg_rank');if(_sgStr!==null)_sgFallback=Math.min(6,Math.max(0,parseInt(_sgStr)||0));}catch(e){}
-  const rank=typeof guardianRank!=='undefined'?Math.min(6,guardianRank):_sgFallback;
+  const rank=Math.max(Math.min(6,guardianRank),_sgFallback);
   const cfg=RC[rank];
   const dseed=parseInt(new Date().toISOString().slice(0,10).replace(/-/g,''));
   const rng=lcg(daily?dseed:(Math.random()*0xFFFFFFFF)|0);
@@ -4467,7 +4467,7 @@ function activateAb(){
     g.timeSlow=true;g.tsT=5;flt('TIME SLOW!',CX,CY-70,'#14b8a6',20);
   } else if(ab==='strike'){
     g.abilVfx.push({type:'strike',life:0.4,maxL:0.4});
-    g.enemies=g.enemies.filter(en=>{if(['fud','hack','swarm'].includes(en.type)){burst(en.pos.x,en.pos.y,'#a855f7',14);sc(en);return false;}return true;});
+    g.enemies=g.enemies.filter(en=>{if(['fud','hack','swarm','boss'].includes(en.type)){burst(en.pos.x,en.pos.y,'#a855f7',14);sc(en);return false;}return true;});
     flt('ORBITAL STRIKE!',CX,CY-70,'#a855f7',20);
   } else if(ab==='fortify'){
     g.abilVfx.push({type:'fortify',life:0.6,maxL:0.6});
@@ -4545,7 +4545,7 @@ function update(dt){
   if(g.phase==='CHOICE')return;
   // PLAYING
   if(g.comboMult>1&&performance.now()-g.lastComboKillT>2000){g.combo=0;g.comboMult=1;hideComboBadge();}
-  const sm=g.timeSlow?0.5:1;
+  const sm=g.timeSlow?0.3:1;
   const xtra=g.wave<=4?1:Math.min(1+(g.wave-4)*0.04,3);
   g.wt+=dt;
   const sp=[];g.wq=g.wq.filter(it=>{if(g.wt>=it.delay){sp.push(it);return false;}return true;});
@@ -4899,7 +4899,7 @@ function hideComboBadge(){
   setTimeout(function(){if(el.style.opacity==='0')el.style.display='none';},400);
 }
 function drawAbBtn(){
-  const bw=180,bh=44,bx=CW-bw-10,by=CH-bh-10,cx=bx+bw/2,cy=by+bh/2;
+  const bw=180,bh=60,bx=CW-bw-10,by=CH-bh-10,cx=bx+bw/2,cy=by+bh/2;
   ctx.save();ctx.globalAlpha=0.82;ctx.textAlign='center';ctx.textBaseline='middle';
   if(!g.cfg.ab){
     ctx.fillStyle='rgba(30,30,50,0.6)';rrect(bx,by,bw,bh,8);ctx.fill();
@@ -5220,6 +5220,11 @@ function drawGameOver(nb,gp){
 // ─── Personal best bar ────────────────────────────────────────────────────────
 function updatePBBar(){const el=document.getElementById('arena-pb-display');if(!el)return;const pb=JSON.parse(localStorage.getItem('guard_arena_pb')||'{}');el.textContent=pb.score?'Wave '+pb.wave+' · '+pb.score+' pts':'No record yet — play to set one!';}
 
+document.addEventListener('visibilitychange',function(){
+  if(!document.hidden)return;
+  if(g&&g.phase==='PLAYING')togglePause();
+  if(typeof FG!=='undefined'&&FG.started){FG.started=false;FG.dead=true;}
+});
 window.arenaInit=arenaInit;
 window.updateStartStep4=updateStartStep4;
 })();
@@ -6266,7 +6271,7 @@ var FG = {
 
   _boop: function(type) {
     try {
-      initAC(); if (!AC) return;
+      initAC(); if(!AC||muted)return;
       var now = AC.currentTime;
       var o = AC.createOscillator(), g = AC.createGain();
       o.connect(g); g.connect(AC.destination);
@@ -6378,10 +6383,10 @@ function switchToWave() {
 <!-- MOBILE BOTTOM NAV -->
 <nav id="mobile-bottom-nav" aria-label="Quick navigation">
   <button class="mbn-btn active" id="mbn-home" onclick="go('home')"><span class="mbn-icon">🏠</span><span class="mbn-label">Home</span></button>
-  <button class="mbn-btn" id="mbn-shields" onclick="go('shields')"><span class="mbn-icon">🛡</span><span class="mbn-label">Shields</span></button>
-  <button class="mbn-btn" id="mbn-arena" onclick="go('arena')"><span class="mbn-icon">⚔</span><span class="mbn-label">Games</span></button>
-  <button class="mbn-btn" id="mbn-ecosystem" onclick="go('ecosystem')"><span class="mbn-icon">🌐</span><span class="mbn-label">Ecosystem</span></button>
   <button class="mbn-btn" id="mbn-guard" onclick="go('guard')"><span class="mbn-icon">🛡</span><span class="mbn-label">GUARD</span></button>
+  <button class="mbn-btn" id="mbn-arena" onclick="go('arena')"><span class="mbn-icon">⚔</span><span class="mbn-label">Stand Guard</span></button>
+  <button class="mbn-btn" id="mbn-shields" onclick="go('shields')"><span class="mbn-icon">🛡</span><span class="mbn-label">Shields</span></button>
+  <button class="mbn-btn" id="mbn-ecosystem" onclick="go('ecosystem')"><span class="mbn-icon">🌐</span><span class="mbn-label">Ecosystem</span></button>
 </nav>
 </body>
 </html>
