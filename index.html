@@ -35,7 +35,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:clip;}
 a{color:var(--pur-g);text-decoration:none;transition:color .2s;}
 a:hover{color:var(--gold-l);}
 button{cursor:pointer;font-family:'Inter',sans-serif;}
@@ -475,7 +475,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 @keyframes pageFadeIn{from{opacity:0}to{opacity:1}}
 .page.active{display:block;animation:pageFadeIn .15s ease-out both;}
 /* MOBILE BOTTOM NAV */
-#mobile-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;}
+#mobile-bottom-nav{display:none;position:fixed!important;bottom:0!important;left:0!important;right:0!important;}
 .mbn-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:.18rem;background:none;border:none;padding:.4rem .3rem;cursor:pointer;color:var(--text3);transition:color .18s;min-width:0;-webkit-tap-highlight-color:transparent;}
 .mbn-btn.active,.mbn-btn:active{color:var(--gold-l);}
 .mbn-icon{font-size:1.1rem;line-height:1;}
@@ -486,8 +486,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 }
 /* FULLSCREEN GAME */
 #arena-container:-webkit-full-screen,#arena-container:fullscreen,#flappy-game-container:-webkit-full-screen,#flappy-game-container:fullscreen{display:flex!important;flex-direction:column;align-items:center;justify-content:center;background:#080b12;padding:0;max-width:none!important;width:100%;height:100%;}
-.fs-exit-btn{display:none;position:absolute;top:10px;right:10px;z-index:9999;background:rgba(0,0,0,0.6);border:1px solid rgba(201,146,42,0.5);color:#e8b84b;border-radius:50%;width:32px;height:32px;font-size:1rem;cursor:pointer;align-items:center;justify-content:center;line-height:1;padding:0;}
-:-webkit-full-screen .fs-exit-btn,:fullscreen .fs-exit-btn{display:flex;}
+.fs-exit-btn{display:none;position:fixed;top:12px;right:12px;z-index:99999;background:rgba(0,0,0,0.8);border:2px solid rgba(201,146,42,0.75);color:#e8b84b;border-radius:50%;width:56px;height:56px;font-size:1.3rem;cursor:pointer;align-items:center;justify-content:center;line-height:1;padding:0;touch-action:manipulation;pointer-events:all;}
 /* GUARDIAN GUIDES */
 .gg-list{display:flex;flex-direction:column;gap:.45rem;max-width:740px;margin:0 auto;}
 .gg-item{border:1px solid rgba(201,146,42,0.18);border-radius:10px;background:rgba(255,255,255,0.02);overflow:hidden;}
@@ -591,7 +590,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
 </head>
 <body>
-<!-- build: 2026-06-14-v1 -->
+<!-- build: 2026-06-14-v2 -->
 <!-- GLOBAL TICKER BAR -->
 <div id="ticker-bar">
   <div class="ticker-inner">
@@ -715,10 +714,10 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 <!-- ECO STATS BAR -->
 <div id="eco-stats-bar">
   <div class="eco-stats-inner">
-    <div class="eco-sc"><div class="eco-si">👥</div><div class="eco-sv" id="es-holders">—</div><div class="eco-sl">GUARD Holders</div></div>
-    <div class="eco-sc"><div class="eco-si">💧</div><div class="eco-sv" id="es-lp">—</div><div class="eco-sl">LP Pool Depth</div></div>
-    <div class="eco-sc"><div class="eco-si">🔥</div><div class="eco-sv" id="es-staked">—</div><div class="eco-sl">Staked (BlastPad)</div></div>
-    <div class="eco-sc"><div class="eco-si">♻</div><div class="eco-sv" id="es-burned">—</div><div class="eco-sl">Total Burned</div></div>
+    <div class="eco-sc"><div class="eco-si">👥</div><div class="eco-sv" id="es-holders">…</div><div class="eco-sl">GUARD Holders</div></div>
+    <div class="eco-sc"><div class="eco-si">💧</div><div class="eco-sv" id="es-lp">…</div><div class="eco-sl">XPR in Pool 187</div></div>
+    <div class="eco-sc"><div class="eco-si">🔥</div><div class="eco-sv" id="es-staked">…</div><div class="eco-sl">Staked (BlastPad)</div></div>
+    <div class="eco-sc"><div class="eco-si">♻</div><div class="eco-sv" id="es-burned">…</div><div class="eco-sl">Total Burned</div></div>
   </div>
 </div>
 <div class="container">
@@ -2146,7 +2145,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena'];
-const BUILD_VERSION='2026-06-14-v1';
+const BUILD_VERSION='2026-06-14-v2';
 (function(){var b=document.getElementById('build-badge');if(b)b.textContent=BUILD_VERSION;})();
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
@@ -2384,47 +2383,57 @@ function ecoCountUp(id,target,duration){
     if(p<1)requestAnimationFrame(step);
   })(start);
 }
+var GUARD_TOTAL_SUPPLY=811100000;
+function _poolXprReserve(pool){
+  // Detect XPR reserve by symbol in string-format fields; tokenB=XPR for GUARD/XPR pair
+  var fields=[pool.tokenB_reserve,pool.reserveB,pool.reserve1,pool.tokenA_reserve,pool.reserveA,pool.reserve0];
+  for(var i=0;i<fields.length;i++){if(typeof fields[i]==='string'&&fields[i].includes('XPR'))return parseFloat(fields[i])||0;}
+  // Nested object format
+  if(pool.tokenB&&typeof pool.tokenB.amount==='string'&&pool.tokenB.amount.includes('XPR'))return parseFloat(pool.tokenB.amount)||0;
+  if(pool.tokenA&&typeof pool.tokenA.amount==='string'&&pool.tokenA.amount.includes('XPR'))return parseFloat(pool.tokenA.amount)||0;
+  // Fallback: assume tokenB=XPR (numeric)
+  var nb=pool.tokenB_reserve!=null?pool.tokenB_reserve:pool.reserveB!=null?pool.reserveB:null;
+  return nb!=null?parseChainAmount(nb):0;
+}
 async function fetchEcoStats(){
   var rpc=GUARD_CFG.rpcs[0];
-  var holders=0,lpXpr=0,staked=0,burned=0,maxSup=0,curSup=0;
-  // 1. Holders + extras from SimpleDEX token API
+  var holders=-1,lpXpr=0,staked=-1,burned=-1,curSup=0;
+  // 1. Holders from SimpleDEX token API
   try{
     var r=await fetchTimeout('https://api.simpledex.fun/v1/tokens/172',{},6000);
-    if(r.ok){var d=await r.json();holders=parseInt(d.holderCount||d.holder_count||d.holders||d.totalHolders||0)||0;}
+    if(r.ok){var d=await r.json();var h=parseInt(d.holderCount||d.holder_count||d.holders||d.totalHolders||0)||0;holders=h>=5&&h<200000?h:0;}
   }catch(e){}
-  // 2. Pool 187 depth
+  // 2. Pool 187 XPR reserve (tokenB = XPR in GUARD/XPR pair)
   try{
     var pr=await fetchTimeout(rpc+'/v1/chain/get_table_rows',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({json:true,code:'simpledex',scope:'simpledex',table:'pools',lower_bound:187,upper_bound:187,limit:1,key_type:'i64',index_position:'1'})},7000);
-    if(pr.ok){var pd=await pr.json();var pool=pd.rows&&pd.rows[0];if(pool){
-      var rawX=pool.tokenA_reserve!=null?pool.tokenA_reserve:pool.reserveA!=null?pool.reserveA:pool.reserve1!=null?pool.reserve1:(pool.tokenA&&(pool.tokenA.reserve!=null?pool.tokenA.reserve:pool.tokenA.amount))||0;
-      lpXpr=Math.round(parseChainAmount(rawX)*2);
-    }}
+    if(pr.ok){var pd=await pr.json();var pool=pd.rows&&pd.rows[0];if(pool){var xr=_poolXprReserve(pool);if(xr>100)lpXpr=Math.round(xr);}}
   }catch(e){}
-  // 3. Total staked = blastpad account's GUARD balance
+  // 3. Total staked = blastpad account GUARD balance in simpletoken
   try{
     var sr=await fetchTimeout(rpc+'/v1/chain/get_table_rows',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({json:true,code:'simpletoken',scope:'blastpad',table:'accounts',limit:50})},6000);
-    if(sr.ok){var sd=await sr.json();var row=(sd.rows||[]).find(function(r){return typeof r.balance==='string'&&r.balance.includes('GUARD');});if(row)staked=parseFloat(row.balance)||0;}
+      body:JSON.stringify({json:true,code:'simpletoken',scope:'blastpad',table:'accounts',limit:200})},6000);
+    if(sr.ok){var sd=await sr.json();var row=(sd.rows||[]).find(function(r){return typeof r.balance==='string'&&r.balance.includes('GUARD');});if(row){var st=parseFloat(row.balance)||0;staked=st>0?st:0;}}
   }catch(e){}
-  // 4. Burned = max_supply - circulating supply
+  // 4. Burned = 811.1M - current circulating supply
   try{
     var br=await fetchTimeout(rpc+'/v1/chain/get_currency_stats',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({code:'simpletoken',symbol:'GUARD'})},5000);
-    if(br.ok){var bd=await br.json();var info=bd['GUARD'];if(info&&info.max_supply&&info.supply){
-      maxSup=parseFloat(String(info.max_supply).split(' ')[0]);curSup=parseFloat(String(info.supply).split(' ')[0]);
-      if(maxSup>curSup)burned=maxSup-curSup;
+    if(br.ok){var bd=await br.json();var info=bd['GUARD'];if(info&&info.supply){
+      curSup=parseFloat(String(info.supply).split(' ')[0])||0;
+      var b=GUARD_TOTAL_SUPPLY-curSup;
+      burned=b>0&&b<GUARD_TOTAL_SUPPLY?Math.round(b):0;
     }}
   }catch(e){}
-  // Render
+  // Render — N/A for failed/unreasonable values
   var anim=_ecoFirstLoad;_ecoFirstLoad=false;
-  if(holders>0){if(anim)ecoCountUp('es-holders',holders,1300);else setStat('es-holders',fmtNum(holders));}else setStat('es-holders','—');
+  if(holders>0){if(anim)ecoCountUp('es-holders',holders,1300);else setStat('es-holders',fmtNum(holders));}else setStat('es-holders','N/A');
   if(lpXpr>0){
     if(anim){ecoCountUp('es-lp',lpXpr,1300);setTimeout(function(){var el=document.getElementById('es-lp');if(el&&!isNaN(parseInt(el.textContent.replace(/[^0-9]/g,''))))el.textContent=fmtNum(lpXpr)+' XPR';},1350);}
     else setStat('es-lp',fmtNum(lpXpr)+' XPR');
-  }else setStat('es-lp','—');
-  if(staked>0){if(anim)ecoCountUp('es-staked',staked,1300);else setStat('es-staked',fmtNum(Math.round(staked)));}else setStat('es-staked','—');
-  if(burned>0){if(anim)ecoCountUp('es-burned',burned,1300);else setStat('es-burned',fmtNum(Math.round(burned)));}else setStat('es-burned','—');
+  }else setStat('es-lp','N/A');
+  if(staked>=0&&staked>0){if(anim)ecoCountUp('es-staked',staked,1300);else setStat('es-staked',fmtNum(Math.round(staked)));}else setStat('es-staked','N/A');
+  if(burned>0){if(anim)ecoCountUp('es-burned',burned,1300);else setStat('es-burned',fmtNum(burned));}else setStat('es-burned','N/A');
 }
 fetchEcoStats();
 setInterval(fetchEcoStats,300000);
@@ -3262,12 +3271,8 @@ async function fetchLpPosition(actor) {
     const totalLp = parseInt(pool.totalLpTokens || pool.total_lp_tokens || pool.lpSupply || 0);
     if (totalLp === 0) { onLpLoaded(userLp, 0); return; }
 
-    // XPR is tokenA — try multiple field shapes
-    const rawXpr = pool.tokenA_reserve != null ? pool.tokenA_reserve
-      : pool.reserveA != null ? pool.reserveA
-      : pool.reserve1 != null ? pool.reserve1
-      : (pool.tokenA && (pool.tokenA.reserve != null ? pool.tokenA.reserve : pool.tokenA.amount)) || 0;
-    const xprReserve = parseChainAmount(rawXpr);
+    // XPR is tokenB in GUARD/XPR pair; _poolXprReserve detects by symbol string
+    const xprReserve = _poolXprReserve(pool);
 
     // Constant-product AMM: total pool value = 2 × XPR reserve
     const userShare = userLp / totalLp;
@@ -4163,6 +4168,7 @@ function tapChoice(cx,cy){
 }
 function tryRequestFullscreen(el){if(!el)return;try{if(el.requestFullscreen)el.requestFullscreen();else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen();else if(el.mozRequestFullScreen)el.mozRequestFullScreen();else if(el.msRequestFullscreen)el.msRequestFullscreen();}catch(e){}}
 function exitFullscreenGame(){try{if(document.exitFullscreen)document.exitFullscreen();else if(document.webkitExitFullscreen)document.webkitExitFullscreen();else if(document.mozCancelFullScreen)document.mozCancelFullScreen();else if(document.msExitFullscreen)document.msExitFullscreen();}catch(e){}}
+(function(){function _fsch(){var isFS=!!(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement);document.querySelectorAll('.fs-exit-btn').forEach(function(b){b.style.display=isFS?'flex':'none';});}['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(function(ev){document.addEventListener(ev,_fsch);});}());
 function updateStartStep4(){var check=document.getElementById('start-step4-check');var btn=document.getElementById('start-connect-btn');if(!check)return;if(typeof walletActor!=='undefined'&&walletActor){check.innerHTML='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:#4ade80;"><span>✓</span><span>Wallet connected as <strong>@'+walletActor+'</strong></span></div>';if(btn)btn.style.display='none';}else{check.innerHTML='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:var(--text3);"><span>○</span><span>No wallet connected yet</span></div>';if(btn)btn.style.display='';}}
 function toggleMute(){muted=!muted;localStorage.setItem('guard_arena_mute',muted?'1':'0');if(g&&['START','TUT','GAME_OVER','PAUSED'].includes(g.phase))drawStatic();}
 function togglePause(){
