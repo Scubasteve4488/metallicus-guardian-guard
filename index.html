@@ -2249,7 +2249,7 @@ body.game-immersive .fs-exit-btn{display:flex!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-15-v11';
+const BUILD_VERSION='2026-06-15-v12-diag';
 (function(){var b=document.getElementById('build-badge');if(b)b.textContent=BUILD_VERSION;})();
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
@@ -4320,11 +4320,35 @@ function enterImmersive(gameId){
   cont.classList.add('immersive-active');
   try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}
   setTimeout(function(){try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}},100);
-  setTimeout(function(){try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}},300);
+  setTimeout(function(){
+    try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}
+    // DIAG: report exit button and canvas state 300ms after entering immersive
+    var exitBtns=document.querySelectorAll('.fs-exit-btn');
+    console.log('[DIAG] enterImmersive 300ms check — vw='+window.innerWidth+' vh='+window.innerHeight);
+    exitBtns.forEach(function(b,i){
+      var r=b.getBoundingClientRect();
+      var cs=getComputedStyle(b);
+      console.log('[DIAG] exit-btn['+i+'] IN immersive: top='+Math.round(r.top)+' right='+Math.round(document.documentElement.clientWidth-r.right)+' w='+Math.round(r.width)+' h='+Math.round(r.height)+' display='+cs.display+' pointerEvents='+cs.pointerEvents+' zIndex='+cs.zIndex);
+    });
+    var cvs=document.getElementById('arena-canvas');
+    var fgCvs=document.getElementById('fg-canvas');
+    if(cvs){var cr=cvs.getBoundingClientRect();console.log('[DIAG] arena-canvas rect: left='+Math.round(cr.left)+' top='+Math.round(cr.top)+' w='+Math.round(cr.width)+' h='+Math.round(cr.height)+' pixelW='+cvs.width+' pixelH='+cvs.height);}
+    if(fgCvs){var fr=fgCvs.getBoundingClientRect();console.log('[DIAG] fg-canvas rect: left='+Math.round(fr.left)+' top='+Math.round(fr.top)+' w='+Math.round(fr.width)+' h='+Math.round(fr.height));}
+  },300);
 }
 function leaveImmersive(){
+  console.log('[DIAG] leaveImmersive FIRED — caller:', new Error().stack ? new Error().stack.split('\n')[1] : 'n/a');
+  console.log('[DIAG] leaveImmersive — body.game-immersive BEFORE:', document.body.classList.contains('game-immersive'));
   document.body.classList.remove('game-immersive');
+  console.log('[DIAG] leaveImmersive — body.game-immersive AFTER:', document.body.classList.contains('game-immersive'));
   document.querySelectorAll('.immersive-active').forEach(function(el){el.classList.remove('immersive-active');});
+  // Check exit button state
+  var exitBtns = document.querySelectorAll('.fs-exit-btn');
+  console.log('[DIAG] leaveImmersive — fs-exit-btn count:', exitBtns.length);
+  exitBtns.forEach(function(b,i){
+    var r=b.getBoundingClientRect();
+    console.log('[DIAG] exit-btn['+i+'] rect: top='+Math.round(r.top)+' right='+Math.round(r.right)+' width='+Math.round(r.width)+' height='+Math.round(r.height)+' display='+getComputedStyle(b).display+' visibility='+getComputedStyle(b).visibility+' pointerEvents='+getComputedStyle(b).pointerEvents);
+  });
   try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}
 }
 function updateStartStep4(){var _connected=typeof walletActor!=='undefined'&&walletActor;var _yes='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:#4ade80;"><span>✓</span><span>Wallet connected as <strong>@'+walletActor+'</strong></span></div>';var _no='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:var(--text3);"><span>○</span><span>No wallet connected yet</span></div>';var check=document.getElementById('start-step4-check');var btn=document.getElementById('start-connect-btn');if(check)check.innerHTML=_connected?_yes:_no;if(btn)btn.style.display=_connected?'none':'';var ntgCheck=document.getElementById('ntg-step4-check');var ntgBtn=document.getElementById('ntg-connect-btn');if(ntgCheck)ntgCheck.innerHTML=_connected?_yes:_no;if(ntgBtn)ntgBtn.style.display=_connected?'none':'';}
@@ -5491,11 +5515,14 @@ var FG = {
   _tapHandler: null, _keyHandler: null, _resizeHandler: null, _orientHandler: null,
 
   init: function(canvas) {
+    console.log('[DIAG] FG.init ENTERED — canvas element:', !!canvas);
     this.stop();
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
+    console.log('[DIAG] FG.init calling _resize');
     this._resize();
-    if (!this.canvas.width || !this.canvas.height) { this.canvas.width = 480; this.canvas.height = 580; }
+    console.log('[DIAG] FG.init after _resize — canvas.width:', this.canvas.width, 'canvas.height:', this.canvas.height);
+    if (!this.canvas.width || !this.canvas.height) { this.canvas.width = 480; this.canvas.height = 580; console.log('[DIAG] FG.init FALLBACK dimensions applied'); }
     if (!this.coinImg) {
       this.coinImg = new Image();
       this.coinImg.src = './g_token.jpg';
@@ -5530,33 +5557,39 @@ var FG = {
     document.addEventListener('keydown', this._keyHandler);
     window.addEventListener('resize', this._resizeHandler);
     window.addEventListener('orientationchange', this._orientHandler);
+    console.log('[DIAG] FG.init starting draw loop — canvas.width:', this.canvas.width, 'canvas.height:', this.canvas.height, 'showTut:', this.showTut);
     var loop = function() { self.animFrame = requestAnimationFrame(loop); self.update(); self.draw(); };
     loop();
   },
 
   _resize: function() {
-    if (!this.canvas) return;
+    console.log('[DIAG] FG._resize ENTERED — canvas:', !!this.canvas);
+    if (!this.canvas) { console.log('[DIAG] FG._resize EXIT: no canvas'); return; }
     var cont = document.getElementById('flappy-game-container');
-    if (!cont) return;
+    if (!cont) { console.log('[DIAG] FG._resize EXIT: no container'); return; }
     var isFS=document.body.classList.contains('game-immersive');
-    if (!isFS && cont.style.display === 'none') return;
+    console.log('[DIAG] FG._resize — isFS:', isFS, 'cont.style.display:', cont.style.display, 'cont.clientWidth:', cont.clientWidth);
+    if (!isFS && cont.style.display === 'none') { console.log('[DIAG] FG._resize EXIT: display:none guard'); return; }
     var cw,ch;
     if(isFS){
       var vw=window.innerWidth,vh=window.innerHeight;
       var scaleW=vw/480,scaleH=vh/580;
       var coverScale=Math.max(scaleW,scaleH);
       cw=Math.round(480*coverScale);ch=Math.round(580*coverScale);
+      console.log('[DIAG] FG._resize FS cover: vw='+vw+' vh='+vh+' coverScale='+coverScale.toFixed(3)+' => '+cw+'x'+ch);
       var _z=FG_ZONES[this.zoneIdx||0];cont.style.background=_z?_z.bg:'#000';
     }else{
       var rawW=cont.clientWidth;
       cw=rawW>0?Math.min(480,rawW-16):480;ch=Math.round(580*cw/480);
       if(ch>window.innerHeight-180){ch=window.innerHeight-180;cw=Math.round(480*ch/580);}
+      console.log('[DIAG] FG._resize normal: rawW='+rawW+' => '+cw+'x'+ch);
       cont.style.background='';
     }
     this.canvas.width=cw;
     this.canvas.height=ch;
     this.coin.x=Math.round(cw*0.25);
     if(!this.started)this.coin.y=Math.round(ch*0.5);
+    console.log('[DIAG] FG._resize DONE — canvas set to '+cw+'x'+ch);
   },
 
   reset: function(daily) {
@@ -6509,25 +6542,42 @@ var FG = {
 };
 
 function switchToFlappy() {
+  console.log('[DIAG] switchToFlappy CALLED');
+  var fc = document.getElementById('flappy-game-container');
+  console.log('[DIAG] fc.style.display BEFORE set:', fc ? fc.style.display : 'NO ELEMENT');
   leaveImmersive();
   var wc = document.getElementById('arena-container');
-  var fc = document.getElementById('flappy-game-container');
+  fc = document.getElementById('flappy-game-container');
   var btnW = document.getElementById('sel-wave');
   var btnF = document.getElementById('sel-flappy');
   var hw = document.getElementById('htp-wave');
   var hf = document.getElementById('htp-flappy');
   if (wc) wc.style.display = 'none';
   if (fc) fc.style.display = 'block';
+  console.log('[DIAG] fc.style.display AFTER set:', fc ? fc.style.display : 'NO ELEMENT');
+  console.log('[DIAG] fc.clientWidth immediately after display=block:', fc ? fc.clientWidth : 'NO ELEMENT');
   if (btnW) btnW.classList.remove('active');
   if (btnF) btnF.classList.add('active');
   if (hw) hw.style.display = 'none';
   if (hf) hf.style.display = '';
+  console.log('[DIAG] raf value:', typeof raf !== 'undefined' ? raf : 'UNDEFINED');
   if (typeof raf !== 'undefined' && raf) { cancelAnimationFrame(raf); raf = null; }
   FG.stop();
+  console.log('[DIAG] scheduling double-rAF for FG.init');
   requestAnimationFrame(function() {
+    console.log('[DIAG] rAF-1 fired');
     requestAnimationFrame(function() {
+      console.log('[DIAG] rAF-2 fired — looking for fg-canvas');
       var canvas = document.getElementById('fg-canvas');
-      if (canvas) FG.init(canvas);
+      console.log('[DIAG] fg-canvas found:', !!canvas);
+      if (canvas) {
+        var fc2 = document.getElementById('flappy-game-container');
+        console.log('[DIAG] fc.style.display at rAF-2:', fc2 ? fc2.style.display : 'NO ELEMENT');
+        console.log('[DIAG] fc.clientWidth at rAF-2:', fc2 ? fc2.clientWidth : 'NO ELEMENT');
+        console.log('[DIAG] calling FG.init');
+        FG.init(canvas);
+        console.log('[DIAG] FG.init returned — canvas.width:', canvas.width, 'canvas.height:', canvas.height);
+      }
     });
   });
 }
