@@ -1537,14 +1537,13 @@ body.game-immersive .fs-exit-btn{display:flex!important;}
     <div class="div-g" style="margin:2rem 0 1.5rem;"></div>
     <div class="sec-label" style="text-align:center;">Collectibles</div>
     <h2 class="sec-title" style="text-align:center;">Shield Shards</h2>
-    <p style="text-align:center;font-size:.83rem;color:var(--text2);margin-bottom:1.25rem;max-width:540px;margin-left:auto;margin-right:auto;">Collect 5 shards to forge each shield. Shards drop in GUARD Trials and Wave Survival. Forge a shield to unlock it as an alternative path to that rank.</p>
+    <p style="text-align:center;font-size:.83rem;color:var(--text2);margin-bottom:1.25rem;max-width:540px;margin-left:auto;margin-right:auto;">Collect 5 shards to forge each shield. Shards drop randomly in GUARD Trials and Wave Survival — max 1 per run, higher ranks rarer. Forge a shield to unlock it as an alternative path to that rank.</p>
     <details style="max-width:540px;margin:0 auto 1.25rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.6rem .85rem;">
       <summary style="cursor:pointer;font-size:.72rem;font-weight:600;color:var(--text2);letter-spacing:.04em;user-select:none;list-style:none;display:flex;align-items:center;gap:.4rem;">
         <span style="font-size:.8rem;">ℹ</span> How shards drop
       </summary>
       <div style="margin-top:.6rem;font-size:.68rem;color:var(--text3);line-height:1.65;">
-        <div style="margin-bottom:.45rem;"><strong style="color:var(--text2);">GUARD Trials</strong> — Every 5th barrier in each zone has a 10% chance to drop a shard for that zone's shield. Max 2 random drops per run. Boss barriers always drop their zone's shard.</div>
-        <div style="margin-bottom:.45rem;"><strong style="color:var(--text2);">Wave Survival</strong> — Boss kills on waves 5, 10, 15, 20, 25 and 50 guarantee a shard drop. Regular enemies on waves 1–4 have a 3% chance to drop a Cryptide shard. Max 2 random drops per run.</div>
+        <div style="margin-bottom:.45rem;">Shards drop randomly during gameplay in both Wave Survival and GUARD Trials — max 1 per run. Higher ranks are rarer to forge.</div>
         <div><strong style="color:var(--text2);">Forging</strong> — Once you collect all 5 shards for a shield, tap the <strong style="color:#e8b84b;">⚒ FORGE</strong> button to trigger the forge ceremony. Forging that shield unlocks it as an alternative rank path — no GUARD balance required.</div>
       </div>
     </details>
@@ -2130,30 +2129,22 @@ body.game-immersive .fs-exit-btn{display:flex!important;}
     <details id="htp-wave" style="max-width:600px;margin:.8rem auto 0;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:.6rem 1rem;">
       <summary style="cursor:pointer;font-family:'Cinzel',serif;font-size:.82rem;color:var(--gold-l);letter-spacing:.04em;list-style:none;display:flex;align-items:center;gap:.5rem;">⚔ How to Play — Wave Survival</summary>
       <div style="margin-top:.7rem;font-size:.8rem;color:var(--text2);line-height:1.7;">
-        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Goal:</strong> Survive as many waves as possible. Each wave sends a batch of enemies toward your GUARD coin — tap enemies to destroy them before they hit you.</p>
-        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Controls:</strong> Tap enemies to damage them. On mobile, tap PLAY to enter full-screen mode. Tap ⏸ (top-right) to pause anytime.</p>
-        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">HP:</strong> Your Shield HP is based on your Guardian rank (Cryptide=3 · Riftforge=4 · Helion=5 · Nebulon=6 · Protonis=7 · Keystone=8 · Aegis=10). Each enemy hit costs 1 HP. Reach zero and the run ends.</p>
-        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Combos:</strong> Kill enemies quickly in succession to build a combo multiplier (up to ×5). The multiplier decays after 2 seconds without a kill.</p>
-        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Abilities:</strong> Guardian rank unlocks abilities. Before each wave you choose which to use — tap your GUARD coin during the wave to activate it. Abilities recharge over time (shown at the bottom).</p>
-        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Ability types:</strong> Fire Ring hits all enemies for 1 HP · Time Slow halves enemy speed for 5s · Orbital Strike destroys small enemies · Chain Lightning arcs through up to 5 enemies · Fortify adds bonus HP and armor · Shield Bash (Aegis) clears all nearby enemies.</p>
-        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Between waves:</strong> Every 3rd wave (non-boss) you choose a reward — restore 1 HP or get 2× points for the next wave.</p>
-        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Boss waves:</strong> Every 5th wave spawns a boss. Kill it fast — it drops a guaranteed shield shard and restores 1 HP.</p>
-        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Power-ups:</strong> Rare drops from enemies — ❤️ restores HP · ⚡ resets ability cooldown · 🔥 doubles points for 7s.</p>
-        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Zones:</strong> 8 blockchain zones themed on Metallicus products, each with unique enemies and background. Harder enemies appear in later zones.</p>
-        <p style="margin:0;"><strong style="color:var(--text1);">Shards:</strong> Boss kills drop a shard targeting your next rank's shield. Collect 5 shards to forge it permanently on the Shields tab.</p>
+        <p style="margin:0 0 .4rem;">Tap enemies to destroy them before they reach your GUARD coin. Tap the coin to use your shield ability.</p>
+        <p style="margin:0 0 .4rem;"><strong style="color:var(--text);">HP</strong> is based on your rank (Cryptide 3 · Riftforge 4 · Helion 5 · Nebulon 6 · Protonis 7 · Keystone 8 · Aegis 10). Damage carries between waves. Perfect wave or boss kill restores 1 HP.</p>
+        <p style="margin:0 0 .4rem;"><strong style="color:var(--text);">Every 3 waves</strong> choose +1 HP or 2× points next wave. <strong style="color:var(--text);">Every 5 waves</strong> a boss spawns.</p>
+        <p style="margin:0 0 .4rem;"><strong style="color:var(--text);">Abilities</strong> unlock by rank and stack. Pick one before each wave — tap the coin to fire it. Fire Ring · Time Slow · Orbital Strike · Chain Lightning · Fortify · Shield Bash.</p>
+        <p style="margin:0;"><strong style="color:var(--text);">Shards</strong> for your next rank drop randomly during the run — max 1 per run. Collect 5 to forge on the Shields tab.</p>
       </div>
     </details>
     <!-- How to Play: GUARD Trials -->
     <details id="htp-flappy" style="display:none;max-width:600px;margin:.5rem auto 0;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:.6rem 1rem;">
       <summary style="cursor:pointer;font-family:'Cinzel',serif;font-size:.82rem;color:var(--gold-l);letter-spacing:.04em;list-style:none;display:flex;align-items:center;gap:.5rem;">🪙 How to Play — GUARD Trials</summary>
       <div style="margin-top:.7rem;font-size:.8rem;color:var(--text2);line-height:1.7;">
-        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Goal:</strong> Pilot the GUARD coin through 8 blockchain zones (+ The Void). Navigate the gaps between barriers without crashing — every 12 barriers advances you to the next zone.</p>
-        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Controls:</strong> Tap the screen (or press Space on desktop) to flap upward. Release to fall with gravity. Time your taps to stay in the gap. On mobile, tap PLAY to enter full-screen mode.</p>
-        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Scoring:</strong> Each barrier passed earns points (multiplied by your combo). Combos build at 3, 5, and 8 consecutive barriers (×2, ×3, ×5).</p>
-        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Zones:</strong> SimpleDEX → BlastPad → Metal X → WebAuth → MTL DAO → Loan Protocol → XPR Network → Metal Blockchain → THE VOID. Each zone raises speed and tightens the gap. The Void is endless.</p>
-        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Power-ups (mid-gap):</strong> ⚡ Shield Boost — skips next barrier · 🛡 Guardian Shield — 3s invincibility · 🔥 Double Points — 8s score multiplier · ⏳ Slow-Mo — halves speed temporarily · 🔮 Shrink — reduces hitbox.</p>
-        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Pause:</strong> Tap the ⏸ icon (top-LEFT) to pause. From the pause screen you can resume or quit the run.</p>
-        <p style="margin:0;"><strong style="color:var(--text1);">Shards:</strong> Every 5th barrier may drop a shard targeting your next rank's shield. Collect 5 shards to forge it permanently on the Shields tab.</p>
+        <p style="margin:0 0 .4rem;">Tap to flap, release to fall. Pass through gaps without crashing. Every 12 barriers advances to the next zone.</p>
+        <p style="margin:0 0 .4rem;"><strong style="color:var(--text);">Combos:</strong> 3 in a row = ×2 · 5 in a row = ×3 · 8 in a row = Guardian Mode ×5.</p>
+        <p style="margin:0 0 .4rem;"><strong style="color:var(--text);">8 zones</strong> (SimpleDEX → BlastPad → Metal X → WebAuth → MTL DAO → Loan Protocol → XPR Network → Metal Blockchain) plus <strong style="color:var(--text);">The Void</strong> — endless mode.</p>
+        <p style="margin:0 0 .4rem;"><strong style="color:var(--text);">Power-ups</strong> appear in gaps: ⚡ skips next barrier · 🛡 3s invincibility · 🔥 double points · ⏳ slow-mo · 🔮 shrink hitbox.</p>
+        <p style="margin:0;"><strong style="color:var(--text);">Shards</strong> for your next rank drop randomly during the run — max 1 per run. Collect 5 to forge on the Shields tab.</p>
       </div>
     </details>
     <div style="max-width:600px;margin:1.2rem auto 0;">
@@ -2258,7 +2249,7 @@ body.game-immersive .fs-exit-btn{display:flex!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-15-v10';
+const BUILD_VERSION='2026-06-15-v11';
 (function(){var b=document.getElementById('build-badge');if(b)b.textContent=BUILD_VERSION;})();
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
@@ -4168,7 +4159,7 @@ function buildWave(w,rng){
     const jitter=(rng()-0.5)*0.3*baseInterval;
     const delay=Math.max(0,slot*baseInterval+jitter);
     if(type==='swarm'){for(let j=0;j<5;j++)q.push({type:'swarm',delay:delay+j*0.12});slot+=Math.ceil(gap*1.3/baseInterval)||1;i+=1;}
-    else{const gs=w<=3?1:w<=9?Math.min(3,1+(rng()*3|0)):w<=19?3:Math.min(4,2+(rng()*3|0));for(let k=0;k<gs&&i+k<cnt;k++)q.push({type,delay:delay+k*0.08});i+=gs;slot++;}
+    else{const remaining=cnt-i;if(remaining<=3){for(let k=0;k<remaining;k++)q.push({type,delay:delay+k*0.12});break;}const gs=w<=3?1:w<=9?Math.min(3,1+(rng()*3|0)):w<=19?3:Math.min(4,2+(rng()*3|0));for(let k=0;k<gs&&i+k<cnt;k++)q.push({type,delay:delay+k*0.08});i+=gs;slot++;}
   }
   return q;
 }
@@ -4199,7 +4190,7 @@ function newG(daily){
     _nb:false,_gp:0,
     _prePause:null,rng,
     zoneAnn:null,zoneAnnPending:null,abilVfx:[],
-    wsShards:[], _wsRandShards:0};
+    wsShards:[], _shardDropped:false, _killCount:0, _shardDropAtKill:-1};
 }
 
 // ─── Init / resize ─────────────────────────────────────────────────────────────
@@ -4229,8 +4220,9 @@ function resize(){
   var isFS=document.body.classList.contains('game-immersive');
   var w,h,_ac=document.getElementById('arena-container');
   if(isFS){
-    h=window.innerHeight;w=Math.round(CW*h/CH);
-    if(w>window.innerWidth){w=window.innerWidth;h=Math.round(CH*w/CW);}
+    var vw=window.innerWidth,vh=window.innerHeight;
+    var coverScale=Math.max(vw/CW,vh/CH);
+    w=Math.round(CW*coverScale);h=Math.round(CH*coverScale);
     if(_ac){var _wz=g?getWaveZone(g.wave):WAVE_ZONES[0];_ac.style.background=_wz.h2;}
   }else{
     if(_ac)_ac.style.background='';
@@ -4379,11 +4371,8 @@ function killEnemy(en,idx){
         g.enemies.push(mkEnemy('boss',p,g.rng,{mhp:5,hp:5,r:28,lbl:'FUD',pts:50,vt:'fudmaster',splitGen:1}));
       }
     }
-    // Boss wave shard drop (guaranteed — targets player's next rank shield)
-    var _bsRank=Math.min((typeof guardianRank!=='undefined'?guardianRank:0)+1,6);
-    if(typeof SHIELDS!=='undefined'&&_bsRank>=6){for(var _bsi=0;_bsi<SHIELDS.length;_bsi++){if(!ShardTracker.allOwned(SHIELDS[_bsi].name)){_bsRank=_bsi;break;}}}
-    var bossShardName=typeof SHIELDS!=='undefined'?SHIELDS[_bsRank].name:null;
-    if (bossShardName) wsSpawnShard(en.pos.x, en.pos.y, bossShardName, true);
+    // Boss defeat score bonus
+    var _bpts=500*Math.ceil(g.wave/5);g.score+=_bpts;flt('+'+_bpts,en.pos.x,en.pos.y-36,'#f5c842',13);
   } else if(['breach','voidhacker','shadowdrain'].includes(en.type)){
     ach('boss_slayer');g.bossFlash=0.5;
     flt('⚔ '+en.lbl+' DEFEATED!',CX,CY-54,'#f5c842',18);
@@ -4394,8 +4383,17 @@ function killEnemy(en,idx){
     }
   } else {
     tryDrop(en.pos.x,en.pos.y);
-    // Waves 1-4: 3% chance to drop Cryptide shard (capped at 2 random drops per run)
-    if (g.wave <= 4 && Math.random() < 0.03) wsSpawnShard(en.pos.x, en.pos.y, 'Cryptide', false);
+    // Tiered shard: 1 per run, pre-rolled at game start, drops at kill index _shardDropAtKill
+    if (!g._shardDropped && g._shardDropAtKill > 0) {
+      g._killCount++;
+      if (g._killCount === g._shardDropAtKill) {
+        var _gr=typeof guardianRank!=='undefined'?Math.min(6,guardianRank):0;
+        var _ti=Math.min(_gr+1,6);
+        if(typeof SHIELDS!=='undefined'&&!ShardTracker.allOwned(SHIELDS[_ti].name)){
+          wsSpawnShard(en.pos.x,en.pos.y,SHIELDS[_ti].name);g._shardDropped=true;
+        }
+      }
+    }
   }
   g.enemies.splice(idx,1);
   ach('first_blood');
@@ -4413,14 +4411,22 @@ function comboMult(){const c=g.combo;return c>=8?5:c>=7?4:c>=6?3:c>=5?2:1;}
 function breakCombo(){if(g.combo>=5){snd('combo_break');flt('COMBO BROKEN',CX,78,'#ef4444',15);}g.combo=0;g.comboMult=1;g.lastComboKillT=0;hideComboBadge();}
 
 // ── Wave Survival shard drops (Part 4) ──
-var WS_BOSS_SHARDS = {5:'Riftforge',10:'Helion',15:'Nebulon',20:'Protonis',25:'Keystone',50:'Aegis'};
-function wsSpawnShard(x, y, shieldName, isBoss) {
+var _WS_SHARD_PROBS=[0,0.35,0.28,0.22,0.18,0.14,0.10];
+function wsSpawnShard(x, y, shieldName) {
   if (ShardTracker.allOwned(shieldName)) return;
-  if (!isBoss && g._wsRandShards >= 2) return; // 2-per-run cap on random drops
   var sNum = ShardTracker.nextMissing(shieldName);
   if (!sNum) return;
-  if (!isBoss) g._wsRandShards++;
   g.wsShards.push({x:x, y:y, shieldName:shieldName, shardNum:sNum, life:5.0, angle:0});
+}
+function wsInitShardForRun() {
+  var _gr=typeof guardianRank!=='undefined'?Math.min(6,guardianRank):0;
+  var _ti=Math.min(_gr+1,6);
+  g._shardDropAtKill=-1;
+  if(_ti>=1&&typeof SHIELDS!=='undefined'&&!ShardTracker.allOwned(SHIELDS[_ti].name)){
+    if(Math.random()<(_WS_SHARD_PROBS[_ti]||0)){
+      g._shardDropAtKill=Math.floor(Math.random()*45)+5;
+    }
+  }
 }
 function wsUpdateShards(dt) {
   if (!g.wsShards) return;
@@ -4729,7 +4735,7 @@ function doNextWave(){
   // Checkpoint: save when entering wave 6, 11, 16... (completed previous 5-wave block)
   if(g.wave%5===1&&g.wave>1) saveCheckpoint();
 }
-function startGame(daily){stopLoop();hideComboBadge();g=newG(daily);checkAbSelect();startLoop();}
+function startGame(daily){stopLoop();hideComboBadge();g=newG(daily);wsInitShardForRun();checkAbSelect();startLoop();}
 function endGame(){
   snd('game_over');
   // Coin shatter — burst from center
@@ -5480,7 +5486,7 @@ var FG = {
   zoneIdx: 0, zoneAnnTimer: 0,
   comboStreak: 0, comboMult: 1, comboPulse: 0, comboLabel: '', comboBest: 0,
   isDaily: false, _rng: null, _nextPU: 220, _nextBarrier: 120, _barrierCount: 0, barriersInZone: 0,
-  _lastTopH: null, shardDrops: [], _floats: [], _runNewShard: null, _randShardsDropped: 0,
+  _lastTopH: null, shardDrops: [], _floats: [], _runNewShard: null, _shardDropped: false, _shardDropAtBarrier: -1,
   showTut: false,
   _tapHandler: null, _keyHandler: null, _resizeHandler: null, _orientHandler: null,
 
@@ -5531,15 +5537,19 @@ var FG = {
   _resize: function() {
     if (!this.canvas) return;
     var cont = document.getElementById('flappy-game-container');
-    if (!cont || cont.style.display === 'none') return;
+    if (!cont) return;
     var isFS=document.body.classList.contains('game-immersive');
+    if (!isFS && cont.style.display === 'none') return;
     var cw,ch;
     if(isFS){
-      ch=window.innerHeight;cw=Math.round(480*ch/580);
-      if(cw>window.innerWidth){cw=window.innerWidth;ch=Math.round(580*cw/480);}
+      var vw=window.innerWidth,vh=window.innerHeight;
+      var scaleW=vw/480,scaleH=vh/580;
+      var coverScale=Math.max(scaleW,scaleH);
+      cw=Math.round(480*coverScale);ch=Math.round(580*coverScale);
       var _z=FG_ZONES[this.zoneIdx||0];cont.style.background=_z?_z.bg:'#000';
     }else{
-      cw=Math.min(480,(cont.clientWidth||480)-16);ch=Math.round(580*cw/480);
+      var rawW=cont.clientWidth;
+      cw=rawW>0?Math.min(480,rawW-16):480;ch=Math.round(580*cw/480);
       if(ch>window.innerHeight-180){ch=window.innerHeight-180;cw=Math.round(480*ch/580);}
       cont.style.background='';
     }
@@ -5553,7 +5563,14 @@ var FG = {
     var w = this.canvas ? this.canvas.width : 480;
     var h = this.canvas ? this.canvas.height : 580;
     this.coin = {x: Math.round(w*0.25), y: Math.round(h*0.5), vy:0, angle:0, radius:22};
-    this.barriers = []; this.particles = []; this.powerups = []; this.trailParticles = []; this.shardDrops = []; this._floats = []; this._runNewShard = null; this._randShardsDropped = 0;
+    this.barriers = []; this.particles = []; this.powerups = []; this.trailParticles = []; this.shardDrops = []; this._floats = []; this._runNewShard = null;
+    var _fgGr=typeof guardianRank!=='undefined'?Math.min(6,guardianRank):0;
+    var _fgTi=Math.min(_fgGr+1,6);
+    var _fgProbs=[0,0.35,0.28,0.22,0.18,0.14,0.10];
+    this._shardDropped=false;this._shardDropAtBarrier=-1;
+    if(_fgTi>=1&&typeof SHIELDS!=='undefined'&&!ShardTracker.allOwned(SHIELDS[_fgTi].name)){
+      if(Math.random()<(_fgProbs[_fgTi]||0)){this._shardDropAtBarrier=Math.floor(Math.random()*18)+3;}
+    }
     this.score = 0; this.gp = 0;
     this.speed = FG_ZONES[0].spdStart; this.gapSize = FG_ZONES[0].gapStart;
     this.frameCount = 0;
@@ -5731,24 +5748,13 @@ var FG = {
       this.barriers.push({x: w, topH: topH, lbl: lbl, passed: false, skipMe: this.skipNext, gapSize: this.gapSize});
       if (this.skipNext) this.skipNext = false;
       this._barrierCount++;
-      // Shard drop: every 5th barrier, 10% chance — targets player's next rank
-      if (this._barrierCount % 5 === 0) {
-        var _gr = typeof guardianRank !== 'undefined' ? guardianRank : 0;
-        var shieldIdx = Math.min(_gr + 1, 6);
-        if (_gr >= 6) { // max rank: find first incomplete
-          shieldIdx = 0;
-          for (var si = 0; si < SHIELDS.length; si++) {
-            if (!ShardTracker.allOwned(SHIELDS[si].name)) { shieldIdx = si; break; }
-          }
-        }
-        var shName = SHIELDS[shieldIdx].name;
-        if (ShardTracker.allOwned(shName)) {
-          // All 5 shards owned → drop Double Points instead
-          var dpX = w + 26, dpY = topH + this.gapSize * 0.5;
-          this.powerups.push({x:dpX, y:dpY, type:'double_points', icon:'🔥', r:14});
-        } else if (this._randShardsDropped < 2 && rng() < 0.10) {
-          var sNum = ShardTracker.nextMissing(shName);
-          if (sNum) { this._spawnShardAt(w, topH, topH + this.gapSize, shieldIdx, sNum, rng); this._randShardsDropped++; }
+      // Shard drop: pre-rolled at run start, fires at barrier _shardDropAtBarrier
+      if (!this._shardDropped && this._shardDropAtBarrier > 0 && this._barrierCount === this._shardDropAtBarrier) {
+        var _fgGr2=typeof guardianRank!=='undefined'?Math.min(6,guardianRank):0;
+        var _fgTi2=Math.min(_fgGr2+1,6);
+        if(typeof SHIELDS!=='undefined'&&!ShardTracker.allOwned(SHIELDS[_fgTi2].name)){
+          var sNum=ShardTracker.nextMissing(SHIELDS[_fgTi2].name);
+          if(sNum){this._spawnShardAt(w,topH,topH+this.gapSize,_fgTi2,sNum,rng);this._shardDropped=true;}
         }
       }
       this._nextBarrier = this.frameCount + zone.spawnRate;
