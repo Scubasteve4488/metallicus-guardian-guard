@@ -2258,7 +2258,7 @@ body.game-immersive .fs-exit-btn{display:flex!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-15-v8';
+const BUILD_VERSION='2026-06-15-v9';
 (function(){var b=document.getElementById('build-badge');if(b)b.textContent=BUILD_VERSION;})();
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
@@ -6492,10 +6492,12 @@ function switchToFlappy() {
   if (btnF) btnF.classList.add('active');
   if (typeof raf !== 'undefined' && raf) { cancelAnimationFrame(raf); raf = null; }
   FG.stop();
-  setTimeout(function() {
-    var canvas = document.getElementById('fg-canvas');
-    if (canvas) FG.init(canvas);
-  }, 50);
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      var canvas = document.getElementById('fg-canvas');
+      if (canvas) FG.init(canvas);
+    });
+  });
 }
 
 function switchToWave() {
