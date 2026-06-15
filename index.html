@@ -2122,6 +2122,32 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
         </div>
       </div>
     </div>
+    <!-- How to Play: Wave Survival -->
+    <details id="htp-wave" style="max-width:600px;margin:.8rem auto 0;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:.6rem 1rem;">
+      <summary style="cursor:pointer;font-family:'Cinzel',serif;font-size:.82rem;color:var(--gold-l);letter-spacing:.04em;list-style:none;display:flex;align-items:center;gap:.5rem;">⚔ How to Play — Wave Survival</summary>
+      <div style="margin-top:.7rem;font-size:.8rem;color:var(--text2);line-height:1.7;">
+        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Goal:</strong> Survive as many waves as possible. Each wave sends a new batch of enemies — kill them all to advance.</p>
+        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Controls:</strong> Tap enemies to deal damage. Tap the ability button (bottom-right) when it glows to unleash your Guardian power.</p>
+        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">HP:</strong> You start with health based on your Guardian rank. Taking hits reduces HP — if it hits zero, the run ends.</p>
+        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Combos:</strong> Kill enemies quickly in a row for a combo multiplier. Higher streaks = more score per kill.</p>
+        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Between waves:</strong> Choose a reward — restore HP, upgrade your ability, or boost your score multiplier.</p>
+        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Boss waves:</strong> Every few waves a boss appears with extra HP. Kill it fast — it hits hard.</p>
+        <p style="margin:0;"><strong style="color:var(--text1);">Shards:</strong> Rare drops during play. Collect 5 shards of a shield to unlock it permanently on the Shields tab.</p>
+      </div>
+    </details>
+    <!-- How to Play: GUARD Trials -->
+    <details id="htp-flappy" style="max-width:600px;margin:.5rem auto 0;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:.6rem 1rem;">
+      <summary style="cursor:pointer;font-family:'Cinzel',serif;font-size:.82rem;color:var(--gold-l);letter-spacing:.04em;list-style:none;display:flex;align-items:center;gap:.5rem;">🪙 How to Play — GUARD Trials</summary>
+      <div style="margin-top:.7rem;font-size:.8rem;color:var(--text2);line-height:1.7;">
+        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Goal:</strong> Fly the GUARD token through 8 blockchain zones. Pass as many barriers as you can without crashing.</p>
+        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Controls:</strong> Tap (or press Space) to flap upward. Gravity pulls you down — tap repeatedly to stay in the gap.</p>
+        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Scoring:</strong> Each barrier passed = points. Combos (3, 5, 8 in a row) multiply your score. Double Points power-up doubles it further.</p>
+        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Zones:</strong> Every 30 points you enter the next zone — gaps get tighter and speed increases. Reach Metal Blockchain to become a legend.</p>
+        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Power-ups:</strong> Collect glowing icons mid-gap. ⚡ skips the next barrier · 🛡 gives 3s invincibility · 🔥 doubles points for 8s · ⏳ slows time · 🔮 shrinks your hitbox.</p>
+        <p style="margin:0 0 .5rem;"><strong style="color:var(--text1);">Pause:</strong> Tap the ⏸ icon (top-right) to pause. Resume or quit from the pause screen.</p>
+        <p style="margin:0;"><strong style="color:var(--text1);">Shards:</strong> Every 5th barrier has a chance to drop a shield shard. Collect 5 to complete that shield on the Shields tab.</p>
+      </div>
+    </details>
     <div style="max-width:600px;margin:1.2rem auto 0;">
       <!-- Personal best bar -->
       <div style="background:rgba(201,146,42,0.07);border:1px solid rgba(201,146,42,0.22);border-radius:10px;padding:.6rem 1.1rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem;gap:.5rem;">
@@ -2163,6 +2189,9 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 </div>
 </div>
 
+<div id="fs-return-banner" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(4,7,18,0.92);flex-direction:column;align-items:center;justify-content:center;cursor:pointer;" onclick="_fsTapReturn()" ontouchend="_fsTapReturn();event.preventDefault();">
+  <div style="font-family:'Cinzel',serif;font-size:1.2rem;color:#e8b84b;text-shadow:0 0 24px rgba(201,146,42,0.8);text-align:center;padding:1.5rem;letter-spacing:.05em;">TAP TO RETURN TO FULLSCREEN</div>
+</div>
 <div id="no-plays-overlay" style="display:none;position:fixed;inset:0;background:rgba(4,7,18,0.97);z-index:9999;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;box-sizing:border-box;text-align:center;">
   <div style="max-width:400px;width:100%;">
     <div style="font-size:3.2rem;margin-bottom:.7rem;">🛡</div>
@@ -2224,7 +2253,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-14-v5';
+const BUILD_VERSION='2026-06-14-v6';
 (function(){var b=document.getElementById('build-badge');if(b)b.textContent=BUILD_VERSION;})();
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
@@ -4227,7 +4256,7 @@ function tap(cx,cy){
   // Shard drops (tap to collect)
   if(wsTapShards(cx,cy))return;
   // Ability button (bottom-right, 60px min touch height)
-  {const abW=180,abH=60,abX=CW-90-10,abY=CH-22-10;if(g.abLeft<=0&&inBtn(cx,cy,abX,abY,abW,abH)){activateAb();return;}}
+  {const abW=180,abH=60,abX=CW-90-10,abY=CH-30-10;if(g.abLeft<=0&&inBtn(cx,cy,abX,abY,abW,abH)){activateAb();return;}}
   // Power-ups
   for(let i=g.pus.length-1;i>=0;i--){const pu=g.pus[i];if(dst({x:cx,y:cy},{x:pu.x,y:pu.y})<26){collectPU(pu,i);return;}}
   // Enemies
@@ -4284,7 +4313,7 @@ function tapChoice(cx,cy){
 }
 function tryRequestFullscreen(el){if(!el)return;try{var _p=el.requestFullscreen?el.requestFullscreen():el.webkitRequestFullscreen?el.webkitRequestFullscreen():el.mozRequestFullScreen?el.mozRequestFullScreen():el.msRequestFullscreen?el.msRequestFullscreen():null;if(_p&&typeof _p.catch==='function')_p.catch(function(){});}catch(e){}}
 function exitFullscreenGame(){try{if(document.exitFullscreen)document.exitFullscreen();else if(document.webkitExitFullscreen)document.webkitExitFullscreen();else if(document.mozCancelFullScreen)document.mozCancelFullScreen();else if(document.msExitFullscreen)document.msExitFullscreen();}catch(e){}}
-(function(){var _fsEl=null;function _fsch(){var isFS=!!(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement);document.querySelectorAll('.fs-exit-btn').forEach(function(b){b.style.display=isFS?'flex':'none';});if(isFS){_fsEl=document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement;setTimeout(function(){try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}},150);}else{_fsEl=null;}}['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(function(ev){document.addEventListener(ev,_fsch);});document.addEventListener('visibilitychange',function(){if(!document.hidden&&_fsEl){try{tryRequestFullscreen(_fsEl);}catch(e){}}});}());
+(function(){var _fsEl=null;window._fsTapReturn=function(){var b=document.getElementById('fs-return-banner');if(b)b.style.display='none';if(_fsEl)tryRequestFullscreen(_fsEl);};function _fsch(){var isFS=!!(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement);document.querySelectorAll('.fs-exit-btn').forEach(function(b){b.style.display=isFS?'flex':'none';});var banner=document.getElementById('fs-return-banner');if(isFS){_fsEl=document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement;if(banner)banner.style.display='none';setTimeout(function(){try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}},150);}else{_fsEl=null;if(banner)banner.style.display='none';}}['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(function(ev){document.addEventListener(ev,_fsch);});document.addEventListener('visibilitychange',function(){if(!document.hidden&&_fsEl){var b=document.getElementById('fs-return-banner');if(b)b.style.display='flex';}});}());
 function updateStartStep4(){var _connected=typeof walletActor!=='undefined'&&walletActor;var _yes='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:#4ade80;"><span>✓</span><span>Wallet connected as <strong>@'+walletActor+'</strong></span></div>';var _no='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:var(--text3);"><span>○</span><span>No wallet connected yet</span></div>';var check=document.getElementById('start-step4-check');var btn=document.getElementById('start-connect-btn');if(check)check.innerHTML=_connected?_yes:_no;if(btn)btn.style.display=_connected?'none':'';var ntgCheck=document.getElementById('ntg-step4-check');var ntgBtn=document.getElementById('ntg-connect-btn');if(ntgCheck)ntgCheck.innerHTML=_connected?_yes:_no;if(ntgBtn)ntgBtn.style.display=_connected?'none':'';}
 function toggleMute(){muted=!muted;localStorage.setItem('guard_arena_mute',muted?'1':'0');if(g&&['START','TUT','GAME_OVER','PAUSED'].includes(g.phase))drawStatic();}
 function togglePause(){
@@ -5170,22 +5199,23 @@ function drawGameOver(nb,gp){
   ctx.fillText('Wave '+g.wave+' · Score '+g.score+(g.cpUsed?' · CP':''),CX,100);
   let ny=124;
   ctx.fillStyle='#b78df5';ctx.font='12px Cinzel,serif';ctx.fillText('+'+gp+' Guardian Points',CX,ny);ny+=16;
-  ctx.fillStyle='#334155';ctx.font='10px Cinzel,serif';ctx.fillText('Points contribute to Guardian Score on the Shields tab',CX,ny);ny+=18;
-  if(g.perfectWaves>0){ctx.fillStyle='#22c55e';ctx.font='12px Cinzel,serif';ctx.fillText('🌟 '+g.perfectWaves+' perfect wave'+(g.perfectWaves!==1?'s':''),CX,ny);ny+=18;}
+  if(g.perfectWaves>0&&ny<=252){ctx.fillStyle='#22c55e';ctx.font='12px Cinzel,serif';ctx.fillText('🌟 '+g.perfectWaves+' perfect wave'+(g.perfectWaves!==1?'s':''),CX,ny);ny+=18;}
   const earned=g.achs.filter(k=>ACH_NAMES[k]);
   if(earned.length){
     const allAchs=JSON.parse(localStorage.getItem('guard_achs_all')||'[]');
     earned.forEach(k=>{
+      if(ny>252)return;
       const isNew=!allAchs.includes(k);
       ctx.fillStyle='#e8b84b';ctx.font='bold 10px Cinzel,serif';
       ctx.fillText('🏆 '+ACH_NAMES[k]+(isNew?' ★NEW':''),CX,ny);ny+=13;
+      if(ny>252)return;
       ctx.fillStyle='#94a3b8';ctx.font='9px Cinzel,serif';
       ctx.fillText(ACH_DESC[k]||'',CX,ny);ny+=14;
     });
     const fresh=earned.filter(k=>!allAchs.includes(k));
     if(fresh.length){localStorage.setItem('guard_achs_all',JSON.stringify([...new Set([...allAchs,...fresh])]));}
   }
-  if(nb){ctx.fillStyle='#22c55e';ctx.font='bold 13px "Cinzel Decorative",Cinzel,serif';ctx.shadowBlur=10;ctx.shadowColor='#22c55e';ctx.fillText('✦ NEW PERSONAL BEST ✦',CX,ny);ctx.shadowBlur=0;}
+  if(nb&&ny<=252){ctx.fillStyle='#22c55e';ctx.font='bold 13px "Cinzel Decorative",Cinzel,serif';ctx.shadowBlur=10;ctx.shadowColor='#22c55e';ctx.fillText('✦ NEW PERSONAL BEST ✦',CX,ny);ctx.shadowBlur=0;}
   // Waiting indicator during stats-reveal period
   if(g.goTimer>0){
     const t=performance.now()/350;
@@ -5295,39 +5325,39 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAllDrop
 var FG_ZONES = [
   {name:'SIMPLEDEX',      sub:'The On-Chain Exchange',  rank:'Cryptide Guardian',
    score:0,   bg:'#010c16', pipe:'#0c3554', glow:'#22d3ee', accent:'#38bdf8',
-   lbls:['SWAP','FUD','SLIP'],           gapStart:152,gapEnd:140,spdStart:1.7,spdEnd:2.2,spawnRate:120},
+   lbls:['SWAP','FUD','SLIP'],           gapStart:172,gapEnd:160,spdStart:1.7,spdEnd:2.2,spawnRate:120},
   {name:'BLASTPAD',       sub:'The Launch Platform',    rank:'Riftforge Guardian',
    score:30,  bg:'#04010e', pipe:'#2d0a5e', glow:'#a855f7', accent:'#c084fc',
-   lbls:['DUMP','HACK','BLAST'],         gapStart:138,gapEnd:126,spdStart:2.3,spdEnd:2.8,spawnRate:112},
+   lbls:['DUMP','HACK','BLAST'],         gapStart:158,gapEnd:146,spdStart:2.3,spdEnd:2.8,spawnRate:112},
   {name:'METAL X',        sub:'DeFi Exchange Layer',    rank:'Helion Guardian',
    score:60,  bg:'#0d0600', pipe:'#6b2100', glow:'#f97316', accent:'#fb923c',
-   lbls:['DRAIN','ORDER','FLASH'],       gapStart:124,gapEnd:112,spdStart:2.9,spdEnd:3.5,spawnRate:104},
+   lbls:['DRAIN','ORDER','FLASH'],       gapStart:144,gapEnd:132,spdStart:2.9,spdEnd:3.5,spawnRate:104},
   {name:'WEBAUTH',        sub:'Identity Layer',         rank:'Nebulon Guardian',
    score:90,  bg:'#010e07', pipe:'#054a2e', glow:'#34d399', accent:'#6ee7b7',
-   lbls:['PHISH','FAKE','LOCK'],         gapStart:110,gapEnd:99, spdStart:3.6,spdEnd:4.2,spawnRate:96},
+   lbls:['PHISH','FAKE','LOCK'],         gapStart:130,gapEnd:119,spdStart:3.6,spdEnd:4.2,spawnRate:96},
   {name:'MTL DAO',        sub:'Governance Layer',       rank:'Protonis Guardian',
    score:120, bg:'#0d0102', pipe:'#6b0a1a', glow:'#f43f5e', accent:'#fb7185',
-   lbls:['VETO','SYBIL','VOTE-NO'],      gapStart:97, gapEnd:87, spdStart:4.3,spdEnd:5.0,spawnRate:92},
+   lbls:['VETO','SYBIL','VOTE-NO'],      gapStart:117,gapEnd:107,spdStart:4.3,spdEnd:5.0,spawnRate:92},
   {name:'LOAN PROTOCOL',  sub:'Borrow & Lend',          rank:'Keystone Guardian',
    score:150, bg:'#010b04', pipe:'#0f4019', glow:'#4ade80', accent:'#86efac',
-   lbls:['LIQUIDATE','MARGIN','FLASH'],  gapStart:85, gapEnd:76, spdStart:5.1,spdEnd:5.8,spawnRate:88},
+   lbls:['LIQUIDATE','MARGIN','FLASH'],  gapStart:105,gapEnd:96, spdStart:5.1,spdEnd:5.8,spawnRate:88},
   {name:'XPR NETWORK',    sub:'The Blockchain',         rank:'Aegis Guardian',
    score:180, bg:'#03000c', pipe:'#2d0b6e', glow:'#8b5cf6', accent:'#a78bfa',
-   lbls:['51%','REORG','ECLIPSE'],       gapStart:74, gapEnd:66, spdStart:5.9,spdEnd:6.8,spawnRate:84},
+   lbls:['51%','REORG','ECLIPSE'],       gapStart:94, gapEnd:86, spdStart:5.9,spdEnd:6.8,spawnRate:84},
   {name:'METAL BLOCKCHAIN',sub:'The Foundation',        rank:'Legend',
    score:210, bg:'#040404', pipe:'#181818', glow:'#c9922a', accent:'#e8b84b',
-   lbls:['MEV','SHADOW','VOID'],         gapStart:64, gapEnd:57, spdStart:6.9,spdEnd:8.5,spawnRate:80},
+   lbls:['MEV','SHADOW','VOID'],         gapStart:84, gapEnd:80, spdStart:6.9,spdEnd:8.5,spawnRate:80},
 ];
 function _fgZoneForScore(s){for(var i=FG_ZONES.length-1;i>=0;i--){if(s>=FG_ZONES[i].score)return i;}return 0;}
 
 var FG = {
   canvas: null, ctx: null, animFrame: null,
-  started: false, dead: false,
+  started: false, dead: false, paused: false,
   frameCount: 0, score: 0,
   pb: parseInt(localStorage.getItem('fg_pb')||'0'),
   pbDaily: parseInt(localStorage.getItem('fg_daily_pb')||'0'),
   gp: 0,
-  speed: 1.7, gapSize: 152,
+  speed: 1.7, gapSize: 172,
   shield: false, shieldTimer: 0,
   skipNext: false,
   doublePoints: false, dpTimer: 0,
@@ -5424,7 +5454,7 @@ var FG = {
     this.slowMo = false; this.slowMoTimer = 0;
     this.shrink = false; this.shrinkTimer = 0;
     this.shieldEntry = 0;
-    this.dead = false; this.started = false;
+    this.dead = false; this.started = false; this.paused = false;
     this.zoneIdx = 0; this.zoneAnnTimer = 0;
     this.comboStreak = 0; this.comboMult = 1; this.comboPulse = 0; this.comboLabel = ''; this.comboBest = 0;
     this.isDaily = !!daily;
@@ -5490,6 +5520,16 @@ var FG = {
       }
       return;
     }
+    // Pause screen
+    if (this.paused) {
+      if (sx !== null) {
+        var _ph = this.canvas ? this.canvas.height : 580;
+        var _pw = this.canvas ? this.canvas.width : 480;
+        if (sy >= _ph*0.53-22 && sy <= _ph*0.53+22) { this.paused = false; }
+        else if (sy >= _ph*0.67-22 && sy <= _ph*0.67+22) { this.paused = false; this.die(); }
+      } else { this.paused = false; }
+      return;
+    }
     // Dead screen
     if (this.dead) {
       var _fg2 = this;
@@ -5505,7 +5545,11 @@ var FG = {
       }
       return;
     }
-    // In game: flap
+    // In game: pause button (top-right 40×40) or flap
+    if (sx !== null) {
+      var _cw = this.canvas ? this.canvas.width : 480;
+      if (sx >= _cw - 44 && sy !== null && sy <= 44) { this.paused = true; return; }
+    }
     this.coin.vy = this.flapPower;
     this._boop('flap');
   },
@@ -5528,7 +5572,7 @@ var FG = {
     this.frameCount++;
     if (this.zoneAnnTimer > 0) this.zoneAnnTimer = Math.max(0, this.zoneAnnTimer - 1/60);
     if (this.shieldEntry > 0) this.shieldEntry = Math.max(0, this.shieldEntry - 1/60);
-    if (!this.started || this.dead) return;
+    if (!this.started || this.dead || this.paused) return;
     var w = this.canvas.width, h = this.canvas.height;
     var rng = this._rng || Math.random.bind(Math);
 
@@ -5581,7 +5625,7 @@ var FG = {
       topH = Math.max(minTopH, Math.min(maxTopH, topH));
       this._lastTopH = topH;
       var lbl = zone.lbls[Math.floor(rng() * zone.lbls.length)];
-      this.barriers.push({x: w, topH: topH, lbl: lbl, passed: false, skipMe: this.skipNext});
+      this.barriers.push({x: w, topH: topH, lbl: lbl, passed: false, skipMe: this.skipNext, gapSize: this.gapSize});
       if (this.skipNext) this.skipNext = false;
       this._barrierCount++;
       // Shard drop: every 5th barrier, 10% chance
@@ -5622,7 +5666,8 @@ var FG = {
       if (b.x + bw < 0) { this.barriers.splice(i, 1); continue; }
       if (!b.passed && b.x + bw < this.coin.x - hw) {
         b.passed = true;
-        this.score += 1; this.gp = Math.floor(this.score / 5);
+        var _pts = this.comboMult * (this.doublePoints ? 2 : 1);
+        this.score += _pts; this.gp = Math.floor(this.score / 5);
         this.comboStreak++;
         if (this.comboStreak >= 8)      { this.comboMult = 5; this.comboLabel = '🔥 GUARDIAN MODE'; this._boop('guardian'); }
         else if (this.comboStreak >= 5) { this.comboMult = 3; this.comboLabel = '⚡ x3'; this._boop('combo'); }
@@ -5644,7 +5689,7 @@ var FG = {
       if (!invincible && !b.skipMe) {
         var cx = this.coin.x, cy = this.coin.y;
         if (cx + hw > b.x && cx - hw < b.x + bw) {
-          if (cy - hh < b.topH || cy + hh > b.topH + this.gapSize) { this.die(); return; }
+          if (cy - hh < b.topH || cy + hh > b.topH + b.gapSize) { this.die(); return; }
         }
       }
     }
@@ -5701,8 +5746,8 @@ var FG = {
     }
     if (candidates.length === 0) return;
     var chosen = candidates[Math.floor(rng() * candidates.length)];
-    var gapTop = chosen.topH + this.gapSize * 0.25;
-    var gapBottom = chosen.topH + this.gapSize * 0.75;
+    var gapTop = chosen.topH + chosen.gapSize * 0.25;
+    var gapBottom = chosen.topH + chosen.gapSize * 0.75;
     var pool = ['shield_boost','shield_boost','guardian_shield','double_points','slow_mo','shrink'];
     var type = pool[Math.floor(rng() * pool.length)];
     var icons = {shield_boost:'⚡', guardian_shield:'🛡', double_points:'🔥', slow_mo:'⏳', shrink:'🔮'};
@@ -5853,7 +5898,32 @@ var FG = {
     this._drawGuardian(this.coin.x, this.coin.y, this.coin.angle, this.shield || this.shieldEntry > 0, this.shrink);
     this._drawHUD(w, h);
     this._drawZoneAnn(w, h);
+    if (this.paused) { this._drawPause(w, h); return; }
     if(isDevMode())this._fgDevBadge(c,w);
+  },
+
+  _drawPause: function(w, h) {
+    var c = this.ctx;
+    c.fillStyle = 'rgba(4,7,18,0.86)'; c.fillRect(0, 0, w, h);
+    c.textAlign = 'center'; c.textBaseline = 'middle';
+    c.fillStyle = '#e8b84b'; c.font = 'bold 22px "Cinzel Decorative",Cinzel,Arial,sans-serif';
+    c.shadowBlur = 14; c.shadowColor = '#c9922a';
+    c.fillText('PAUSED', w/2, h * 0.38); c.shadowBlur = 0;
+    // RESUME
+    c.fillStyle = 'rgba(201,146,42,0.2)';
+    this._rrect(w/2-90, h*0.53-22, 180, 44, 8); c.fill();
+    c.strokeStyle = '#c9922a'; c.lineWidth = 1.5;
+    this._rrect(w/2-90, h*0.53-22, 180, 44, 8); c.stroke();
+    c.fillStyle = '#ffe066'; c.font = 'bold 14px Arial,sans-serif';
+    c.fillText('▶  RESUME', w/2, h*0.53);
+    // QUIT
+    c.fillStyle = 'rgba(30,41,59,0.6)';
+    this._rrect(w/2-90, h*0.67-22, 180, 44, 8); c.fill();
+    c.strokeStyle = 'rgba(71,85,105,0.7)'; c.lineWidth = 1;
+    this._rrect(w/2-90, h*0.67-22, 180, 44, 8); c.stroke();
+    c.fillStyle = '#94a3b8'; c.font = 'bold 13px Arial,sans-serif';
+    c.fillText('✕  QUIT RUN', w/2, h*0.67);
+    c.textAlign = 'left'; c.textBaseline = 'alphabetic';
   },
 
   _drawTutorial: function(w, h) {
@@ -6190,6 +6260,11 @@ var FG = {
       c.fillText(this.comboLabel, w/2, 36);
       c.globalAlpha = 1;
     }
+    // Pause button — top-right 40×40 tap zone, visual at w-34 to w-8
+    c.textAlign = 'right'; c.textBaseline = 'top';
+    c.fillStyle = 'rgba(255,255,255,0.22)'; c.font = '18px Arial,sans-serif';
+    c.fillText('⏸', w - 10, 6);
+    c.textAlign = 'left'; c.textBaseline = 'alphabetic';
   },
 
   _drawZoneAnn: function(w, h) {
