@@ -2249,7 +2249,7 @@ body.game-immersive .fs-exit-btn{display:flex!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-15-v13-diag';
+const BUILD_VERSION='2026-06-15-v14-diag';
 (function(){var b=document.getElementById('build-badge');if(b)b.textContent=BUILD_VERSION;})();
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
@@ -4323,9 +4323,16 @@ function enterImmersive(gameId){
   setTimeout(function(){try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}},300);
 }
 function leaveImmersive(){
+  _dLog('L1: before classList.remove');
   document.body.classList.remove('game-immersive');
+  _dLog('L2: before querySelectorAll forEach');
   document.querySelectorAll('.immersive-active').forEach(function(el){el.classList.remove('immersive-active');});
-  try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}
+  _dLog('L3: before resize()');
+  try{resize();}catch(e){_dLog('ERROR in resize: '+e.message);}
+  _dLog('L4: after resize()');
+  _dLog('L5: before FG._resize()');
+  try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){_dLog('ERROR in FG._resize: '+e.message);}
+  _dLog('L6: after FG._resize() — leaveImmersive complete');
 }
 function updateStartStep4(){var _connected=typeof walletActor!=='undefined'&&walletActor;var _yes='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:#4ade80;"><span>✓</span><span>Wallet connected as <strong>@'+walletActor+'</strong></span></div>';var _no='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:var(--text3);"><span>○</span><span>No wallet connected yet</span></div>';var check=document.getElementById('start-step4-check');var btn=document.getElementById('start-connect-btn');if(check)check.innerHTML=_connected?_yes:_no;if(btn)btn.style.display=_connected?'none':'';var ntgCheck=document.getElementById('ntg-step4-check');var ntgBtn=document.getElementById('ntg-connect-btn');if(ntgCheck)ntgCheck.innerHTML=_connected?_yes:_no;if(ntgBtn)ntgBtn.style.display=_connected?'none':'';}
 function toggleMute(){muted=!muted;localStorage.setItem('guard_arena_mute',muted?'1':'0');if(g&&['START','TUT','GAME_OVER','PAUSED'].includes(g.phase))drawStatic();}
