@@ -2090,14 +2090,13 @@ body.game-immersive .fs-exit-btn{display:flex!important;}
       <button id="sel-wave" class="game-sel-btn active" onclick="switchToWave()">⚔ Wave Survival</button>
       <button id="sel-flappy" class="game-sel-btn" onclick="switchToFlappy()">🪙 GUARD Trials</button>
     </div>
+    <button class="fs-exit-btn" onclick="leaveImmersive()" ontouchend="leaveImmersive();event.preventDefault();" title="Exit fullscreen">✕</button>
     <div id="arena-container" style="position:relative;width:100%;max-width:600px;margin:0 auto;">
       <canvas id="arena-canvas" style="display:block;width:100%;border-radius:16px;border:1px solid rgba(201,146,42,0.25);cursor:crosshair;touch-action:none;-webkit-user-select:none;user-select:none;background:#080b12;"></canvas>
       <div id="ws-combo-badge"></div>
-      <button class="fs-exit-btn" onclick="leaveImmersive()" ontouchend="leaveImmersive();event.preventDefault();" title="Exit fullscreen">✕</button>
     </div>
     <div id="flappy-game-container" style="display:none;text-align:center;position:relative;">
       <canvas id="fg-canvas" style="display:block;margin:0 auto;border-radius:12px;border:1px solid rgba(201,146,42,0.3);max-width:100%;touch-action:none;-webkit-user-select:none;user-select:none;cursor:pointer;"></canvas>
-      <button class="fs-exit-btn" onclick="leaveImmersive()" ontouchend="leaveImmersive();event.preventDefault();" title="Exit fullscreen">✕</button>
       <div style="margin-top:.75rem;">
         <button onclick="FG.shareScore()" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;padding:.6rem 1.4rem;border-radius:8px;font-size:.85rem;cursor:pointer;">𝕏 Share on X</button>
       </div>
@@ -2241,7 +2240,6 @@ body.game-immersive .fs-exit-btn{display:flex!important;}
       <p class="foot-disc">Metallicus Guardian (GUARD) is an independent, community-created project. It is not affiliated with, sponsored by, endorsed by, or officially connected to Metallicus, XPR Network, WebAuth, Metal Blockchain, or any other product, company, or project referenced on this site. All product names, logos, and trademarks are the property of their respective owners and are used here for identification and educational purposes only (nominative use). This site is an unofficial educational resource. Nothing here is financial advice. Crypto assets are highly speculative — do your own research.</p>
       <p style="font-size:.72rem;color:var(--text3);text-align:center;font-style:italic;margin-top:.4rem;">⚠ Community educational resource — not affiliated with or officially endorsed by Metallicus or XPR Network.</p>
       <span style="font-size:.7rem;color:var(--text3);white-space:nowrap;">© 2026 GUARD Community</span>
-      <span id="build-badge" style="display:block;font-size:.62rem;color:var(--text3);opacity:.72;margin-top:.2rem;white-space:nowrap;letter-spacing:.04em;font-family:monospace;"></span>
     </div>
   </div>
 </footer>
@@ -2249,8 +2247,7 @@ body.game-immersive .fs-exit-btn{display:flex!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-15-v16';
-(function(){var b=document.getElementById('build-badge');if(b)b.textContent=BUILD_VERSION;})();
+const BUILD_VERSION='2026-06-15-v17';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -4221,8 +4218,8 @@ function resize(){
   var w,h,_ac=document.getElementById('arena-container');
   if(isFS){
     var vw=window.innerWidth,vh=window.innerHeight;
-    var coverScale=Math.max(vw/CW,vh/CH);
-    w=Math.round(CW*coverScale);h=Math.round(CH*coverScale);
+    var fitScale=Math.min(vw/CW,vh/CH);
+    w=Math.round(CW*fitScale);h=Math.round(CH*fitScale);
     if(_ac){var _wz=g?getWaveZone(g.wave):WAVE_ZONES[0];_ac.style.background=_wz.h2;}
   }else{
     if(_ac)_ac.style.background='';
@@ -5506,7 +5503,7 @@ var FG = {
       this.guardianImg.src = './guardian_fly.png';
     }
     this.reset(false);
-    this.showTut = !localStorage.getItem('fg_tutorial_done');
+    this.showTut = false;
     this._updatePbDisplay();
     var self = this;
     var _lastPointerT = 0;
@@ -5544,9 +5541,8 @@ var FG = {
     var cw,ch;
     if(isFS){
       var vw=window.innerWidth,vh=window.innerHeight;
-      var scaleW=vw/480,scaleH=vh/580;
-      var coverScale=Math.max(scaleW,scaleH);
-      cw=Math.round(480*coverScale);ch=Math.round(580*coverScale);
+      var fitScale=Math.min(vw/480,vh/580);
+      cw=Math.round(480*fitScale);ch=Math.round(580*fitScale);
       var _z=FG_ZONES[this.zoneIdx||0];cont.style.background=_z?_z.bg:'#000';
     }else{
       var rawW=cont.clientWidth;
