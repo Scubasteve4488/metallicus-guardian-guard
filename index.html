@@ -490,13 +490,13 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   #arena-container{overflow:hidden;}
   #flappy-game-container{overflow:hidden;}
 }
-/* IMMERSIVE GAME MODE */
-body.game-immersive #ticker-bar,body.game-immersive #nav,body.game-immersive #mobile-bottom-nav{display:none!important;}
-body.game-immersive #flappy-game-container>*:not(canvas):not(.fs-exit-btn){display:none!important;}
-.immersive-active{position:fixed!important;top:0!important;left:0!important;width:100vw!important;height:100dvh!important;z-index:9000!important;background:#080b12;display:flex!important;flex-direction:column;align-items:center;justify-content:center;max-width:none!important;padding:0!important;overflow:hidden;}
+/* FULLVIEW GAME MODE (CSS-only screen takeover — no fullscreen API) */
+body.game-fullview #ticker-bar,body.game-fullview #nav,body.game-fullview #mobile-bottom-nav{display:none!important;}
+body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
+.fullview-active{position:fixed!important;top:0!important;left:0!important;width:100vw!important;height:100dvh!important;z-index:9000!important;background:#080b12;display:flex!important;flex-direction:column;align-items:center;justify-content:center;max-width:none!important;padding:0!important;overflow:hidden;}
 .fs-exit-btn{display:none;position:fixed;top:10px;right:10px;z-index:9001;background:rgba(0,0,0,0.85);border:2px solid rgba(201,146,42,0.85);color:#e8b84b;border-radius:50%;width:52px;height:52px;font-size:1.2rem;cursor:pointer;align-items:center;justify-content:center;line-height:1;padding:0;touch-action:manipulation;pointer-events:all;}
-body.game-immersive .fs-exit-btn{display:flex!important;}
-.immersive-active canvas{border-radius:0!important;border:none!important;}
+body.game-fullview .fs-exit-btn{display:flex!important;}
+.fullview-active canvas{border-radius:0!important;border:none!important;}
 /* GUARDIAN GUIDES */
 .gg-list{display:flex;flex-direction:column;gap:.45rem;max-width:740px;margin:0 auto;}
 .gg-item{border:1px solid rgba(201,146,42,0.18);border-radius:10px;background:rgba(255,255,255,0.02);overflow:hidden;}
@@ -2090,7 +2090,7 @@ body.game-immersive .fs-exit-btn{display:flex!important;}
       <button id="sel-wave" class="game-sel-btn active" onclick="switchToWave()">⚔ Wave Survival</button>
       <button id="sel-flappy" class="game-sel-btn" onclick="switchToFlappy()">🪙 GUARD Trials</button>
     </div>
-    <button class="fs-exit-btn" onclick="leaveImmersive()" ontouchend="leaveImmersive();event.preventDefault();" title="Exit fullscreen">✕</button>
+    <button class="fs-exit-btn" onclick="leaveFullview()" ontouchend="leaveFullview();event.preventDefault();" title="Exit fullscreen">✕</button>
     <div id="arena-container" style="position:relative;width:100%;max-width:600px;margin:0 auto;">
       <canvas id="arena-canvas" style="display:block;width:100%;border-radius:16px;border:1px solid rgba(201,146,42,0.25);cursor:crosshair;touch-action:none;-webkit-user-select:none;user-select:none;background:#080b12;"></canvas>
       <div id="ws-combo-badge"></div>
@@ -2247,7 +2247,7 @@ body.game-immersive .fs-exit-btn{display:flex!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-15-v17';
+const BUILD_VERSION='2026-06-15-v18';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -4214,7 +4214,7 @@ function arenaInit(){
 }
 function resize(){
   if(!cvs)return;
-  var isFS=document.body.classList.contains('game-immersive');
+  var isFS=document.body.classList.contains('game-fullview');
   var w,h,_ac=document.getElementById('arena-container');
   if(isFS){
     var vw=window.innerWidth,vh=window.innerHeight;
@@ -4280,7 +4280,7 @@ function tapTut(cx,cy){
   }
 }
 function tapStart(cx,cy){
-  if(inBtn(cx,cy,CX,_wsPlayBtnCy,180,48))checkAndUsePlay('ws',function(){startGame(false);if(window.innerWidth<=768)enterImmersive('arena');});
+  if(inBtn(cx,cy,CX,_wsPlayBtnCy,180,48))checkAndUsePlay('ws',function(){startGame(false);if(window.innerWidth<=768)enterFullview('arena');});
 }
 function tapPause(cx,cy){
   if(inBtn(cx,cy,CX,280,180,44))togglePause();
@@ -4309,19 +4309,19 @@ function tapChoice(cx,cy){
   // B: rrect(CX+15,210,170,70) → center (CX+100, 245)
   else if(inBtn(cx,cy,CX+100,245,170,70))applyChoice('B');
 }
-function enterImmersive(gameId){
+function enterFullview(gameId){
   var cont=document.getElementById(gameId==='fg'?'flappy-game-container':'arena-container');
   if(!cont)return;
-  document.querySelectorAll('.immersive-active').forEach(function(el){el.classList.remove('immersive-active');});
-  document.body.classList.add('game-immersive');
-  cont.classList.add('immersive-active');
+  document.querySelectorAll('.fullview-active').forEach(function(el){el.classList.remove('fullview-active');});
+  document.body.classList.add('game-fullview');
+  cont.classList.add('fullview-active');
   try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}
   setTimeout(function(){try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}},100);
   setTimeout(function(){try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}},300);
 }
-function leaveImmersive(){
-  document.body.classList.remove('game-immersive');
-  document.querySelectorAll('.immersive-active').forEach(function(el){el.classList.remove('immersive-active');});
+function leaveFullview(){
+  document.body.classList.remove('game-fullview');
+  document.querySelectorAll('.fullview-active').forEach(function(el){el.classList.remove('fullview-active');});
   try{resize();}catch(e){}
   try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}
 }
@@ -5536,7 +5536,7 @@ var FG = {
     if (!this.canvas) { return; }
     var cont = document.getElementById('flappy-game-container');
     if (!cont) { return; }
-    var isFS=document.body.classList.contains('game-immersive');
+    var isFS=document.body.classList.contains('game-fullview');
     if (!isFS && cont.style.display === 'none') { return; }
     var cw,ch;
     if(isFS){
@@ -5629,7 +5629,7 @@ var FG = {
       if (sx !== null) {
         // PLAY button: h*0.60 ±20
         if (sx >= w/2-80 && sx <= w/2+80 && sy >= h*0.60-20 && sy <= h*0.60+20) {
-          checkAndUsePlay('fg',function(){_fg.reset(false);_fg.started=true;_fg.coin.vy=_fg.flapPower;_fg._boop('flap');if(window.innerWidth<=768)enterImmersive('fg');});
+          checkAndUsePlay('fg',function(){_fg.reset(false);_fg.started=true;_fg.coin.vy=_fg.flapPower;_fg._boop('flap');if(window.innerWidth<=768)enterFullview('fg');});
         }
         // Anywhere else: do nothing
       } else {
@@ -6506,7 +6506,7 @@ var FG = {
 };
 
 function switchToFlappy() {
-  if (document.body.classList.contains('game-immersive')) { leaveImmersive(); }
+  if (document.body.classList.contains('game-fullview')) { leaveFullview(); }
   var wc = document.getElementById('arena-container');
   var fc = document.getElementById('flappy-game-container');
   var btnW = document.getElementById('sel-wave');
@@ -6531,7 +6531,7 @@ function switchToFlappy() {
 }
 
 function switchToWave() {
-  if (document.body.classList.contains('game-immersive')) { leaveImmersive(); }
+  if (document.body.classList.contains('game-fullview')) { leaveFullview(); }
   var wc = document.getElementById('arena-container');
   var fc = document.getElementById('flappy-game-container');
   var btnW = document.getElementById('sel-wave');
