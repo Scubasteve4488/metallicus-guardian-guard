@@ -2173,7 +2173,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
             <span>⚡</span><span><strong style="color:var(--text);">Lightning</strong> — instantly readies your shield ability.</span>
             <span>🔥</span><span><strong style="color:var(--text);">Fire</strong> — 2× points for 7s (extends 3s per extra pickup).</span>
           </div>
-          <div style="margin-top:.45rem;font-size:.73rem;color:var(--text3);line-height:1.6;"><strong style="color:var(--text2);">Shard drop odds</strong> per run for your next rank: Riftforge 30% · Helion 23% · Nebulon 18% · Protonis 14% · Keystone 11% · Aegis 8%.</div>
+          <div style="margin-top:.45rem;font-size:.73rem;color:var(--text3);line-height:1.6;"><strong style="color:var(--text2);">Shards drop only for your next rank.</strong> As Cryptide you find Riftforge shards, as Riftforge you find Helion shards — and so on up to Aegis. You cannot find shards for ranks already earned or for ranks beyond the next one. Collect 5 to forge on the Shields tab.<br><strong style="color:var(--text2);">Drop odds</strong> per run: Riftforge 30% · Helion 23% · Nebulon 18% · Protonis 14% · Keystone 11% · Aegis 8%.</div>
         </div>
       </div>
     </details>
@@ -2279,7 +2279,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-16-BUILD-C';
+const BUILD_VERSION='2026-06-16-BUILD-D';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -4645,13 +4645,7 @@ function update(dt){
     g.phT-=dt;
     if(g.phT<=0){
       const isBoss=g.wave%5===0,doChoice=!isBoss&&g.wave%3===0&&g.wave>0;
-      if(doChoice){
-        if(g.hp>=g.mhp+MAX_HP_BONUS){
-          g.doublePts=true;g.dpT=999;
-          flt('HP FULL — 2× POINTS NEXT WAVE',CX,100,'#f5c842',15);
-          checkAbSelect();
-        } else {g.phase='CHOICE';}
-      } else checkAbSelect();
+      if(doChoice){g.phase='CHOICE';}else checkAbSelect();
     }
     updPUs(dt);return;
   }
@@ -5209,13 +5203,13 @@ function drawPhaseOverlay(){
     ctx.shadowBlur=0;ctx.fillStyle='#64748b';ctx.font='12px Cinzel,serif';ctx.fillText('After Wave '+g.wave,CX,122);
     const _hpFull=g.hp>=g.mhp+MAX_HP_BONUS;
     // Banner when HP is capped
-    if(_hpFull){ctx.fillStyle='#e8b84b';ctx.font='bold 11px Cinzel,serif';ctx.shadowBlur=6;ctx.shadowColor='#c9922a';ctx.fillText('Maximum HP reached',CX,165);ctx.shadowBlur=0;}
+    if(_hpFull){ctx.fillStyle='#f97316';ctx.font='bold 11px Cinzel,serif';ctx.shadowBlur=6;ctx.shadowColor='#c9922a';ctx.fillText('HP FULL — select 2× Points to continue',CX,165);ctx.shadowBlur=0;}
     // Option A — disabled when HP full
-    ctx.save();ctx.globalAlpha=_hpFull?0.4:1;
+    ctx.save();ctx.globalAlpha=_hpFull?0.35:1;
     ctx.fillStyle=_hpFull?'rgba(71,85,105,0.1)':'rgba(34,197,94,0.1)';rrect(CX-185,210,170,70,10);ctx.fill();
     ctx.strokeStyle=_hpFull?'#334155':'#22c55e';ctx.lineWidth=1.5;rrect(CX-185,210,170,70,10);ctx.stroke();
-    ctx.fillStyle=_hpFull?'#ef4444':'#22c55e';ctx.font='bold 14px Cinzel,serif';ctx.fillText('OPTION A',CX-100,238);
-    ctx.fillStyle=_hpFull?'#64748b':'#e2e8f0';ctx.font='11px Cinzel,serif';ctx.fillText(_hpFull?'HP FULL':'+1 HP now',CX-100,258);if(!_hpFull)ctx.fillText('Skip wave bonus',CX-100,274);
+    ctx.fillStyle=_hpFull?'#64748b':'#22c55e';ctx.font='bold 14px Cinzel,serif';ctx.fillText('OPTION A',CX-100,238);
+    ctx.fillStyle='#475569';ctx.font='11px Cinzel,serif';if(_hpFull){ctx.fillText('HP FULL',CX-100,258);ctx.fillText('already at max',CX-100,274);}else{ctx.fillStyle='#e2e8f0';ctx.fillText('+1 HP now',CX-100,258);ctx.fillText('Skip wave bonus',CX-100,274);}
     ctx.restore();
     // Option B — highlighted when HP full
     var bBright=_hpFull;
