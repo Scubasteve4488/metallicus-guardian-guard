@@ -2246,7 +2246,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-15-v23';
+const BUILD_VERSION='2026-06-16-BUILD-B';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -4084,6 +4084,7 @@ const ED={
   breach:     {lbl:'THE BREACH',  col:'#0a0010',glow:'rgba(239,68,68,0.95)',    r:62,mhp:15,dmg:3,spd:22, pts:50},
   voidhacker: {lbl:'VOID HACKER', col:'#160000',glow:'rgba(200,30,30,0.95)',    r:66,mhp:20,dmg:3,spd:20, pts:100},
   shadowdrain:{lbl:'SHADOW DRAIN',col:'#000000',glow:'rgba(120,0,220,0.99)',    r:72,mhp:30,dmg:3,spd:18, pts:250},
+  overlord:   {lbl:'THE OVERLORD',col:'#0a0020',glow:'rgba(160,0,255,0.99)',    r:80,mhp:40,dmg:3,spd:24, pts:500},
 };
 const ALL_ABS=['bash','ring','slow','strike','fortify','chain'];
 const AB_CD={bash:30,ring:45,slow:60,strike:90,fortify:120,chain:75};
@@ -4101,6 +4102,7 @@ const WAVE_ZONES=[
   {start:25,name:'LOAN PROTOCOL',   sub:'Borrow & Lend',          h1:'hsla(130,60%,5%,1)', h2:'hsla(140,70%,2%,1)'},
   {start:30,name:'XPR NETWORK',     sub:'The Blockchain',         h1:'hsla(268,65%,6%,1)', h2:'hsla(275,75%,3%,1)'},
   {start:35,name:'METAL BLOCKCHAIN',sub:'The Foundation',         h1:'hsla(26,55%,7%,1)',  h2:'hsla(20,65%,2%,1)'},
+  {start:51,name:'THE VOID',        sub:'Endless Endgame',        h1:'hsla(265,40%,3%,1)', h2:'hsla(270,60%,1%,1)'},
 ];
 function getWaveZone(wave){for(let i=WAVE_ZONES.length-1;i>=0;i--){if(wave>=WAVE_ZONES[i].start)return WAVE_ZONES[i];}return WAVE_ZONES[0];}
 
@@ -4128,24 +4130,22 @@ function burst(x,y,col,n){const cap=isTD?Math.min(n||14,20):Math.min(n||14,30);f
 function flt(txt,x,y,col,sz){g.flts.push({txt,x,y,vy:-55,col:col||'#e8b84b',sz:sz||13,life:1.3,maxL:1.3});}
 
 // ─── Wave builder ─────────────────────────────────────────────────────────────
-function getMix(w){return{sw:w<4?0:Math.min(0.2,(w-4)*0.03),ha:w<2?0:Math.min(0.25,(w-2)*0.04),ru:w<5?0:Math.min(0.18,(w-5)*0.025)};}
-function spawnGap(w){
-  if(w===1)return 1.02;if(w===2)return 0.85;if(w===3)return 0.77;if(w===4)return 0.68;
-  if(w<=15)return Math.max(0.5,0.8-(w-4)*0.04);
-  if(w<=19)return Math.max(0.45,0.8-(w-4)*0.04);
-  return 0.35;
-}
+function getMix(w){return{sw:w<5?0:Math.min(0.20,(w-5)*0.015),ha:w<3?0:Math.min(0.25,(w-3)*0.02),ru:w<7?0:Math.min(0.18,(w-7)*0.012)};}
+function spawnGap(w){return Math.max(0.4,1.0-(w-1)*0.0133);}
 function buildWave(w,rng){
   if(w===25)return[{type:'breach',delay:0}];
-  if(w===50)return[{type:'voidhacker',delay:0}];
-  if(w===100)return[{type:'shadowdrain',delay:0}];
+  if(w===50){
+    const bq=[{type:'overlord',delay:0}];
+    for(let mi=0;mi<8;mi++)bq.push({type:'fud',delay:2.5+mi*1.0});
+    return bq;
+  }
   if(w%5===0){
     const vt=w===5?'rugger':w===10?'fudmaster':w===15?'exploiter':'random';
     const bq=[{type:'boss',delay:0,vt}];
-    for(let mi=0;mi<6;mi++)bq.push({type:'fud',delay:1.8+mi*0.7});
+    for(let mi=0;mi<6;mi++)bq.push({type:'fud',delay:1.0+mi*1.0});
     return bq;
   }
-  const cnt=w===1?12:w===2?15:w===3?19:w===4?23:w<=11?Math.min(23+(w-4)*3,44):Math.min(44+(w-11)*3,95);
+  const cnt=w===1?14:w===2?17:w===3?20:w===4?23:Math.min(26+(w-6)*3,90);
   const mix=getMix(w),gap=spawnGap(w),q=[];
   const targetDur=Math.max(18,cnt*gap);
   const baseInterval=targetDur/cnt;
@@ -4178,7 +4178,7 @@ function newG(daily){
     fort:false,ftT:0,ftBonus:0,
     doublePts:false,dpT:0,
     combo:0,comboMult:1,lastComboKillT:0,
-    kills:{fud:0,hack:0,rug:0,swarm:0,boss:0,breach:0,voidhacker:0,shadowdrain:0},
+    kills:{fud:0,hack:0,rug:0,swarm:0,boss:0,breach:0,voidhacker:0,shadowdrain:0,overlord:0},
     waveBonus:0,comboBonus:0,perfectWaves:0,
     bgHue:220,achs:[],selectedAb:null,
     cp:null,cpUsed:false,
@@ -4386,7 +4386,7 @@ function killEnemy(en,idx){
     }
     // Boss defeat score bonus
     var _bpts=500*Math.ceil(g.wave/5);g.score+=_bpts;flt('+'+_bpts,en.pos.x,en.pos.y-36,'#f5c842',13);
-  } else if(['breach','voidhacker','shadowdrain'].includes(en.type)){
+  } else if(['breach','voidhacker','shadowdrain','overlord'].includes(en.type)){
     ach('boss_slayer');g.bossFlash=0.5;
     flt('⚔ '+en.lbl+' DEFEATED!',CX,CY-54,'#f5c842',18);
     snd('boss_warn');
@@ -4627,13 +4627,13 @@ function update(dt){
   // PLAYING
   if(g.comboMult>1&&performance.now()-g.lastComboKillT>2000){g.combo=0;g.comboMult=1;hideComboBadge();}
   const sm=g.timeSlow?0.3:1;
-  const xtra=g.wave<=5?0.8:g.wave<=11?Math.min(0.8+(g.wave-5)*0.04,1.04):Math.min(1.04+(g.wave-11)*0.07,3);
+  const xtra=g.wave<=5?0.85:g.wave<=50?0.85+(g.wave-5)*0.045:2.875+(g.wave-50)*0.05;
   g.wt+=dt;
   const sp=[];g.wq=g.wq.filter(it=>{if(g.wt>=it.delay){sp.push(it);return false;}return true;});
   sp.forEach(it=>{
     const p=edge(g.rng);
     if(it.type==='boss'){const ov={vt:it.vt};if(it.vt==='exploiter')ov.wild=true;g.enemies.push(mkEnemy('boss',p,g.rng,ov));}
-    else if(['breach','voidhacker','shadowdrain'].includes(it.type)){g.enemies.push(mkEnemy(it.type,p,g.rng));}
+    else if(['breach','voidhacker','shadowdrain','overlord'].includes(it.type)){g.enemies.push(mkEnemy(it.type,p,g.rng));}
     else{const en=mkEnemy(it.type,p,g.rng);en.spd*=xtra;g.enemies.push(en);}
   });
   const reached=[];
@@ -4656,10 +4656,10 @@ function update(dt){
   wsUpdateShards(dt);
   // Minimum wave duration fill
   if(g.wq.length===0&&g.enemies.length===0){
-    if(g.wt<g.wMinT&&g._fillRound<4){
+    if(g.wt<g.wMinT&&g._fillRound<2){
       g._fillRound++;
-      const extra=2+Math.min(g.wave,4);
-      for(let i=0;i<extra;i++) g.wq.push({type:'fud',delay:g.wt+0.3+i*2.2});
+      const extra=Math.min(4+g.wave,8);
+      for(let i=0;i<extra;i++) g.wq.push({type:'fud',delay:g.wt+0.15+i*0.5});
     } else {waveOK();}
   }
 }
@@ -4740,10 +4740,10 @@ function doNextWave(){
   g.wave++;g.wkills=0;g.wNoDmg=true;g._fillRound=0;
   const prevZone=getWaveZone(g.wave-1),curZone=getWaveZone(g.wave);
   const isBossWave=g.wave%5===0;
-  if(curZone.name!==prevZone.name){const ann={name:curZone.name,sub:curZone.sub,timer:2.0};if(isBossWave){g.zoneAnnPending=ann;}else{g.zoneAnn=ann;}}
+  if(curZone.name!==prevZone.name){const annT=curZone.name==='THE VOID'?3.5:2.0;const ann={name:curZone.name,sub:curZone.sub,timer:annT};if(isBossWave){g.zoneAnnPending=ann;}else{g.zoneAnn=ann;}}
   g.wq=buildWave(g.wave,g.rng);g.wt=0;
-  g.wMinT=[25,50,100].includes(g.wave)?35:isBossWave?30:20;
-  if(isBossWave){g.phase='BOSS_WARN';g.phT=[25,50,100].includes(g.wave)?3.5:2.5;snd('boss_warn');}else g.phase='PLAYING';
+  g.wMinT=[25,50].includes(g.wave)?35:isBossWave?30:20;
+  if(isBossWave){g.phase='BOSS_WARN';g.phT=[25,50].includes(g.wave)?3.5:2.5;snd('boss_warn');}else g.phase='PLAYING';
   if(g.doublePts&&g.dpT===999)g.dpT=60;
   // Checkpoint: save when entering wave 6, 11, 16... (completed previous 5-wave block)
   if(g.wave%5===1&&g.wave>1) saveCheckpoint();
@@ -4783,20 +4783,21 @@ function resumeCheckpoint(){
 // ─── Draw ─────────────────────────────────────────────────────────────────────
 function drawWaveZoneAnn(){
   if(!g||!g.zoneAnn||g.zoneAnn.timer<=0)return;
-  const t=g.zoneAnn.timer,maxT=2.0;
-  // fade in 0.3s, hold 1.2s, fade out 0.5s
+  const isVoid=g.zoneAnn.name==='THE VOID';
+  const maxT=isVoid?3.5:2.0;
+  const t=g.zoneAnn.timer;
   const fade=t>maxT-0.3?(maxT-t)/0.3:t<0.5?t/0.5:1;
   const bH=80;
   ctx.save();
   ctx.globalAlpha=Math.min(0.85,fade*0.85);
-  ctx.fillStyle='rgba(0,0,0,0.92)';ctx.fillRect(0,0,CW,bH);
+  ctx.fillStyle=isVoid?'rgba(0,0,0,0.97)':'rgba(0,0,0,0.92)';ctx.fillRect(0,0,CW,bH);
   ctx.globalAlpha=Math.min(0.85,fade);
-  ctx.fillStyle='#c9922a';ctx.fillRect(0,bH-2,CW,2);
+  ctx.fillStyle=isVoid?'#cc66ff':'#c9922a';ctx.fillRect(0,bH-2,CW,2);
   ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillStyle='rgba(255,255,255,0.55)';ctx.font='bold 9px Cinzel,serif';
-  ctx.fillText('ENTERING ZONE',CX,14);
-  ctx.fillStyle='#c9922a';ctx.font='bold 22px "Cinzel Decorative",Cinzel,serif';
-  ctx.shadowBlur=18;ctx.shadowColor='#c9922a';
+  ctx.fillText(isVoid?'CAMPAIGN COMPLETE — ENTERING':'ENTERING ZONE',CX,14);
+  ctx.fillStyle=isVoid?'#cc66ff':'#c9922a';ctx.font='bold 22px "Cinzel Decorative",Cinzel,serif';
+  ctx.shadowBlur=18;ctx.shadowColor=isVoid?'#cc66ff':'#c9922a';
   ctx.fillText(g.zoneAnn.name,CX,42);
   ctx.shadowBlur=0;
   ctx.fillStyle='#a78bfa';ctx.font='11px Cinzel,serif';
@@ -4829,11 +4830,18 @@ function drawBg(){
   gr.addColorStop(0,wz.h1);gr.addColorStop(1,wz.h2);
   ctx.fillStyle=gr;ctx.fillRect(0,0,CW,CH);
   // METAL BLOCKCHAIN slow ember pulse
-  if(g&&g.wave>=35){
+  if(g&&g.wave>=35&&g.wave<=50){
     const p=0.04+0.03*Math.sin(performance.now()/700);
     const eg=ctx.createRadialGradient(CX,CY,CW*0.1,CX,CY,CW*0.95);
     eg.addColorStop(0,'rgba(0,0,0,0)');eg.addColorStop(1,'rgba(100,0,0,'+p+')');
     ctx.fillStyle=eg;ctx.fillRect(0,0,CW,CH);
+  }
+  // THE VOID — dark purple pulse
+  if(g&&g.wave>50){
+    const vp=0.08+0.06*Math.sin(performance.now()/600);
+    const vg=ctx.createRadialGradient(CX,CY,CW*0.05,CX,CY,CW*0.95);
+    vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(100,0,180,'+vp+')');
+    ctx.fillStyle=vg;ctx.fillRect(0,0,CW,CH);
   }
   // Near-death edge pulse
   if(g&&g.hp<=1&&g.phase==='PLAYING'){
@@ -4919,12 +4927,25 @@ function drawEnemyShape(en,x,y,visR){
     ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=bg;ctx.fill();
     if(!en.flash){const t=performance.now()/200;ctx.lineWidth=2;for(let ci=0;ci<8;ci++){const a=((Math.PI*2*ci/8)+t*0.5)%(Math.PI*2);ctx.strokeStyle='rgba(150,0,255,0.8)';ctx.shadowColor='rgba(150,0,255,0.6)';ctx.shadowBlur=12;ctx.beginPath();ctx.moveTo(x+Math.cos(a)*r*0.2,y+Math.sin(a)*r*0.2);ctx.lineTo(x+Math.cos(a)*r*0.85,y+Math.sin(a)*r*0.85);ctx.stroke();}}
     ctx.beginPath();ctx.arc(x,y,r+6,0,Math.PI*2);ctx.strokeStyle='rgba(150,0,255,'+pulse+')';ctx.lineWidth=4;ctx.shadowBlur=24;ctx.shadowColor='rgba(150,0,255,0.6)';ctx.stroke();
+  }else if(en.type==='overlord'){
+    // THE OVERLORD: massive dark void sphere with gold fracture lines and purple core
+    const pulse=0.5+0.3*Math.sin(performance.now()/180);
+    const bg=ctx.createRadialGradient(x,y,r*0.05,x,y,r);bg.addColorStop(0,'rgba(40,0,80,1)');bg.addColorStop(0.4,'rgba(10,0,30,1)');bg.addColorStop(1,'rgba(0,0,0,1)');
+    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=bg;ctx.fill();
+    if(!en.flash){
+      const t=performance.now()/200;
+      ctx.lineWidth=1.8;ctx.lineCap='round';
+      for(let ci=0;ci<8;ci++){const a=((Math.PI*2*ci/8)+t*0.3)%(Math.PI*2);const cr=r*(0.25+0.65*((ci*7)%5/5));ctx.strokeStyle='rgba(201,146,42,0.82)';ctx.shadowColor='rgba(201,146,42,0.7)';ctx.shadowBlur=10;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+Math.cos(a)*cr,y+Math.sin(a)*cr);ctx.stroke();}
+      const core=ctx.createRadialGradient(x,y,0,x,y,r*0.28);core.addColorStop(0,'rgba(200,0,255,0.8)');core.addColorStop(1,'rgba(80,0,150,0.2)');
+      ctx.beginPath();ctx.arc(x,y,r*0.28,0,Math.PI*2);ctx.fillStyle=core;ctx.shadowBlur=18;ctx.shadowColor='rgba(200,0,255,0.9)';ctx.fill();
+    }
+    ctx.beginPath();ctx.arc(x,y,r+6,0,Math.PI*2);ctx.strokeStyle='rgba(201,146,42,'+pulse+')';ctx.lineWidth=4;ctx.shadowBlur=24;ctx.shadowColor='rgba(201,146,42,0.8)';ctx.stroke();
   }else{
     ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=col;ctx.fill();
   }
 }
 function drawEnemies(){
-  const isMS=t=>['breach','voidhacker','shadowdrain'].includes(t);
+  const isMS=t=>['breach','voidhacker','shadowdrain','overlord'].includes(t);
   g.enemies.forEach(en=>{
     const p=Math.sin(en.pulse)*0.08;
     const visR=en.r*(1+p);
@@ -4959,7 +4980,7 @@ function drawHUD(){
   if(!g||['START','TUT','GAME_OVER','DYING'].includes(g.phase))return;
   ctx.save();
   // Wave label — top-left
-  ctx.font='bold 13px Cinzel,serif';ctx.fillStyle='#b78df5';ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillText('WAVE '+g.wave,14,18);
+  ctx.font='bold 13px Cinzel,serif';ctx.fillStyle=g.wave>50?'#cc66ff':'#b78df5';ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillText(g.wave>50?'☠ VOID '+g.wave:'WAVE '+g.wave,14,18);
   // Score — top-right (leave room for pause/mute)
   ctx.fillStyle='#e8b84b';ctx.textAlign='right';ctx.fillText('SCORE '+g.score,CW-86,18);
   // Shield HP — top-center as solid shield shapes
@@ -5118,11 +5139,13 @@ function drawAbVfx(){
 
 function drawPhaseOverlay(){
   if(g.phase==='BOSS_WARN'){
-    const ms=[25,50,100].includes(g.wave);
-    const bn=g.wave===25?'THE BREACH':g.wave===50?'VOID HACKER':g.wave===100?'SHADOW DRAIN':'IMPOSTOR';
+    const ms=[25,50].includes(g.wave);
+    const bn=g.wave===25?'THE BREACH':g.wave===50?'THE OVERLORD':'IMPOSTOR';
+    const isOverlord=g.wave===50;
+    const warnCol=isOverlord?'rgba(160,0,255,':'rgba(239,68,68,';
     const a=0.42+0.4*Math.sin(performance.now()/150);
-    ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowBlur=28;ctx.shadowColor='#ef4444';
-    ctx.fillStyle='rgba(239,68,68,'+a+')';
+    ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowBlur=28;ctx.shadowColor=isOverlord?'#cc66ff':'#ef4444';
+    ctx.fillStyle=warnCol+a+')';
     ctx.font='bold '+(ms?26:34)+'px "Cinzel Decorative",Cinzel,serif';
     ctx.fillText(ms?'⚔ MILESTONE BOSS':'BOSS INCOMING',CX,ms?CY-14:CY);
     if(ms){ctx.font='bold 22px Cinzel,serif';ctx.fillStyle='rgba(255,255,255,'+a+')';ctx.fillText(bn,CX,CY+14);}
@@ -5139,7 +5162,11 @@ function drawPhaseOverlay(){
   }
   if(g.phase==='WAVE_OK'){
     const fade=Math.min(1,g.phT<0.4?g.phT/0.4:1);
-    ctx.save();ctx.globalAlpha=fade;ctx.fillStyle='#22c55e';ctx.font='bold 28px "Cinzel Decorative",Cinzel,serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowBlur=18;ctx.shadowColor='#22c55e';ctx.fillText('WAVE '+g.wave+' COMPLETE',CX,CY);ctx.restore();
+    ctx.save();ctx.globalAlpha=fade;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillStyle='#22c55e';ctx.font='bold 28px "Cinzel Decorative",Cinzel,serif';ctx.shadowBlur=18;ctx.shadowColor='#22c55e';
+    ctx.fillText('WAVE '+g.wave+' COMPLETE',CX,g.wave===50?CY-18:CY);
+    if(g.wave===50){ctx.shadowBlur=12;ctx.shadowColor='#a855f7';ctx.fillStyle='#c084fc';ctx.font='bold 14px Cinzel,serif';ctx.fillText('CAMPAIGN COMPLETE — ENTERING THE VOID',CX,CY+18);}
+    ctx.restore();
   }
   if(g.phase==='CHOICE'){
     ctx.save();
@@ -5180,7 +5207,7 @@ function drawPauseOverlay(){
   ctx.fillStyle='#e8b84b';ctx.font='bold 36px "Cinzel Decorative",Cinzel,serif';ctx.shadowBlur=14;ctx.shadowColor='#c9922a';ctx.fillText('PAUSED',CX,95);
   ctx.shadowBlur=0;ctx.fillStyle='#b78df5';ctx.font=_pF(14)+'px Cinzel,serif';ctx.fillText('Wave '+g.wave+' · Score '+g.score,CX,130);
   // Scoring summary
-  const rows=[[g.kills.fud+' PHISHER',g.kills.fud*1],[g.kills.hack+' DRAINER',g.kills.hack*2],[g.kills.rug+' RUG',g.kills.rug*3],[g.kills.swarm+' FAKE',g.kills.swarm*1],[g.kills.boss+' IMPOSTOR',g.kills.boss*10],[g.kills.breach+' BREACH',g.kills.breach*50],[g.kills.voidhacker+' VOID HACKER',(g.kills.voidhacker||0)*100],[g.kills.shadowdrain+' SHADOW DRAIN',(g.kills.shadowdrain||0)*250],['Wave Bonuses',g.waveBonus],['Combo Bonuses',g.comboBonus]].filter(r=>r[1]>0);
+  const rows=[[g.kills.fud+' PHISHER',g.kills.fud*1],[g.kills.hack+' DRAINER',g.kills.hack*2],[g.kills.rug+' RUG',g.kills.rug*3],[g.kills.swarm+' FAKE',g.kills.swarm*1],[g.kills.boss+' IMPOSTOR',g.kills.boss*10],[g.kills.breach+' BREACH',g.kills.breach*50],[g.kills.voidhacker+' VOID HACKER',(g.kills.voidhacker||0)*100],[g.kills.shadowdrain+' SHADOW DRAIN',(g.kills.shadowdrain||0)*250],[(g.kills.overlord||0)+' OVERLORD',(g.kills.overlord||0)*500],['Wave Bonuses',g.waveBonus],['Combo Bonuses',g.comboBonus]].filter(r=>r[1]>0);
   let sy=156;ctx.font=_pF(12)+'px Cinzel,serif';
   rows.forEach(r=>{ctx.fillStyle='#475569';ctx.fillText(r[0]+' — '+r[1]+' pts',CX,sy);sy+=16;});
   // Buttons
@@ -5214,7 +5241,7 @@ function drawTut(step){
     if(coinLoaded&&coinImg){ctx.save();ctx.shadowBlur=28;ctx.shadowColor='#c9922a';ctx.beginPath();ctx.arc(CX,107,54,0,Math.PI*2);ctx.clip();ctx.drawImage(coinImg,CX-54,53,108,108);ctx.restore();ctx.save();ctx.beginPath();ctx.arc(CX,107,56,0,Math.PI*2);ctx.strokeStyle='#c9922a';ctx.lineWidth=2;ctx.shadowBlur=14;ctx.shadowColor='#c9922a';ctx.stroke();ctx.restore();}
     ctx.shadowBlur=12;ctx.shadowColor='#c9922a';ctx.fillStyle='#e8b84b';ctx.font='bold 21px "Cinzel Decorative",Cinzel,serif';ctx.fillText('⚔  GUARDIAN ARENA',CX,185);
     ctx.shadowBlur=0;ctx.fillStyle='#e2e8f0';ctx.font='bold 13px Cinzel,serif';ctx.fillText('Tap enemies before they reach your GUARD coin.',CX,208);
-    ctx.fillStyle='#94a3b8';ctx.font='12px Cinzel,serif';ctx.fillText('Survive as long as you can. Waves never end.',CX,228);
+    ctx.fillStyle='#94a3b8';ctx.font='12px Cinzel,serif';ctx.fillText('Clear 50 waves to beat the campaign, then enter THE VOID.',CX,228);
     const rank=typeof guardianRank!=='undefined'?Math.min(6,guardianRank):0;
     const cfg=RC[rank];const rn=typeof SHIELDS!=='undefined'?SHIELDS[rank].title:'Guardian';
     ctx.fillStyle='#b78df5';ctx.font='12px Cinzel,serif';ctx.fillText('Your rank: '+rn+' — '+cfg.hp+' HP'+(cfg.abs&&cfg.abs.length?' — '+(cfg.abs.length===1?AB_NAMES[cfg.abs[0]]||cfg.abs[0]:cfg.abs.length+' abilities'):''),CX,250);
@@ -5229,7 +5256,7 @@ function drawTut(step){
     ctx.textBaseline='alphabetic';
   } else if(step===2){
     ctx.shadowBlur=10;ctx.shadowColor='#c9922a';ctx.fillStyle='#e8b84b';ctx.font='bold 20px "Cinzel Decorative",Cinzel,serif';ctx.fillText('ENEMIES',CX,66);ctx.shadowBlur=0;
-    const en=[['🟣','PHISHER','1 tap · 1 pt','teardrop shape · red eye'],['🔴','DRAINER','1 tap · 2 pts','chain link · very fast · small target'],['⬇','RUG','3 taps · 3 pts','downward arrow · slow · HP bar shown'],['💛','FAKE DROP','5 coins · 1 pt each','fake gold coins with X · groups of 5'],['🛡','IMPOSTOR','every 5 waves · 10 pts','cracked shield · 10 hits · spawns minions'],['☠','MILESTONE','waves 25 · 50 · 100','THE BREACH · VOID HACKER · SHADOW DRAIN']];
+    const en=[['🟣','PHISHER','1 tap · 1 pt','teardrop shape · red eye'],['🔴','DRAINER','1 tap · 2 pts','chain link · very fast · small target'],['⬇','RUG','3 taps · 3 pts','downward arrow · slow · HP bar shown'],['💛','FAKE DROP','5 coins · 1 pt each','fake gold coins with X · groups of 5'],['🛡','IMPOSTOR','every 5 waves · 10 pts','cracked shield · 10 hits · spawns minions'],['☠','MILESTONE','waves 25 · 50','THE BREACH · THE OVERLORD (campaign finale)']];
     en.forEach(([ic,nm,pts,note],i)=>{const y=98+i*56;ctx.font='24px sans-serif';ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(ic,34,y+10);ctx.font='bold 13px Cinzel,serif';ctx.fillStyle='#e2e8f0';ctx.fillText(nm,72,y+3);ctx.font='12px Cinzel,serif';ctx.fillStyle='#e8b84b';ctx.fillText(pts,72,y+18);ctx.fillStyle='#475569';ctx.fillText(note,72,y+33);});
     ctx.textAlign='center';ctx.fillStyle='#334155';ctx.font='10px Cinzel,serif';ctx.textBaseline='alphabetic';ctx.fillText('Combo resets when any enemy reaches your coin.',CX,398);
     // NEXT: center(CX, 440)
