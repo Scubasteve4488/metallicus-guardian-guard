@@ -2141,7 +2141,40 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
         <p style="margin:0 0 .4rem;"><strong style="color:var(--text);">HP</strong> is based on your rank (Cryptide 3 · Riftforge 4 · Helion 5 · Nebulon 6 · Protonis 7 · Keystone 8 · Aegis 10). Damage carries between waves. Perfect wave or boss kill restores 1 HP.</p>
         <p style="margin:0 0 .4rem;"><strong style="color:var(--text);">Every 3 waves</strong> choose +1 HP or 2× points next wave. <strong style="color:var(--text);">Every 5 waves</strong> a boss spawns.</p>
         <p style="margin:0 0 .4rem;"><strong style="color:var(--text);">Abilities</strong> unlock by rank and stack. Pick one before each wave — tap the coin to fire it. Fire Ring · Time Slow · Orbital Strike · Chain Lightning · Fortify · Shield Bash.</p>
-        <p style="margin:0;"><strong style="color:var(--text);">Shards</strong> for your next rank drop randomly during the run — max 1 per run. Collect 5 to forge on the Shields tab.</p>
+        <p style="margin:0 0 .4rem;"><strong style="color:var(--text);">Shards</strong> for your next rank drop on your first eligible kill each run — max 1 per run. Collect 5 to forge on the Shields tab.</p>
+        <div style="margin-top:.8rem;border-top:1px solid rgba(255,255,255,0.07);padding-top:.7rem;">
+          <div style="font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold-l);letter-spacing:.05em;margin-bottom:.4rem;">ENEMIES</div>
+          <div style="display:grid;grid-template-columns:1.4rem 1fr;gap:.15rem .4rem;font-size:.76rem;color:var(--text2);">
+            <span>🟣</span><span><strong style="color:var(--text);">PHISHER</strong> — 1 HP, slow. Most common.</span>
+            <span>🔴</span><span><strong style="color:var(--text);">DRAINER</strong> — 1 HP, very fast. From wave 3.</span>
+            <span>🟡</span><span><strong style="color:var(--text);">FAKE</strong> — swarms of 5, 1 HP. From wave 5.</span>
+            <span>🟠</span><span><strong style="color:var(--text);">RUG</strong> — 3 HP, slow but tough. From wave 7.</span>
+            <span>🟪</span><span><strong style="color:var(--text);">IMPOSTOR</strong> — boss, 10 HP, every 5 waves.</span>
+            <span>⬛</span><span><strong style="color:var(--text);">THE BREACH</strong> — special boss, wave 25.</span>
+            <span>⚔</span><span><strong style="color:var(--text);">THE OVERLORD</strong> — final boss, wave 50.</span>
+            <span>☠</span><span><strong style="color:var(--text);">THE VOID</strong> — endless endgame after wave 50.</span>
+          </div>
+        </div>
+        <div style="margin-top:.7rem;border-top:1px solid rgba(255,255,255,0.07);padding-top:.7rem;">
+          <div style="font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold-l);letter-spacing:.05em;margin-bottom:.4rem;">ABILITIES</div>
+          <div style="display:grid;grid-template-columns:1.4rem 1fr;gap:.15rem .4rem;font-size:.76rem;color:var(--text2);">
+            <span>🔥</span><span><strong style="color:var(--text);">Fire Ring</strong> (Riftforge) — 1 damage to all enemies on screen.</span>
+            <span>🧊</span><span><strong style="color:var(--text);">Time Slow</strong> (Helion) — slows all enemies for 5s.</span>
+            <span>🟣</span><span><strong style="color:var(--text);">Orbital Strike</strong> (Nebulon) — destroys non-boss enemies.</span>
+            <span>⚡</span><span><strong style="color:var(--text);">Chain Lightning</strong> (Protonis) — hits up to 5 enemies.</span>
+            <span>🛡</span><span><strong style="color:var(--text);">Fortify</strong> (Keystone) — temporary shield &amp; restore HP.</span>
+            <span>💥</span><span><strong style="color:var(--text);">Shield Bash</strong> (Aegis) — instant-kills enemies near you.</span>
+          </div>
+        </div>
+        <div style="margin-top:.7rem;border-top:1px solid rgba(255,255,255,0.07);padding-top:.7rem;">
+          <div style="font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold-l);letter-spacing:.05em;margin-bottom:.4rem;">POWER-UP DROPS</div>
+          <div style="display:grid;grid-template-columns:1.4rem 1fr;gap:.15rem .4rem;font-size:.76rem;color:var(--text2);">
+            <span>❤️</span><span><strong style="color:var(--text);">Heart</strong> — restores 1 HP.</span>
+            <span>⚡</span><span><strong style="color:var(--text);">Lightning</strong> — instantly readies your shield ability.</span>
+            <span>🔥</span><span><strong style="color:var(--text);">Fire</strong> — 2× points for 7s (extends 3s per extra pickup).</span>
+          </div>
+          <div style="margin-top:.45rem;font-size:.73rem;color:var(--text3);line-height:1.6;"><strong style="color:var(--text2);">Shard drop odds</strong> per run for your next rank: Riftforge 30% · Helion 23% · Nebulon 18% · Protonis 14% · Keystone 11% · Aegis 8%.</div>
+        </div>
       </div>
     </details>
 
@@ -2246,7 +2279,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-16-BUILD-B';
+const BUILD_VERSION='2026-06-16-BUILD-C';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -4424,7 +4457,7 @@ function comboMult(){const c=g.combo;return c>=8?5:c>=7?4:c>=6?3:c>=5?2:1;}
 function breakCombo(){if(g.combo>=5){snd('combo_break');flt('COMBO BROKEN',CX,78,'#ef4444',15);}g.combo=0;g.comboMult=1;g.lastComboKillT=0;hideComboBadge();}
 
 // ── Wave Survival shard drops (Part 4) ──
-var _WS_SHARD_PROBS=[0,0.35,0.28,0.22,0.18,0.14,0.10];
+var _WS_SHARD_PROBS=[0,0.30,0.23,0.18,0.14,0.11,0.08];
 function wsSpawnShard(x, y, shieldName) {
   if (ShardTracker.allOwned(shieldName)) return;
   var sNum = ShardTracker.nextMissing(shieldName);
@@ -4437,7 +4470,7 @@ function wsInitShardForRun() {
   g._shardDropAtKill=-1;
   if(_ti>=1&&typeof SHIELDS!=='undefined'&&!ShardTracker.allOwned(SHIELDS[_ti].name)){
     if(Math.random()<(_WS_SHARD_PROBS[_ti]||0)){
-      g._shardDropAtKill=Math.floor(Math.random()*45)+5;
+      g._shardDropAtKill=1;
     }
   }
 }
@@ -4507,12 +4540,12 @@ function wsTapShards(cx, cy) {
 }
 
 // ─── Power-ups ────────────────────────────────────────────────────────────────
-function tryDrop(x,y){const r=Math.random();const canHp=g.hp<g.mhp+MAX_HP_BONUS;const canAb=(g.cfg.abs||[]).length>0;if(r<0.04&&canHp)g.pus.push(mkPU('hp',x,y));else if(r<0.10&&canAb)g.pus.push(mkPU('ab',x,y));else if(r<0.15)g.pus.push(mkPU('pts',x,y));}
+function tryDrop(x,y){const r=Math.random();const canHp=g.hp<g.mhp+MAX_HP_BONUS;const canAb=(g.cfg.abs||[]).length>0;if(r<0.04&&canHp)g.pus.push(mkPU('hp',x,y));else if(r<0.10&&canAb)g.pus.push(mkPU('ab',x,y));else if(r<0.13)g.pus.push(mkPU('pts',x,y));}
 function collectPU(pu,idx){
   const mx=g.mhp+MAX_HP_BONUS;
   if(pu.type==='hp'){if(g.hp<mx){g.hp=Math.min(g.hp+1,mx);flt('+1 HP ❤️',pu.x,pu.y,'#22c55e',15);snd('hp_restore');}else flt('HP FULL',pu.x,pu.y,'#94a3b8',12);}
   else if(pu.type==='ab'){g.abLeft=0;flt('ABILITY READY!',pu.x,pu.y,'#f5c842',14);snd('powerup');}
-  else if(pu.type==='pts'){g.doublePts=true;g.dpT=7;flt('2X POINTS! (7s)',pu.x,pu.y,'#f97316',15);snd('powerup');}
+  else if(pu.type==='pts'){if(g.doublePts){g.dpT+=3;flt('2X +3s!',pu.x,pu.y,'#f97316',15);}else{g.doublePts=true;g.dpT=7;flt('2X POINTS! (7s)',pu.x,pu.y,'#f97316',15);}snd('powerup');}
   burst(pu.x,pu.y,PUD[pu.type].col,12);g.pus.splice(idx,1);
 }
 
