@@ -2337,6 +2337,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     n=Math.max(1,Math.min(999,n|0));
     g.wave=n-1;g.enemies=[];g.wq=[];
     h.doNextWave();
+    h.startLoop();
     devMsg('Jumped to wave '+n);
   };
 
@@ -2351,6 +2352,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     if(!g||!devGameRunning()){devMsg('Start a game first',true);return;}
     g.wave=50;g.enemies=[];g.wq=[];
     h.doNextWave();
+    h.startLoop();
     devMsg('Entered The Void (wave 51)');
   };
 
@@ -2481,7 +2483,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-16-BUILD-G';
+const BUILD_VERSION='2026-06-16-BUILD-H';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
