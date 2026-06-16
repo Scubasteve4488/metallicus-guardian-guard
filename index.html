@@ -2098,6 +2098,17 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       <div style="margin-top:.75rem;">
         <button onclick="FG.shareScore()" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;padding:.6rem 1.4rem;border-radius:8px;font-size:.85rem;cursor:pointer;">𝕏 Share on X</button>
       </div>
+      <!-- How to Play: GUARD Trials -->
+      <details id="htp-flappy" style="display:none;max-width:600px;margin:.5rem auto 0;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:.6rem 1rem;">
+        <summary style="cursor:pointer;font-family:'Cinzel',serif;font-size:.82rem;color:var(--gold-l);letter-spacing:.04em;list-style:none;display:flex;align-items:center;gap:.5rem;">🪙 How to Play — GUARD Trials</summary>
+        <div style="margin-top:.7rem;font-size:.8rem;color:var(--text2);line-height:1.7;">
+          <p style="margin:0 0 .4rem;">Tap to flap, release to fall. Pass through gaps without crashing. Every 12 barriers advances to the next zone.</p>
+          <p style="margin:0 0 .4rem;"><strong style="color:var(--text);">Combos:</strong> 3 in a row = ×2 · 5 in a row = ×3 · 8 in a row = Guardian Mode ×5.</p>
+          <p style="margin:0 0 .4rem;"><strong style="color:var(--text);">8 zones</strong> (SimpleDEX → BlastPad → Metal X → WebAuth → MTL DAO → Loan Protocol → XPR Network → Metal Blockchain) plus <strong style="color:var(--text);">The Void</strong> — endless mode.</p>
+          <p style="margin:0 0 .4rem;"><strong style="color:var(--text);">Power-ups</strong> appear in gaps: ⚡ skips next barrier · 🛡 3s invincibility · 🔥 double points · ⏳ slow-mo · 🔮 shrink hitbox.</p>
+          <p style="margin:0;"><strong style="color:var(--text);">Shards</strong> for your next rank drop randomly during the run — max 1 per run. Collect 5 to forge on the Shields tab.</p>
+        </div>
+      </details>
       <!-- Flappy GUARD leaderboard -->
       <div style="max-width:480px;margin:1.2rem auto 0;text-align:left;">
         <div class="card" style="border-color:rgba(201,146,42,0.25);padding:1.2rem 1.2rem 1rem;">
@@ -2133,17 +2144,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
         <p style="margin:0;"><strong style="color:var(--text);">Shards</strong> for your next rank drop randomly during the run — max 1 per run. Collect 5 to forge on the Shields tab.</p>
       </div>
     </details>
-    <!-- How to Play: GUARD Trials -->
-    <details id="htp-flappy" style="display:none;max-width:600px;margin:.5rem auto 0;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:.6rem 1rem;">
-      <summary style="cursor:pointer;font-family:'Cinzel',serif;font-size:.82rem;color:var(--gold-l);letter-spacing:.04em;list-style:none;display:flex;align-items:center;gap:.5rem;">🪙 How to Play — GUARD Trials</summary>
-      <div style="margin-top:.7rem;font-size:.8rem;color:var(--text2);line-height:1.7;">
-        <p style="margin:0 0 .4rem;">Tap to flap, release to fall. Pass through gaps without crashing. Every 12 barriers advances to the next zone.</p>
-        <p style="margin:0 0 .4rem;"><strong style="color:var(--text);">Combos:</strong> 3 in a row = ×2 · 5 in a row = ×3 · 8 in a row = Guardian Mode ×5.</p>
-        <p style="margin:0 0 .4rem;"><strong style="color:var(--text);">8 zones</strong> (SimpleDEX → BlastPad → Metal X → WebAuth → MTL DAO → Loan Protocol → XPR Network → Metal Blockchain) plus <strong style="color:var(--text);">The Void</strong> — endless mode.</p>
-        <p style="margin:0 0 .4rem;"><strong style="color:var(--text);">Power-ups</strong> appear in gaps: ⚡ skips next barrier · 🛡 3s invincibility · 🔥 double points · ⏳ slow-mo · 🔮 shrink hitbox.</p>
-        <p style="margin:0;"><strong style="color:var(--text);">Shards</strong> for your next rank drop randomly during the run — max 1 per run. Collect 5 to forge on the Shields tab.</p>
-      </div>
-    </details>
+
     <div style="max-width:600px;margin:1.2rem auto 0;">
       <!-- Personal best bar -->
       <div style="background:rgba(201,146,42,0.07);border:1px solid rgba(201,146,42,0.22);border-radius:10px;padding:.6rem 1.1rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem;gap:.5rem;">
@@ -2245,7 +2246,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-15-v22';
+const BUILD_VERSION='2026-06-15-v23';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -5376,6 +5377,8 @@ document.addEventListener('visibilitychange',function(){
 });
 window.arenaInit=arenaInit;
 window.updateStartStep4=updateStartStep4;
+window.enterFullview=enterFullview;
+window.leaveFullview=leaveFullview;
 })();
 // END GUARDIAN ARENA GAME
 
