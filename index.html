@@ -2395,9 +2395,9 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     guardianRank=0;guardianBalance=0;
     saveRank();renderShield();renderShardDisplay();
     try{renderProgress(guardianBalance);}catch(e){}
-    updatePBBar();
-    if(typeof FG!=='undefined'){try{FG.pb=0;FG.pbDaily=0;}catch(e){}}
     var h=window._devHooks;
+    if(h&&h.updatePBBar)h.updatePBBar();
+    if(typeof FG!=='undefined'){try{FG.pb=0;FG.pbDaily=0;}catch(e){}}
     if(h){h.stopLoop();h.hideComboBadge();h.setG(h.newG(false));h.drawStatic();}
     devMsg('Reset complete — clean new-user state');
   }
@@ -2481,7 +2481,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-16-BUILD-F';
+const BUILD_VERSION='2026-06-16-BUILD-G';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -4157,6 +4157,7 @@ function onWalletConnected(actor) {
   // Track unique guardian connection for home page counter
   trackGuardianWallet(actor);
   updatePlaysUI();
+  if(isDevMode()){var _db=document.getElementById('dev-toggle-btn');if(_db)_db.style.display='block';}
 }
 
 function onGuardBalanceLoaded(actor, bal) {
@@ -4260,7 +4261,8 @@ function onWalletDisconnected() {
   renderAchievements();
   updateStartStep4();
   updatePlaysUI();
-  if(typeof window._devPanelInit==='function')window._devPanelInit();
+  var _db=document.getElementById('dev-toggle-btn');if(_db)_db.style.display='none';
+  var _dp=document.getElementById('dev-panel');if(_dp)_dp.style.display='none';
 }
 
 // ─── Audio ────────────────────────────────────────────────────────────────────
@@ -4447,6 +4449,7 @@ function arenaInit(){
   g=newG(false);
   if(!tutDone){g.phase='TUT';g.tutStep=1;}
   drawStatic();updatePBBar();
+  if(typeof window._devPanelInit==='function')window._devPanelInit();
 }
 function resize(){
   if(!cvs)return;
@@ -5634,7 +5637,7 @@ window.arenaInit=arenaInit;
 window.updateStartStep4=updateStartStep4;
 window.enterFullview=enterFullview;
 window.leaveFullview=leaveFullview;
-window._devHooks={getG:function(){return g;},setG:function(v){g=v;},doNextWave:doNextWave,startGame:startGame,stopLoop:stopLoop,startLoop:startLoop,newG:newG,drawStatic:drawStatic,checkAbSelect:checkAbSelect,wsInitShardForRun:wsInitShardForRun,hideComboBadge:hideComboBadge};
+window._devHooks={getG:function(){return g;},setG:function(v){g=v;},doNextWave:doNextWave,startGame:startGame,stopLoop:stopLoop,startLoop:startLoop,newG:newG,drawStatic:drawStatic,checkAbSelect:checkAbSelect,wsInitShardForRun:wsInitShardForRun,hideComboBadge:hideComboBadge,updatePBBar:updatePBBar};
 })();
 // END GUARDIAN ARENA GAME
 
