@@ -494,9 +494,10 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 body.game-fullview #ticker-bar,body.game-fullview #nav,body.game-fullview #mobile-bottom-nav{display:none!important;}
 body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 .fullview-active{position:fixed!important;top:0!important;left:0!important;width:100vw!important;height:100dvh!important;z-index:9000!important;background:#080b12;display:flex!important;flex-direction:column;align-items:center;justify-content:center;max-width:none!important;padding:0!important;overflow:hidden;}
-.fs-exit-btn{display:none;position:fixed;top:10px;right:10px;z-index:9001;background:rgba(0,0,0,0.85);border:2px solid rgba(201,146,42,0.85);color:#e8b84b;border-radius:50%;width:52px;height:52px;font-size:1.2rem;cursor:pointer;align-items:center;justify-content:center;line-height:1;padding:0;touch-action:manipulation;pointer-events:all;}
+.fs-exit-btn{display:none;position:fixed;top:10px;left:10px;z-index:9999;background:rgba(0,0,0,0.85);border:2px solid rgba(201,146,42,0.85);color:#e8b84b;border-radius:50%;width:64px;height:64px;font-size:1.4rem;cursor:pointer;align-items:center;justify-content:center;line-height:1;padding:0;touch-action:manipulation;pointer-events:auto;}
 body.game-fullview .fs-exit-btn{display:flex!important;}
 .fullview-active canvas{border-radius:0!important;border:none!important;}
+body.game-fullview #fg-canvas{width:100vw!important;height:100dvh!important;max-width:none!important;margin:0!important;}
 /* GUARDIAN GUIDES */
 .gg-list{display:flex;flex-direction:column;gap:.45rem;max-width:740px;margin:0 auto;}
 .gg-item{border:1px solid rgba(201,146,42,0.18);border-radius:10px;background:rgba(255,255,255,0.02);overflow:hidden;}
@@ -2247,7 +2248,7 @@ body.game-fullview .fs-exit-btn{display:flex!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-15-v19';
+const BUILD_VERSION='2026-06-15-v20';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -5551,6 +5552,8 @@ var FG = {
     }
     this.canvas.width=cw;
     this.canvas.height=ch;
+    this.canvas.style.width=isFS?cw+'px':'';
+    this.canvas.style.height=isFS?ch+'px':'';
     this.coin.x=Math.round(cw*0.25);
     if(!this.started)this.coin.y=Math.round(ch*0.5);
   },
