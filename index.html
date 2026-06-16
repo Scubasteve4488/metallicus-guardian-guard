@@ -2161,7 +2161,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
             <span>🔥</span><span><strong style="color:var(--text);">Fire Ring</strong> (Riftforge) — 1 damage to all enemies on screen.</span>
             <span>🧊</span><span><strong style="color:var(--text);">Time Slow</strong> (Helion) — slows all enemies for 5s.</span>
             <span>🟣</span><span><strong style="color:var(--text);">Orbital Strike</strong> (Nebulon) — destroys non-boss enemies.</span>
-            <span>⚡</span><span><strong style="color:var(--text);">Chain Lightning</strong> (Protonis) — hits up to 5 enemies.</span>
+            <span>⚡</span><span><strong style="color:var(--text);">Chain Lightning</strong> (Protonis) — hits up to 10 enemies.</span>
             <span>🛡</span><span><strong style="color:var(--text);">Fortify</strong> (Keystone) — temporary shield &amp; restore HP.</span>
             <span>💥</span><span><strong style="color:var(--text);">Shield Bash</strong> (Aegis) — instant-kills enemies near you.</span>
           </div>
@@ -2483,7 +2483,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-16-BUILD-H';
+const BUILD_VERSION='2026-06-16-BUILD-I';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -2857,7 +2857,7 @@ const SHIELDS = [
   {name:'Riftforge', title:'Defender',   emoji:'🌋', img:'./shield_riftforge.png', req:10000,      lore:'The first awakening of power — bold and uncontrolled. Stepping forward to defend the community for the first time.',       abilityDesc:'Fire Ring — damages all enemies for 1 HP'},
   {name:'Helion',    title:'Sentinel',   emoji:'☀️', img:'./shield_helion.png',    req:200000,     lore:'Power under control. Light, guidance, and standing watch — actively protecting others, not just yourself.',                 abilityDesc:'Time Slow — halves enemy speed for 5s'},
   {name:'Nebulon',   title:'Ascendant',  emoji:'🌌', img:'./shield_nebulon.png',   req:1500000,    lore:'Cosmic scale begins. Mysterious and advanced — risen beyond the basic defender into something far greater.',                abilityDesc:'Orbital Strike — destroys non-boss enemies'},
-  {name:'Protonis',  title:'Architect',  emoji:'⚛️', img:'./shield_protonis.png',  req:5000000,    lore:'The shield most tied to XPR Network. Technological and intentional — elite ecosystem knowledge and standing.',             abilityDesc:'Chain Lightning — electric arc chains through 5 enemies'},
+  {name:'Protonis',  title:'Architect',  emoji:'⚛️', img:'./shield_protonis.png',  req:5000000,    lore:'The shield most tied to XPR Network. Technological and intentional — elite ecosystem knowledge and standing.',             abilityDesc:'Chain Lightning — electric arc chains through 10 enemies'},
   {name:'Keystone',  title:'Gatekeeper', emoji:'🔑', img:'./shield_keystone.png',  req:10000000,   lore:'Near-final form. Custodian energy — keeper of access, protector of keys, guardian of the gate.',                          abilityDesc:'Fortify — temporary armor and bonus HP'},
   {name:'Aegis',     title:'Guardian',   emoji:'🛡️', img:'./shield_aegis.png',     req:20000000,   lore:'God-tier. The final evolution — vault, protection, eternity. The fusion of all shields. To bear Aegis is to BE the Guardian.', abilityDesc:'Shield Bash + all abilities unlocked'},
 ];
@@ -4385,8 +4385,10 @@ function buildWave(w,rng){
     for(let mi=0;mi<6;mi++)bq.push({type:'fud',delay:1.0+mi*1.0});
     return bq;
   }
-  const cnt=w===1?14:w===2?17:w===3?20:w===4?23:Math.min(26+(w-6)*3,90);
-  const mix=getMix(w),gap=spawnGap(w),q=[];
+  const _cap=w>=51?110:w>=35?100:90;
+  const cnt=w===1?14:w===2?17:w===3?20:w===4?23:Math.min(26+(w-6)*3,_cap);
+  const mix=getMix(w);if(w>=30){mix.sw=Math.min(0.25,mix.sw+0.05);mix.ha=Math.min(0.30,mix.ha+0.05);}
+  const gap=spawnGap(w),q=[];
   const targetDur=Math.max(18,cnt*gap);
   const baseInterval=targetDur/cnt;
   let slot=0;
@@ -4788,7 +4790,7 @@ function activateAb(){
   } else if(ab==='chain'){
     const _coin={x:CX,y:CY};
     const _sorted=[...g.enemies].sort((a,b)=>dst(a.pos,_coin)-dst(b.pos,_coin));
-    const _targets=_sorted.slice(0,5);
+    const _targets=_sorted.slice(0,10);
     const _pts=[_coin,..._targets.map(e=>({x:e.pos.x,y:e.pos.y}))];
     _targets.forEach(en=>{en.hp--;burst(en.pos.x,en.pos.y,'#38bdf8',8);});
     g.enemies=g.enemies.filter(en=>{if(en.hp<=0){sc(en);return false;}return true;});
@@ -4862,7 +4864,7 @@ function update(dt){
   // PLAYING
   if(g.comboMult>1&&performance.now()-g.lastComboKillT>2000){g.combo=0;g.comboMult=1;hideComboBadge();}
   const sm=g.timeSlow?0.3:1;
-  const xtra=g.wave<=5?0.85:g.wave<=50?0.85+(g.wave-5)*0.045:2.875+(g.wave-50)*0.05;
+  const xtra=g.wave<=5?0.85:g.wave<=20?0.85+(g.wave-5)*0.045:g.wave<=50?Math.min(1.525+(g.wave-20)*0.0075,1.75):Math.min(1.75+(g.wave-50)*0.02,2.3);
   g.wt+=dt;
   const sp=[];g.wq=g.wq.filter(it=>{if(g.wt>=it.delay){sp.push(it);return false;}return true;});
   sp.forEach(it=>{
@@ -5235,6 +5237,7 @@ function drawHUD(){
   // Status indicators
   let statY=CH-64;
   if(g.timeSlow){ctx.fillStyle='#14b8a6';ctx.font='10px Cinzel,serif';ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillText('TIME SLOW '+g.tsT.toFixed(1)+'s',14,statY);statY+=14;}
+  if(g.fort){ctx.fillStyle='#c9922a';ctx.font='10px Cinzel,serif';ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillText('FORTIFY '+Math.ceil(g.ftT)+'s',14,statY);statY+=14;}
   if(g.doublePts&&g.dpT<900){ctx.fillStyle='#f97316';ctx.font='10px Cinzel,serif';ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillText('2X POINTS '+Math.ceil(g.dpT)+'s',14,statY);}
   // Mute icon — top-right
   ctx.font='15px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
@@ -5361,7 +5364,7 @@ function drawAbVfx(){
       ctx.shadowBlur=20;ctx.shadowColor='#38bdf8';
       for(let _j=0;_j<_pts.length-1;_j++){
         const _p0=_pts[_j],_p1=_pts[_j+1];
-        const _mx=(_p0.x+_p1.x)/2+(Math.random()-.5)*38,_my=(_p0.y+_p1.y)/2+(Math.random()-.5)*38;
+        const _mx=(_p0.x+_p1.x)/2+(Math.random()-.5)*60,_my=(_p0.y+_p1.y)/2+(Math.random()-.5)*60;
         ctx.beginPath();ctx.moveTo(_p0.x,_p0.y);ctx.quadraticCurveTo(_mx,_my,_p1.x,_p1.y);ctx.stroke();
       }
       _pts.slice(1).forEach(_p=>{ctx.beginPath();ctx.arc(_p.x,_p.y,5+t*8,0,Math.PI*2);ctx.stroke();});
