@@ -2158,12 +2158,12 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
         <div style="margin-top:.7rem;border-top:1px solid rgba(255,255,255,0.07);padding-top:.7rem;">
           <div style="font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold-l);letter-spacing:.05em;margin-bottom:.4rem;">ABILITIES</div>
           <div style="display:grid;grid-template-columns:1.4rem 1fr;gap:.15rem .4rem;font-size:.76rem;color:var(--text2);">
-            <span>🔥</span><span><strong style="color:var(--text);">Fire Ring</strong> (Riftforge) — 1 damage to all enemies on screen.</span>
+            <span>🔥</span><span><strong style="color:var(--text);">Fire Ring</strong> (Riftforge) — instant-kills enemies within range.</span>
             <span>🧊</span><span><strong style="color:var(--text);">Time Slow</strong> (Helion) — slows all enemies for 5s.</span>
             <span>🟣</span><span><strong style="color:var(--text);">Orbital Strike</strong> (Nebulon) — destroys non-boss enemies.</span>
             <span>⚡</span><span><strong style="color:var(--text);">Chain Lightning</strong> (Protonis) — hits up to 10 enemies.</span>
             <span>🛡</span><span><strong style="color:var(--text);">Fortify</strong> (Keystone) — temporary shield &amp; restore HP.</span>
-            <span>💥</span><span><strong style="color:var(--text);">Shield Bash</strong> (Aegis) — instant-kills enemies near you.</span>
+            <span>💥</span><span><strong style="color:var(--text);">Shield Bash</strong> (Aegis) — deals 1 damage to all enemies on screen.</span>
           </div>
         </div>
         <div style="margin-top:.7rem;border-top:1px solid rgba(255,255,255,0.07);padding-top:.7rem;">
@@ -2483,7 +2483,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-16-BUILD-I';
+const BUILD_VERSION='2026-06-16-BUILD-J';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -2854,7 +2854,7 @@ renderGuardianCount();
 // ===== SHIELDS — THE PATH OF THE GUARDIAN =====
 const SHIELDS = [
   {name:'Cryptide',  title:'Initiate',   emoji:'🌊', img:'./shield_cryptide.png',  req:0,          lore:'New to the ecosystem. A stable foundation and a defensive footing — learning the way. Every Guardian begins here.',          abilityDesc:'No combat ability'},
-  {name:'Riftforge', title:'Defender',   emoji:'🌋', img:'./shield_riftforge.png', req:10000,      lore:'The first awakening of power — bold and uncontrolled. Stepping forward to defend the community for the first time.',       abilityDesc:'Fire Ring — damages all enemies for 1 HP'},
+  {name:'Riftforge', title:'Defender',   emoji:'🌋', img:'./shield_riftforge.png', req:10000,      lore:'The first awakening of power — bold and uncontrolled. Stepping forward to defend the community for the first time.',       abilityDesc:'Fire Ring — instant-kills nearby enemies'},
   {name:'Helion',    title:'Sentinel',   emoji:'☀️', img:'./shield_helion.png',    req:200000,     lore:'Power under control. Light, guidance, and standing watch — actively protecting others, not just yourself.',                 abilityDesc:'Time Slow — halves enemy speed for 5s'},
   {name:'Nebulon',   title:'Ascendant',  emoji:'🌌', img:'./shield_nebulon.png',   req:1500000,    lore:'Cosmic scale begins. Mysterious and advanced — risen beyond the basic defender into something far greater.',                abilityDesc:'Orbital Strike — destroys non-boss enemies'},
   {name:'Protonis',  title:'Architect',  emoji:'⚛️', img:'./shield_protonis.png',  req:5000000,    lore:'The shield most tied to XPR Network. Technological and intentional — elite ecosystem knowledge and standing.',             abilityDesc:'Chain Lightning — electric arc chains through 10 enemies'},
@@ -4769,12 +4769,12 @@ function activateAb(){
   const sc=(en)=>{g.score+=en.pts;g.kills[en.type]=(g.kills[en.type]||0)+1;};
   if(ab==='bash'){
     g.abilVfx.push({type:'bash',life:0.55,maxL:0.55});
-    g.enemies=g.enemies.filter(en=>{if(dst(en.pos,{x:CX,y:CY})<190){burst(en.pos.x,en.pos.y,en.col,14);sc(en);return false;}return true;});
+    g.enemies.forEach(en=>{en.hp--;burst(en.pos.x,en.pos.y,'#f97316',6);});
+    g.enemies=g.enemies.filter(en=>{if(en.hp<=0){sc(en);return false;}return true;});
     flt('SHIELD BASH!',CX,CY-70,'#38bdf8',20);
   } else if(ab==='ring'){
     g.abilVfx.push({type:'ring',life:0.5,maxL:0.5});
-    g.enemies.forEach(en=>{en.hp--;burst(en.pos.x,en.pos.y,'#f97316',6);});
-    g.enemies=g.enemies.filter(en=>{if(en.hp<=0){sc(en);return false;}return true;});
+    g.enemies=g.enemies.filter(en=>{if(dst(en.pos,{x:CX,y:CY})<190){burst(en.pos.x,en.pos.y,en.col,14);sc(en);return false;}return true;});
     flt('FIRE RING!',CX,CY-70,'#f97316',20);
   } else if(ab==='slow'){
     g.abilVfx.push({type:'slow',life:0.5,maxL:0.5});
