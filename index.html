@@ -495,7 +495,7 @@ body.game-fullview #ticker-bar,body.game-fullview #nav,body.game-fullview #mobil
 body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 .fullview-active{position:fixed!important;top:0!important;left:0!important;width:100vw!important;height:100dvh!important;z-index:9000!important;background:#080b12;display:flex!important;flex-direction:column;align-items:center;justify-content:center;max-width:none!important;padding:0!important;overflow:hidden;}
 .fullview-active canvas{border-radius:0!important;border:none!important;}
-body.game-fullview #fg-canvas{width:100vw!important;height:100dvh!important;max-width:none!important;margin:0!important;}
+
 /* GUARDIAN GUIDES */
 .gg-list{display:flex;flex-direction:column;gap:.45rem;max-width:740px;margin:0 auto;}
 .gg-item{border:1px solid rgba(201,146,42,0.18);border-radius:10px;background:rgba(255,255,255,0.02);overflow:hidden;}
@@ -2245,7 +2245,7 @@ body.game-fullview #fg-canvas{width:100vw!important;height:100dvh!important;max-
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-15-v21';
+const BUILD_VERSION='2026-06-15-v22';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -4343,7 +4343,7 @@ function updateStartStep4(){var _connected=typeof walletActor!=='undefined'&&wal
 function toggleMute(){muted=!muted;localStorage.setItem('guard_arena_mute',muted?'1':'0');if(g&&['START','TUT','GAME_OVER','PAUSED'].includes(g.phase))drawStatic();}
 function togglePause(){
   if(!g||['START','TUT','GAME_OVER'].includes(g.phase))return;
-  if(g.phase==='PAUSED'){g.phase=g._prePause||'PLAYING';startLoop();}
+  if(g.phase==='PAUSED'){g.phase=g._prePause||'PLAYING';startLoop();if(window.innerWidth<=768)enterFullview('arena');}
   else{g._prePause=g.phase;g.phase='PAUSED';stopLoop();drawPauseOverlay();}
 }
 
@@ -5656,7 +5656,7 @@ var FG = {
       if (sx !== null) {
         var _ph = this.canvas ? this.canvas.height : 580;
         var _pw = this.canvas ? this.canvas.width : 480;
-        if (sy >= _ph*0.53-22 && sy <= _ph*0.53+22) { this.paused = false; }
+        if (sy >= _ph*0.53-22 && sy <= _ph*0.53+22) { this.paused = false; if(window.innerWidth<=768)enterFullview('fg'); }
         else if (sy >= _ph*0.67-22 && sy <= _ph*0.67+22) { this.paused = false; this.die(); }
       } else { this.paused = false; }
       return;
