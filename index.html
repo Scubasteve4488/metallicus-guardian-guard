@@ -2247,7 +2247,7 @@ body.game-fullview .fs-exit-btn{display:flex!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-15-v18';
+const BUILD_VERSION='2026-06-15-v19';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -4063,7 +4063,8 @@ function snd(type){
 
 
 // ─── Config ───────────────────────────────────────────────────────────────────
-const CW=600,CH=520,CX=300,CY=260,SR=52,MAX_HP_BONUS=3;
+const CW=600,CX=300,SR=52,MAX_HP_BONUS=3;
+let CH=520,CY=260;
 const isTD=('ontouchstart' in window)||navigator.maxTouchPoints>0; // touch device
 const RC=[
   {hp:3, abs:[]},
@@ -4218,10 +4219,11 @@ function resize(){
   var w,h,_ac=document.getElementById('arena-container');
   if(isFS){
     var vw=window.innerWidth,vh=window.innerHeight;
-    var fitScale=Math.min(vw/CW,vh/CH);
-    w=Math.round(CW*fitScale);h=Math.round(CH*fitScale);
+    CH=Math.round(CW*vh/vw);CY=Math.round(CH/2);
+    w=vw;h=vh;
     if(_ac){var _wz=g?getWaveZone(g.wave):WAVE_ZONES[0];_ac.style.background=_wz.h2;}
   }else{
+    CH=520;CY=260;
     if(_ac)_ac.style.background='';
     w=Math.min(CW,window.innerWidth-16);h=Math.round(CH*w/CW);
     if(h>window.innerHeight-180){h=window.innerHeight-180;w=Math.round(CW*h/CH);}
@@ -5292,10 +5294,6 @@ function drawStart(){
   // PLAY button
   ctx.fillStyle='rgba(201,146,42,0.18)';rrect(CX-90,playTop,180,48,8);ctx.fill();ctx.strokeStyle='#c9922a';ctx.lineWidth=1.5;rrect(CX-90,playTop,180,48,8);ctx.stroke();
   ctx.fillStyle='#e8b84b';ctx.font='bold '+szBtn+'px Cinzel,serif';ctx.textBaseline='middle';ctx.fillText('▶  PLAY',CX,playCy);
-  ctx.textBaseline='alphabetic';
-  ctx.textAlign='right';ctx.fillStyle='rgba(100,116,139,0.4)';ctx.font='9px monospace';
-  ctx.fillText(BUILD_VERSION,CW-5,CH-4);
-  ctx.textAlign='center';
 }
 
 function drawGameOver(nb,gp){
@@ -5541,10 +5539,11 @@ var FG = {
     var cw,ch;
     if(isFS){
       var vw=window.innerWidth,vh=window.innerHeight;
-      var fitScale=Math.min(vw/480,vh/580);
-      cw=Math.round(480*fitScale);ch=Math.round(580*fitScale);
+      cw=vw;ch=vh;
+      this.gravity=0.28*(ch/580);this.flapPower=-5.5*(ch/580);
       var _z=FG_ZONES[this.zoneIdx||0];cont.style.background=_z?_z.bg:'#000';
     }else{
+      this.gravity=0.28;this.flapPower=-5.5;
       var rawW=cont.clientWidth;
       cw=rawW>0?Math.min(480,rawW-16):480;ch=Math.round(580*cw/480);
       if(ch>window.innerHeight-180){ch=window.innerHeight-180;cw=Math.round(480*ch/580);}
@@ -6118,9 +6117,6 @@ var FG = {
       var dTxt = this.pbDaily > 0 ? 'Daily: '+this.pbDaily : '';
       c.fillText([pbTxt,dTxt].filter(Boolean).join(' · '), w/2, h*0.92);
     }
-    c.textAlign = 'right'; c.textBaseline = 'alphabetic';
-    c.fillStyle = 'rgba(100,116,139,0.4)'; c.font = '9px monospace';
-    c.fillText(BUILD_VERSION, w-4, h-4);
     c.textAlign = 'center'; c.textBaseline = 'middle';
     if(isDevMode())this._fgDevBadge(c,w);
   },
