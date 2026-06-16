@@ -2217,6 +2217,208 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     </div>
   </div>
 </div>
+<!-- DEV PANEL — scubasteve44 only, invisible to all other users -->
+<div id="dev-panel" style="display:none;max-width:600px;margin:1.2rem auto 2rem;background:rgba(5,8,20,0.97);border:1.5px solid #c9922a;border-radius:14px;padding:1rem 1.1rem;font-family:sans-serif;color:#e2e8f0;box-sizing:border-box;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid rgba(201,146,42,0.3);">
+    <span style="color:#c9922a;font-weight:700;font-size:.78rem;letter-spacing:.06em;">DEV PANEL — @scubasteve44</span>
+    <span id="dev-msg" style="font-size:.65rem;color:#22c55e;display:none;max-width:180px;text-align:right;"></span>
+  </div>
+  <!-- RANK -->
+  <div style="margin-bottom:.8rem;">
+    <div style="font-size:.62rem;color:#c9922a;letter-spacing:.1em;margin-bottom:.35rem;">RANK</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;">
+      <button onclick="devSetRank(0)" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#94a3b8;font-family:sans-serif;font-size:.67rem;padding:.28rem .55rem;border-radius:5px;cursor:pointer;">Cryptide</button>
+      <button onclick="devSetRank(1)" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .55rem;border-radius:5px;cursor:pointer;">Riftforge</button>
+      <button onclick="devSetRank(2)" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .55rem;border-radius:5px;cursor:pointer;">Helion</button>
+      <button onclick="devSetRank(3)" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .55rem;border-radius:5px;cursor:pointer;">Nebulon</button>
+      <button onclick="devSetRank(4)" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .55rem;border-radius:5px;cursor:pointer;">Protonis</button>
+      <button onclick="devSetRank(5)" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .55rem;border-radius:5px;cursor:pointer;">Keystone</button>
+      <button onclick="devSetRank(6)" style="background:rgba(201,146,42,0.18);border:1px solid #c9922a;color:#e8b84b;font-family:sans-serif;font-size:.67rem;padding:.28rem .55rem;border-radius:5px;cursor:pointer;font-weight:700;">Aegis</button>
+    </div>
+  </div>
+  <!-- SHARDS -->
+  <div style="margin-bottom:.8rem;padding-top:.6rem;border-top:1px solid rgba(255,255,255,0.05);">
+    <div style="font-size:.62rem;color:#c9922a;letter-spacing:.1em;margin-bottom:.35rem;">SHARDS</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;align-items:center;margin-bottom:.3rem;">
+      <select id="dev-shield-sel" style="background:#0a0d1a;border:1px solid rgba(201,146,42,0.4);color:#e2e8f0;font-family:sans-serif;font-size:.67rem;padding:.28rem .4rem;border-radius:5px;cursor:pointer;">
+        <option>Riftforge</option><option>Helion</option><option>Nebulon</option><option>Protonis</option><option>Keystone</option><option>Aegis</option>
+      </select>
+      <button onclick="devGrantShards()" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .55rem;border-radius:5px;cursor:pointer;">Grant 5 Shards</button>
+      <button onclick="devForge()" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .55rem;border-radius:5px;cursor:pointer;">Force Forge</button>
+    </div>
+    <button onclick="devGrantAll()" style="background:rgba(201,146,42,0.08);border:1px solid rgba(201,146,42,0.25);color:#94a3b8;font-family:sans-serif;font-size:.65rem;padding:.25rem .55rem;border-radius:5px;cursor:pointer;">Grant ALL Shards (all shields)</button>
+  </div>
+  <!-- WAVE JUMP -->
+  <div style="margin-bottom:.8rem;padding-top:.6rem;border-top:1px solid rgba(255,255,255,0.05);">
+    <div style="font-size:.62rem;color:#c9922a;letter-spacing:.1em;margin-bottom:.35rem;">WAVE JUMP</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.3rem;">
+      <button onclick="devJumpWave(5)"  style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .5rem;border-radius:5px;cursor:pointer;">W5</button>
+      <button onclick="devJumpWave(10)" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .5rem;border-radius:5px;cursor:pointer;">W10</button>
+      <button onclick="devJumpWave(20)" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .5rem;border-radius:5px;cursor:pointer;">W20</button>
+      <button onclick="devJumpWave(30)" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .5rem;border-radius:5px;cursor:pointer;">W30</button>
+      <button onclick="devJumpWave(40)" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .5rem;border-radius:5px;cursor:pointer;">W40</button>
+      <button onclick="devJumpWave(50)" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .5rem;border-radius:5px;cursor:pointer;">W50</button>
+      <button onclick="devEnterVoid()"  style="background:rgba(100,0,180,0.18);border:1px solid rgba(180,0,255,0.5);color:#cc66ff;font-family:sans-serif;font-size:.67rem;padding:.28rem .5rem;border-radius:5px;cursor:pointer;font-weight:700;">VOID</button>
+    </div>
+    <div style="display:flex;gap:.3rem;align-items:center;">
+      <input id="dev-wave-num" type="number" min="1" max="999" value="1" style="width:56px;background:#0a0d1a;border:1px solid rgba(201,146,42,0.35);color:#e2e8f0;font-family:sans-serif;font-size:.67rem;padding:.28rem .4rem;border-radius:5px;text-align:center;">
+      <button onclick="devJumpCustom()" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .6rem;border-radius:5px;cursor:pointer;">Jump</button>
+    </div>
+  </div>
+  <!-- ABILITIES -->
+  <div style="margin-bottom:.8rem;padding-top:.6rem;border-top:1px solid rgba(255,255,255,0.05);">
+    <div style="font-size:.62rem;color:#c9922a;letter-spacing:.1em;margin-bottom:.35rem;">ABILITIES</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;">
+      <button onclick="devUnlockAllAbs()" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .55rem;border-radius:5px;cursor:pointer;">Unlock All</button>
+      <button onclick="devReadyAbility()" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .55rem;border-radius:5px;cursor:pointer;">Ready Now (0 CD)</button>
+    </div>
+  </div>
+  <!-- FULL RESET -->
+  <div style="padding-top:.6rem;border-top:1px solid rgba(239,68,68,0.2);">
+    <div style="font-size:.62rem;color:#ef4444;letter-spacing:.1em;margin-bottom:.35rem;">FULL RESET</div>
+    <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;">
+      <button id="dev-reset-btn" onclick="devResetStep()" style="background:rgba(239,68,68,0.12);border:1.5px solid #ef4444;color:#ef4444;font-family:sans-serif;font-size:.7rem;padding:.3rem .7rem;border-radius:5px;cursor:pointer;font-weight:700;">RESET EVERYTHING</button>
+      <span id="dev-reset-note" style="font-size:.65rem;color:#ef4444;display:none;">Tap again to confirm</span>
+    </div>
+  </div>
+</div>
+<button id="dev-toggle-btn" onclick="devTogglePanel()" style="display:none;position:fixed;bottom:88px;right:14px;z-index:8500;background:rgba(5,8,20,0.92);border:1.5px solid #c9922a;color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.3rem .55rem;border-radius:7px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.5);">DEV</button>
+<script>
+(function(){
+  var _resetStep=0,_resetTimer=null;
+
+  function devMsg(txt,err){
+    var el=document.getElementById('dev-msg');if(!el)return;
+    el.textContent=txt;el.style.color=err?'#ef4444':'#22c55e';el.style.display='inline';
+    clearTimeout(el._t);el._t=setTimeout(function(){el.style.display='none';},2800);
+  }
+
+  function devGameRunning(){
+    var h=window._devHooks;if(!h)return false;
+    var g=h.getG();return g&&g.phase!=='START'&&g.phase!=='TUT'&&g.phase!=='GAME_OVER'&&g.phase!=='DYING';
+  }
+
+  window.devSetRank=function(n){
+    guardianRank=n;
+    try{localStorage.setItem('sg_rank',String(n));}catch(e){}
+    renderShield();
+    var names=['Cryptide','Riftforge','Helion','Nebulon','Protonis','Keystone','Aegis'];
+    devMsg('Rank set: '+names[n]);
+  };
+
+  window.devGrantShards=function(){
+    var name=document.getElementById('dev-shield-sel').value;
+    for(var i=1;i<=5;i++)ShardTracker.collectShard(name,i);
+    renderShardDisplay();
+    devMsg('Granted 5 shards: '+name);
+  };
+
+  window.devForge=function(){
+    var name=document.getElementById('dev-shield-sel').value;
+    ShardTracker.forge(name);
+    guardianRank=computeShardRank();
+    try{localStorage.setItem('sg_rank',String(guardianRank));}catch(e){}
+    renderShield();renderShardDisplay();
+    devMsg('Forged: '+name+' (rank '+guardianRank+')');
+  };
+
+  window.devGrantAll=function(){
+    ['Riftforge','Helion','Nebulon','Protonis','Keystone','Aegis'].forEach(function(name){
+      for(var i=1;i<=5;i++)ShardTracker.collectShard(name,i);
+    });
+    renderShardDisplay();
+    devMsg('All shards granted for all shields');
+  };
+
+  window.devJumpWave=function(n){
+    var h=window._devHooks;if(!h)return;
+    var g=h.getG();
+    if(!g||!devGameRunning()){devMsg('Start a game first',true);return;}
+    n=Math.max(1,Math.min(999,n|0));
+    g.wave=n-1;g.enemies=[];g.wq=[];
+    h.doNextWave();
+    devMsg('Jumped to wave '+n);
+  };
+
+  window.devJumpCustom=function(){
+    var n=parseInt(document.getElementById('dev-wave-num').value)||1;
+    devJumpWave(n);
+  };
+
+  window.devEnterVoid=function(){
+    var h=window._devHooks;if(!h)return;
+    var g=h.getG();
+    if(!g||!devGameRunning()){devMsg('Start a game first',true);return;}
+    g.wave=50;g.enemies=[];g.wq=[];
+    h.doNextWave();
+    devMsg('Entered The Void (wave 51)');
+  };
+
+  window.devUnlockAllAbs=function(){
+    var h=window._devHooks;if(!h)return;
+    var g=h.getG();
+    if(!g||!devGameRunning()){devMsg('Start a game first',true);return;}
+    g.cfg={hp:g.cfg.hp,abs:['ring','slow','strike','chain','fortify','bash']};
+    devMsg('All abilities unlocked for this run');
+  };
+
+  window.devReadyAbility=function(){
+    var h=window._devHooks;if(!h)return;
+    var g=h.getG();
+    if(!g||!g.selectedAb){devMsg('No ability active',true);return;}
+    g.abLeft=0;
+    devMsg('Ability cooldown cleared');
+  };
+
+  window.devResetStep=function(){
+    if(_resetStep===0){
+      _resetStep=1;
+      var note=document.getElementById('dev-reset-note');if(note)note.style.display='inline';
+      clearTimeout(_resetTimer);
+      _resetTimer=setTimeout(function(){
+        _resetStep=0;
+        var note=document.getElementById('dev-reset-note');if(note)note.style.display='none';
+      },3000);
+    }else{
+      clearTimeout(_resetTimer);_resetStep=0;
+      var note=document.getElementById('dev-reset-note');if(note)note.style.display='none';
+      devDoReset();
+    }
+  };
+
+  function devDoReset(){
+    ['guard_shards','sg_rank','guard_arena_pb','guard_arena_tut','guard_arena_cp',
+     'guard_achs_all','fg_pb','fg_daily_pb','fg_tutorial_done'].forEach(function(k){
+      try{localStorage.removeItem(k);}catch(e){}
+    });
+    ShardTracker._data={};ShardTracker.save();
+    guardianRank=0;guardianBalance=0;
+    saveRank();renderShield();renderShardDisplay();
+    try{renderProgress(guardianBalance);}catch(e){}
+    updatePBBar();
+    if(typeof FG!=='undefined'){try{FG.pb=0;FG.pbDaily=0;}catch(e){}}
+    var h=window._devHooks;
+    if(h){h.stopLoop();h.hideComboBadge();h.setG(h.newG(false));h.drawStatic();}
+    devMsg('Reset complete — clean new-user state');
+  }
+
+  window.devTogglePanel=function(){
+    var p=document.getElementById('dev-panel');if(!p)return;
+    p.style.display=p.style.display==='none'?'block':'none';
+  };
+
+  window._devPanelInit=function(){
+    if(typeof isDevMode!=='function'||!isDevMode())return;
+    var btn=document.getElementById('dev-toggle-btn');
+    if(btn)btn.style.display='block';
+  };
+
+  if(typeof isDevMode==='function'&&isDevMode()){
+    var btn=document.getElementById('dev-toggle-btn');
+    if(btn)btn.style.display='block';
+  }
+})();
+</script>
 </div>
 
 <div id="no-plays-overlay" style="display:none;position:fixed;inset:0;background:rgba(4,7,18,0.97);z-index:9999;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;box-sizing:border-box;text-align:center;">
@@ -2279,7 +2481,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-16-BUILD-E';
+const BUILD_VERSION='2026-06-16-BUILD-F';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -4058,6 +4260,7 @@ function onWalletDisconnected() {
   renderAchievements();
   updateStartStep4();
   updatePlaysUI();
+  if(typeof window._devPanelInit==='function')window._devPanelInit();
 }
 
 // ─── Audio ────────────────────────────────────────────────────────────────────
@@ -5431,6 +5634,7 @@ window.arenaInit=arenaInit;
 window.updateStartStep4=updateStartStep4;
 window.enterFullview=enterFullview;
 window.leaveFullview=leaveFullview;
+window._devHooks={getG:function(){return g;},setG:function(v){g=v;},doNextWave:doNextWave,startGame:startGame,stopLoop:stopLoop,startLoop:startLoop,newG:newG,drawStatic:drawStatic,checkAbSelect:checkAbSelect,wsInitShardForRun:wsInitShardForRun,hideComboBadge:hideComboBadge};
 })();
 // END GUARDIAN ARENA GAME
 
