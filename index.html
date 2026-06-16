@@ -494,8 +494,6 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 body.game-fullview #ticker-bar,body.game-fullview #nav,body.game-fullview #mobile-bottom-nav{display:none!important;}
 body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 .fullview-active{position:fixed!important;top:0!important;left:0!important;width:100vw!important;height:100dvh!important;z-index:9000!important;background:#080b12;display:flex!important;flex-direction:column;align-items:center;justify-content:center;max-width:none!important;padding:0!important;overflow:hidden;}
-.fs-exit-btn{display:none;position:fixed;top:10px;left:10px;z-index:9999;background:rgba(0,0,0,0.85);border:2px solid rgba(201,146,42,0.85);color:#e8b84b;border-radius:50%;width:64px;height:64px;font-size:1.4rem;cursor:pointer;align-items:center;justify-content:center;line-height:1;padding:0;touch-action:manipulation;pointer-events:auto;}
-body.game-fullview .fs-exit-btn{display:flex!important;}
 .fullview-active canvas{border-radius:0!important;border:none!important;}
 body.game-fullview #fg-canvas{width:100vw!important;height:100dvh!important;max-width:none!important;margin:0!important;}
 /* GUARDIAN GUIDES */
@@ -2091,7 +2089,6 @@ body.game-fullview #fg-canvas{width:100vw!important;height:100dvh!important;max-
       <button id="sel-wave" class="game-sel-btn active" onclick="switchToWave()">⚔ Wave Survival</button>
       <button id="sel-flappy" class="game-sel-btn" onclick="switchToFlappy()">🪙 GUARD Trials</button>
     </div>
-    <button class="fs-exit-btn" onclick="leaveFullview()" ontouchend="leaveFullview();event.preventDefault();" title="Exit fullscreen">✕</button>
     <div id="arena-container" style="position:relative;width:100%;max-width:600px;margin:0 auto;">
       <canvas id="arena-canvas" style="display:block;width:100%;border-radius:16px;border:1px solid rgba(201,146,42,0.25);cursor:crosshair;touch-action:none;-webkit-user-select:none;user-select:none;background:#080b12;"></canvas>
       <div id="ws-combo-badge"></div>
@@ -2248,7 +2245,7 @@ body.game-fullview #fg-canvas{width:100vw!important;height:100dvh!important;max-
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-15-v20';
+const BUILD_VERSION='2026-06-15-v21';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -4312,12 +4309,22 @@ function tapChoice(cx,cy){
   // B: rrect(CX+15,210,170,70) → center (CX+100, 245)
   else if(inBtn(cx,cy,CX+100,245,170,70))applyChoice('B');
 }
+var _fvHistPushed=false,_fvHintTimer=null;
+function _fvShowHint(){
+  var h=document.getElementById('fv-hint');
+  if(!h){h=document.createElement('div');h.id='fv-hint';h.textContent='Swipe back or press back to exit';h.style.cssText='position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;background:rgba(0,0,0,0.65);color:#fff;font-size:.76rem;padding:.32rem .85rem;border-radius:20px;pointer-events:none;opacity:0;transition:opacity .4s;white-space:nowrap;letter-spacing:.02em;';document.body.appendChild(h);}
+  clearTimeout(_fvHintTimer);
+  h.style.opacity='0';void h.offsetWidth;h.style.opacity='1';
+  _fvHintTimer=setTimeout(function(){h.style.opacity='0';},2500);
+}
 function enterFullview(gameId){
   var cont=document.getElementById(gameId==='fg'?'flappy-game-container':'arena-container');
   if(!cont)return;
   document.querySelectorAll('.fullview-active').forEach(function(el){el.classList.remove('fullview-active');});
   document.body.classList.add('game-fullview');
   cont.classList.add('fullview-active');
+  history.pushState({fullview:true},'');_fvHistPushed=true;
+  _fvShowHint();
   try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}
   setTimeout(function(){try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}},100);
   setTimeout(function(){try{resize();}catch(e){}try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}},300);
@@ -4325,9 +4332,13 @@ function enterFullview(gameId){
 function leaveFullview(){
   document.body.classList.remove('game-fullview');
   document.querySelectorAll('.fullview-active').forEach(function(el){el.classList.remove('fullview-active');});
+  if(_fvHistPushed){_fvHistPushed=false;history.back();}
   try{resize();}catch(e){}
   try{if(typeof FG!=='undefined'&&FG._resize)FG._resize();}catch(e){}
 }
+window.addEventListener('popstate',function(){
+  if(document.body.classList.contains('game-fullview')){_fvHistPushed=false;leaveFullview();}
+});
 function updateStartStep4(){var _connected=typeof walletActor!=='undefined'&&walletActor;var _yes='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:#4ade80;"><span>✓</span><span>Wallet connected as <strong>@'+walletActor+'</strong></span></div>';var _no='<div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:.55rem .85rem;font-size:.82rem;color:var(--text3);"><span>○</span><span>No wallet connected yet</span></div>';var check=document.getElementById('start-step4-check');var btn=document.getElementById('start-connect-btn');if(check)check.innerHTML=_connected?_yes:_no;if(btn)btn.style.display=_connected?'none':'';var ntgCheck=document.getElementById('ntg-step4-check');var ntgBtn=document.getElementById('ntg-connect-btn');if(ntgCheck)ntgCheck.innerHTML=_connected?_yes:_no;if(ntgBtn)ntgBtn.style.display=_connected?'none':'';}
 function toggleMute(){muted=!muted;localStorage.setItem('guard_arena_mute',muted?'1':'0');if(g&&['START','TUT','GAME_OVER','PAUSED'].includes(g.phase))drawStatic();}
 function togglePause(){
