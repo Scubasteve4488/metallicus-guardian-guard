@@ -2159,7 +2159,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
           <div style="font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold-l);letter-spacing:.05em;margin-bottom:.4rem;">ABILITIES</div>
           <div style="display:grid;grid-template-columns:1.4rem 1fr;gap:.15rem .4rem;font-size:.76rem;color:var(--text2);">
             <span>🔥</span><span><strong style="color:var(--text);">Fire Ring</strong> (Riftforge) — deals 1 damage to nearby enemies.</span>
-            <span>🧊</span><span><strong style="color:var(--text);">Time Slow</strong> (Helion) — slows all enemies for 5s.</span>
+            <span>🧊</span><span><strong style="color:var(--text);">Time Slow</strong> (Helion) — slows all enemies for 8s.</span>
             <span>🟣</span><span><strong style="color:var(--text);">Orbital Strike</strong> (Nebulon) — destroys non-boss enemies.</span>
             <span>⚡</span><span><strong style="color:var(--text);">Chain Lightning</strong> (Protonis) — hits up to 10 enemies.</span>
             <span>🛡</span><span><strong style="color:var(--text);">Fortify</strong> (Keystone) — temporary shield &amp; restore HP.</span>
@@ -2483,7 +2483,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-16-BUILD-K';
+const BUILD_VERSION='2026-06-16-BUILD-L';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -4385,7 +4385,7 @@ function buildWave(w,rng){
     for(let mi=0;mi<6;mi++)bq.push({type:'fud',delay:1.0+mi*1.0});
     return bq;
   }
-  const _cap=w>=51?110:w>=35?100:90;
+  const _cap=w>=51?95:w>=35?85:80;
   const cnt=w===1?14:w===2?17:w===3?20:w===4?23:Math.min(26+(w-6)*3,_cap);
   const mix=getMix(w);if(w>=30){mix.sw=Math.min(0.25,mix.sw+0.05);mix.ha=Math.min(0.30,mix.ha+0.05);}
   const gap=spawnGap(w),q=[];
@@ -4779,21 +4779,21 @@ function activateAb(){
     flt('FIRE RING!',CX,CY-70,'#f97316',20);
   } else if(ab==='slow'){
     g.abilVfx.push({type:'slow',life:0.5,maxL:0.5});
-    g.timeSlow=true;g.tsT=5;flt('TIME SLOW!',CX,CY-70,'#14b8a6',20);
+    g.timeSlow=true;g.tsT=8;flt('TIME SLOW!',CX,CY-70,'#14b8a6',20);
   } else if(ab==='strike'){
     g.abilVfx.push({type:'strike',life:0.4,maxL:0.4});
     g.enemies=g.enemies.filter(en=>{if(['fud','hack','swarm','boss'].includes(en.type)){burst(en.pos.x,en.pos.y,'#a855f7',14);sc(en);return false;}return true;});
     flt('ORBITAL STRIKE!',CX,CY-70,'#a855f7',20);
   } else if(ab==='fortify'){
     g.abilVfx.push({type:'fortify',life:0.6,maxL:0.6});
-    g.fort=true;g.ftT=10;g.ftBonus=g.mhp;g.hp=Math.min(g.hp+g.mhp,g.mhp+MAX_HP_BONUS);
+    g.fort=true;g.ftT=8;g.ftBonus=g.mhp;g.hp=Math.min(g.hp+g.mhp,g.mhp+MAX_HP_BONUS);
     flt('FORTIFY!',CX,CY-70,'#c9922a',20);
   } else if(ab==='chain'){
     const _coin={x:CX,y:CY};
     const _sorted=[...g.enemies].sort((a,b)=>dst(a.pos,_coin)-dst(b.pos,_coin));
     const _targets=_sorted.slice(0,10);
     const _pts=[_coin,..._targets.map(e=>({x:e.pos.x,y:e.pos.y}))];
-    _targets.forEach(en=>{en.hp--;burst(en.pos.x,en.pos.y,'#38bdf8',8);});
+    _targets.forEach(en=>{en.hp-=2;burst(en.pos.x,en.pos.y,'#38bdf8',8);});
     g.enemies=g.enemies.filter(en=>{if(en.hp<=0){sc(en);return false;}return true;});
     g.abilVfx.push({type:'chain',life:0.55,maxL:0.55,pts:_pts});
     flt('CHAIN LIGHTNING!',CX,CY-70,'#38bdf8',20);
@@ -5335,14 +5335,14 @@ function drawAbVfx(){
       ctx.globalAlpha=Math.max(0,(1-t)*0.85);
       ctx.strokeStyle='#38bdf8';ctx.lineWidth=Math.max(1,6*(1-t));
       ctx.shadowBlur=22;ctx.shadowColor='#38bdf8';
-      ctx.beginPath();ctx.arc(CX,CY,10+t*185,0,Math.PI*2);ctx.stroke();
+      ctx.beginPath();ctx.arc(CX,CY,t*Math.hypot(CW,CH)*0.9,0,Math.PI*2);ctx.stroke();
       ctx.globalAlpha=Math.max(0,(1-t)*0.25);
-      ctx.fillStyle='#38bdf8';ctx.beginPath();ctx.arc(CX,CY,10+t*185,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#38bdf8';ctx.beginPath();ctx.arc(CX,CY,t*Math.hypot(CW,CH)*0.9,0,Math.PI*2);ctx.fill();
     } else if(vfx.type==='ring'){
       ctx.globalAlpha=Math.max(0,(1-t)*0.75);
       ctx.strokeStyle='#f97316';ctx.lineWidth=Math.max(1,10*(1-t));
       ctx.shadowBlur=28;ctx.shadowColor='#ef4444';
-      ctx.beginPath();ctx.arc(CX,CY,t*Math.hypot(CW,CH)*0.9,0,Math.PI*2);ctx.stroke();
+      ctx.beginPath();ctx.arc(CX,CY,t*190,0,Math.PI*2);ctx.stroke();
     } else if(vfx.type==='slow'){
       ctx.fillStyle='rgba(20,184,166,'+(0.18*(1-t))+')';
       ctx.fillRect(0,0,CW,CH);
