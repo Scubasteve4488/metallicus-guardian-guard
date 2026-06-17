@@ -2483,7 +2483,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-17-BUILD-N';
+const BUILD_VERSION='2026-06-17-BUILD-O';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -6867,5 +6867,7 @@ function switchToWave() {
   <button class="mbn-btn" id="mbn-shields" onclick="go('shields')"><span class="mbn-icon">🛡</span><span class="mbn-label">Shields</span></button>
   <button class="mbn-btn" id="mbn-ecosystem" onclick="go('ecosystem')"><span class="mbn-icon">🌐</span><span class="mbn-label">Ecosystem</span></button>
 </nav>
+<div id="build-ver-lbl" style="position:fixed;bottom:68px;right:10px;font-size:.56rem;color:rgba(255,255,255,0.22);pointer-events:none;z-index:1;letter-spacing:.04em;font-family:monospace;"></div>
+<script>document.getElementById('build-ver-lbl').textContent='v '+BUILD_VERSION;</script>
 </body>
 </html>
