@@ -2483,7 +2483,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-16-BUILD-L';
+const BUILD_VERSION='2026-06-16-BUILD-M';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -4527,8 +4527,8 @@ function tapStart(cx,cy){
   if(inBtn(cx,cy,CX,_wsPlayBtnCy,180,48))checkAndUsePlay('ws',function(){startGame(false);if(window.innerWidth<=768)enterFullview('arena');});
 }
 function tapPause(cx,cy){
-  if(inBtn(cx,cy,CX,280,180,44))togglePause();
-  else if(inBtn(cx,cy,CX,331,180,38)){localStorage.removeItem('guard_arena_cp');stopLoop();g=newG(false);drawStatic();}
+  if(inBtn(cx,cy,CX,374,180,44))togglePause();
+  else if(inBtn(cx,cy,CX,425,180,38)){localStorage.removeItem('guard_arena_cp');stopLoop();g=newG(false);drawStatic();}
 }
 function tapGO(cx,cy){
   if(g.goTimer>0)return;
@@ -4750,7 +4750,7 @@ function wsTapShards(cx, cy) {
 }
 
 // ─── Power-ups ────────────────────────────────────────────────────────────────
-function tryDrop(x,y){const r=Math.random();const canHp=g.hp<g.mhp+MAX_HP_BONUS;const canAb=(g.cfg.abs||[]).length>0;if(r<0.04&&canHp)g.pus.push(mkPU('hp',x,y));else if(r<0.10&&canAb)g.pus.push(mkPU('ab',x,y));else if(r<0.13)g.pus.push(mkPU('pts',x,y));}
+function tryDrop(x,y){const r=Math.random();const canHp=g.hp<g.mhp+MAX_HP_BONUS;const canAb=(g.cfg.abs||[]).length>0;const abT=g.wave>=30&&g.wave<=40?0.10:0.08;if(r<0.04&&canHp)g.pus.push(mkPU('hp',x,y));else if(r<abT&&canAb)g.pus.push(mkPU('ab',x,y));else if(r<abT+0.03)g.pus.push(mkPU('pts',x,y));}
 function collectPU(pu,idx){
   const mx=g.mhp+MAX_HP_BONUS;
   if(pu.type==='hp'){if(g.hp<mx){g.hp=Math.min(g.hp+1,mx);flt('+1 HP ❤️',pu.x,pu.y,'#22c55e',15);snd('hp_restore');}else flt('HP FULL',pu.x,pu.y,'#94a3b8',12);}
@@ -4865,7 +4865,7 @@ function update(dt){
   // PLAYING
   if(g.comboMult>1&&performance.now()-g.lastComboKillT>2000){g.combo=0;g.comboMult=1;hideComboBadge();}
   const sm=g.timeSlow?0.3:1;
-  const xtra=g.wave<=5?0.85:g.wave<=20?0.85+(g.wave-5)*0.045:g.wave<=50?Math.min(1.525+(g.wave-20)*0.0075,1.75):Math.min(1.75+(g.wave-50)*0.02,2.3);
+  const xtra=g.wave<=5?0.85:g.wave<=20?0.85+(g.wave-5)*0.045:g.wave<=50?Math.min(1.525+(g.wave-20)*0.004,1.65):Math.min(1.75+(g.wave-50)*0.02,2.3);
   g.wt+=dt;
   const sp=[];g.wq=g.wq.filter(it=>{if(g.wt>=it.delay){sp.push(it);return false;}return true;});
   sp.forEach(it=>{
@@ -5450,10 +5450,10 @@ function drawPauseOverlay(){
   let sy=156;ctx.font=_pF(12)+'px Cinzel,serif';
   rows.forEach(r=>{ctx.fillStyle='#475569';ctx.fillText(r[0]+' — '+r[1]+' pts',CX,sy);sy+=16;});
   // Buttons
-  ctx.fillStyle='rgba(201,146,42,0.14)';rrect(CX-90,258,180,44,8);ctx.fill();ctx.strokeStyle='#c9922a';ctx.lineWidth=1.5;rrect(CX-90,258,180,44,8);ctx.stroke();
-  ctx.fillStyle='#e8b84b';ctx.font='bold 15px Cinzel,serif';ctx.textBaseline='middle';ctx.fillText('▶  RESUME',CX,280);
-  ctx.fillStyle='rgba(71,85,105,0.15)';rrect(CX-90,312,180,38,8);ctx.fill();ctx.strokeStyle='#475569';ctx.lineWidth=1;rrect(CX-90,312,180,38,8);ctx.stroke();
-  ctx.fillStyle='#64748b';ctx.font='bold 13px Cinzel,serif';ctx.fillText('🏠  QUIT',CX,331);
+  ctx.fillStyle='rgba(201,146,42,0.14)';rrect(CX-90,352,180,44,8);ctx.fill();ctx.strokeStyle='#c9922a';ctx.lineWidth=1.5;rrect(CX-90,352,180,44,8);ctx.stroke();
+  ctx.fillStyle='#e8b84b';ctx.font='bold 15px Cinzel,serif';ctx.textBaseline='middle';ctx.fillText('▶  RESUME',CX,374);
+  ctx.fillStyle='rgba(71,85,105,0.15)';rrect(CX-90,406,180,38,8);ctx.fill();ctx.strokeStyle='#475569';ctx.lineWidth=1;rrect(CX-90,406,180,38,8);ctx.stroke();
+  ctx.fillStyle='#64748b';ctx.font='bold 13px Cinzel,serif';ctx.fillText('🏠  QUIT',CX,425);
   ctx.textBaseline='alphabetic';
   // Mute
   ctx.font='15px sans-serif';ctx.textAlign='right';ctx.textBaseline='middle';ctx.globalAlpha=0.55;ctx.fillStyle='#fff';ctx.fillText(muted?'🔇':'🔊',CW-14,22);ctx.globalAlpha=1;
