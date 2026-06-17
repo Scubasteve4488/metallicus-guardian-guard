@@ -2483,7 +2483,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-16-BUILD-M';
+const BUILD_VERSION='2026-06-17-BUILD-N';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -4319,7 +4319,7 @@ const ED={
   fud:        {lbl:'PHISHER',     col:'#4c1d95',glow:'rgba(91,33,182,0.88)',   r:22,mhp:1, dmg:1,spd:58, pts:1},
   rug:        {lbl:'RUG',         col:'#ef4444',glow:'rgba(239,68,68,0.7)',     r:34,mhp:3, dmg:1,spd:34, pts:3},
   hack:       {lbl:'DRAINER',     col:'#b91c1c',glow:'rgba(185,28,28,0.88)',    r:14,mhp:1, dmg:1,spd:108,pts:2},
-  swarm:      {lbl:'FAKE',        col:'#f5c842',glow:'rgba(245,200,66,0.65)',   r:9, mhp:1, dmg:1,spd:72, pts:1},
+  swarm:      {lbl:'FAKE',        col:'#f5c842',glow:'rgba(245,200,66,0.65)',   r:9, mhp:1, dmg:1,spd:60, pts:1},
   boss:       {lbl:'IMPOSTOR',    col:'#1e0858',glow:'rgba(139,92,246,0.92)',   r:50,mhp:10,dmg:2,spd:26, pts:10},
   breach:     {lbl:'THE BREACH',  col:'#0a0010',glow:'rgba(239,68,68,0.95)',    r:62,mhp:15,dmg:3,spd:22, pts:50},
   voidhacker: {lbl:'VOID HACKER', col:'#160000',glow:'rgba(200,30,30,0.95)',    r:66,mhp:20,dmg:3,spd:20, pts:100},
@@ -4534,17 +4534,17 @@ function tapGO(cx,cy){
   if(g.goTimer>0)return;
   const hasCp=!!g.cp;
   if(hasCp){
-    // CP RESUME: rrect(CX-90,278,180,44) → center(CX,300)
-    if(inBtn(cx,cy,CX,300,180,44)){resumeCheckpoint();return;}
-    // PLAY AGAIN: rrect(CX-90,332,180,44) → center(CX,354)
-    if(inBtn(cx,cy,CX,354,180,44)){checkAndUsePlay('ws',function(){startGame(false);});return;}
-    // MAIN MENU: rrect(CX-90,387,180,38) → center(CX,406)
-    if(inBtn(cx,cy,CX,406,180,38)){localStorage.removeItem('guard_arena_cp');stopLoop();g=newG(false);drawStatic();return;}
+    // CP RESUME: rrect(CX-90,320,180,44) → center(CX,342)
+    if(inBtn(cx,cy,CX,342,180,44)){resumeCheckpoint();return;}
+    // PLAY AGAIN: rrect(CX-90,384,180,52) → center(CX,410)
+    if(inBtn(cx,cy,CX,410,180,52)){checkAndUsePlay('ws',function(){startGame(false);});return;}
+    // MAIN MENU: rrect(CX-90,448,180,46) → center(CX,471)
+    if(inBtn(cx,cy,CX,471,180,46)){localStorage.removeItem('guard_arena_cp');stopLoop();g=newG(false);drawStatic();return;}
   } else {
-    // PLAY AGAIN: rrect(CX-90,314,180,44) → center(CX,336)
-    if(inBtn(cx,cy,CX,336,180,44)){checkAndUsePlay('ws',function(){startGame(false);});return;}
-    // MAIN MENU: rrect(CX-90,368,180,38) → center(CX,387)
-    if(inBtn(cx,cy,CX,387,180,38)){stopLoop();g=newG(false);drawStatic();return;}
+    // PLAY AGAIN: rrect(CX-90,340,180,52) → center(CX,366)
+    if(inBtn(cx,cy,CX,366,180,52)){checkAndUsePlay('ws',function(){startGame(false);});return;}
+    // MAIN MENU: rrect(CX-90,404,180,46) → center(CX,427)
+    if(inBtn(cx,cy,CX,427,180,46)){stopLoop();g=newG(false);drawStatic();return;}
   }
 }
 function tapChoice(cx,cy){
@@ -5580,26 +5580,26 @@ function drawGameOver(nb,gp){
   ctx.textAlign='center';ctx.textBaseline='alphabetic';
   ctx.fillStyle='#ef4444';ctx.shadowBlur=18;ctx.shadowColor='#ef4444';
   ctx.font='bold 30px "Cinzel Decorative",Cinzel,serif';ctx.fillText('GUARDIAN FALLEN',CX,68);
-  ctx.shadowBlur=0;ctx.fillStyle='#e8b84b';ctx.font='bold 18px Cinzel,serif';
+  ctx.shadowBlur=0;ctx.fillStyle='#e8b84b';ctx.font='bold 22px Cinzel,serif';
   ctx.fillText('Wave '+g.wave+' · Score '+g.score+(g.cpUsed?' · CP':''),CX,100);
-  let ny=124;
-  if(g.perfectWaves>0&&ny<=252){ctx.fillStyle='#22c55e';ctx.font='12px Cinzel,serif';ctx.fillText('🌟 '+g.perfectWaves+' perfect wave'+(g.perfectWaves!==1?'s':''),CX,ny);ny+=18;}
+  let ny=128;
+  if(g.perfectWaves>0&&ny<=300){ctx.fillStyle='#22c55e';ctx.font='15px Cinzel,serif';ctx.fillText('🌟 '+g.perfectWaves+' perfect wave'+(g.perfectWaves!==1?'s':''),CX,ny);ny+=20;}
   const earned=g.achs.filter(k=>ACH_NAMES[k]);
   if(earned.length){
     const allAchs=JSON.parse(localStorage.getItem('guard_achs_all')||'[]');
     earned.forEach(k=>{
-      if(ny>252)return;
+      if(ny>300)return;
       const isNew=!allAchs.includes(k);
-      ctx.fillStyle='#e8b84b';ctx.font='bold 10px Cinzel,serif';
-      ctx.fillText('🏆 '+ACH_NAMES[k]+(isNew?' ★NEW':''),CX,ny);ny+=13;
-      if(ny>252)return;
-      ctx.fillStyle='#94a3b8';ctx.font='9px Cinzel,serif';
-      ctx.fillText(ACH_DESC[k]||'',CX,ny);ny+=14;
+      ctx.fillStyle='#e8b84b';ctx.font='bold 13px Cinzel,serif';
+      ctx.fillText('🏆 '+ACH_NAMES[k]+(isNew?' ★NEW':''),CX,ny);ny+=16;
+      if(ny>300)return;
+      ctx.fillStyle='#94a3b8';ctx.font='12px Cinzel,serif';
+      ctx.fillText(ACH_DESC[k]||'',CX,ny);ny+=16;
     });
     const fresh=earned.filter(k=>!allAchs.includes(k));
     if(fresh.length){localStorage.setItem('guard_achs_all',JSON.stringify([...new Set([...allAchs,...fresh])]));}
   }
-  if(nb&&ny<=252){ctx.fillStyle='#22c55e';ctx.font='bold 13px "Cinzel Decorative",Cinzel,serif';ctx.shadowBlur=10;ctx.shadowColor='#22c55e';ctx.fillText('✦ NEW PERSONAL BEST ✦',CX,ny);ctx.shadowBlur=0;}
+  if(nb&&ny<=300){ctx.fillStyle='#22c55e';ctx.font='bold 16px "Cinzel Decorative",Cinzel,serif';ctx.shadowBlur=10;ctx.shadowColor='#22c55e';ctx.fillText('✦ NEW PERSONAL BEST ✦',CX,ny);ctx.shadowBlur=0;}
   // Waiting indicator during stats-reveal period
   if(g.goTimer>0){
     const t=performance.now()/350;
@@ -5611,22 +5611,22 @@ function drawGameOver(nb,gp){
   const hasCp=!!g.cp;
   ctx.textBaseline='middle';
   if(hasCp){
-    // RESUME FROM CHECKPOINT (purple): top=278, center=300
-    ctx.fillStyle='rgba(124,58,237,0.22)';rrect(CX-90,278,180,44,8);ctx.fill();ctx.strokeStyle='#7c3aed';ctx.lineWidth=1.5;rrect(CX-90,278,180,44,8);ctx.stroke();
-    ctx.fillStyle='#fff';ctx.font='bold 11px Cinzel,serif';ctx.fillText('↩ RESUME — WAVE '+g.cp.wave,CX,300);
-    // PLAY AGAIN (gold): top=332, center=354
-    ctx.fillStyle='rgba(201,146,42,0.18)';rrect(CX-90,332,180,44,8);ctx.fill();ctx.strokeStyle='#c9922a';ctx.lineWidth=1.5;rrect(CX-90,332,180,44,8);ctx.stroke();
-    ctx.fillStyle='#e8b84b';ctx.font='bold 14px Cinzel,serif';ctx.fillText('⚔  PLAY AGAIN',CX,354);
-    // MAIN MENU (dark): top=387, center=406
-    ctx.fillStyle='rgba(30,41,59,0.6)';rrect(CX-90,387,180,38,8);ctx.fill();ctx.strokeStyle='#475569';ctx.lineWidth=1;rrect(CX-90,387,180,38,8);ctx.stroke();
-    ctx.fillStyle='#e2e8f0';ctx.font='bold 12px Cinzel,serif';ctx.fillText('🏠  MAIN MENU',CX,406);
+    // RESUME FROM CHECKPOINT (purple): top=320, h=44, center=342
+    ctx.fillStyle='rgba(124,58,237,0.22)';rrect(CX-90,320,180,44,8);ctx.fill();ctx.strokeStyle='#7c3aed';ctx.lineWidth=1.5;rrect(CX-90,320,180,44,8);ctx.stroke();
+    ctx.fillStyle='#fff';ctx.font='bold 12px Cinzel,serif';ctx.fillText('↩ RESUME — WAVE '+g.cp.wave,CX,342);
+    // PLAY AGAIN (gold): top=384, h=52, center=410
+    ctx.fillStyle='rgba(201,146,42,0.18)';rrect(CX-90,384,180,52,8);ctx.fill();ctx.strokeStyle='#c9922a';ctx.lineWidth=1.5;rrect(CX-90,384,180,52,8);ctx.stroke();
+    ctx.fillStyle='#e8b84b';ctx.font='bold 16px Cinzel,serif';ctx.fillText('⚔  PLAY AGAIN',CX,410);
+    // MAIN MENU (dark): top=448, h=46, center=471
+    ctx.fillStyle='rgba(30,41,59,0.6)';rrect(CX-90,448,180,46,8);ctx.fill();ctx.strokeStyle='#475569';ctx.lineWidth=1;rrect(CX-90,448,180,46,8);ctx.stroke();
+    ctx.fillStyle='#e2e8f0';ctx.font='bold 14px Cinzel,serif';ctx.fillText('🏠  MAIN MENU',CX,471);
   } else {
-    // PLAY AGAIN (gold): top=314, center=336
-    ctx.fillStyle='rgba(201,146,42,0.18)';rrect(CX-90,314,180,44,8);ctx.fill();ctx.strokeStyle='#c9922a';ctx.lineWidth=1.5;rrect(CX-90,314,180,44,8);ctx.stroke();
-    ctx.fillStyle='#e8b84b';ctx.font='bold 14px Cinzel,serif';ctx.fillText('⚔  PLAY AGAIN',CX,336);
-    // MAIN MENU (dark): top=368, center=387
-    ctx.fillStyle='rgba(30,41,59,0.6)';rrect(CX-90,368,180,38,8);ctx.fill();ctx.strokeStyle='#475569';ctx.lineWidth=1;rrect(CX-90,368,180,38,8);ctx.stroke();
-    ctx.fillStyle='#e2e8f0';ctx.font='bold 12px Cinzel,serif';ctx.fillText('🏠  MAIN MENU',CX,387);
+    // PLAY AGAIN (gold): top=340, h=52, center=366
+    ctx.fillStyle='rgba(201,146,42,0.18)';rrect(CX-90,340,180,52,8);ctx.fill();ctx.strokeStyle='#c9922a';ctx.lineWidth=1.5;rrect(CX-90,340,180,52,8);ctx.stroke();
+    ctx.fillStyle='#e8b84b';ctx.font='bold 16px Cinzel,serif';ctx.fillText('⚔  PLAY AGAIN',CX,366);
+    // MAIN MENU (dark): top=404, h=46, center=427
+    ctx.fillStyle='rgba(30,41,59,0.6)';rrect(CX-90,404,180,46,8);ctx.fill();ctx.strokeStyle='#475569';ctx.lineWidth=1;rrect(CX-90,404,180,46,8);ctx.stroke();
+    ctx.fillStyle='#e2e8f0';ctx.font='bold 14px Cinzel,serif';ctx.fillText('🏠  MAIN MENU',CX,427);
   }
   ctx.textBaseline='alphabetic';
 }
