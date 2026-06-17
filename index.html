@@ -1786,10 +1786,6 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
         <img class="char-avi" src="./char_protonpunk.jpg?v=2" alt="ProtonPunk">
         <div><div class="comm-name">ProtonPunk</div><div class="comm-role">Founder of Cypher Gang & CypherBrawls</div><div class="comm-desc">An XPR Network veteran since 2021 and a true OG builder. ProtonPunk founded the Cypher Gang NFT collection, the CypherBrawls play-to-earn game, and the $CYPHR ecosystem token — a cornerstone of NFT culture on XPR Network.</div><span class="badge bp" style="display:inline-flex;margin-top:.6rem;">@ProtonPunk →</span></div>
       </a>
-      <div class="comm-card">
-        <img class="char-avi" src="./icon_tim.jpg?v=2" alt="Tim Rangel">
-        <div><div class="comm-name">Tim Rangel</div><div class="comm-role">GUARD Creator · Community Builder</div><div class="comm-desc">Creator of the GUARD token and this educational resource. Active XPR Network ecosystem participant focused on community building, education, and accessibility.</div><button onclick="go('creator')" class="badge bg mt1" style="border:none;cursor:pointer;display:inline-flex;margin-top:.6rem;">Creator Bio →</button></div>
-      </div>
     </div>
   </div>
 </div>
@@ -2503,7 +2499,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community'];
-const BUILD_VERSION='2026-06-17-BUILD-S';
+const BUILD_VERSION='2026-06-17-BUILD-T';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -2531,7 +2527,7 @@ function go(id){
 window.addEventListener('hashchange',function(){var h=location.hash.replace(/^#/,'');if(PAGES.includes(h))go(h);});
 
 // ── Mobile bottom nav ──────────────────────────────────────────────────────────
-const _MBN={home:'mbn-home',shields:'mbn-shields',arena:'mbn-arena',ecosystem:'mbn-ecosystem',guard:'mbn-guard'};
+const _MBN={home:'mbn-home',shields:'mbn-shields',arena:'mbn-arena',ecosystem:'mbn-ecosystem',learn:'mbn-learn',newtoguard:'mbn-learn',start:'mbn-learn',faq:'mbn-learn'};
 function mbnActive(id){
   document.querySelectorAll('.mbn-btn').forEach(function(b){b.classList.remove('active');});
   var k=_MBN[id];if(k){var b=document.getElementById(k);if(b)b.classList.add('active');}
@@ -6883,7 +6879,7 @@ function switchToWave() {
 <!-- MOBILE BOTTOM NAV -->
 <nav id="mobile-bottom-nav" aria-label="Quick navigation">
   <button class="mbn-btn active" id="mbn-home" onclick="go('home')"><span class="mbn-icon">🏠</span><span class="mbn-label">Home</span></button>
-  <button class="mbn-btn" id="mbn-guard" onclick="go('guard')"><span class="mbn-icon">🛡</span><span class="mbn-label">GUARD</span></button>
+  <button class="mbn-btn" id="mbn-learn" onclick="go('learn')"><span class="mbn-icon">🎓</span><span class="mbn-label">Learn</span></button>
   <button class="mbn-btn" id="mbn-arena" onclick="go('arena')"><span class="mbn-icon">⚔</span><span class="mbn-label">Stand Guard</span></button>
   <button class="mbn-btn" id="mbn-shields" onclick="go('shields')"><span class="mbn-icon">🛡</span><span class="mbn-label">Shields</span></button>
   <button class="mbn-btn" id="mbn-ecosystem" onclick="go('ecosystem')"><span class="mbn-icon">🌐</span><span class="mbn-label">Ecosystem</span></button>
