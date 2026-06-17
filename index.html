@@ -648,7 +648,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       <button class="nav-btn" id="t-arena" onclick="go('arena')">⚔ Stand Guard</button>
       <button class="nav-btn" id="t-shields" onclick="go('shields')">🛡 Shields</button>
       <div class="nav-dropdown" id="dd-communities" onmouseenter="openDropdown('dd-communities')" onmouseleave="scheduleCloseDropdowns()">
-        <button class="nav-btn nav-dropdown-btn" id="t-communities-group" onclick="toggleDropdown('dd-communities',event)">Communities <span class="dd-caret">▾</span></button>
+        <button class="nav-btn nav-dropdown-btn" id="t-communities-group" onclick="toggleDropdown('dd-communities',event)">Community <span class="dd-caret">▾</span></button>
       </div>
       <button class="nav-btn" id="t-ecosystem" onclick="go('ecosystem')">Ecosystem</button>
       <div class="nav-dropdown" id="dd-learn" onmouseenter="openDropdown('dd-learn')" onmouseleave="scheduleCloseDropdowns()">
@@ -669,6 +669,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
   <button class="nav-dd-item" onclick="go('faq');closeAllDropdowns()">❓ FAQ</button>
 </div>
 <div id="dd-communities-panel" class="nav-dd-panel" onmouseenter="cancelCloseDropdowns()" onmouseleave="scheduleCloseDropdowns()">
+  <button class="nav-dd-item" onclick="go('community');closeAllDropdowns()">👥 Community</button>
   <button class="nav-dd-item" onclick="go('ksto');closeAllDropdowns()">🦊 KSTO</button>
   <button class="nav-dd-item" onclick="go('cyphergang');closeAllDropdowns()">🔥 CypherGang</button>
   <button class="nav-dd-item" onclick="go('snipverse');closeAllDropdowns()">🌐 Snipverse</button>
@@ -680,8 +681,9 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
   <button class="mobile-nav-btn" onclick="go('guard');closeMenu()">🛡 GUARD</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('arena')">⚔ Stand Guard</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('shields')">🛡 Shields</button>
-  <button class="mobile-nav-btn mob-acc-hdr" onclick="toggleMobAcc('mob-acc-comm')">🌐 Communities <span class="mob-acc-caret" id="caret-mob-acc-comm">▾</span></button>
+  <button class="mobile-nav-btn mob-acc-hdr" onclick="toggleMobAcc('mob-acc-comm')">👥 Community <span class="mob-acc-caret" id="caret-mob-acc-comm">▾</span></button>
   <div class="mob-acc-body" id="mob-acc-comm" style="display:none;">
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('community')">👥 Community</button>
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('ksto')">🦊 KSTO</button>
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('cyphergang')">🔥 CypherGang</button>
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('snipverse')">🌐 Snipverse</button>
@@ -2500,10 +2502,10 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 </template>
 
 <script>
-const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard'];
-const BUILD_VERSION='2026-06-17-BUILD-R';
+const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community'];
+const BUILD_VERSION='2026-06-17-BUILD-S';
 
-const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
+const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
   if(location.hash!=='#'+id)location.hash=id;
   PAGES.forEach(p=>{
