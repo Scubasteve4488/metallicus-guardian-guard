@@ -638,6 +638,8 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 .dl-tab-btn{background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--text2);padding:.5rem 1.1rem;border-radius:8px;font-size:.82rem;font-weight:500;cursor:pointer;font-family:inherit;transition:all .18s;}
 .dl-tab-btn.dl-tab-active{background:rgba(201,146,42,0.15);border-color:rgba(201,146,42,0.5);color:var(--gold-l);font-weight:700;}
 .dl-tab-btn:hover:not(.dl-tab-active){background:rgba(255,255,255,0.06);color:var(--text);}
+.borrow-health-bar{height:6px;border-radius:3px;background:rgba(255,255,255,0.06);overflow:hidden;margin:.35rem 0 .5rem;}
+.borrow-health-fill{height:100%;border-radius:3px;transition:width .3s,background .3s;}
 </style>
   <!-- WebAuth / Proton Web SDK -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
@@ -2196,7 +2198,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
   <div class="section">
     <div class="sec-label">DeFi Lab</div>
     <h1 class="page-title">🧪 DeFi Lab</h1>
-    <p class="page-sub">An interactive, risk-free way to learn how DeFi works on XPR Network — using example numbers you control. No real funds, no real transactions. More instruments coming: borrowing and staking.</p>
+    <p class="page-sub">An interactive, risk-free way to learn how DeFi works on XPR Network — using example numbers you control. No real funds, no real transactions. More instruments coming: staking.</p>
 
     <div class="disc" style="border-color:rgba(124,58,237,0.35);background:rgba(124,58,237,0.05);margin-bottom:1.5rem;">
       <span>⚠</span>
@@ -2211,7 +2213,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       <button class="dl-tab-btn dl-tab-active" data-instrument="lending" onclick="dlSetInstrument('lending')">📈 Lending</button>
       <button class="dl-tab-btn" data-instrument="lp" onclick="dlSetInstrument('lp')">🔄 Liquidity Pools</button>
       <button class="dl-tab-btn" data-instrument="farming" onclick="dlSetInstrument('farming')">🌾 Farming</button>
-      <span class="dl-tab-coming">📉 Borrowing <span class="dl-badge">Soon</span></span>
+      <button class="dl-tab-btn" data-instrument="borrowing" onclick="dlSetInstrument('borrowing')">📉 Borrowing</button>
       <span class="dl-tab-coming">🔒 Staking <span class="dl-badge">Soon</span></span>
     </div>
 
@@ -2704,6 +2706,147 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       </div><!-- end .dl-grid -->
     </div><!-- end dl-panel-farming -->
 
+    <!-- ── BORROWING INSTRUMENT PANEL ── -->
+    <div id="dl-panel-borrowing" style="display:none;">
+
+      <!-- Borrowing educational explainer -->
+      <div class="card" style="max-width:720px;margin:0 auto 2rem;border-color:rgba(124,58,237,0.25);background:rgba(124,58,237,0.04);">
+        <div class="sec-label" style="justify-content:flex-start;margin-bottom:.6rem;">How Borrowing Works</div>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">Borrowing lets you <strong style="color:var(--text);">borrow against your crypto without selling it</strong>. You lock up tokens you own as <strong style="color:var(--text);">collateral</strong> — the pool holds them as security — and borrow other tokens against them. You pay variable interest on what you borrow. Think of it like a secured loan: put up something of value, borrow against it, keep the original asset.</p>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">To protect lenders, all loans are <strong style="color:var(--text);">over-collateralized</strong>: your collateral must be worth more than what you borrow. The <strong style="color:var(--text);">Collateral Factor</strong> (also called the max LTV, or <strong style="color:var(--text);">Loan-to-Value</strong>) sets the cap. On MetalX this is typically ~60–70%. With $1,000 collateral at 60%, your maximum borrow is $600.</p>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;"><strong style="color:var(--text);">Loan health</strong> is MetalX's measure of how safe your position is. It falls if your collateral loses value. If it reaches 0%, <strong style="color:var(--text);">liquidation</strong> can trigger — a third party repays part of your debt and receives a portion of your collateral plus a ~10% bonus. Keeping your LTV well below the max protects you. Borrowing carries real risk — a significant collateral price drop can trigger liquidation quickly.</p>
+        <p style="font-size:.78rem;color:var(--text3);margin:0;font-style:italic;">Enter your collateral amount and how much to borrow, set a price-drop scenario, and hit Calculate to see your loan health and liquidation risk.</p>
+      </div>
+
+      <!-- Borrowing Simulator -->
+      <div class="dl-grid">
+
+        <!-- ── INPUTS ── -->
+        <div class="card" style="align-self:start;">
+          <div class="sec-label" style="justify-content:flex-start;margin-bottom:1rem;">Set Your Borrowing Scenario</div>
+
+          <div class="dl-field">
+            <label class="dl-label">Collateral token label (example only)</label>
+            <input id="borrow-collateral-token" class="dl-input" type="text" value="Example Token" maxlength="20" placeholder="Example Token">
+          </div>
+
+          <div class="dl-field">
+            <label class="dl-label">Collateral value ($)</label>
+            <input id="borrow-collateral" class="dl-input" type="number" value="1000" min="0.01" step="any" placeholder="e.g. 1000">
+          </div>
+
+          <div class="dl-field">
+            <label class="dl-label">Collateral Factor / Max LTV (%) — MetalX markets: ~60–70%</label>
+            <input id="borrow-max-ltv" class="dl-input" type="number" value="60" min="1" max="99" step="0.1" placeholder="e.g. 60">
+          </div>
+
+          <div class="dl-field">
+            <label class="dl-label">Amount to borrow ($)</label>
+            <div style="display:flex;gap:.5rem;align-items:center;">
+              <input id="borrow-amount" class="dl-input" type="number" value="400" min="0.01" step="any" placeholder="e.g. 400" style="flex:1;width:auto;">
+              <button onclick="borrowFillMax()" class="btn btn-o" style="font-size:.74rem;padding:.38rem .7rem;white-space:nowrap;flex-shrink:0;">Borrow Max</button>
+            </div>
+          </div>
+
+          <div class="dl-field">
+            <label class="dl-label">Borrow APY (%) — variable in real markets, set your assumption</label>
+            <input id="borrow-apr" class="dl-input" type="number" value="5" min="0" step="0.01" placeholder="e.g. 5">
+          </div>
+
+          <div class="dl-field">
+            <label class="dl-label">Time period (for interest calculation)</label>
+            <div style="display:flex;gap:.5rem;">
+              <input id="borrow-dur-val" class="dl-input" type="number" value="12" min="0.001" step="any" style="flex:1;width:auto;">
+              <select id="borrow-dur-unit" class="dl-select">
+                <option value="days">days</option>
+                <option value="weeks">weeks</option>
+                <option value="months" selected>months</option>
+                <option value="years">years</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="sec-label" style="justify-content:flex-start;margin:.75rem 0 .5rem;font-size:.65rem;">Collateral Price Scenario</div>
+
+          <div class="dl-field">
+            <label class="dl-label">Collateral price change (%) — negative = drop, e.g. −30</label>
+            <input id="borrow-price-change" class="dl-input" type="number" value="-20" step="0.1" placeholder="e.g. -20">
+          </div>
+
+          <button onclick="borrowCalc()" class="btn btn-g" style="width:100%;justify-content:center;">Calculate →</button>
+          <div id="borrow-error" style="display:none;margin-top:.75rem;padding:.6rem .85rem;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px;font-size:.8rem;color:#f87171;"></div>
+        </div>
+
+        <!-- ── RESULTS ── -->
+        <div style="align-self:start;">
+
+          <!-- Empty state -->
+          <div id="borrow-empty" class="card" style="text-align:center;padding:2.5rem 1.5rem;">
+            <div style="font-size:2.5rem;margin-bottom:.75rem;">📉</div>
+            <p style="color:var(--text3);font-size:.85rem;margin:0;">Set your borrowing scenario and hit <strong style="color:var(--text);">Calculate</strong> to see your loan health, LTV, and liquidation risk.</p>
+          </div>
+
+          <!-- Results -->
+          <div id="borrow-results" style="display:none;">
+
+            <!-- Position summary -->
+            <div class="card" style="margin-bottom:1rem;">
+              <div class="sec-label" style="justify-content:flex-start;margin-bottom:.5rem;font-size:.65rem;">💰 Your Position</div>
+              <div class="dl-row"><span class="dl-row-label" id="borrow-res-coll-lbl">Collateral locked</span><span class="dl-row-val" id="borrow-res-collateral">—</span></div>
+              <div class="dl-row">
+                <span class="dl-row-label">Max borrowable (<span id="borrow-res-max-ltv-label">60%</span> LTV)</span>
+                <span class="dl-row-val" id="borrow-res-max-borrow">—</span>
+              </div>
+              <div class="dl-row"><span class="dl-row-label">Amount borrowed</span><span class="dl-row-val" id="borrow-res-borrowed">—</span></div>
+              <div class="dl-row"><span class="dl-row-label">Borrow room remaining</span><span class="dl-row-val" id="borrow-res-room">—</span></div>
+              <div class="dl-row" style="padding-top:.45rem;margin-top:.25rem;border-top:1px solid rgba(255,255,255,0.06);">
+                <span class="dl-row-label">Current LTV</span>
+                <span class="dl-row-val" id="borrow-res-ltv">—</span>
+              </div>
+            </div>
+
+            <!-- Loan health -->
+            <div class="card" style="margin-bottom:1rem;border-color:rgba(201,146,42,0.2);background:rgba(201,146,42,0.02);">
+              <div class="sec-label" style="justify-content:flex-start;margin-bottom:.5rem;font-size:.65rem;">❤ Loan Health</div>
+              <div class="borrow-health-bar"><div class="borrow-health-fill" id="borrow-health-fill" style="width:0%;"></div></div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.5rem;">
+                <span id="borrow-health-pct" style="font-size:1.15rem;font-weight:700;font-family:'Cinzel',serif;">—</span>
+                <span id="borrow-health-status" style="font-size:.72rem;"></span>
+              </div>
+              <div class="dl-row"><span class="dl-row-label">Current LTV vs limit</span><span class="dl-row-val" id="borrow-res-ltv2">—</span></div>
+              <div class="dl-row"><span class="dl-row-label">Collateral can drop</span><span class="dl-row-val" id="borrow-res-drop-room">—</span></div>
+              <div class="dl-row"><span class="dl-row-label">Liquidation triggers below</span><span class="dl-row-val" id="borrow-res-liq-floor">—</span></div>
+              <div style="margin-top:.55rem;font-size:.74rem;color:var(--text3);line-height:1.55;font-style:italic;">Loan health = the % your collateral can drop before liquidation is triggered.</div>
+            </div>
+
+            <!-- Price scenario -->
+            <div class="card" style="margin-bottom:1rem;">
+              <div class="sec-label" style="justify-content:flex-start;margin-bottom:.5rem;font-size:.65rem;">📉 Collateral Price Scenario</div>
+              <div class="dl-row"><span class="dl-row-label">Collateral price change</span><span class="dl-row-val" id="borrow-res-price-change">—</span></div>
+              <div class="dl-row"><span class="dl-row-label">New collateral value</span><span class="dl-row-val" id="borrow-res-new-coll">—</span></div>
+              <div class="dl-row"><span class="dl-row-label">New LTV</span><span class="dl-row-val" id="borrow-res-new-ltv">—</span></div>
+              <div class="dl-row"><span class="dl-row-label">New loan health</span><span class="dl-row-val" id="borrow-res-new-health">—</span></div>
+              <div id="borrow-liq-warning" style="display:none;margin-top:.65rem;padding:.55rem .75rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:8px;font-size:.8rem;color:#f87171;font-weight:600;">⚠ This price drop would trigger liquidation — loan health has reached 0%.</div>
+              <div id="borrow-safe-msg" style="display:none;margin-top:.65rem;padding:.55rem .75rem;background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);border-radius:8px;font-size:.8rem;color:var(--pur-g);">✓ Loan remains safe at this price — health is still above 0%.</div>
+            </div>
+
+            <!-- Interest owed -->
+            <div class="card" style="border-color:rgba(239,68,68,0.15);background:rgba(239,68,68,0.03);">
+              <div class="sec-label" style="justify-content:flex-start;margin-bottom:.5rem;font-size:.65rem;">💸 Interest Owed</div>
+              <div class="dl-row"><span class="dl-row-label">Borrow APY</span><span class="dl-row-val" id="borrow-res-apr">—</span></div>
+              <div class="dl-row"><span class="dl-row-label">Time period</span><span class="dl-row-val" id="borrow-res-time">—</span></div>
+              <div class="dl-row" style="padding-top:.45rem;margin-top:.25rem;border-top:1px solid rgba(255,255,255,0.06);">
+                <span class="dl-row-label" style="font-weight:600;color:var(--text);">Interest owed</span>
+                <span class="dl-row-val" style="color:#f87171;font-size:.86rem;" id="borrow-res-interest">—</span>
+              </div>
+              <div class="dl-row"><span class="dl-row-label">Total to repay</span><span class="dl-row-val" id="borrow-res-repay">—</span></div>
+            </div>
+
+          </div><!-- end borrow-results -->
+        </div>
+      </div><!-- end .dl-grid -->
+    </div><!-- end dl-panel-borrowing -->
+
     <div class="disc mt4"><span>ℹ</span><div>
       <strong style="color:var(--text);">Full Disclaimer — Please Read.</strong>
       <ul style="margin:.6rem 0 0;padding-left:1.2rem;font-size:.82rem;color:var(--text2);line-height:1.85;list-style:disc;">
@@ -3154,7 +3297,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab'];
-const BUILD_VERSION='2026-06-18-BUILD-AF';
+const BUILD_VERSION='2026-06-18-BUILD-AG';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -7739,7 +7882,7 @@ function dlTimeJump() {
 
 // ── DEFI LAB: Instrument tab switching ────────────────────────────────────
 function dlSetInstrument(name) {
-  ['lending','lp','farming'].forEach(function(id) {
+  ['lending','lp','farming','borrowing'].forEach(function(id) {
     var el = document.getElementById('dl-panel-' + id);
     if (el) el.style.display = (id === name) ? '' : 'none';
   });
@@ -8028,6 +8171,135 @@ function farmCalc() {
   document.getElementById('farm-results').style.display = '';
   document.getElementById('farm-empty').style.display   = 'none';
   document.getElementById('farm-error').style.display   = 'none';
+}
+
+// ── DEFI LAB: Borrowing Instrument ────────────────────────────────────────
+function borrowShowError(msg) {
+  var el  = document.getElementById('borrow-error');
+  if (el) { el.textContent = msg; el.style.display = ''; }
+  var r   = document.getElementById('borrow-results');
+  var emp = document.getElementById('borrow-empty');
+  if (r)   r.style.display   = 'none';
+  if (emp) emp.style.display = '';
+}
+
+function borrowFillMax() {
+  var c   = parseFloat(document.getElementById('borrow-collateral').value) || 0;
+  var ltv = parseFloat(document.getElementById('borrow-max-ltv').value)    || 60;
+  if (c <= 0 || ltv <= 0) return;
+  document.getElementById('borrow-amount').value = (c * ltv / 100).toFixed(2);
+}
+
+function borrowHealthColor(h) {
+  if (h < 10)  return '#f87171';
+  if (h < 25)  return '#f97316';
+  if (h < 50)  return 'var(--gold-l)';
+  return 'var(--pur-g)';
+}
+
+function borrowCalc() {
+  var collTokenLabel = (document.getElementById('borrow-collateral-token').value || 'Example Token').trim();
+  var collateral     = parseFloat(document.getElementById('borrow-collateral').value);
+  var maxLTV         = parseFloat(document.getElementById('borrow-max-ltv').value);
+  var borrowAmt      = parseFloat(document.getElementById('borrow-amount').value);
+  var borrowApr      = parseFloat(document.getElementById('borrow-apr').value);
+  var durVal         = parseFloat(document.getElementById('borrow-dur-val').value);
+  var durUnit        = document.getElementById('borrow-dur-unit').value;
+  var priceChangePct = parseFloat(document.getElementById('borrow-price-change').value);
+
+  if (!collateral || collateral <= 0)             { borrowShowError('Enter a collateral value greater than 0.'); return; }
+  if (isNaN(maxLTV) || maxLTV <= 0 || maxLTV >= 100) { borrowShowError('Max LTV must be between 1 and 99.'); return; }
+  if (!borrowAmt || borrowAmt <= 0)               { borrowShowError('Enter a borrow amount greater than 0.'); return; }
+  if (isNaN(borrowApr) || borrowApr < 0)          { borrowShowError('Borrow APY must be 0 or greater.'); return; }
+  if (!durVal || durVal <= 0)                     { borrowShowError('Time period must be greater than 0.'); return; }
+  if (isNaN(priceChangePct))                      { borrowShowError('Enter a valid price change (e.g. -20 for a 20% drop).'); return; }
+
+  var years     = dlToYears(durVal, durUnit);
+  var maxBorrow = collateral * (maxLTV / 100);
+
+  if (borrowAmt > maxBorrow + 0.001) {
+    borrowShowError('Borrow amount ($' + dlFmt(borrowAmt) + ') exceeds the max allowed at ' +
+      maxLTV.toFixed(1) + '% LTV ($' + dlFmt(maxBorrow) + '). Use "Borrow Max" to fill the cap, or reduce the amount.');
+    return;
+  }
+
+  // Core math
+  var currentLTV   = (borrowAmt / collateral) * 100;
+  var loanHealth   = (1 - currentLTV / maxLTV) * 100;
+  var borrowRoom   = maxBorrow - borrowAmt;
+  var liqFloor     = borrowAmt / (maxLTV / 100);          // $ collateral value at which liquidation triggers
+  var dropToLiq    = ((liqFloor - collateral) / collateral) * 100; // negative %
+
+  // Interest
+  var interestOwed = borrowAmt * (borrowApr / 100) * years;
+  var totalRepay   = borrowAmt + interestOwed;
+
+  // Price scenario
+  var newCollateral = collateral * (1 + priceChangePct / 100);
+  var newLTV        = newCollateral > 0 ? (borrowAmt / newCollateral) * 100 : Infinity;
+  var newLoanHealth = (1 - newLTV / maxLTV) * 100;
+  var isLiquidated  = newCollateral <= liqFloor || newLTV >= maxLTV;
+
+  // Position card
+  document.getElementById('borrow-res-coll-lbl').textContent   = collTokenLabel + ' locked as collateral';
+  document.getElementById('borrow-res-collateral').textContent  = '$' + dlFmt(collateral);
+  document.getElementById('borrow-res-max-ltv-label').textContent = maxLTV.toFixed(1) + '%';
+  document.getElementById('borrow-res-max-borrow').textContent  = '$' + dlFmt(maxBorrow);
+  document.getElementById('borrow-res-borrowed').textContent    = '$' + dlFmt(borrowAmt);
+  document.getElementById('borrow-res-room').textContent        = '$' + dlFmt(borrowRoom) + ' available';
+  document.getElementById('borrow-res-ltv').textContent         = currentLTV.toFixed(2) + '%';
+
+  // Loan health card
+  var hColor = borrowHealthColor(loanHealth);
+  var hPct   = Math.max(0, Math.min(100, loanHealth));
+  document.getElementById('borrow-health-fill').style.width      = hPct + '%';
+  document.getElementById('borrow-health-fill').style.background = hColor;
+  document.getElementById('borrow-health-pct').textContent       = loanHealth.toFixed(1) + '%';
+  document.getElementById('borrow-health-pct').style.color       = hColor;
+  var healthLabel = loanHealth >= 50 ? 'Safe'
+    : loanHealth >= 25 ? 'Moderate — monitor your position'
+    : loanHealth >= 10 ? 'Low — consider adding collateral'
+    : loanHealth > 0   ? 'Very Low — high liquidation risk'
+    : 'At limit — liquidation can trigger';
+  document.getElementById('borrow-health-status').textContent = healthLabel;
+  document.getElementById('borrow-health-status').style.color = hColor;
+  document.getElementById('borrow-res-ltv2').textContent =
+    currentLTV.toFixed(2) + '% of ' + maxLTV.toFixed(1) + '% limit';
+  document.getElementById('borrow-res-drop-room').textContent =
+    Math.abs(dropToLiq).toFixed(2) + '% ($' + dlFmt(Math.abs(collateral - liqFloor)) + ')';
+  document.getElementById('borrow-res-liq-floor').textContent =
+    '$' + dlFmt(liqFloor) + ' collateral value';
+
+  // Price scenario card
+  var pcSign = priceChangePct >= 0 ? '+' : '';
+  document.getElementById('borrow-res-price-change').textContent = pcSign + priceChangePct.toFixed(1) + '%';
+  document.getElementById('borrow-res-new-coll').textContent     = '$' + dlFmt(newCollateral);
+  var newLTVEl    = document.getElementById('borrow-res-new-ltv');
+  var newHealthEl = document.getElementById('borrow-res-new-health');
+  if (isLiquidated) {
+    newLTVEl.textContent    = '≥ ' + maxLTV.toFixed(1) + '% — at or above limit';
+    newLTVEl.style.color    = '#f87171';
+    newHealthEl.textContent = '0% — liquidation triggered';
+    newHealthEl.style.color = '#f87171';
+  } else {
+    var nhColor = borrowHealthColor(newLoanHealth);
+    newLTVEl.textContent    = newLTV.toFixed(2) + '% (limit: ' + maxLTV.toFixed(1) + '%)';
+    newLTVEl.style.color    = '';
+    newHealthEl.textContent = newLoanHealth.toFixed(2) + '%';
+    newHealthEl.style.color = nhColor;
+  }
+  document.getElementById('borrow-liq-warning').style.display = isLiquidated ? '' : 'none';
+  document.getElementById('borrow-safe-msg').style.display    = (!isLiquidated && priceChangePct < 0) ? '' : 'none';
+
+  // Interest card
+  document.getElementById('borrow-res-apr').textContent      = borrowApr.toFixed(2) + '% APY (variable — your assumption)';
+  document.getElementById('borrow-res-time').textContent     = dlFmtYears(years);
+  document.getElementById('borrow-res-interest').textContent = '−$' + dlFmt(interestOwed);
+  document.getElementById('borrow-res-repay').textContent    = '$' + dlFmt(totalRepay) + ' (principal + interest)';
+
+  document.getElementById('borrow-results').style.display = '';
+  document.getElementById('borrow-empty').style.display   = 'none';
+  document.getElementById('borrow-error').style.display   = 'none';
 }
 
 </script>
