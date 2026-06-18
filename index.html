@@ -2526,7 +2526,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
         <div class="sec-label" style="justify-content:flex-start;margin-bottom:.6rem;">How Yield Farming Works</div>
         <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">When you provide liquidity to a pool, you receive <strong style="color:var(--text);">LP tokens</strong> representing your share. <strong style="color:var(--text);">Yield farming</strong> means staking those LP tokens into a farm contract to earn an <strong style="color:var(--text);">additional reward APR</strong> — on top of the trading fees your LP position already generates.</p>
         <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">The farm pays rewards in a <strong style="color:var(--text);">separate reward token</strong>. The farm APR is <strong style="color:var(--text);">variable</strong>: it rises when fewer people have staked and drops as more stake in — the same reward pool is divided among more participants. The USD value of your rewards also depends on the reward token's own market price.</p>
-        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .85rem;">Farming does <strong style="color:var(--text);">not eliminate impermanent loss</strong>. You still carry the full IL risk from the underlying LP position. Farm rewards can offset IL, but only if combined income exceeds the IL drag — and there are no guarantees.</p>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .85rem;">Farming does <strong style="color:var(--text);">not eliminate impermanent loss</strong>. You still carry the full IL risk from the underlying LP position. Fee income and farm rewards accrue on your <strong style="color:var(--text);">LP position's current value</strong> — proportional to your pool share and the pool's trading activity. The APR you enter is your own assumption; real rates are variable and depend on trading volume, total value staked, and the reward token's price. Farm rewards can offset IL, but only if combined income exceeds the IL drag — and there are no guarantees.</p>
         <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:.85rem 1rem;">
           <div style="font-size:.7rem;color:var(--text3);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.65rem;">Three Stacked Components</div>
           <div style="font-size:.83rem;line-height:2.1;color:var(--text2);">
@@ -3154,7 +3154,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab'];
-const BUILD_VERSION='2026-06-18-BUILD-AC';
+const BUILD_VERSION='2026-06-18-BUILD-AD';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -7942,9 +7942,11 @@ function farmCalc() {
   var ilPct  = ilFrac * 100;
   var ilAmt  = ilFrac * hodlVal; // always ≤ 0
 
-  // ── Income (simple APR, consistent with Stage 2 approach) ─────────────
-  var lpFeeIncome = deposit * (lpFeeApr / 100) * years;
-  var farmIncome  = deposit * (farmApr / 100) * years;
+  // ── Income — APR applied to LP position value (not original deposit) ───
+  // Fee and farm income accrue on the rebalanced LP position's USD value,
+  // proportional to pool share — not on the static entry deposit.
+  var lpFeeIncome = lpVal * (lpFeeApr / 100) * years;
+  var farmIncome  = lpVal * (farmApr / 100) * years;
   var rewardUnits = (showRwdPrice && rewardTokenPrice > 0) ? farmIncome / rewardTokenPrice : 0;
   var totalIncome = lpFeeIncome + farmIncome;
 
