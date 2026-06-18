@@ -2208,7 +2208,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
     <!-- Instrument selector — structured for future expansion -->
     <div class="dl-tabs">
-      <button class="dl-tab-btn dl-tab-active" data-instrument="lending" onclick="dlSetInstrument('lending')">📈 Lending / Supply</button>
+      <button class="dl-tab-btn dl-tab-active" data-instrument="lending" onclick="dlSetInstrument('lending')">📈 Lending</button>
       <button class="dl-tab-btn" data-instrument="lp" onclick="dlSetInstrument('lp')">🔄 Liquidity Pools</button>
       <button class="dl-tab-btn" data-instrument="farming" onclick="dlSetInstrument('farming')">🌾 Farming</button>
       <span class="dl-tab-coming">📉 Borrowing <span class="dl-badge">Soon</span></span>
@@ -2218,10 +2218,10 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     <div id="dl-panel-lending">
     <!-- Educational explainer -->
     <div class="card" style="max-width:720px;margin:0 auto 2rem;border-color:rgba(124,58,237,0.25);background:rgba(124,58,237,0.04);">
-      <div class="sec-label" style="justify-content:flex-start;margin-bottom:.6rem;">How Lending / Supply Works</div>
-      <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">Think of it like a <strong style="color:var(--text);">savings account for crypto</strong> — but with potentially higher rates and more risk. You deposit tokens into a shared pool; borrowers pay interest to use them, and that interest flows back to you automatically.</p>
-      <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">Your rate is shown as an <strong style="color:var(--text);">APY (Annual Percentage Yield)</strong> — your yearly return, already including compounding (where your interest earns interest on itself). In real DeFi this rate shifts constantly based on demand. Here you set your own rate to explore any scenario.</p>
-      <p style="font-size:.78rem;color:var(--text3);margin:0;font-style:italic;">Enter an amount, an APY, and a time period below — then hit Calculate. Use any numbers you like; this tool is for learning, not predicting real results.</p>
+      <div class="sec-label" style="justify-content:flex-start;margin-bottom:.6rem;">How Lending Works</div>
+      <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">Lending lets you <strong style="color:var(--text);">put your crypto to work</strong>. You deposit tokens into a lending pool — on Metal X this is powered by the LOAN Protocol — borrowers use those tokens and pay interest, and that interest flows back to you. Your return is expressed as an <strong style="color:var(--text);">APY (Annual Percentage Yield)</strong>, which already includes compounding (your interest earning interest on itself).</p>
+      <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">Among DeFi options, lending is one of the most approachable: <strong style="color:var(--text);">one asset, no token-pairing, no impermanent loss.</strong> The rate isn't fixed — it moves with supply and demand — and like all DeFi, smart contract risk exists. But the concept is transparent and the mechanics are simple.</p>
+      <p style="font-size:.78rem;color:var(--text3);margin:0;font-style:italic;">Enter an amount and an APY to test, choose a time period, and hit Calculate. Any numbers work — this is for learning, not predicting real results.</p>
     </div>
 
     <!-- Simulator -->
@@ -3154,7 +3154,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab'];
-const BUILD_VERSION='2026-06-18-BUILD-AE';
+const BUILD_VERSION='2026-06-18-BUILD-AF';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
