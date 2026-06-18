@@ -2197,7 +2197,10 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
     <div class="disc" style="border-color:rgba(124,58,237,0.35);background:rgba(124,58,237,0.05);margin-bottom:1.5rem;">
       <span>⚠</span>
-      <div><strong style="color:var(--text);">Educational Simulator Only.</strong> No real funds are involved. All results are hypothetical, based on assumptions you set. Real DeFi rates and returns constantly change and are never guaranteed. This is not financial advice.</div>
+      <div>
+        <strong style="color:var(--text);">Educational Tool — Not Financial Advice.</strong> This simulator is for educational and illustrative purposes only. It is designed to help people understand how DeFi concepts work — nothing more. Nothing here is financial, investment, tax, legal, or professional advice, and it is not a recommendation to buy, sell, supply, stake, lend, borrow, or invest in anything.
+        <span style="display:block;margin-top:.5rem;font-size:.8rem;color:var(--text3);">All figures shown are hypothetical simulations based entirely on assumptions you input. No real funds, tokens, or transactions are involved. Real DeFi rates are variable and change constantly — actual results will differ, and you can lose money, including your entire principal. Always do your own research and consult a qualified professional before making any real financial decisions.</span>
+      </div>
     </div>
 
     <!-- Instrument selector — structured for future expansion -->
@@ -2345,7 +2348,19 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       </div>
     </div><!-- end .dl-grid -->
 
-    <div class="disc mt4"><span>ℹ</span><div><strong style="color:var(--text);">Hypothetical results only.</strong> This tool uses example tokens and rates you define. It does not connect to any live protocol, wallet, or real data source. Real DeFi involves smart contract risk, variable rates, liquidity constraints, and the potential for loss of funds. Always do your own research before using any DeFi protocol.</div></div>
+    <div class="disc mt4"><span>ℹ</span><div>
+      <strong style="color:var(--text);">Full Disclaimer — Please Read.</strong>
+      <ul style="margin:.6rem 0 0;padding-left:1.2rem;font-size:.82rem;color:var(--text2);line-height:1.85;list-style:disc;">
+        <li><strong style="color:var(--text);">Educational only.</strong> This tool is for educational and illustrative purposes only. It is designed to help people understand how DeFi concepts work — nothing more.</li>
+        <li><strong style="color:var(--text);">Not financial or professional advice.</strong> Nothing here is financial, investment, tax, legal, or professional advice. It is not a recommendation to buy, sell, supply, stake, lend, borrow, or invest in anything.</li>
+        <li><strong style="color:var(--text);">Hypothetical figures.</strong> All results are simulations based entirely on assumptions you input. No real funds, tokens, or transactions are involved. The "tokens" are fictional examples — not real assets.</li>
+        <li><strong style="color:var(--text);">No real rates. No guarantees.</strong> Real DeFi rates (APY, interest) are variable and constantly change. Real returns are never guaranteed. Actual results in real DeFi platforms will differ — and you can lose money, including your entire principal.</li>
+        <li><strong style="color:var(--text);">Real DeFi carries significant risk.</strong> Real DeFi involves risks including smart contract bugs, impermanent loss, liquidation, market volatility, protocol failures, and total loss of funds. This simulator does not capture or represent all real-world risks.</li>
+        <li><strong style="color:var(--text);">Do your own research.</strong> Always conduct thorough independent research and consult a qualified, licensed financial or legal professional before making any real financial decisions.</li>
+        <li><strong style="color:var(--text);">Not affiliated.</strong> This is an independent community-built educational tool. It is not affiliated with, endorsed by, or connected to Metallicus, Metal X, XPR Network, or any ecosystem project. Any DeFi mechanics described are general educational concepts only.</li>
+        <li><strong style="color:var(--text);">No liability.</strong> The creator of this site accepts no responsibility or liability for any decisions, actions, or financial losses resulting from use of this tool.</li>
+      </ul>
+    </div></div>
   </div>
 </div>
 </div>
@@ -2783,7 +2798,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab'];
-const BUILD_VERSION='2026-06-18-BUILD-Z';
+const BUILD_VERSION='2026-06-18-BUILD-AA';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
