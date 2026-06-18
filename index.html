@@ -635,6 +635,9 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 .dl-row-label{color:var(--text2);}
 .dl-row-val{color:var(--text);font-weight:600;font-size:.78rem;}
 .dl-seg{display:flex;gap:.4rem;align-items:flex-start;margin-bottom:.5rem;padding:.5rem .6rem;background:rgba(255,255,255,0.02);border-radius:6px;border:1px solid rgba(255,255,255,0.06);}
+.dl-tab-btn{background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--text2);padding:.5rem 1.1rem;border-radius:8px;font-size:.82rem;font-weight:500;cursor:pointer;font-family:inherit;transition:all .18s;}
+.dl-tab-btn.dl-tab-active{background:rgba(201,146,42,0.15);border-color:rgba(201,146,42,0.5);color:var(--gold-l);font-weight:700;}
+.dl-tab-btn:hover:not(.dl-tab-active){background:rgba(255,255,255,0.06);color:var(--text);}
 </style>
   <!-- WebAuth / Proton Web SDK -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
@@ -2193,7 +2196,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
   <div class="section">
     <div class="sec-label">DeFi Lab</div>
     <h1 class="page-title">🧪 DeFi Lab</h1>
-    <p class="page-sub">An interactive, risk-free way to learn how DeFi works on XPR Network — using example numbers you control. No real funds, no real transactions. More instruments coming: liquidity pools, farming, borrowing, and staking.</p>
+    <p class="page-sub">An interactive, risk-free way to learn how DeFi works on XPR Network — using example numbers you control. No real funds, no real transactions. More instruments coming: farming, borrowing, and staking.</p>
 
     <div class="disc" style="border-color:rgba(124,58,237,0.35);background:rgba(124,58,237,0.05);margin-bottom:1.5rem;">
       <span>⚠</span>
@@ -2205,13 +2208,14 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
     <!-- Instrument selector — structured for future expansion -->
     <div class="dl-tabs">
-      <span class="dl-tab-active">📈 Lending / Supply</span>
-      <span class="dl-tab-coming">🔄 Liquidity Pools <span class="dl-badge">Soon</span></span>
+      <button class="dl-tab-btn dl-tab-active" data-instrument="lending" onclick="dlSetInstrument('lending')">📈 Lending / Supply</button>
+      <button class="dl-tab-btn" data-instrument="lp" onclick="dlSetInstrument('lp')">🔄 Liquidity Pools</button>
       <span class="dl-tab-coming">🌾 Farming <span class="dl-badge">Soon</span></span>
       <span class="dl-tab-coming">📉 Borrowing <span class="dl-badge">Soon</span></span>
       <span class="dl-tab-coming">🔒 Staking <span class="dl-badge">Soon</span></span>
     </div>
 
+    <div id="dl-panel-lending">
     <!-- Educational explainer -->
     <div class="card" style="max-width:720px;margin:0 auto 2rem;border-color:rgba(124,58,237,0.25);background:rgba(124,58,237,0.04);">
       <div class="sec-label" style="justify-content:flex-start;margin-bottom:.6rem;">How Lending / Supply Works</div>
@@ -2347,6 +2351,172 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
         </div>
       </div>
     </div><!-- end .dl-grid -->
+    </div><!-- end dl-panel-lending -->
+
+    <!-- ── LP INSTRUMENT PANEL ── -->
+    <div id="dl-panel-lp" style="display:none;">
+
+      <!-- LP educational explainer -->
+      <div class="card" style="max-width:720px;margin:0 auto 2rem;border-color:rgba(124,58,237,0.25);background:rgba(124,58,237,0.04);">
+        <div class="sec-label" style="justify-content:flex-start;margin-bottom:.6rem;">How Liquidity Pools (AMM) Work</div>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">When you <strong style="color:var(--text);">provide liquidity</strong> to a decentralized exchange pool, you deposit a pair of tokens in equal value (50/50). Your tokens join a shared pool that automatically enables trading between those two assets — no order book needed. This mechanism is called an <strong style="color:var(--text);">Automated Market Maker (AMM)</strong>.</p>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">The pool follows the rule <strong style="color:var(--text);">x × y = k</strong> (constant product): the product of the two token quantities must stay constant. When traders swap, the pool automatically rebalances — you end up with less of the token that became more valuable, and more of the cheaper one.</p>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;"><strong style="color:var(--text);">Impermanent Loss (IL)</strong> is the difference between your LP position value and what you'd have had by simply holding the same tokens. It's called "impermanent" because if prices return to their original ratio, the loss disappears. Trading fee income from the pool can partially or fully offset it.</p>
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:.75rem 1rem;margin-bottom:.5rem;">
+          <div style="font-size:.7rem;color:var(--text3);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.45rem;">IL Quick Reference (one token moves, other stays flat)</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;font-size:.8rem;color:var(--text2);">
+            <span>No change → <strong style="color:var(--text);">0%</strong></span>
+            <span>2× move → <strong style="color:#f87171;">−5.72%</strong></span>
+            <span>4× move → <strong style="color:#f87171;">−20.0%</strong></span>
+            <span>10× move → <strong style="color:#f87171;">−42.5%</strong></span>
+            <span>0.5× move → <strong style="color:#f87171;">−5.72%</strong></span>
+          </div>
+        </div>
+        <p style="font-size:.78rem;color:var(--text3);margin:0;font-style:italic;">This simulator uses fictional example tokens. Real pool fees, token prices, and liquidity levels vary constantly.</p>
+      </div>
+
+      <!-- LP Simulator -->
+      <div class="dl-grid">
+
+        <!-- ── LP INPUTS ── -->
+        <div class="card" style="align-self:start;">
+          <div class="sec-label" style="justify-content:flex-start;margin-bottom:1rem;">Set Your LP Scenario</div>
+
+          <div class="dl-field">
+            <label class="dl-label">Total deposit value (split 50/50 between tokens)</label>
+            <input id="lp-deposit" class="dl-input" type="number" value="1000" min="0.000001" step="any" placeholder="e.g. 1000">
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;">
+            <div class="dl-field">
+              <label class="dl-label">Token A name</label>
+              <input id="lp-token-a" class="dl-input" type="text" value="Token A" maxlength="20" placeholder="Token A">
+            </div>
+            <div class="dl-field">
+              <label class="dl-label">Token B name</label>
+              <input id="lp-token-b" class="dl-input" type="text" value="Token B" maxlength="20" placeholder="Token B">
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;">
+            <div class="dl-field">
+              <label class="dl-label">Token A start price ($)</label>
+              <input id="lp-price-a" class="dl-input" type="number" value="1.00" min="0.000001" step="any" placeholder="e.g. 1.00">
+            </div>
+            <div class="dl-field">
+              <label class="dl-label">Token B start price ($)</label>
+              <input id="lp-price-b" class="dl-input" type="number" value="1.00" min="0.000001" step="any" placeholder="e.g. 1.00">
+            </div>
+          </div>
+
+          <div class="sec-label" style="justify-content:flex-start;margin:.75rem 0 .5rem;font-size:.65rem;">Price Change Scenario</div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;">
+            <div class="dl-field">
+              <label class="dl-label">Token A new price ($)</label>
+              <input id="lp-new-price-a" class="dl-input" type="number" value="2.00" min="0.000001" step="any" placeholder="e.g. 2.00">
+            </div>
+            <div class="dl-field">
+              <label class="dl-label">Token B new price ($)</label>
+              <input id="lp-new-price-b" class="dl-input" type="number" value="1.00" min="0.000001" step="any" placeholder="e.g. 1.00">
+            </div>
+          </div>
+
+          <div class="dl-field" style="margin-top:.25rem;">
+            <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.8rem;color:var(--text2);">
+              <input type="checkbox" id="lp-fee-toggle" onchange="lpToggleFee(this.checked)" style="cursor:pointer;width:14px;height:14px;">
+              Include estimated fee income (optional)
+            </label>
+          </div>
+          <div id="lp-fee-section" style="display:none;">
+            <div class="dl-field">
+              <label class="dl-label">Pool fee APR (%) — estimated</label>
+              <input id="lp-fee-apr" class="dl-input" type="number" value="10" min="0" step="0.01" placeholder="e.g. 10">
+            </div>
+            <div class="dl-field">
+              <label class="dl-label">Time in pool</label>
+              <div style="display:flex;gap:.5rem;">
+                <input id="lp-fee-dur" class="dl-input" type="number" value="12" min="0.001" step="any" style="flex:1;width:auto;">
+                <select id="lp-fee-unit" class="dl-select">
+                  <option value="days">days</option>
+                  <option value="weeks">weeks</option>
+                  <option value="months" selected>months</option>
+                  <option value="years">years</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="lpCalc()" class="btn btn-g" style="width:100%;justify-content:center;">Calculate →</button>
+          <div id="lp-error" style="display:none;margin-top:.75rem;padding:.6rem .85rem;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px;font-size:.8rem;color:#f87171;"></div>
+        </div>
+
+        <!-- ── LP RESULTS ── -->
+        <div style="align-self:start;">
+
+          <!-- Empty state -->
+          <div id="lp-empty" class="card" style="text-align:center;padding:2.5rem 1.5rem;">
+            <div style="font-size:2.5rem;margin-bottom:.75rem;">🔄</div>
+            <p style="color:var(--text3);font-size:.85rem;margin:0;">Set your LP scenario and hit <strong style="color:var(--text);">Calculate</strong> to see the impermanent loss breakdown.</p>
+          </div>
+
+          <!-- Results (hidden until calculated) -->
+          <div id="lp-results" style="display:none;">
+
+            <!-- Starting position -->
+            <div class="card" style="margin-bottom:1rem;">
+              <div class="sec-label" style="justify-content:flex-start;margin-bottom:.5rem;font-size:.65rem;">💰 Starting Position</div>
+              <div class="dl-row"><span class="dl-row-label" id="lp-res-a-start-lbl">Token A deposited</span><span class="dl-row-val" id="lp-res-a-start">—</span></div>
+              <div class="dl-row"><span class="dl-row-label" id="lp-res-b-start-lbl">Token B deposited</span><span class="dl-row-val" id="lp-res-b-start">—</span></div>
+              <div class="dl-row"><span class="dl-row-label">Total deposited</span><span class="dl-row-val" id="lp-res-deposit">—</span></div>
+            </div>
+
+            <!-- LP position after price change -->
+            <div class="card" style="margin-bottom:1rem;border-color:rgba(201,146,42,0.25);background:rgba(201,146,42,0.03);">
+              <div class="sec-label" style="justify-content:flex-start;margin-bottom:.5rem;font-size:.65rem;">📊 LP Position After Price Change</div>
+              <div class="dl-row"><span class="dl-row-label" id="lp-res-a-lp-lbl">Token A (rebalanced)</span><span class="dl-row-val" id="lp-res-a-lp">—</span></div>
+              <div class="dl-row"><span class="dl-row-label" id="lp-res-b-lp-lbl">Token B (rebalanced)</span><span class="dl-row-val" id="lp-res-b-lp">—</span></div>
+              <div class="dl-row" style="padding-top:.45rem;margin-top:.25rem;border-top:1px solid rgba(255,255,255,0.06);">
+                <span class="dl-row-label">LP position value</span>
+                <span class="dl-row-val" style="color:var(--gold-l);font-size:.86rem;" id="lp-res-lp-val">—</span>
+              </div>
+            </div>
+
+            <!-- HODL comparison -->
+            <div class="card" style="margin-bottom:1rem;border-color:rgba(255,255,255,0.07);background:rgba(255,255,255,0.015);">
+              <div class="sec-label" style="justify-content:flex-start;margin-bottom:.5rem;font-size:.65rem;">🤝 If You'd Just Held</div>
+              <div class="dl-row"><span class="dl-row-label" id="lp-res-a-hodl-lbl">Token A (held)</span><span class="dl-row-val" id="lp-res-a-hodl">—</span></div>
+              <div class="dl-row"><span class="dl-row-label" id="lp-res-b-hodl-lbl">Token B (held)</span><span class="dl-row-val" id="lp-res-b-hodl">—</span></div>
+              <div class="dl-row" style="padding-top:.45rem;margin-top:.25rem;border-top:1px solid rgba(255,255,255,0.06);">
+                <span class="dl-row-label">HODL value</span>
+                <span class="dl-row-val" id="lp-res-hodl-val">—</span>
+              </div>
+            </div>
+
+            <!-- IL hero -->
+            <div class="dl-result-box">
+              <div class="dl-result-label">Impermanent Loss</div>
+              <div class="dl-result-num" id="lp-res-il-pct" style="font-size:1.7rem;">—</div>
+              <div class="dl-result-label" style="margin-top:.3rem;" id="lp-res-il-amt"></div>
+              <div class="dl-growth" id="lp-res-il-note" style="color:var(--text3);font-size:.78rem;font-weight:400;margin-top:.4rem;line-height:1.6;max-width:340px;margin-left:auto;margin-right:auto;"></div>
+            </div>
+
+            <!-- Fee income (optional, shown only when enabled) -->
+            <div id="lp-fee-result" class="card" style="display:none;border-color:rgba(124,58,237,0.2);background:rgba(124,58,237,0.04);margin-top:1rem;">
+              <div class="sec-label" style="justify-content:flex-start;margin-bottom:.5rem;font-size:.65rem;">💸 Estimated Fee Income</div>
+              <div class="dl-row"><span class="dl-row-label">Pool fee APR</span><span class="dl-row-val" id="lp-res-fee-apr">—</span></div>
+              <div class="dl-row"><span class="dl-row-label">Duration</span><span class="dl-row-val" id="lp-res-fee-dur">—</span></div>
+              <div class="dl-row"><span class="dl-row-label">Est. fee income</span><span class="dl-row-val" style="color:var(--pur-g);" id="lp-res-fee-income">—</span></div>
+              <div class="dl-row" style="padding-top:.45rem;margin-top:.25rem;border-top:1px solid rgba(255,255,255,0.06);">
+                <span class="dl-row-label" style="font-weight:600;color:var(--text);">Net result vs HODL</span>
+                <span class="dl-row-val" id="lp-res-net" style="font-size:.86rem;">—</span>
+              </div>
+            </div>
+
+          </div><!-- end lp-results -->
+        </div>
+      </div><!-- end .dl-grid -->
+    </div><!-- end dl-panel-lp -->
 
     <div class="disc mt4"><span>ℹ</span><div>
       <strong style="color:var(--text);">Full Disclaimer — Please Read.</strong>
@@ -2798,7 +2968,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab'];
-const BUILD_VERSION='2026-06-18-BUILD-AA';
+const BUILD_VERSION='2026-06-18-BUILD-AB';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -7379,6 +7549,147 @@ function dlTimeJump() {
     '<span style="color:var(--gold-l);font-family:\'Cinzel\',serif;font-size:1rem;">' + dlFmt(bal) + '</span>' +
     ' &nbsp;|&nbsp; +' + dlFmt(interest) + ' interest &nbsp;|&nbsp; +' + growthPct.toFixed(2) + '%';
   el.style.display = '';
+}
+
+// ── DEFI LAB: Instrument tab switching ────────────────────────────────────
+function dlSetInstrument(name) {
+  ['lending','lp'].forEach(function(id) {
+    var el = document.getElementById('dl-panel-' + id);
+    if (el) el.style.display = (id === name) ? '' : 'none';
+  });
+  document.querySelectorAll('.dl-tab-btn').forEach(function(b) {
+    b.classList.toggle('dl-tab-active', b.getAttribute('data-instrument') === name);
+  });
+}
+
+// ── DEFI LAB: LP (Liquidity Pool) Instrument ──────────────────────────────
+function lpToggleFee(on) {
+  document.getElementById('lp-fee-section').style.display = on ? '' : 'none';
+}
+
+function lpShowError(msg) {
+  var el  = document.getElementById('lp-error');
+  if (el) { el.textContent = msg; el.style.display = ''; }
+  var r   = document.getElementById('lp-results');
+  var emp = document.getElementById('lp-empty');
+  if (r)   r.style.display   = 'none';
+  if (emp) emp.style.display = '';
+}
+
+function lpFmtQty(n) {
+  if (isNaN(n) || !isFinite(n)) return '—';
+  if (n >= 100) return n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+  if (n >= 1)   return n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:4});
+  return n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:6});
+}
+
+function lpCalc() {
+  var deposit = parseFloat(document.getElementById('lp-deposit').value);
+  if (!deposit || deposit <= 0) { lpShowError('Enter a total deposit amount greater than 0.'); return; }
+
+  var tokenA = (document.getElementById('lp-token-a').value || 'Token A').trim();
+  var tokenB = (document.getElementById('lp-token-b').value || 'Token B').trim();
+
+  var priceA = parseFloat(document.getElementById('lp-price-a').value);
+  var priceB = parseFloat(document.getElementById('lp-price-b').value);
+  if (!priceA || priceA <= 0) { lpShowError('Token A starting price must be greater than 0.'); return; }
+  if (!priceB || priceB <= 0) { lpShowError('Token B starting price must be greater than 0.'); return; }
+
+  var newPriceA = parseFloat(document.getElementById('lp-new-price-a').value);
+  var newPriceB = parseFloat(document.getElementById('lp-new-price-b').value);
+  if (!newPriceA || newPriceA <= 0) { lpShowError("Token A's new price must be greater than 0."); return; }
+  if (!newPriceB || newPriceB <= 0) { lpShowError("Token B's new price must be greater than 0."); return; }
+
+  // Starting quantities — 50/50 split by value
+  var qtyA = deposit / 2 / priceA;
+  var qtyB = deposit / 2 / priceB;
+  var k    = qtyA * qtyB; // constant product (x * y = k)
+
+  // Pool rebalances to new price ratio while maintaining x * y = k
+  var newQtyA = Math.sqrt(k * newPriceB / newPriceA);
+  var newQtyB = Math.sqrt(k * newPriceA / newPriceB);
+
+  var lpVal   = newQtyA * newPriceA + newQtyB * newPriceB;
+  var hodlVal = qtyA * newPriceA + qtyB * newPriceB;
+
+  // IL via closed-form formula: IL = (2√r)/(1+r) − 1
+  // r = relative price ratio change = (newA/newB) / (A/B)
+  var priceRatio = (newPriceA / newPriceB) / (priceA / priceB);
+  var ilFrac = (2 * Math.sqrt(priceRatio)) / (1 + priceRatio) - 1;
+  var ilPct  = ilFrac * 100;
+  var ilAmt  = ilFrac * hodlVal; // equivalent to lpVal - hodlVal
+
+  // Optional fee income (simple APR estimate based on initial deposit)
+  var feeOn = document.getElementById('lp-fee-toggle').checked;
+  var feeIncome = 0, feeYears = 0, feeAprVal = 0;
+  if (feeOn) {
+    feeAprVal = parseFloat(document.getElementById('lp-fee-apr').value) || 0;
+    var feeDur  = parseFloat(document.getElementById('lp-fee-dur').value) || 0;
+    var feeUnit = document.getElementById('lp-fee-unit').value;
+    feeYears  = dlToYears(feeDur, feeUnit);
+    feeIncome = (feeYears > 0 && feeAprVal > 0) ? deposit * (feeAprVal / 100) * feeYears : 0;
+  }
+
+  // ── Populate results ──────────────────────────────────────────────────────
+
+  // Starting position
+  document.getElementById('lp-res-a-start-lbl').textContent = tokenA + ' deposited';
+  document.getElementById('lp-res-b-start-lbl').textContent = tokenB + ' deposited';
+  document.getElementById('lp-res-a-start').textContent =
+    lpFmtQty(qtyA) + ' @ $' + dlFmt(priceA) + ' = $' + dlFmt(deposit / 2);
+  document.getElementById('lp-res-b-start').textContent =
+    lpFmtQty(qtyB) + ' @ $' + dlFmt(priceB) + ' = $' + dlFmt(deposit / 2);
+  document.getElementById('lp-res-deposit').textContent = '$' + dlFmt(deposit);
+
+  // LP position after price change
+  document.getElementById('lp-res-a-lp-lbl').textContent = tokenA + ' (rebalanced)';
+  document.getElementById('lp-res-b-lp-lbl').textContent = tokenB + ' (rebalanced)';
+  document.getElementById('lp-res-a-lp').textContent =
+    lpFmtQty(newQtyA) + ' @ $' + dlFmt(newPriceA) + ' = $' + dlFmt(newQtyA * newPriceA);
+  document.getElementById('lp-res-b-lp').textContent =
+    lpFmtQty(newQtyB) + ' @ $' + dlFmt(newPriceB) + ' = $' + dlFmt(newQtyB * newPriceB);
+  document.getElementById('lp-res-lp-val').textContent = '$' + dlFmt(lpVal);
+
+  // HODL comparison
+  document.getElementById('lp-res-a-hodl-lbl').textContent = tokenA + ' (held)';
+  document.getElementById('lp-res-b-hodl-lbl').textContent = tokenB + ' (held)';
+  document.getElementById('lp-res-a-hodl').textContent =
+    lpFmtQty(qtyA) + ' @ $' + dlFmt(newPriceA) + ' = $' + dlFmt(qtyA * newPriceA);
+  document.getElementById('lp-res-b-hodl').textContent =
+    lpFmtQty(qtyB) + ' @ $' + dlFmt(newPriceB) + ' = $' + dlFmt(qtyB * newPriceB);
+  document.getElementById('lp-res-hodl-val').textContent = '$' + dlFmt(hodlVal);
+
+  // IL hero
+  var isZero  = Math.abs(ilPct) < 0.0001;
+  var ilColor = isZero ? 'var(--text2)' : '#f87171';
+  document.getElementById('lp-res-il-pct').textContent =
+    isZero ? '0.00%' : ilPct.toFixed(4) + '%';
+  document.getElementById('lp-res-il-pct').style.color = ilColor;
+  document.getElementById('lp-res-il-amt').textContent = isZero
+    ? 'No impermanent loss'
+    : '$' + dlFmt(Math.abs(ilAmt)) + ' less than HODL';
+  document.getElementById('lp-res-il-note').textContent = isZero
+    ? 'Prices unchanged relative to each other — LP and HODL values match exactly.'
+    : 'The pool auto-rebalanced to the new price ratio, giving you a different token mix than if you\'d held. This gap is impermanent loss.';
+
+  // Fee income
+  if (feeOn && feeIncome > 0) {
+    var netDiff = lpVal + feeIncome - hodlVal;
+    document.getElementById('lp-res-fee-apr').textContent = dlFmt(feeAprVal) + '% APR (simple estimate)';
+    document.getElementById('lp-res-fee-dur').textContent = dlFmtYears(feeYears);
+    document.getElementById('lp-res-fee-income').textContent = '+$' + dlFmt(feeIncome);
+    var netEl = document.getElementById('lp-res-net');
+    netEl.textContent = (netDiff >= 0 ? '+' : '') + '$' + dlFmt(Math.abs(netDiff)) +
+      (netDiff >= 0 ? ' ahead of HODL' : ' behind HODL');
+    netEl.style.color = netDiff >= 0 ? 'var(--pur-g)' : '#f87171';
+    document.getElementById('lp-fee-result').style.display = '';
+  } else {
+    document.getElementById('lp-fee-result').style.display = 'none';
+  }
+
+  document.getElementById('lp-results').style.display = '';
+  document.getElementById('lp-empty').style.display   = 'none';
+  document.getElementById('lp-error').style.display   = 'none';
 }
 
 </script>
