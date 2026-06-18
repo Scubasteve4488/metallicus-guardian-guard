@@ -2196,7 +2196,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
   <div class="section">
     <div class="sec-label">DeFi Lab</div>
     <h1 class="page-title">🧪 DeFi Lab</h1>
-    <p class="page-sub">An interactive, risk-free way to learn how DeFi works on XPR Network — using example numbers you control. No real funds, no real transactions. More instruments coming: farming, borrowing, and staking.</p>
+    <p class="page-sub">An interactive, risk-free way to learn how DeFi works on XPR Network — using example numbers you control. No real funds, no real transactions. More instruments coming: borrowing and staking.</p>
 
     <div class="disc" style="border-color:rgba(124,58,237,0.35);background:rgba(124,58,237,0.05);margin-bottom:1.5rem;">
       <span>⚠</span>
@@ -2210,7 +2210,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     <div class="dl-tabs">
       <button class="dl-tab-btn dl-tab-active" data-instrument="lending" onclick="dlSetInstrument('lending')">📈 Lending / Supply</button>
       <button class="dl-tab-btn" data-instrument="lp" onclick="dlSetInstrument('lp')">🔄 Liquidity Pools</button>
-      <span class="dl-tab-coming">🌾 Farming <span class="dl-badge">Soon</span></span>
+      <button class="dl-tab-btn" data-instrument="farming" onclick="dlSetInstrument('farming')">🌾 Farming</button>
       <span class="dl-tab-coming">📉 Borrowing <span class="dl-badge">Soon</span></span>
       <span class="dl-tab-coming">🔒 Staking <span class="dl-badge">Soon</span></span>
     </div>
@@ -2517,6 +2517,192 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
         </div>
       </div><!-- end .dl-grid -->
     </div><!-- end dl-panel-lp -->
+
+    <!-- ── FARMING INSTRUMENT PANEL ── -->
+    <div id="dl-panel-farming" style="display:none;">
+
+      <!-- Farming educational explainer -->
+      <div class="card" style="max-width:720px;margin:0 auto 2rem;border-color:rgba(124,58,237,0.25);background:rgba(124,58,237,0.04);">
+        <div class="sec-label" style="justify-content:flex-start;margin-bottom:.6rem;">How Yield Farming Works</div>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">When you provide liquidity to a pool, you receive <strong style="color:var(--text);">LP tokens</strong> representing your share. <strong style="color:var(--text);">Yield farming</strong> means staking those LP tokens into a farm contract to earn an <strong style="color:var(--text);">additional reward APR</strong> — on top of the trading fees your LP position already generates.</p>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">The farm pays rewards in a <strong style="color:var(--text);">separate reward token</strong>. The farm APR is <strong style="color:var(--text);">variable</strong>: it rises when fewer people have staked and drops as more stake in — the same reward pool is divided among more participants. The USD value of your rewards also depends on the reward token's own market price.</p>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .85rem;">Farming does <strong style="color:var(--text);">not eliminate impermanent loss</strong>. You still carry the full IL risk from the underlying LP position. Farm rewards can offset IL, but only if combined income exceeds the IL drag — and there are no guarantees.</p>
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:.85rem 1rem;">
+          <div style="font-size:.7rem;color:var(--text3);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.65rem;">Three Stacked Components</div>
+          <div style="font-size:.83rem;line-height:2.1;color:var(--text2);">
+            <div><span style="color:var(--pur-g);font-weight:700;width:1.1rem;display:inline-block;">+</span><strong style="color:var(--text);">LP trading fee income</strong> — earned from swaps in your pool</div>
+            <div><span style="color:var(--pur-g);font-weight:700;width:1.1rem;display:inline-block;">+</span><strong style="color:var(--text);">Farm reward APR</strong> — extra rewards for staking your LP tokens</div>
+            <div><span style="color:#f87171;font-weight:700;width:1.1rem;display:inline-block;">−</span><strong style="color:var(--text);">Impermanent loss</strong> — from token price divergence in the LP</div>
+            <div style="border-top:1px solid rgba(255,255,255,0.08);margin-top:.55rem;padding-top:.55rem;"><span style="color:var(--gold-l);font-weight:700;width:1.1rem;display:inline-block;">=</span><strong style="color:var(--gold-l);">NET result</strong> <span style="color:var(--text3);font-size:.78rem;">vs just holding both tokens</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Farming Simulator -->
+      <div class="dl-grid">
+
+        <!-- ── FARMING INPUTS ── -->
+        <div class="card" style="align-self:start;">
+          <div class="sec-label" style="justify-content:flex-start;margin-bottom:1rem;">Set Your Farming Scenario</div>
+
+          <div class="dl-field">
+            <label class="dl-label">Total LP deposit value (split 50/50 between tokens)</label>
+            <input id="farm-deposit" class="dl-input" type="number" value="1000" min="0.000001" step="any" placeholder="e.g. 1000">
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;">
+            <div class="dl-field">
+              <label class="dl-label">Token A name</label>
+              <input id="farm-token-a" class="dl-input" type="text" value="Token A" maxlength="20" placeholder="Token A">
+            </div>
+            <div class="dl-field">
+              <label class="dl-label">Token B name</label>
+              <input id="farm-token-b" class="dl-input" type="text" value="Token B" maxlength="20" placeholder="Token B">
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;">
+            <div class="dl-field">
+              <label class="dl-label">Token A start price ($)</label>
+              <input id="farm-price-a" class="dl-input" type="number" value="1.00" min="0.000001" step="any" placeholder="e.g. 1.00">
+            </div>
+            <div class="dl-field">
+              <label class="dl-label">Token B start price ($)</label>
+              <input id="farm-price-b" class="dl-input" type="number" value="1.00" min="0.000001" step="any" placeholder="e.g. 1.00">
+            </div>
+          </div>
+
+          <div class="sec-label" style="justify-content:flex-start;margin:.75rem 0 .5rem;font-size:.65rem;">Price Change Scenario</div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;">
+            <div class="dl-field">
+              <label class="dl-label">Token A new price ($)</label>
+              <input id="farm-new-price-a" class="dl-input" type="number" value="2.00" min="0.000001" step="any" placeholder="e.g. 2.00">
+            </div>
+            <div class="dl-field">
+              <label class="dl-label">Token B new price ($)</label>
+              <input id="farm-new-price-b" class="dl-input" type="number" value="1.00" min="0.000001" step="any" placeholder="e.g. 1.00">
+            </div>
+          </div>
+
+          <div class="sec-label" style="justify-content:flex-start;margin:.75rem 0 .5rem;font-size:.65rem;">Income Assumptions</div>
+
+          <div class="dl-field">
+            <label class="dl-label">LP trading fee APR (%) — your share of pool swap fees</label>
+            <input id="farm-lp-fee-apr" class="dl-input" type="number" value="0.2" min="0" step="0.01" placeholder="e.g. 0.2">
+          </div>
+
+          <div class="dl-field">
+            <label class="dl-label">Farm reward APR (%) — extra rewards for staking LP tokens</label>
+            <input id="farm-reward-apr" class="dl-input" type="number" value="20" min="0" step="0.01" placeholder="e.g. 20">
+          </div>
+
+          <div class="dl-field">
+            <label class="dl-label">Time period</label>
+            <div style="display:flex;gap:.5rem;">
+              <input id="farm-dur-val" class="dl-input" type="number" value="12" min="0.001" step="any" style="flex:1;width:auto;" placeholder="e.g. 12">
+              <select id="farm-dur-unit" class="dl-select">
+                <option value="days">days</option>
+                <option value="weeks">weeks</option>
+                <option value="months" selected>months</option>
+                <option value="years">years</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="sec-label" style="justify-content:flex-start;margin:.75rem 0 .5rem;font-size:.65rem;">Reward Token (Optional)</div>
+
+          <div class="dl-field">
+            <label class="dl-label">Reward token label (what the farm pays you)</label>
+            <input id="farm-reward-token" class="dl-input" type="text" value="Reward Token" maxlength="20" placeholder="Reward Token">
+          </div>
+
+          <div class="dl-field" style="margin-top:.1rem;">
+            <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.8rem;color:var(--text2);">
+              <input type="checkbox" id="farm-reward-price-toggle" onchange="farmToggleRewardPrice(this.checked)" style="cursor:pointer;width:14px;height:14px;">
+              Set reward token price (to see token quantity earned)
+            </label>
+          </div>
+          <div id="farm-reward-price-section" style="display:none;">
+            <div class="dl-field">
+              <label class="dl-label">Reward token price ($)</label>
+              <input id="farm-reward-price" class="dl-input" type="number" value="0.10" min="0.000001" step="any" placeholder="e.g. 0.10">
+            </div>
+          </div>
+
+          <button onclick="farmCalc()" class="btn btn-g" style="width:100%;justify-content:center;margin-top:.25rem;">Calculate →</button>
+          <div id="farm-error" style="display:none;margin-top:.75rem;padding:.6rem .85rem;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px;font-size:.8rem;color:#f87171;"></div>
+        </div>
+
+        <!-- ── FARMING RESULTS ── -->
+        <div style="align-self:start;">
+
+          <!-- Empty state -->
+          <div id="farm-empty" class="card" style="text-align:center;padding:2.5rem 1.5rem;">
+            <div style="font-size:2.5rem;margin-bottom:.75rem;">🌾</div>
+            <p style="color:var(--text3);font-size:.85rem;margin:0;">Set your farming scenario and hit <strong style="color:var(--text);">Calculate</strong> to see how LP fees, farm rewards, and impermanent loss stack up.</p>
+          </div>
+
+          <!-- Results (hidden until calculated) -->
+          <div id="farm-results" style="display:none;">
+
+            <!-- Starting LP position -->
+            <div class="card" style="margin-bottom:1rem;">
+              <div class="sec-label" style="justify-content:flex-start;margin-bottom:.5rem;font-size:.65rem;">💰 Starting LP Position</div>
+              <div class="dl-row"><span class="dl-row-label" id="farm-res-a-start-lbl">Token A deposited</span><span class="dl-row-val" id="farm-res-a-start">—</span></div>
+              <div class="dl-row"><span class="dl-row-label" id="farm-res-b-start-lbl">Token B deposited</span><span class="dl-row-val" id="farm-res-b-start">—</span></div>
+              <div class="dl-row"><span class="dl-row-label">Total deposited</span><span class="dl-row-val" id="farm-res-deposit">—</span></div>
+            </div>
+
+            <!-- LP value after price change + IL -->
+            <div class="card" style="margin-bottom:1rem;border-color:rgba(201,146,42,0.25);background:rgba(201,146,42,0.03);">
+              <div class="sec-label" style="justify-content:flex-start;margin-bottom:.5rem;font-size:.65rem;">📊 LP Position After Price Change</div>
+              <div class="dl-row"><span class="dl-row-label" id="farm-res-a-lp-lbl">Token A (rebalanced)</span><span class="dl-row-val" id="farm-res-a-lp">—</span></div>
+              <div class="dl-row"><span class="dl-row-label" id="farm-res-b-lp-lbl">Token B (rebalanced)</span><span class="dl-row-val" id="farm-res-b-lp">—</span></div>
+              <div class="dl-row" style="padding-top:.45rem;margin-top:.25rem;border-top:1px solid rgba(255,255,255,0.06);">
+                <span class="dl-row-label">LP position value</span>
+                <span class="dl-row-val" style="color:var(--gold-l);font-size:.86rem;" id="farm-res-lp-val">—</span>
+              </div>
+              <div class="dl-row"><span class="dl-row-label">HODL value (if held)</span><span class="dl-row-val" id="farm-res-hodl-val">—</span></div>
+              <div class="dl-row">
+                <span class="dl-row-label">Impermanent loss</span>
+                <span class="dl-row-val" id="farm-res-il">—</span>
+              </div>
+            </div>
+
+            <!-- Income breakdown -->
+            <div class="card" style="margin-bottom:1rem;border-color:rgba(124,58,237,0.2);background:rgba(124,58,237,0.03);">
+              <div class="sec-label" style="justify-content:flex-start;margin-bottom:.5rem;font-size:.65rem;">💸 Income Earned</div>
+              <div class="dl-row">
+                <span class="dl-row-label">LP trading fees</span>
+                <span class="dl-row-val" style="color:var(--pur-g);" id="farm-res-lp-fees">—</span>
+              </div>
+              <div class="dl-row">
+                <span class="dl-row-label">Farm reward income</span>
+                <span class="dl-row-val" style="color:var(--pur-g);" id="farm-res-farm-income">—</span>
+              </div>
+              <div id="farm-res-units-row" class="dl-row" style="display:none;">
+                <span class="dl-row-label" id="farm-res-units-lbl">Reward tokens earned</span>
+                <span class="dl-row-val" style="color:var(--text2);font-size:.74rem;" id="farm-res-units">—</span>
+              </div>
+              <div class="dl-row" style="padding-top:.45rem;margin-top:.25rem;border-top:1px solid rgba(255,255,255,0.06);">
+                <span class="dl-row-label" style="font-weight:600;color:var(--text);">Total income</span>
+                <span class="dl-row-val" style="color:var(--pur-g);font-size:.86rem;" id="farm-res-total-income">—</span>
+              </div>
+            </div>
+
+            <!-- Net result hero -->
+            <div class="dl-result-box">
+              <div class="dl-result-label">Net Result vs Just Holding</div>
+              <div class="dl-result-num" id="farm-res-net-pct" style="font-size:1.7rem;">—</div>
+              <div class="dl-result-label" style="margin-top:.3rem;" id="farm-res-net-amt"></div>
+              <div style="margin-top:.7rem;padding:.6rem .8rem;background:rgba(255,255,255,0.04);border-radius:8px;font-size:.77rem;color:var(--text3);line-height:2;text-align:left;" id="farm-res-breakdown"></div>
+            </div>
+
+          </div><!-- end farm-results -->
+        </div>
+      </div><!-- end .dl-grid -->
+    </div><!-- end dl-panel-farming -->
 
     <div class="disc mt4"><span>ℹ</span><div>
       <strong style="color:var(--text);">Full Disclaimer — Please Read.</strong>
@@ -2968,7 +3154,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab'];
-const BUILD_VERSION='2026-06-18-BUILD-AB';
+const BUILD_VERSION='2026-06-18-BUILD-AC';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -7553,7 +7739,7 @@ function dlTimeJump() {
 
 // ── DEFI LAB: Instrument tab switching ────────────────────────────────────
 function dlSetInstrument(name) {
-  ['lending','lp'].forEach(function(id) {
+  ['lending','lp','farming'].forEach(function(id) {
     var el = document.getElementById('dl-panel-' + id);
     if (el) el.style.display = (id === name) ? '' : 'none';
   });
@@ -7690,6 +7876,156 @@ function lpCalc() {
   document.getElementById('lp-results').style.display = '';
   document.getElementById('lp-empty').style.display   = 'none';
   document.getElementById('lp-error').style.display   = 'none';
+}
+
+// ── DEFI LAB: Farming Instrument ──────────────────────────────────────────
+function farmToggleRewardPrice(on) {
+  document.getElementById('farm-reward-price-section').style.display = on ? '' : 'none';
+}
+
+function farmShowError(msg) {
+  var el  = document.getElementById('farm-error');
+  if (el) { el.textContent = msg; el.style.display = ''; }
+  var r   = document.getElementById('farm-results');
+  var emp = document.getElementById('farm-empty');
+  if (r)   r.style.display   = 'none';
+  if (emp) emp.style.display = '';
+}
+
+function farmCalc() {
+  // ── Validate inputs ────────────────────────────────────────────────────
+  var deposit = parseFloat(document.getElementById('farm-deposit').value);
+  if (!deposit || deposit <= 0) { farmShowError('Enter a total deposit amount greater than 0.'); return; }
+
+  var tokenA = (document.getElementById('farm-token-a').value || 'Token A').trim();
+  var tokenB = (document.getElementById('farm-token-b').value || 'Token B').trim();
+
+  var priceA = parseFloat(document.getElementById('farm-price-a').value);
+  var priceB = parseFloat(document.getElementById('farm-price-b').value);
+  if (!priceA || priceA <= 0) { farmShowError('Token A starting price must be greater than 0.'); return; }
+  if (!priceB || priceB <= 0) { farmShowError('Token B starting price must be greater than 0.'); return; }
+
+  var newPriceA = parseFloat(document.getElementById('farm-new-price-a').value);
+  var newPriceB = parseFloat(document.getElementById('farm-new-price-b').value);
+  if (!newPriceA || newPriceA <= 0) { farmShowError("Token A's new price must be greater than 0."); return; }
+  if (!newPriceB || newPriceB <= 0) { farmShowError("Token B's new price must be greater than 0."); return; }
+
+  var lpFeeApr = parseFloat(document.getElementById('farm-lp-fee-apr').value);
+  if (isNaN(lpFeeApr) || lpFeeApr < 0) { farmShowError('LP fee APR must be 0 or greater.'); return; }
+
+  var farmApr = parseFloat(document.getElementById('farm-reward-apr').value);
+  if (isNaN(farmApr) || farmApr < 0) { farmShowError('Farm reward APR must be 0 or greater.'); return; }
+
+  var durVal  = parseFloat(document.getElementById('farm-dur-val').value);
+  var durUnit = document.getElementById('farm-dur-unit').value;
+  if (!durVal || durVal <= 0) { farmShowError('Time period must be greater than 0.'); return; }
+  var years = dlToYears(durVal, durUnit);
+
+  var rewardToken     = (document.getElementById('farm-reward-token').value || 'Reward Token').trim();
+  var showRwdPrice    = document.getElementById('farm-reward-price-toggle').checked;
+  var rewardTokenPrice = showRwdPrice ? (parseFloat(document.getElementById('farm-reward-price').value) || 0) : 0;
+
+  // ── LP Math — exact same verified formula as Stage 2 ──────────────────
+  var qtyA = deposit / 2 / priceA;
+  var qtyB = deposit / 2 / priceB;
+  var k    = qtyA * qtyB; // constant product x * y = k
+
+  var newQtyA = Math.sqrt(k * newPriceB / newPriceA);
+  var newQtyB = Math.sqrt(k * newPriceA / newPriceB);
+
+  var lpVal   = newQtyA * newPriceA + newQtyB * newPriceB;
+  var hodlVal = qtyA * newPriceA + qtyB * newPriceB;
+
+  // IL = (2√r)/(1+r) − 1  where r = relative price ratio change
+  var priceRatio = (newPriceA / newPriceB) / (priceA / priceB);
+  var ilFrac = (2 * Math.sqrt(priceRatio)) / (1 + priceRatio) - 1;
+  var ilPct  = ilFrac * 100;
+  var ilAmt  = ilFrac * hodlVal; // always ≤ 0
+
+  // ── Income (simple APR, consistent with Stage 2 approach) ─────────────
+  var lpFeeIncome = deposit * (lpFeeApr / 100) * years;
+  var farmIncome  = deposit * (farmApr / 100) * years;
+  var rewardUnits = (showRwdPrice && rewardTokenPrice > 0) ? farmIncome / rewardTokenPrice : 0;
+  var totalIncome = lpFeeIncome + farmIncome;
+
+  // ── Net result: IL drag + LP fees + farm rewards ───────────────────────
+  // netDiff = (lpVal + lpFeeIncome + farmIncome) - hodlVal
+  //         = ilAmt + lpFeeIncome + farmIncome  (since lpVal - hodlVal = ilAmt)
+  var netDiff = ilAmt + lpFeeIncome + farmIncome;
+  var netPct  = hodlVal > 0 ? (netDiff / hodlVal * 100) : 0;
+
+  // ── Populate results ──────────────────────────────────────────────────
+
+  // Starting position
+  document.getElementById('farm-res-a-start-lbl').textContent = tokenA + ' deposited';
+  document.getElementById('farm-res-b-start-lbl').textContent = tokenB + ' deposited';
+  document.getElementById('farm-res-a-start').textContent =
+    lpFmtQty(qtyA) + ' @ $' + dlFmt(priceA) + ' = $' + dlFmt(deposit / 2);
+  document.getElementById('farm-res-b-start').textContent =
+    lpFmtQty(qtyB) + ' @ $' + dlFmt(priceB) + ' = $' + dlFmt(deposit / 2);
+  document.getElementById('farm-res-deposit').textContent = '$' + dlFmt(deposit);
+
+  // LP after price change
+  document.getElementById('farm-res-a-lp-lbl').textContent = tokenA + ' (rebalanced)';
+  document.getElementById('farm-res-b-lp-lbl').textContent = tokenB + ' (rebalanced)';
+  document.getElementById('farm-res-a-lp').textContent =
+    lpFmtQty(newQtyA) + ' @ $' + dlFmt(newPriceA) + ' = $' + dlFmt(newQtyA * newPriceA);
+  document.getElementById('farm-res-b-lp').textContent =
+    lpFmtQty(newQtyB) + ' @ $' + dlFmt(newPriceB) + ' = $' + dlFmt(newQtyB * newPriceB);
+  document.getElementById('farm-res-lp-val').textContent  = '$' + dlFmt(lpVal);
+  document.getElementById('farm-res-hodl-val').textContent = '$' + dlFmt(hodlVal);
+
+  var isILZero = Math.abs(ilPct) < 0.0001;
+  var ilEl = document.getElementById('farm-res-il');
+  ilEl.textContent = isILZero
+    ? '0.00% — no impermanent loss'
+    : ilPct.toFixed(4) + '% (−$' + dlFmt(Math.abs(ilAmt)) + ' drag)';
+  ilEl.style.color = isILZero ? 'var(--text2)' : '#f87171';
+
+  // Income
+  document.getElementById('farm-res-lp-fees').textContent =
+    '+$' + dlFmt(lpFeeIncome) + '  (' + lpFeeApr.toFixed(2) + '% APR · ' + dlFmtYears(years) + ')';
+  document.getElementById('farm-res-farm-income').textContent =
+    '+$' + dlFmt(farmIncome) + '  (' + farmApr.toFixed(2) + '% APR · ' + dlFmtYears(years) + ')';
+  document.getElementById('farm-res-total-income').textContent = '+$' + dlFmt(totalIncome);
+
+  // Reward token quantity (if price set)
+  if (showRwdPrice && rewardTokenPrice > 0 && rewardUnits > 0) {
+    document.getElementById('farm-res-units-lbl').textContent = rewardToken + ' earned';
+    document.getElementById('farm-res-units').textContent =
+      lpFmtQty(rewardUnits) + ' ' + rewardToken + ' @ $' + dlFmt(rewardTokenPrice) + '/token';
+    document.getElementById('farm-res-units-row').style.display = '';
+  } else {
+    document.getElementById('farm-res-units-row').style.display = 'none';
+  }
+
+  // Net result hero
+  var netIsPos = netDiff > 0.005;
+  var netIsNeg = netDiff < -0.005;
+  var netColor = netIsPos ? 'var(--pur-g)' : (netIsNeg ? '#f87171' : 'var(--text2)');
+  document.getElementById('farm-res-net-pct').textContent =
+    (netIsPos ? '+' : '') + netPct.toFixed(2) + '%';
+  document.getElementById('farm-res-net-pct').style.color = netColor;
+  var netAmtStr = (netIsPos ? '+' : (netIsNeg ? '−' : '')) + '$' + dlFmt(Math.abs(netDiff)) +
+    (netIsPos ? ' ahead of HODL' : (netIsNeg ? ' behind HODL' : ' vs HODL'));
+  document.getElementById('farm-res-net-amt').textContent = netAmtStr;
+  document.getElementById('farm-res-net-amt').style.color = netColor;
+
+  // Breakdown (multi-line for mobile readability)
+  var ilLine = isILZero
+    ? '<span>IL: </span><span style="color:var(--text2);">none</span>'
+    : '<span>IL drag: </span><span style="color:#f87171;">−$' + dlFmt(Math.abs(ilAmt)) + '</span>';
+  var feeLine  = '<span>LP fees: </span><span style="color:var(--pur-g);">+$' + dlFmt(lpFeeIncome) + '</span>';
+  var farmLine = '<span>Farm rewards: </span><span style="color:var(--pur-g);">+$' + dlFmt(farmIncome) + '</span>';
+  var netLine  = '<span>Net: </span><span style="color:' + netColor + ';font-weight:600;">' +
+    (netIsPos ? '+' : (netIsNeg ? '−' : '')) + '$' + dlFmt(Math.abs(netDiff)) + '</span>';
+  document.getElementById('farm-res-breakdown').innerHTML =
+    ilLine + '<br>' + feeLine + '<br>' + farmLine +
+    '<div style="border-top:1px solid rgba(255,255,255,0.08);margin-top:.35rem;padding-top:.35rem;">' + netLine + '</div>';
+
+  document.getElementById('farm-results').style.display = '';
+  document.getElementById('farm-empty').style.display   = 'none';
+  document.getElementById('farm-error').style.display   = 'none';
 }
 
 </script>
