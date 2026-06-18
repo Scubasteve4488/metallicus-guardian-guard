@@ -2219,9 +2219,9 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     <!-- Educational explainer -->
     <div class="card" style="max-width:720px;margin:0 auto 2rem;border-color:rgba(124,58,237,0.25);background:rgba(124,58,237,0.04);">
       <div class="sec-label" style="justify-content:flex-start;margin-bottom:.6rem;">How Lending / Supply Works</div>
-      <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">When you <strong style="color:var(--text);">supply an asset</strong> to a DeFi lending pool (like the one on Metal X, powered by the LOAN Protocol), your tokens become available for borrowers. In return, <strong style="color:var(--text);">you earn interest</strong> — paid continuously by those borrowers.</p>
-      <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">The rate you earn is the <strong style="color:var(--text);">APY (Annual Percentage Yield)</strong>. It compounds your interest over time — meaning your earned interest itself starts earning interest. In real protocols this rate is <em>variable</em>: it rises when borrowing demand is high, falls when it's low. You can withdraw your supplied assets at any time (subject to available liquidity).</p>
-      <p style="font-size:.78rem;color:var(--text3);margin:0;font-style:italic;">This simulator uses a fictional "Example Token" and rates you set — not any real token or live protocol data. Real rates change constantly.</p>
+      <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">Think of it like a <strong style="color:var(--text);">savings account for crypto</strong> — but with potentially higher rates and more risk. You deposit tokens into a shared pool; borrowers pay interest to use them, and that interest flows back to you automatically.</p>
+      <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">Your rate is shown as an <strong style="color:var(--text);">APY (Annual Percentage Yield)</strong> — your yearly return, already including compounding (where your interest earns interest on itself). In real DeFi this rate shifts constantly based on demand. Here you set your own rate to explore any scenario.</p>
+      <p style="font-size:.78rem;color:var(--text3);margin:0;font-style:italic;">Enter an amount, an APY, and a time period below — then hit Calculate. Use any numbers you like; this tool is for learning, not predicting real results.</p>
     </div>
 
     <!-- Simulator -->
@@ -2358,12 +2358,12 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
       <!-- LP educational explainer -->
       <div class="card" style="max-width:720px;margin:0 auto 2rem;border-color:rgba(124,58,237,0.25);background:rgba(124,58,237,0.04);">
-        <div class="sec-label" style="justify-content:flex-start;margin-bottom:.6rem;">How Liquidity Pools (AMM) Work</div>
-        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">When you <strong style="color:var(--text);">provide liquidity</strong> to a decentralized exchange pool, you deposit a pair of tokens in equal value (50/50). Your tokens join a shared pool that automatically enables trading between those two assets — no order book needed. This mechanism is called an <strong style="color:var(--text);">Automated Market Maker (AMM)</strong>.</p>
-        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">The pool follows the rule <strong style="color:var(--text);">x × y = k</strong> (constant product): the product of the two token quantities must stay constant. When traders swap, the pool automatically rebalances — you end up with less of the token that became more valuable, and more of the cheaper one.</p>
-        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;"><strong style="color:var(--text);">Impermanent Loss (IL)</strong> is the difference between your LP position value and what you'd have had by simply holding the same tokens. It's called "impermanent" because if prices return to their original ratio, the loss disappears. Trading fee income from the pool can partially or fully offset it.</p>
+        <div class="sec-label" style="justify-content:flex-start;margin-bottom:.6rem;">How Liquidity Pools Work</div>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">A liquidity pool is a <strong style="color:var(--text);">shared pot of two tokens</strong> that lets anyone swap between them instantly. You add equal value of both tokens (50/50), and earn a small fee every time someone swaps through your pool.</p>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">There's a trade-off: the pool constantly adjusts how much of each token you hold as prices shift. This can leave you with slightly less total value than if you'd just held — that gap is called <strong style="color:var(--text);">impermanent loss.</strong> It's "impermanent" because if prices return to where they started, the gap disappears. Fee income can offset it — sometimes fully.</p>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;"><em>Plain-English version:</em> imagine Token A gets more expensive. The pool quietly sells some of your Token A and buys more Token B to keep the balance. When you exit, you have less of the now-pricier Token A than you put in. That's the loss. The fees you earned along the way can make up for it.</p>
         <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:.75rem 1rem;margin-bottom:.5rem;">
-          <div style="font-size:.7rem;color:var(--text3);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.45rem;">IL Quick Reference (one token moves, other stays flat)</div>
+          <div style="font-size:.7rem;color:var(--text3);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.45rem;">How much loss at different price moves?</div>
           <div style="display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;font-size:.8rem;color:var(--text2);">
             <span>No change → <strong style="color:var(--text);">0%</strong></span>
             <span>2× move → <strong style="color:#f87171;">−5.72%</strong></span>
@@ -2372,7 +2372,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
             <span>0.5× move → <strong style="color:#f87171;">−5.72%</strong></span>
           </div>
         </div>
-        <p style="font-size:.78rem;color:var(--text3);margin:0;font-style:italic;">This simulator uses fictional example tokens. Real pool fees, token prices, and liquidity levels vary constantly.</p>
+        <p style="font-size:.78rem;color:var(--text3);margin:0;font-style:italic;">Enter two example token names and prices, set a price-change scenario, and hit Calculate to see the impact.</p>
       </div>
 
       <!-- LP Simulator -->
@@ -2524,15 +2524,15 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       <!-- Farming educational explainer -->
       <div class="card" style="max-width:720px;margin:0 auto 2rem;border-color:rgba(124,58,237,0.25);background:rgba(124,58,237,0.04);">
         <div class="sec-label" style="justify-content:flex-start;margin-bottom:.6rem;">How Yield Farming Works</div>
-        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">When you provide liquidity to a pool, you receive <strong style="color:var(--text);">LP tokens</strong> representing your share. <strong style="color:var(--text);">Yield farming</strong> means staking those LP tokens into a farm contract to earn an <strong style="color:var(--text);">additional reward APR</strong> — on top of the trading fees your LP position already generates.</p>
-        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">The farm pays rewards in a <strong style="color:var(--text);">separate reward token</strong>. The farm APR is <strong style="color:var(--text);">variable</strong>: it rises when fewer people have staked and drops as more stake in — the same reward pool is divided among more participants. The USD value of your rewards also depends on the reward token's own market price.</p>
-        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .85rem;">Farming does <strong style="color:var(--text);">not eliminate impermanent loss</strong>. You still carry the full IL risk from the underlying LP position. Fee income and farm rewards accrue on your <strong style="color:var(--text);">LP position's current value</strong> — proportional to your pool share and the pool's trading activity. The APR you enter is your own assumption; real rates are variable and depend on trading volume, total value staked, and the reward token's price. Farm rewards can offset IL, but only if combined income exceeds the IL drag — and there are no guarantees.</p>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">Yield farming stacks <strong style="color:var(--text);">bonus rewards</strong> on top of a liquidity pool position. When you add tokens to a pool you get LP tokens (a receipt for your share). Staking those LP tokens in a farm earns you extra income — like renting out your pool position for bonus pay on top of the fees it already earns.</p>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">Farm rewards are paid in a <strong style="color:var(--text);">separate reward token</strong> at a variable rate. The more people farming the same pool, the lower the rate — rewards are shared. The APRs you enter below are your own assumptions; real rates shift constantly with activity and token prices.</p>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .85rem;">The catch: farming doesn't remove the pool's risk. You still face <strong style="color:var(--text);">impermanent loss</strong> (see the LP tab). The goal is for your combined income to outweigh it — but that's never guaranteed. Your three pieces add up like this:</p>
         <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:.85rem 1rem;">
-          <div style="font-size:.7rem;color:var(--text3);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.65rem;">Three Stacked Components</div>
+          <div style="font-size:.7rem;color:var(--text3);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.65rem;">Your Three Components</div>
           <div style="font-size:.83rem;line-height:2.1;color:var(--text2);">
-            <div><span style="color:var(--pur-g);font-weight:700;width:1.1rem;display:inline-block;">+</span><strong style="color:var(--text);">LP trading fee income</strong> — earned from swaps in your pool</div>
-            <div><span style="color:var(--pur-g);font-weight:700;width:1.1rem;display:inline-block;">+</span><strong style="color:var(--text);">Farm reward APR</strong> — extra rewards for staking your LP tokens</div>
-            <div><span style="color:#f87171;font-weight:700;width:1.1rem;display:inline-block;">−</span><strong style="color:var(--text);">Impermanent loss</strong> — from token price divergence in the LP</div>
+            <div><span style="color:var(--pur-g);font-weight:700;width:1.1rem;display:inline-block;">+</span><strong style="color:var(--text);">Trading fees</strong> — a small cut of every swap through your pool</div>
+            <div><span style="color:var(--pur-g);font-weight:700;width:1.1rem;display:inline-block;">+</span><strong style="color:var(--text);">Farm rewards</strong> — bonus tokens for staking your LP position in the farm</div>
+            <div><span style="color:#f87171;font-weight:700;width:1.1rem;display:inline-block;">−</span><strong style="color:var(--text);">Impermanent loss</strong> — if prices diverged, you hold less than if you'd held</div>
             <div style="border-top:1px solid rgba(255,255,255,0.08);margin-top:.55rem;padding-top:.55rem;"><span style="color:var(--gold-l);font-weight:700;width:1.1rem;display:inline-block;">=</span><strong style="color:var(--gold-l);">NET result</strong> <span style="color:var(--text3);font-size:.78rem;">vs just holding both tokens</span></div>
           </div>
         </div>
@@ -3154,7 +3154,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab'];
-const BUILD_VERSION='2026-06-18-BUILD-AD';
+const BUILD_VERSION='2026-06-18-BUILD-AE';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -7805,7 +7805,7 @@ function lpCalc() {
   var ilPct  = ilFrac * 100;
   var ilAmt  = ilFrac * hodlVal; // equivalent to lpVal - hodlVal
 
-  // Optional fee income (simple APR estimate based on initial deposit)
+  // Optional fee income — APR applied to LP position value (not initial deposit)
   var feeOn = document.getElementById('lp-fee-toggle').checked;
   var feeIncome = 0, feeYears = 0, feeAprVal = 0;
   if (feeOn) {
@@ -7813,7 +7813,7 @@ function lpCalc() {
     var feeDur  = parseFloat(document.getElementById('lp-fee-dur').value) || 0;
     var feeUnit = document.getElementById('lp-fee-unit').value;
     feeYears  = dlToYears(feeDur, feeUnit);
-    feeIncome = (feeYears > 0 && feeAprVal > 0) ? deposit * (feeAprVal / 100) * feeYears : 0;
+    feeIncome = (feeYears > 0 && feeAprVal > 0) ? lpVal * (feeAprVal / 100) * feeYears : 0;
   }
 
   // ── Populate results ──────────────────────────────────────────────────────
