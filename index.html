@@ -654,6 +654,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       <div class="nav-dropdown" id="dd-learn" onmouseenter="openDropdown('dd-learn')" onmouseleave="scheduleCloseDropdowns()">
         <button class="nav-btn nav-dropdown-btn" id="t-learn-group" onclick="toggleDropdown('dd-learn',event)">Learn <span class="dd-caret">▾</span></button>
       </div>
+      <button class="nav-btn" id="t-vision" onclick="go('vision')">✨ The Vision</button>
       <button class="nav-btn" id="t-creator" onclick="go('creator')">Creator</button>
     </div>
     <button class="nav-arrow" onclick="scrollNav(180)">&#8250;</button>
@@ -696,6 +697,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('learn')">🎓 Academy</button>
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('faq')">❓ FAQ</button>
   </div>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('vision')">✨ The Vision</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('creator')">👤 Creator</button>
   <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g mt2" style="justify-content:center;">⚔ Buy GUARD</a>
   <button id="mob-wallet-connect-btn" onclick="walletConnect();closeMenu();" class="mobile-nav-btn" style="color:var(--gold-l);border-color:var(--border-gold);border-top:1px solid var(--border-gold);margin-top:.75rem;padding-top:.75rem;text-align:center;width:100%;">⚡ Connect Wallet</button>
@@ -2067,6 +2069,97 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 </div>
 </div>
 
+<!-- ═══════ PAGE: VISION ═══════ -->
+<div id="page-vision" class="page">
+<div class="container">
+  <div class="section">
+
+    <!-- HERO -->
+    <div class="sec-label">Looking Forward</div>
+    <h1 class="page-title">The Vision</h1>
+    <p class="page-sub">Where I hope to take Stand Guard — ideas being explored, shaped by this community.</p>
+
+    <!-- INTRO -->
+    <div class="card" style="max-width:720px;margin:0 auto 2.5rem;border-color:rgba(201,146,42,0.3);background:linear-gradient(135deg,rgba(201,146,42,0.05),rgba(124,58,237,0.04));">
+      <p style="font-size:.95rem;color:var(--text2);line-height:1.88;margin:0 0 1rem;">Stand Guard is a community project I built on my own — a tribute to an ecosystem I genuinely believe in. I'm proud to be part of the KSTO community, and I have deep respect for everyone building and contributing across XPR Network: the builders, the validators, the creators, and every member who makes this ecosystem what it is.</p>
+      <p style="font-size:.95rem;color:var(--text2);line-height:1.88;margin:0;">This page shares where I hope to take Stand Guard. These are ideas I'm exploring — not promises, not announcements. They've been shaped over time, and I'd genuinely appreciate the community's thoughts as this grows.</p>
+    </div>
+
+    <!-- LIVE NOW -->
+    <div class="div-g" style="margin:2rem 0 1.5rem;"></div>
+    <div class="sec-label" style="text-align:center;">Live Now</div>
+    <h2 class="sec-title" style="text-align:center;">What Stand Guard Is Today</h2>
+    <p style="text-align:center;font-size:.85rem;color:var(--text2);margin-bottom:1.5rem;max-width:540px;margin-left:auto;margin-right:auto;">Already live and free to use — the foundation everything else builds from.</p>
+    <div class="grid grid-auto">
+      <div class="card"><div class="card-icon ci-gold">⚔</div><h3>Siege Guard + GUARD Trials</h3><p>Two playable games with weekly leaderboards, shard drops, and shield-forging — a wave-defense challenge and a tap-to-fly run through the XPR Network ecosystem.</p></div>
+      <div class="card"><div class="card-icon ci-pur">🛡</div><h3>Guardian Shield Ranks</h3><p>Seven shields — Cryptide through Aegis — reflecting your connection to GUARD. Connect your wallet and your rank is determined automatically.</p></div>
+      <div class="card"><div class="card-icon ci-gold">🌐</div><h3>Ecosystem Guide</h3><p>A plain-English starting point for XPR Network — Foundation, Network, Apps & DeFi, and Community & Culture — with links straight to the official sources.</p></div>
+      <div class="card"><div class="card-icon ci-pur">👥</div><h3>Community Pages</h3><p>Dedicated pages for KSTO, CypherGang, and Snipverse — and an Academy of educational videos by BloxProd covering the full Metallicus ecosystem.</p></div>
+    </div>
+
+    <!-- BUILDING NEXT -->
+    <div class="div-g" style="margin:2rem 0 1.5rem;"></div>
+    <div class="sec-label" style="text-align:center;">Building Next</div>
+    <h2 class="sec-title" style="text-align:center;">What I'm Working On</h2>
+    <p style="text-align:center;font-size:.85rem;color:var(--text2);margin-bottom:1.5rem;max-width:540px;margin-left:auto;margin-right:auto;">Active work — no launch dates, but the direction is clear.</p>
+    <div class="grid grid-auto">
+      <div class="card" style="border-color:rgba(201,146,42,0.35);background:rgba(201,146,42,0.03);">
+        <div class="card-icon ci-gold">📚</div>
+        <h3>DeFi Academy & Simulator</h3>
+        <p>An interactive, hands-on DeFi learning experience built around XPR Network — covering staking, lending, farming, and liquidity in a risk-free simulator. The goal: let newcomers build real understanding of how these tools work before using real funds. Learn by doing, not just by reading.</p>
+      </div>
+      <div class="card" style="border-color:rgba(124,58,237,0.35);background:rgba(124,58,237,0.03);">
+        <div class="card-icon ci-pur">🤝</div>
+        <h3>Community-Supported Achievements</h3>
+        <p>Recognizing members who support the community tokens of the XPR Network ecosystem. The Guardian system already tracks some participation — this expands it to reflect more of what being an active community member actually looks like.</p>
+      </div>
+    </div>
+
+    <!-- EXPLORING -->
+    <div class="div-g" style="margin:2rem 0 1.5rem;"></div>
+    <div class="sec-label" style="text-align:center;">Exploring</div>
+    <h2 class="sec-title" style="text-align:center;">The Bigger Picture</h2>
+    <p style="text-align:center;font-size:.85rem;color:var(--text2);margin-bottom:.85rem;max-width:580px;margin-left:auto;margin-right:auto;">Early thinking I'm sharing because the community's input matters more than my assumptions. Not commitments — explorations.</p>
+    <div class="disc" style="max-width:720px;margin:0 auto 1.75rem;background:rgba(124,58,237,0.06);border-color:rgba(124,58,237,0.3);">
+      <span>🔭</span>
+      <div>Everything in this section is an <strong style="color:var(--text);">idea being explored</strong> — not a roadmap, not an announcement, not a promise. I'm sharing early thinking and would genuinely welcome honest community feedback before going further with any of it.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1.25rem;max-width:720px;margin:0 auto;">
+      <div class="card" style="border-color:rgba(201,146,42,0.25);">
+        <h3 style="font-family:'Cinzel',serif;color:var(--gold-l);margin-bottom:.65rem;">A Richer Recognition of Real Commitment</h3>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.8;margin:0;">The heart of what I keep coming back to: evolving the Guardian shield into something that reflects genuine, on-chain commitment to XPR Network — not just one dimension of participation, but a broader picture of how someone actually shows up in this ecosystem. An idea worth exploring carefully.</p>
+      </div>
+      <div class="card" style="border-color:rgba(124,58,237,0.25);">
+        <h3 style="font-family:'Cinzel',serif;color:var(--pur-g);margin-bottom:.65rem;">Recognizing the People Who Make This Ecosystem Strong</h3>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.8;margin:0;">I think about the long-time community members, the supporters of community tokens, the builders, the developers, the validators, and the block producers — the people whose on-chain footprint tells a story of real commitment. Finding a way for the Guardian system to recognize that, so their dedication speaks for itself, is something I'd love the community's thoughts on.</p>
+      </div>
+      <div class="card" style="border-color:rgba(201,146,42,0.25);">
+        <h3 style="font-family:'Cinzel',serif;color:var(--gold-l);margin-bottom:.65rem;">GUARD as a Guide for Newcomers</h3>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.8;margin:0 0 .75rem;">As more people discover XPR Network, they're entering an ecosystem full of unfamiliar names and projects. The idea I keep returning to: could the Guardian shield help newcomers recognize who the committed, contributing members of this community are? GUARD living up to its name — a protector and a guide, not just a token.</p>
+        <p style="font-size:.8rem;color:var(--text3);margin:0;font-style:italic;">This is an idea I'm exploring and would love the community's input on before going any further.</p>
+      </div>
+    </div>
+
+    <!-- FEEDBACK -->
+    <div class="div-g" style="margin:2rem 0 1.5rem;"></div>
+    <div style="max-width:720px;margin:0 auto;background:rgba(201,146,42,0.04);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:2rem 2rem 1.75rem;text-align:center;">
+      <div class="sec-label" style="justify-content:center;margin-bottom:.5rem;">Your Input Matters</div>
+      <h2 class="sec-title" style="margin-bottom:.85rem;">Stand Guard Is Shaped by the Community</h2>
+      <p style="font-size:.9rem;color:var(--text2);line-height:1.8;max-width:520px;margin:0 auto 1.5rem;">I'd appreciate hearing what excites you, what you'd want to see built, and anything I might be missing — including what I should drop or rethink. This grows better with honest feedback.</p>
+      <div class="flex gap-sm wrap" style="justify-content:center;">
+        <a href="https://x.com/scubasteve4488" target="_blank" class="btn btn-o" style="font-size:.82rem;">✕ @scubasteve4488 on X</a>
+        <a href="https://snipverse.com/scubasteve44" target="_blank" class="btn btn-o" style="font-size:.82rem;">✦ Snipverse</a>
+      </div>
+    </div>
+
+    <!-- DISCLAIMER -->
+    <div class="div mt4"></div>
+    <div class="disc"><span>ℹ</span><div>Stand Guard is an independent community project, not affiliated with or endorsed by Metallicus or any ecosystem project. The ideas on this page are explorations, shaped by community feedback.</div></div>
+
+  </div>
+</div>
+</div>
+
 <!-- ═══════ PAGE: ARENA ═══════ -->
 <div id="page-arena" class="page">
 <div class="container" style="max-width:700px;">
@@ -2499,8 +2592,8 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 </template>
 
 <script>
-const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community'];
-const BUILD_VERSION='2026-06-17-BUILD-U';
+const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision'];
+const BUILD_VERSION='2026-06-18-BUILD-V';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
