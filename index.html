@@ -611,6 +611,30 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 /* ── COMMUNITY FEATURE CARDS ── */
 .comm-feat-card{all:unset;cursor:pointer;background:rgba(255,255,255,0.025);border-radius:var(--radius-lg);padding:1.2rem 1.4rem;display:flex;align-items:center;gap:.9rem;text-align:left;width:100%;box-sizing:border-box;transition:background .2s;}
 .comm-feat-card:hover{background:rgba(255,255,255,0.045);}
+/* ── DEFI LAB ──────────────────────────────────────────── */
+.dl-tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0 2rem;}
+.dl-tab-active{background:rgba(201,146,42,0.15);border:1px solid rgba(201,146,42,0.5);color:var(--gold-l);padding:.5rem 1.1rem;border-radius:8px;font-size:.82rem;font-weight:700;}
+.dl-tab-coming{background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--text3);padding:.5rem 1.1rem;border-radius:8px;font-size:.82rem;font-weight:500;display:inline-flex;align-items:center;gap:.45rem;}
+.dl-badge{background:rgba(124,58,237,0.15);color:var(--pur-g);font-size:.62rem;padding:.1rem .45rem;border-radius:10px;font-weight:600;letter-spacing:.04em;}
+.dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;}
+@media(max-width:700px){.dl-grid{grid-template-columns:1fr;}}
+.dl-result-box{background:linear-gradient(135deg,rgba(201,146,42,0.08),rgba(124,58,237,0.06));border:1px solid rgba(201,146,42,0.3);border-radius:12px;padding:1.5rem;text-align:center;margin-bottom:1rem;}
+.dl-result-num{font-family:'Cinzel',serif;font-size:2rem;font-weight:700;color:var(--gold-l);line-height:1.2;word-break:break-all;}
+.dl-result-label{font-size:.7rem;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-top:.2rem;}
+.dl-growth{font-size:.85rem;font-weight:600;color:var(--pur-g);margin-top:.4rem;}
+.dl-input{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:.5rem .75rem;border-radius:8px;font-size:.84rem;font-family:inherit;box-sizing:border-box;width:100%;}
+.dl-input:focus{outline:none;border-color:rgba(201,146,42,0.5);}
+.dl-select{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:.5rem .65rem;border-radius:8px;font-size:.84rem;font-family:inherit;cursor:pointer;}
+.dl-label{font-size:.74rem;color:var(--text3);margin-bottom:.3rem;display:block;letter-spacing:.04em;font-weight:500;}
+.dl-field{margin-bottom:1rem;}
+.dl-toggle{display:flex;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:2px;margin-bottom:.25rem;}
+.dl-toggle button{flex:1;padding:.38rem .5rem;border:none;border-radius:6px;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .2s;color:var(--text2);background:transparent;font-family:inherit;}
+.dl-toggle button.active{background:rgba(201,146,42,0.2);color:var(--gold-l);}
+.dl-row{display:flex;justify-content:space-between;align-items:center;padding:.32rem 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:.8rem;flex-wrap:wrap;gap:.2rem;}
+.dl-row:last-child{border-bottom:none;}
+.dl-row-label{color:var(--text2);}
+.dl-row-val{color:var(--text);font-weight:600;font-size:.78rem;}
+.dl-seg{display:flex;gap:.4rem;align-items:flex-start;margin-bottom:.5rem;padding:.5rem .6rem;background:rgba(255,255,255,0.02);border-radius:6px;border:1px solid rgba(255,255,255,0.06);}
 </style>
   <!-- WebAuth / Proton Web SDK -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
@@ -654,6 +678,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       <div class="nav-dropdown" id="dd-learn" onmouseenter="openDropdown('dd-learn')" onmouseleave="scheduleCloseDropdowns()">
         <button class="nav-btn nav-dropdown-btn" id="t-learn-group" onclick="toggleDropdown('dd-learn',event)">Learn <span class="dd-caret">▾</span></button>
       </div>
+      <button class="nav-btn" id="t-defilab" onclick="go('defilab')">🧪 DeFi Lab</button>
       <button class="nav-btn" id="t-vision" onclick="go('vision')">✨ The Vision</button>
       <button class="nav-btn" id="t-creator" onclick="go('creator')">Creator</button>
     </div>
@@ -697,6 +722,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('learn')">🎓 Academy</button>
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('faq')">❓ FAQ</button>
   </div>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('defilab')">🧪 DeFi Lab</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('vision')">✨ The Vision</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('creator')">👤 Creator</button>
   <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g mt2" style="justify-content:center;">⚔ Buy GUARD</a>
@@ -2161,6 +2187,169 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 </div>
 </div>
 
+<!-- ═══════ PAGE: DEFI LAB ═══════ -->
+<div id="page-defilab" class="page">
+<div class="container">
+  <div class="section">
+    <div class="sec-label">DeFi Lab</div>
+    <h1 class="page-title">🧪 DeFi Lab</h1>
+    <p class="page-sub">An interactive, risk-free way to learn how DeFi works on XPR Network — using example numbers you control. No real funds, no real transactions. More instruments coming: liquidity pools, farming, borrowing, and staking.</p>
+
+    <div class="disc" style="border-color:rgba(124,58,237,0.35);background:rgba(124,58,237,0.05);margin-bottom:1.5rem;">
+      <span>⚠</span>
+      <div><strong style="color:var(--text);">Educational Simulator Only.</strong> No real funds are involved. All results are hypothetical, based on assumptions you set. Real DeFi rates and returns constantly change and are never guaranteed. This is not financial advice.</div>
+    </div>
+
+    <!-- Instrument selector — structured for future expansion -->
+    <div class="dl-tabs">
+      <span class="dl-tab-active">📈 Lending / Supply</span>
+      <span class="dl-tab-coming">🔄 Liquidity Pools <span class="dl-badge">Soon</span></span>
+      <span class="dl-tab-coming">🌾 Farming <span class="dl-badge">Soon</span></span>
+      <span class="dl-tab-coming">📉 Borrowing <span class="dl-badge">Soon</span></span>
+      <span class="dl-tab-coming">🔒 Staking <span class="dl-badge">Soon</span></span>
+    </div>
+
+    <!-- Educational explainer -->
+    <div class="card" style="max-width:720px;margin:0 auto 2rem;border-color:rgba(124,58,237,0.25);background:rgba(124,58,237,0.04);">
+      <div class="sec-label" style="justify-content:flex-start;margin-bottom:.6rem;">How Lending / Supply Works</div>
+      <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">When you <strong style="color:var(--text);">supply an asset</strong> to a DeFi lending pool (like the one on Metal X, powered by the LOAN Protocol), your tokens become available for borrowers. In return, <strong style="color:var(--text);">you earn interest</strong> — paid continuously by those borrowers.</p>
+      <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">The rate you earn is the <strong style="color:var(--text);">APY (Annual Percentage Yield)</strong>. It compounds your interest over time — meaning your earned interest itself starts earning interest. In real protocols this rate is <em>variable</em>: it rises when borrowing demand is high, falls when it's low. You can withdraw your supplied assets at any time (subject to available liquidity).</p>
+      <p style="font-size:.78rem;color:var(--text3);margin:0;font-style:italic;">This simulator uses a fictional "Example Token" and rates you set — not any real token or live protocol data. Real rates change constantly.</p>
+    </div>
+
+    <!-- Simulator -->
+    <div class="dl-grid">
+
+      <!-- ── INPUTS ── -->
+      <div class="card" style="align-self:start;">
+        <div class="sec-label" style="justify-content:flex-start;margin-bottom:1rem;">Set Your Scenario</div>
+
+        <div class="dl-field">
+          <label class="dl-label">Token label (example only — not a real asset)</label>
+          <input id="dl-token" class="dl-input" type="text" value="Example Token" maxlength="28" placeholder="e.g. Example Token">
+        </div>
+
+        <div class="dl-field">
+          <label class="dl-label">Amount to supply</label>
+          <input id="dl-principal" class="dl-input" type="number" value="1000" min="0.000001" step="any" placeholder="e.g. 1000">
+        </div>
+
+        <div class="dl-field">
+          <label class="dl-label">APY type</label>
+          <div class="dl-toggle">
+            <button class="active dl-mode-btn" data-mode="fixed" onclick="dlSetMode('fixed')">Fixed APY</button>
+            <button class="dl-mode-btn" data-mode="variable" onclick="dlSetMode('variable')">Variable (segments)</button>
+          </div>
+          <div style="font-size:.7rem;color:var(--text3);margin-top:.25rem;" id="dl-mode-hint">One constant APY for the whole period.</div>
+        </div>
+
+        <!-- Fixed APY -->
+        <div id="dl-fixed">
+          <div class="dl-field">
+            <label class="dl-label">Annual APY (%)</label>
+            <input id="dl-apy-fixed" class="dl-input" type="number" value="5" min="0" max="9999" step="0.01" placeholder="e.g. 5">
+          </div>
+        </div>
+
+        <!-- Variable segments -->
+        <div id="dl-variable" style="display:none;">
+          <label class="dl-label" style="margin-bottom:.5rem;">APY segments — run sequentially, one after another</label>
+          <div id="dl-segs"></div>
+          <button onclick="dlAddSeg()" class="btn btn-o" style="font-size:.75rem;padding:.3rem .85rem;margin-top:.1rem;">+ Add Segment</button>
+        </div>
+
+        <!-- Time period (fixed mode only; in variable mode time = sum of segments) -->
+        <div id="dl-time-fixed" class="dl-field" style="margin-top:.75rem;">
+          <label class="dl-label">Total time period</label>
+          <div style="display:flex;gap:.5rem;">
+            <input id="dl-dur-val" class="dl-input" type="number" value="12" min="0.001" step="any" placeholder="e.g. 12" style="flex:1;width:auto;">
+            <select id="dl-dur-unit" class="dl-select">
+              <option value="days">days</option>
+              <option value="weeks">weeks</option>
+              <option value="months" selected>months</option>
+              <option value="years">years</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="dl-field">
+          <label class="dl-label">Compounding frequency</label>
+          <select id="dl-freq" class="dl-select" style="width:100%;">
+            <option value="daily" selected>Daily (365×/yr) — most DeFi protocols</option>
+            <option value="weekly">Weekly (52×/yr)</option>
+            <option value="monthly">Monthly (12×/yr)</option>
+            <option value="quarterly">Quarterly (4×/yr)</option>
+            <option value="annual">Annually (1×/yr)</option>
+          </select>
+        </div>
+
+        <button onclick="dlCalc()" class="btn btn-g" style="width:100%;justify-content:center;">Calculate →</button>
+        <div id="dl-error" style="display:none;margin-top:.75rem;padding:.6rem .85rem;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px;font-size:.8rem;color:#f87171;"></div>
+      </div>
+
+      <!-- ── RESULTS ── -->
+      <div style="align-self:start;">
+
+        <!-- Empty state -->
+        <div id="dl-empty" class="card" style="text-align:center;padding:2.5rem 1.5rem;">
+          <div style="font-size:2.5rem;margin-bottom:.75rem;">📈</div>
+          <p style="color:var(--text3);font-size:.85rem;margin:0;">Set your scenario and hit <strong style="color:var(--text);">Calculate</strong> to see projected results.</p>
+        </div>
+
+        <!-- Results (hidden until calculated) -->
+        <div id="dl-results" style="display:none;">
+
+          <!-- Total balance hero -->
+          <div class="dl-result-box">
+            <div class="dl-result-label">Projected Total Balance</div>
+            <div class="dl-result-num" id="dl-res-total">—</div>
+            <div class="dl-result-label" id="dl-res-token-lbl" style="margin-top:.15rem;font-size:.68rem;"></div>
+            <div class="dl-growth" id="dl-res-growth"></div>
+          </div>
+
+          <!-- Breakdown card -->
+          <div class="card" style="margin-bottom:1rem;">
+            <div class="dl-row">
+              <span class="dl-row-label">Principal supplied</span>
+              <span class="dl-row-val" id="dl-res-principal">—</span>
+            </div>
+            <div class="dl-row">
+              <span class="dl-row-label">Interest earned</span>
+              <span class="dl-row-val" style="color:var(--pur-g);" id="dl-res-interest">—</span>
+            </div>
+            <div class="dl-row">
+              <span class="dl-row-label">Time period</span>
+              <span class="dl-row-val" id="dl-res-time">—</span>
+            </div>
+            <!-- Segment breakdown (for variable mode) -->
+            <div id="dl-seg-breakdown" style="display:none;margin-top:.65rem;padding-top:.65rem;border-top:1px solid var(--border);"></div>
+          </div>
+
+          <!-- Time Jump -->
+          <div class="card" style="border-color:rgba(124,58,237,0.2);background:rgba(124,58,237,0.04);">
+            <div class="sec-label" style="justify-content:flex-start;margin-bottom:.5rem;font-size:.65rem;">⏱ Time Jump</div>
+            <p style="font-size:.78rem;color:var(--text3);margin:0 0 .75rem;line-height:1.65;">See your projected balance at any point in time — within or beyond your defined period.</p>
+            <div style="display:flex;gap:.5rem;margin-bottom:.6rem;">
+              <input id="dl-jump-val" class="dl-input" type="number" value="3" min="0.001" step="any" style="flex:1;width:auto;">
+              <select id="dl-jump-unit" class="dl-select">
+                <option value="days">days</option>
+                <option value="weeks">weeks</option>
+                <option value="months" selected>months</option>
+                <option value="years">years</option>
+              </select>
+            </div>
+            <button onclick="dlTimeJump()" class="btn btn-o" style="width:100%;justify-content:center;font-size:.8rem;">Check Balance at This Point →</button>
+            <div id="dl-jump-result" style="display:none;margin-top:.75rem;padding:.65rem .85rem;background:rgba(201,146,42,0.07);border:1px solid rgba(201,146,42,0.2);border-radius:8px;font-size:.84rem;color:var(--text2);line-height:1.7;"></div>
+          </div>
+        </div>
+      </div>
+    </div><!-- end .dl-grid -->
+
+    <div class="disc mt4"><span>ℹ</span><div><strong style="color:var(--text);">Hypothetical results only.</strong> This tool uses example tokens and rates you define. It does not connect to any live protocol, wallet, or real data source. Real DeFi involves smart contract risk, variable rates, liquidity constraints, and the potential for loss of funds. Always do your own research before using any DeFi protocol.</div></div>
+  </div>
+</div>
+</div>
+
 <!-- ═══════ PAGE: ARENA ═══════ -->
 <div id="page-arena" class="page">
 <div class="container" style="max-width:700px;">
@@ -2593,8 +2782,8 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 </template>
 
 <script>
-const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision'];
-const BUILD_VERSION='2026-06-18-BUILD-Y';
+const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab'];
+const BUILD_VERSION='2026-06-18-BUILD-Z';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -6938,7 +7127,244 @@ function switchToWave() {
 }
 // ============ END FLAPPY GUARD ============
 
+// ══════════════════════════════════════════════════════════════
+// DEFI LAB — Lending/Supply Simulator  (Stage 1)
+// Modular math engine — designed to be extended in later stages
+// (LP, farming, borrowing, staking instruments coming)
+// ══════════════════════════════════════════════════════════════
 
+var _DL = {
+  mode: 'fixed',
+  segments: [{apy: 5, duration: 6, unit: 'months'}],
+  _lastP: 0,
+  _lastN: 365,
+  _lastMode: 'fixed',
+  _lastApy: 5,
+  _lastSegments: null,
+  _lastTotalYears: 0
+};
+
+// Convert a duration + unit string to fractional years
+function dlToYears(val, unit) {
+  val = parseFloat(val) || 0;
+  if (unit === 'days')   return val / 365;
+  if (unit === 'weeks')  return val / 52;
+  if (unit === 'months') return val / 12;
+  return val; // 'years'
+}
+
+// Core compound formula: P × (1 + r/n)^(n×t)
+// P = principal, r = annual rate (decimal), n = compounds/year, t = years
+// n === 0 → continuous compounding: P × e^(r×t)
+function dlCompound(P, r, n, t) {
+  if (t <= 0) return P;
+  if (n === 0) return P * Math.exp(r * t);
+  return P * Math.pow(1 + r / n, n * t);
+}
+
+// Map frequency string to compounds per year
+function dlFreqToN(freq) {
+  var map = {daily: 365, weekly: 52, monthly: 12, quarterly: 4, annual: 1, continuous: 0};
+  return (freq in map) ? map[freq] : 365;
+}
+
+// Format a number with commas and 2 decimal places
+function dlFmt(n) {
+  if (isNaN(n) || !isFinite(n)) return '—';
+  return n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+}
+
+// Format fractional years into a human-readable string
+function dlFmtYears(y) {
+  if (y < (1/52 - 0.0001)) return (y * 365).toFixed(1) + ' days';
+  if (y < (1/12 - 0.0001)) return (y * 52).toFixed(1) + ' weeks';
+  if (y < (1 - 0.0001))    return (y * 12).toFixed(1) + ' months';
+  return y.toFixed(2) + ' years';
+}
+
+// Switch between fixed and variable APY modes
+function dlSetMode(m) {
+  _DL.mode = m;
+  var isFixed = (m === 'fixed');
+  document.getElementById('dl-fixed').style.display       = isFixed ? '' : 'none';
+  document.getElementById('dl-variable').style.display    = isFixed ? 'none' : '';
+  document.getElementById('dl-time-fixed').style.display  = isFixed ? '' : 'none';
+  document.getElementById('dl-mode-hint').textContent     = isFixed
+    ? 'One constant APY for the whole period.'
+    : 'Define up to 6 time segments, each with a different APY.';
+  document.querySelectorAll('.dl-mode-btn').forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('data-mode') === m);
+  });
+  if (!isFixed) dlRenderSegments();
+}
+
+// Render the variable-mode segment inputs
+function dlRenderSegments() {
+  var html = '';
+  _DL.segments.forEach(function(s, i) {
+    html += '<div class="dl-seg">';
+    html += '<div style="flex:0 0 auto;font-size:.7rem;color:var(--text3);font-weight:600;min-width:44px;padding-top:.4rem;">Seg&nbsp;' + (i + 1) + '</div>';
+    html += '<div style="flex:1;display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;">';
+    html += '<input type="number" class="dl-input" style="width:68px;" placeholder="APY%" value="' + s.apy + '" min="0" max="9999" step="0.1" oninput="_DL.segments[' + i + '].apy=this.value">';
+    html += '<span style="font-size:.72rem;color:var(--text3);flex-shrink:0;">%&nbsp;for</span>';
+    html += '<input type="number" class="dl-input" style="width:64px;" placeholder="Dur" value="' + s.duration + '" min="0.001" step="any" oninput="_DL.segments[' + i + '].duration=this.value">';
+    html += '<select class="dl-select" style="flex:1;min-width:70px;" oninput="_DL.segments[' + i + '].unit=this.value">';
+    ['days','weeks','months','years'].forEach(function(u) {
+      html += '<option value="' + u + '"' + (s.unit === u ? ' selected' : '') + '>' + u + '</option>';
+    });
+    html += '</select>';
+    if (_DL.segments.length > 1) {
+      html += '<button onclick="dlRemoveSeg(' + i + ')" style="background:none;border:1px solid rgba(239,68,68,0.3);color:#f87171;border-radius:5px;padding:.2rem .5rem;cursor:pointer;font-size:.7rem;flex-shrink:0;">✕</button>';
+    }
+    html += '</div></div>';
+  });
+  document.getElementById('dl-segs').innerHTML = html;
+}
+
+function dlAddSeg() {
+  if (_DL.segments.length >= 6) return;
+  _DL.segments.push({apy: 5, duration: 3, unit: 'months'});
+  dlRenderSegments();
+}
+
+function dlRemoveSeg(i) {
+  _DL.segments.splice(i, 1);
+  dlRenderSegments();
+}
+
+function dlShowError(msg) {
+  var el = document.getElementById('dl-error');
+  if (el) { el.textContent = msg; el.style.display = ''; }
+  var r = document.getElementById('dl-results');
+  var emp = document.getElementById('dl-empty');
+  if (r) r.style.display = 'none';
+  if (emp) emp.style.display = '';
+}
+
+// Main calculation — runs the compound math and updates the results panel
+function dlCalc() {
+  var P = parseFloat(document.getElementById('dl-principal').value);
+  if (!P || P <= 0) { dlShowError('Enter an amount greater than 0.'); return; }
+
+  var freq = document.getElementById('dl-freq').value;
+  var n    = dlFreqToN(freq);
+  var tokenName = (document.getElementById('dl-token').value || 'Example Token').trim();
+
+  var totalYears, totalBalance;
+  var segRows = [];
+
+  if (_DL.mode === 'fixed') {
+    var apy = parseFloat(document.getElementById('dl-apy-fixed').value);
+    if (isNaN(apy) || apy < 0) { dlShowError('Enter a valid APY (0 or greater).'); return; }
+    var durVal  = parseFloat(document.getElementById('dl-dur-val').value);
+    var durUnit = document.getElementById('dl-dur-unit').value;
+    if (!durVal || durVal <= 0) { dlShowError('Enter a time period greater than 0.'); return; }
+    totalYears  = dlToYears(durVal, durUnit);
+    totalBalance = dlCompound(P, apy / 100, n, totalYears);
+  } else {
+    var segs = _DL.segments;
+    if (!segs.length) { dlShowError('Add at least one segment.'); return; }
+    var bal = P;
+    totalYears = 0;
+    for (var i = 0; i < segs.length; i++) {
+      var s = segs[i];
+      var sa = parseFloat(s.apy);
+      var sd = parseFloat(s.duration);
+      if (isNaN(sa) || sa < 0 || isNaN(sd) || sd <= 0) {
+        dlShowError('Segment ' + (i + 1) + ': APY and duration must be valid positive numbers.');
+        return;
+      }
+      var sy  = dlToYears(sd, s.unit);
+      var eb  = dlCompound(bal, sa / 100, n, sy);
+      segRows.push({label: 'Seg ' + (i + 1) + ': ' + sa + '% APY · ' + dlFmtYears(sy), start: bal, end: eb});
+      bal = eb;
+      totalYears += sy;
+    }
+    totalBalance = bal;
+  }
+
+  var interest  = totalBalance - P;
+  var growthPct = P > 0 ? (interest / P * 100) : 0;
+
+  // Persist state for Time Jump
+  _DL._lastP          = P;
+  _DL._lastN          = n;
+  _DL._lastMode       = _DL.mode;
+  _DL._lastApy        = (_DL.mode === 'fixed') ? parseFloat(document.getElementById('dl-apy-fixed').value) : null;
+  _DL._lastSegments   = JSON.parse(JSON.stringify(_DL.segments));
+  _DL._lastTotalYears = totalYears;
+
+  // Populate results
+  document.getElementById('dl-res-total').textContent    = dlFmt(totalBalance);
+  document.getElementById('dl-res-token-lbl').textContent = tokenName;
+  document.getElementById('dl-res-principal').textContent = dlFmt(P);
+  document.getElementById('dl-res-interest').textContent  = dlFmt(interest);
+  document.getElementById('dl-res-time').textContent      = dlFmtYears(totalYears);
+  document.getElementById('dl-res-growth').textContent    = (growthPct >= 0 ? '+' : '') + growthPct.toFixed(2) + '% total growth';
+
+  // Segment breakdown (variable mode only)
+  var bdEl = document.getElementById('dl-seg-breakdown');
+  if (segRows.length > 0) {
+    bdEl.innerHTML = segRows.map(function(r) {
+      return '<div class="dl-row">' +
+        '<span class="dl-row-label">' + r.label + '</span>' +
+        '<span class="dl-row-val" style="color:var(--pur-g);">' + dlFmt(r.start) + ' → ' + dlFmt(r.end) + '</span>' +
+        '</div>';
+    }).join('');
+    bdEl.style.display = '';
+  } else {
+    bdEl.style.display = 'none';
+  }
+
+  document.getElementById('dl-results').style.display = '';
+  document.getElementById('dl-empty').style.display   = 'none';
+  document.getElementById('dl-error').style.display   = 'none';
+  document.getElementById('dl-jump-result').style.display = 'none';
+}
+
+// Time Jump — show balance at a user-specified point in time
+function dlTimeJump() {
+  if (!_DL._lastP) { dlShowError('Run a calculation first, then use Time Jump.'); return; }
+  var jVal  = parseFloat(document.getElementById('dl-jump-val').value);
+  var jUnit = document.getElementById('dl-jump-unit').value;
+  if (!jVal || jVal <= 0) {
+    document.getElementById('dl-jump-result').style.display = 'none';
+    return;
+  }
+  var jYears = dlToYears(jVal, jUnit);
+  var P = _DL._lastP;
+  var n = _DL._lastN;
+  var bal;
+
+  if (_DL._lastMode === 'fixed') {
+    bal = dlCompound(P, _DL._lastApy / 100, n, jYears);
+  } else {
+    // Walk through segments up to jYears; continue last segment's rate if time exceeds all segments
+    var remaining = jYears;
+    bal = P;
+    var segs = _DL._lastSegments;
+    for (var i = 0; i < segs.length; i++) {
+      if (remaining <= 0) break;
+      var sy = dlToYears(parseFloat(segs[i].duration), segs[i].unit);
+      var use = Math.min(remaining, sy);
+      bal = dlCompound(bal, parseFloat(segs[i].apy) / 100, n, use);
+      remaining -= use;
+    }
+    if (remaining > 0 && segs.length > 0) {
+      var last = segs[segs.length - 1];
+      bal = dlCompound(bal, parseFloat(last.apy) / 100, n, remaining);
+    }
+  }
+
+  var interest  = bal - P;
+  var growthPct = P > 0 ? (interest / P * 100) : 0;
+  var el = document.getElementById('dl-jump-result');
+  el.innerHTML =
+    'At <strong>' + dlFmtYears(jYears) + '</strong>: ' +
+    '<span style="color:var(--gold-l);font-family:\'Cinzel\',serif;font-size:1rem;">' + dlFmt(bal) + '</span>' +
+    ' &nbsp;|&nbsp; +' + dlFmt(interest) + ' interest &nbsp;|&nbsp; +' + growthPct.toFixed(2) + '%';
+  el.style.display = '';
+}
 
 </script>
 <div id="ach-toast"></div>
