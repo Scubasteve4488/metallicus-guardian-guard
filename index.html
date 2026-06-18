@@ -2198,7 +2198,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
   <div class="section">
     <div class="sec-label">DeFi Lab</div>
     <h1 class="page-title">🧪 DeFi Lab</h1>
-    <p class="page-sub">An interactive, risk-free way to learn how DeFi works on XPR Network — using example numbers you control. No real funds, no real transactions. More instruments coming: staking.</p>
+    <p class="page-sub">An interactive, risk-free way to learn how DeFi works on XPR Network — using example numbers you control. No real funds, no real transactions.</p>
 
     <div class="disc" style="border-color:rgba(124,58,237,0.35);background:rgba(124,58,237,0.05);margin-bottom:1.5rem;">
       <span>⚠</span>
@@ -2214,7 +2214,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       <button class="dl-tab-btn" data-instrument="lp" onclick="dlSetInstrument('lp')">🔄 Liquidity Pools</button>
       <button class="dl-tab-btn" data-instrument="farming" onclick="dlSetInstrument('farming')">🌾 Farming</button>
       <button class="dl-tab-btn" data-instrument="borrowing" onclick="dlSetInstrument('borrowing')">📉 Borrowing</button>
-      <span class="dl-tab-coming">🔒 Staking <span class="dl-badge">Soon</span></span>
+      <button class="dl-tab-btn" data-instrument="staking" onclick="dlSetInstrument('staking')">🔒 Staking</button>
     </div>
 
     <div id="dl-panel-lending">
@@ -2847,6 +2847,139 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       </div><!-- end .dl-grid -->
     </div><!-- end dl-panel-borrowing -->
 
+    <!-- ── STAKING INSTRUMENT PANEL ── -->
+    <div id="dl-panel-staking" style="display:none;">
+
+      <!-- Educational explainer -->
+      <div class="card" style="max-width:720px;margin:0 auto 2rem;border-color:rgba(201,146,42,0.25);background:rgba(201,146,42,0.03);">
+        <div class="sec-label" style="justify-content:flex-start;margin-bottom:.6rem;">How Staking Works</div>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">Staking is how you <strong style="color:var(--text);">put your crypto to work</strong> while helping secure the network. On XPR Network, you lock up (stake) tokens to earn <strong style="color:var(--text);">staking rewards</strong> — distributed proportionally to the amount you've staked. The network uses your participation to validate transactions, and you earn a return for doing so.</p>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;"><strong style="color:var(--text);">Short staking</strong> is the primary, flexible option — done through the WebAuth Wallet. You can unstake at any time with a minimum 24-hour lockup before your tokens return. To be eligible for rewards, you need to vote for at least 4 <strong style="color:var(--text);">block producers</strong> (the nodes that validate the network) — this is XPR Network's governance participation requirement. Your choice of block producers does not affect how much you earn. Rewards are claimable every 24 hours and can be restaked.</p>
+        <p style="font-size:.88rem;color:var(--text2);line-height:1.82;margin:0 0 .7rem;">Staking is generally lower-complexity than LP or farming — <strong style="color:var(--text);">one token, no pairing, no impermanent loss</strong>. The main risk is opportunity cost and the 24-hour lockup delay on exit. Reward rates are variable and historically modest.</p>
+        <p style="font-size:.78rem;color:var(--text2);line-height:1.75;margin:0 0 .7rem;padding:.65rem .8rem;background:rgba(255,255,255,0.025);border-radius:8px;border:1px solid rgba(255,255,255,0.06);"><strong style="color:var(--text);">Real XPR staking rates are variable</strong> — historically around 4–8% annually, depending on the total amount staked network-wide and market conditions. There is no fixed guaranteed rate. Set the number below as your own assumption for this simulation, not as a prediction.</p>
+        <p style="font-size:.78rem;color:var(--text3);margin:0;font-style:italic;">Enter an amount, set a reward rate, choose whether you restake rewards (compound) or take them as payouts (simple), and hit Calculate.</p>
+      </div>
+
+      <!-- Short Staking Simulator label -->
+      <div class="sec-label" style="justify-content:flex-start;margin:0 0 1rem;">Short Staking Simulator</div>
+
+      <div class="dl-grid">
+
+        <!-- ── INPUTS ── -->
+        <div class="card" style="align-self:start;">
+          <div class="sec-label" style="justify-content:flex-start;margin-bottom:1rem;">Set Your Staking Scenario</div>
+
+          <div class="dl-field">
+            <label class="dl-label">Token label (example only)</label>
+            <input id="stake-token" class="dl-input" type="text" value="Example Token" maxlength="20" placeholder="e.g. Example Token">
+          </div>
+
+          <div class="dl-field">
+            <label class="dl-label">Amount to stake</label>
+            <input id="stake-principal" class="dl-input" type="number" value="10000" min="0.000001" step="any" placeholder="e.g. 10000">
+          </div>
+
+          <div class="dl-field">
+            <label class="dl-label">Annual reward rate (%) — your assumption; XPR historically ~4–8%</label>
+            <input id="stake-rate" class="dl-input" type="number" value="6" min="0" step="0.01" placeholder="e.g. 6">
+          </div>
+
+          <div class="dl-field">
+            <label class="dl-label">Reward strategy</label>
+            <div class="dl-toggle">
+              <button class="active dl-mode-btn" data-mode="compound" onclick="stakeSetMode('compound')">Restake (compound)</button>
+              <button class="dl-mode-btn" data-mode="simple" onclick="stakeSetMode('simple')">Payout (simple)</button>
+            </div>
+            <div style="font-size:.7rem;color:var(--text3);margin-top:.25rem;" id="stake-mode-hint">Rewards are restaked, compounding over time.</div>
+          </div>
+
+          <!-- Compound frequency (visible in compound mode only) -->
+          <div class="dl-field" id="stake-freq-wrap">
+            <label class="dl-label">Compounding frequency</label>
+            <select id="stake-freq" class="dl-select" style="width:100%;">
+              <option value="daily" selected>Daily (365×/yr) — matches XPR's 24h claim cycle</option>
+              <option value="weekly">Weekly (52×/yr)</option>
+              <option value="monthly">Monthly (12×/yr)</option>
+              <option value="annual">Annually (1×/yr)</option>
+            </select>
+          </div>
+
+          <div class="dl-field">
+            <label class="dl-label">Time period</label>
+            <div style="display:flex;gap:.5rem;">
+              <input id="stake-dur-val" class="dl-input" type="number" value="12" min="0.001" step="any" style="flex:1;width:auto;">
+              <select id="stake-dur-unit" class="dl-select">
+                <option value="days">days</option>
+                <option value="weeks">weeks</option>
+                <option value="months" selected>months</option>
+                <option value="years">years</option>
+              </select>
+            </div>
+          </div>
+
+          <button onclick="stakeCalc()" class="btn btn-g" style="width:100%;justify-content:center;">Calculate →</button>
+          <div id="stake-error" style="display:none;margin-top:.75rem;padding:.6rem .85rem;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px;font-size:.8rem;color:#f87171;"></div>
+        </div>
+
+        <!-- ── RESULTS ── -->
+        <div style="align-self:start;">
+
+          <!-- Empty state -->
+          <div id="stake-empty" class="card" style="text-align:center;padding:2.5rem 1.5rem;">
+            <div style="font-size:2.5rem;margin-bottom:.75rem;">🔒</div>
+            <p style="color:var(--text3);font-size:.85rem;margin:0;">Set your staking scenario and hit <strong style="color:var(--text);">Calculate</strong> to see projected staking rewards.</p>
+          </div>
+
+          <!-- Results -->
+          <div id="stake-results" style="display:none;">
+
+            <!-- Hero total -->
+            <div class="dl-result-box" style="margin-bottom:1rem;">
+              <div class="dl-result-label">Projected Total After Staking</div>
+              <div class="dl-result-num" id="stake-res-total">—</div>
+              <div class="dl-result-label" id="stake-res-token-sub" style="margin-top:.15rem;font-size:.68rem;"></div>
+              <div class="dl-growth" id="stake-res-growth"></div>
+            </div>
+
+            <!-- Breakdown -->
+            <div class="card">
+              <div class="sec-label" style="justify-content:flex-start;margin-bottom:.5rem;font-size:.65rem;">📊 Breakdown</div>
+              <div class="dl-row">
+                <span class="dl-row-label" id="stake-res-staked-lbl">Staked</span>
+                <span class="dl-row-val" id="stake-res-principal">—</span>
+              </div>
+              <div class="dl-row">
+                <span class="dl-row-label" id="stake-res-rewards-lbl">Staking rewards</span>
+                <span class="dl-row-val" style="color:var(--pur-g);" id="stake-res-rewards">—</span>
+              </div>
+              <div class="dl-row" style="padding-top:.45rem;margin-top:.25rem;border-top:1px solid rgba(255,255,255,0.06);">
+                <span class="dl-row-label">Total</span>
+                <span class="dl-row-val" style="color:var(--pur-g);font-size:.86rem;" id="stake-res-total2">—</span>
+              </div>
+              <div class="dl-row">
+                <span class="dl-row-label">Time staked</span>
+                <span class="dl-row-val" id="stake-res-time">—</span>
+              </div>
+              <div class="dl-row">
+                <span class="dl-row-label">Annual rate</span>
+                <span class="dl-row-val" id="stake-res-rate">—</span>
+              </div>
+            </div>
+
+          </div><!-- end stake-results -->
+        </div>
+      </div><!-- end .dl-grid -->
+
+      <!-- Long Staking conceptual note -->
+      <div class="card" style="max-width:720px;margin:2rem auto 0;border-color:rgba(255,255,255,0.07);background:rgba(255,255,255,0.015);">
+        <div class="sec-label" style="justify-content:flex-start;margin-bottom:.6rem;font-size:.65rem;">About Long Staking (XPR Network)</div>
+        <p style="font-size:.85rem;color:var(--text2);line-height:1.82;margin:0 0 .6rem;"><strong style="color:var(--text);">Long staking</strong> is a separate, less common option available through the XPR Network Explorer (not the WebAuth Wallet). You commit tokens for a fixed term of <strong style="color:var(--text);">90 or 365 days</strong>. Once committed, the tokens are locked until the term ends — no early exit.</p>
+        <p style="font-size:.85rem;color:var(--text2);line-height:1.82;margin:0 0 .6rem;">The reward works differently: it is tied to how <strong style="color:var(--text);">XPR's value in Bitcoin satoshis</strong> changes over your lock period. If XPR's satoshi value rises, you may earn a reward. The outcome depends entirely on price performance between deposit and maturity — there is no fixed APY to simulate, which is why the simulator above covers short staking only.</p>
+        <p style="font-size:.78rem;color:var(--text3);margin:0;font-style:italic;">Long staking is an unusual mechanism compared to other DeFi instruments. Understand the lock-up commitment before considering it. This note is for awareness only — not a recommendation.</p>
+      </div>
+
+    </div><!-- end dl-panel-staking -->
+
     <div class="disc mt4"><span>ℹ</span><div>
       <strong style="color:var(--text);">Full Disclaimer — Please Read.</strong>
       <ul style="margin:.6rem 0 0;padding-left:1.2rem;font-size:.82rem;color:var(--text2);line-height:1.85;list-style:disc;">
@@ -3297,7 +3430,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab'];
-const BUILD_VERSION='2026-06-18-BUILD-AG';
+const BUILD_VERSION='2026-06-18-BUILD-AH';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
@@ -7882,7 +8015,7 @@ function dlTimeJump() {
 
 // ── DEFI LAB: Instrument tab switching ────────────────────────────────────
 function dlSetInstrument(name) {
-  ['lending','lp','farming','borrowing'].forEach(function(id) {
+  ['lending','lp','farming','borrowing','staking'].forEach(function(id) {
     var el = document.getElementById('dl-panel-' + id);
     if (el) el.style.display = (id === name) ? '' : 'none';
   });
@@ -8300,6 +8433,82 @@ function borrowCalc() {
   document.getElementById('borrow-results').style.display = '';
   document.getElementById('borrow-empty').style.display   = 'none';
   document.getElementById('borrow-error').style.display   = 'none';
+}
+
+// ── DEFI LAB: Staking Instrument ──────────────────────────────────────────
+var _STAKE = {mode: 'compound'};
+
+function stakeShowError(msg) {
+  var el  = document.getElementById('stake-error');
+  if (el) { el.textContent = msg; el.style.display = ''; }
+  var r   = document.getElementById('stake-results');
+  var emp = document.getElementById('stake-empty');
+  if (r)   r.style.display   = 'none';
+  if (emp) emp.style.display = '';
+}
+
+function stakeSetMode(mode) {
+  _STAKE.mode = mode;
+  document.querySelectorAll('.dl-mode-btn[onclick*="stakeSetMode"]').forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('data-mode') === mode);
+  });
+  var freqWrap = document.getElementById('stake-freq-wrap');
+  if (freqWrap) freqWrap.style.display = mode === 'compound' ? '' : 'none';
+  var hint = document.getElementById('stake-mode-hint');
+  if (hint) hint.textContent = mode === 'compound'
+    ? 'Rewards are restaked, compounding over time.'
+    : 'Rewards are paid out, not restaked — simple linear growth.';
+}
+
+function stakeCalc() {
+  var token      = (document.getElementById('stake-token').value || 'Example Token').trim();
+  var P          = parseFloat(document.getElementById('stake-principal').value);
+  var rate       = parseFloat(document.getElementById('stake-rate').value);
+  var durVal     = parseFloat(document.getElementById('stake-dur-val').value);
+  var durUnit    = document.getElementById('stake-dur-unit').value;
+  var isCompound = _STAKE.mode === 'compound';
+
+  if (!P || P <= 0)             { stakeShowError('Enter a stake amount greater than 0.'); return; }
+  if (isNaN(rate) || rate < 0)  { stakeShowError('Annual reward rate must be 0 or greater.'); return; }
+  if (!durVal || durVal <= 0)   { stakeShowError('Time period must be greater than 0.'); return; }
+
+  var years = dlToYears(durVal, durUnit);
+  var total, rewards, rateLabel;
+
+  if (isCompound) {
+    var freq = document.getElementById('stake-freq').value;
+    var n    = dlFreqToN(freq);
+    total   = dlCompound(P, rate / 100, n, years);
+    rewards = total - P;
+    var effectiveAPY = years > 0.001 ? (Math.pow(total / P, 1 / years) - 1) * 100 : rate;
+    rateLabel = rate.toFixed(2) + '% APR, compounded ' + freq
+      + ' → ' + effectiveAPY.toFixed(3) + '% effective APY';
+  } else {
+    rewards   = P * (rate / 100) * years;
+    total     = P + rewards;
+    rateLabel = rate.toFixed(2) + '% APR — simple, rewards paid out';
+  }
+
+  var growthPct = P > 0 ? (rewards / P) * 100 : 0;
+
+  // Hero
+  document.getElementById('stake-res-total').textContent     = dlFmt(total);
+  document.getElementById('stake-res-token-sub').textContent = token;
+  document.getElementById('stake-res-growth').textContent    = '+' + growthPct.toFixed(2) + '% growth';
+
+  // Breakdown
+  document.getElementById('stake-res-staked-lbl').textContent  = token + ' staked';
+  document.getElementById('stake-res-principal').textContent   = dlFmt(P);
+  document.getElementById('stake-res-rewards-lbl').textContent = isCompound
+    ? 'Staking rewards (restaked — compounded)' : 'Staking rewards (paid out)';
+  document.getElementById('stake-res-rewards').textContent     = '+' + dlFmt(rewards);
+  document.getElementById('stake-res-total2').textContent      = dlFmt(total) + ' ' + token;
+  document.getElementById('stake-res-time').textContent        = dlFmtYears(years);
+  document.getElementById('stake-res-rate').textContent        = rateLabel;
+
+  document.getElementById('stake-results').style.display = '';
+  document.getElementById('stake-empty').style.display   = 'none';
+  document.getElementById('stake-error').style.display   = 'none';
 }
 
 </script>
