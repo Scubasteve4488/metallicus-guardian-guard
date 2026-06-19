@@ -695,15 +695,15 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 </nav>
 <div id="dd-learn-panel" class="nav-dd-panel" onmouseenter="cancelCloseDropdowns()" onmouseleave="scheduleCloseDropdowns()">
   <button class="nav-dd-item" onclick="go('newtoguard');closeAllDropdowns()">🛡 New to GUARD?</button>
-  <button class="nav-dd-item" onclick="go('start');closeAllDropdowns()">🚀 New to XPR?</button>
-  <button class="nav-dd-item" onclick="go('learn');closeAllDropdowns()">🎓 Academy</button>
+  <button class="nav-dd-item" onclick="go('start');closeAllDropdowns()"><img src="./img_xprlogo.png" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> New to XPR?</button>
+  <button class="nav-dd-item" onclick="go('learn');closeAllDropdowns()"><img src="./char_bloxprod.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> Academy</button>
   <button class="nav-dd-item" onclick="go('faq');closeAllDropdowns()">❓ FAQ</button>
 </div>
 <div id="dd-communities-panel" class="nav-dd-panel" onmouseenter="cancelCloseDropdowns()" onmouseleave="scheduleCloseDropdowns()">
   <button class="nav-dd-item" onclick="go('community');closeAllDropdowns()">👥 Community</button>
-  <button class="nav-dd-item" onclick="go('ksto');closeAllDropdowns()">🦊 KSTO</button>
-  <button class="nav-dd-item" onclick="go('cyphergang');closeAllDropdowns()">🔥 CypherGang</button>
-  <button class="nav-dd-item" onclick="go('snipverse');closeAllDropdowns()">🌐 Snipverse</button>
+  <button class="nav-dd-item" onclick="go('ksto');closeAllDropdowns()"><img src="./icon_ksto.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> KSTO</button>
+  <button class="nav-dd-item" onclick="go('cyphergang');closeAllDropdowns()"><img src="./icon_cyphergang.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> CypherGang</button>
+  <button class="nav-dd-item" onclick="go('snipverse');closeAllDropdowns()"><img src="./icon_snipverse.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> Snipverse</button>
 </div>
 
 <div class="mobile-nav" id="mob">
@@ -715,16 +715,16 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
   <button class="mobile-nav-btn mob-acc-hdr" onclick="toggleMobAcc('mob-acc-comm')">👥 Community <span class="mob-acc-caret" id="caret-mob-acc-comm">▾</span></button>
   <div class="mob-acc-body" id="mob-acc-comm" style="display:none;">
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('community')">👥 Community</button>
-    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('ksto')">🦊 KSTO</button>
-    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('cyphergang')">🔥 CypherGang</button>
-    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('snipverse')">🌐 Snipverse</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('ksto')"><img src="./icon_ksto.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> KSTO</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('cyphergang')"><img src="./icon_cyphergang.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> CypherGang</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('snipverse')"><img src="./icon_snipverse.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> Snipverse</button>
   </div>
   <button class="mobile-nav-btn" onclick="closeMenu();go('ecosystem')">🌐 Ecosystem</button>
   <button class="mobile-nav-btn mob-acc-hdr" onclick="toggleMobAcc('mob-acc-learn')">🎓 Learn <span class="mob-acc-caret" id="caret-mob-acc-learn">▾</span></button>
   <div class="mob-acc-body" id="mob-acc-learn" style="display:none;">
     <button class="mobile-nav-btn mob-acc-item" onclick="go('newtoguard');closeMenu()">🛡 New to GUARD?</button>
-    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('start')">🚀 New to XPR?</button>
-    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('learn')">🎓 Academy</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('start')"><img src="./img_xprlogo.png" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> New to XPR?</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('learn')"><img src="./char_bloxprod.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> Academy</button>
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('faq')">❓ FAQ</button>
   </div>
   <button class="mobile-nav-btn" onclick="closeMenu();go('defilab')">⚒️ DeFi Forge</button>
@@ -3422,7 +3422,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab'];
-const BUILD_VERSION='2026-06-18-BUILD-AH';
+const BUILD_VERSION='2026-06-18-BUILD-AI';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
