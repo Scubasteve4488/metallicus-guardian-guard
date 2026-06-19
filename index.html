@@ -4075,7 +4075,7 @@ const ACH_CATS = [
   },
   { id:'lp', label:'LP Achievements', icon:'💧',
     items:[
-      {id:'lp_1', label:'Liquidity Added',  desc:'100 XPR LP equivalent',      icon:'💧'},
+      {id:'lp_1', label:'Liquidity Added',  desc:'First LP position',           icon:'💧'},
       {id:'lp_2', label:'Market Maker',     desc:'250 XPR LP equivalent',      icon:'💧'},
       {id:'lp_3', label:'Depth Provider',   desc:'500 XPR LP equivalent',      icon:'💧'},
       {id:'lp_4', label:'Guardian Pool',    desc:'1,000 XPR LP equivalent',    icon:'💧'},
@@ -4638,7 +4638,7 @@ function onLpLoaded(lpTokens, xprEquivalent) {
       el.style.color = 'var(--gold-l)';
     }
   }
-  if (xprEquivalent >= 100)  unlockAch('lp_1');
+  if (xprEquivalent > 0)     unlockAch('lp_1');
   if (xprEquivalent >= 250)  unlockAch('lp_2');
   if (xprEquivalent >= 500)  unlockAch('lp_3');
   if (xprEquivalent >= 1000) unlockAch('lp_4');
