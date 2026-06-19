@@ -1609,6 +1609,10 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     </details>
     <div id="shard-display" class="shard-section"></div>
     <p style="font-size:.65rem;color:var(--text3);text-align:center;margin-top:.5rem;">Shard progress is stored locally in your browser — it will not transfer between devices.</p>
+    <details id="past-shields-details" style="max-width:540px;margin:.75rem auto 0;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.6rem .85rem;display:none;">
+      <summary style="cursor:pointer;font-size:.72rem;font-weight:600;color:var(--text2);letter-spacing:.04em;user-select:none;list-style:none;display:flex;align-items:center;gap:.4rem;"><span style="font-size:.8rem;">⚔</span> Shields You've Forged</summary>
+      <div id="past-shields-list" style="margin-top:.5rem;"></div>
+    </details>
 
     <!-- S4: REQUIREMENTS PANEL -->
     <div class="div-g" style="margin:2rem 0 1.5rem;"></div>
@@ -3160,6 +3164,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
         <p style="font-size:.74rem;color:var(--text3);margin:.9rem 0 0;border-top:1px solid var(--border);padding-top:.7rem;">On-chain verified leaderboard with GUARD rewards coming with smart contract deployment — Category B</p>
       </div>
     </div>
+    <!-- GUARD Play Rewards — Coming Soon (hidden until smart contract deployment)
     <div style="max-width:600px;margin:1.5rem auto 0;padding:1.2rem 1.4rem;background:rgba(124,58,237,0.07);border:1px solid rgba(124,58,237,0.28);border-radius:14px;">
       <div style="font-family:'Cinzel',serif;font-size:.82rem;color:var(--pur-g);font-weight:700;letter-spacing:.04em;margin-bottom:.5rem;">⚡ GUARD Play Rewards — Coming Soon</div>
       <p style="font-size:.8rem;color:var(--text2);margin:0 0 .9rem;line-height:1.6;">Premium plays, weekly leaderboard prizes, and GUARD token rewards are in development as part of the Guardian smart contract deployment on XPR Network. GUARD holders will receive exclusive game benefits.</p>
@@ -3169,6 +3174,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       </div>
       <p style="font-size:.67rem;color:var(--text3);margin:.9rem 0 0;font-style:italic;">GUARD is a community token on XPR Network. Rewards require smart contract deployment — in development. Not financial advice.</p>
     </div>
+    -->
   </div>
 </div>
 <!-- DEV PANEL — scubasteve44 only, invisible to all other users -->
@@ -3201,6 +3207,8 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       <button onclick="devForge()" style="background:rgba(201,146,42,0.1);border:1px solid rgba(201,146,42,0.35);color:#c9922a;font-family:sans-serif;font-size:.67rem;padding:.28rem .55rem;border-radius:5px;cursor:pointer;">Force Forge</button>
     </div>
     <button onclick="devGrantAll()" style="background:rgba(201,146,42,0.08);border:1px solid rgba(201,146,42,0.25);color:#94a3b8;font-family:sans-serif;font-size:.65rem;padding:.25rem .55rem;border-radius:5px;cursor:pointer;">Grant ALL Shards (all shields)</button>
+    <div style="font-size:.6rem;color:#64748b;margin-top:.4rem;letter-spacing:.05em;">FORGED</div>
+    <div id="dev-forged-list" style="font-size:.65rem;color:#94a3b8;line-height:1.6;"></div>
   </div>
   <!-- WAVE JUMP -->
   <div style="margin-bottom:.8rem;padding-top:.6rem;border-top:1px solid rgba(255,255,255,0.05);">
@@ -3344,13 +3352,15 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
   function devDoReset(){
     ['guard_shards','sg_rank','guard_arena_pb','guard_arena_tut','guard_arena_cp',
-     'guard_achs_all','fg_pb','fg_daily_pb','fg_tutorial_done'].forEach(function(k){
+     'guard_achs_all','fg_pb','fg_daily_pb','fg_tutorial_done',
+     'guard_achievements','guard_pages_visited','ksto_member','ksto_active'].forEach(function(k){
       try{localStorage.removeItem(k);}catch(e){}
     });
     ShardTracker._data={};ShardTracker.save();
     guardianRank=0;guardianBalance=0;
     saveRank();renderShield();renderShardDisplay();
     try{renderProgress(guardianBalance);}catch(e){}
+    try{renderAchievements();}catch(e){}
     var h=window._devHooks;
     if(h&&h.updatePBBar)h.updatePBBar();
     if(typeof FG!=='undefined'){try{FG.pb=0;FG.pbDaily=0;}catch(e){}}
@@ -3961,7 +3971,7 @@ SHIELDS.forEach(function(sh) { for(var i=1;i<=5;i++) getShardImg(sh.name, i); })
 function renderShardDisplay() {
   var el = document.getElementById('shard-display');
   if (!el) return;
-  el.innerHTML = SHIELDS.map(function(sh, si) {
+  el.innerHTML = SHIELDS.slice(1).map(function(sh, si) {
     var forged = ShardTracker.isForged(sh.name);
     var count = ShardTracker.ownedCount(sh.name);
     var readyToForge = (count >= 5 && !forged);
@@ -3980,7 +3990,7 @@ function renderShardDisplay() {
     }
     var hint = si === 0
       ? 'Drops in GUARD Trials (Zone 1) and Siege Guard (Waves 1–4)'
-      : si <= 5
+      : si <= 4
         ? 'Drops in GUARD Trials (Zone '+(si+1)+') and Siege Guard (Wave '+([5,10,15,20,25][si-1])+')'
         : 'Drops in GUARD Trials (Zone 7–8) and Siege Guard (Wave 50)';
     var badge = forged
@@ -4005,6 +4015,34 @@ function renderShardDisplay() {
       '</div>' +
     '</div>';
   }).join('');
+  renderPastShields();
+}
+
+function renderPastShields() {
+  var forged = SHIELDS.slice(1).filter(function(sh) { return ShardTracker.isForged(sh.name); });
+  var details = document.getElementById('past-shields-details');
+  var list = document.getElementById('past-shields-list');
+  if (details && list) {
+    if (forged.length === 0) {
+      details.style.display = 'none';
+    } else {
+      details.style.display = '';
+      list.innerHTML = forged.map(function(sh) {
+        return '<div style="display:flex;align-items:center;gap:.6rem;padding:.35rem 0;border-bottom:1px solid var(--border);">' +
+          '<img src="' + sh.img + '" alt="' + sh.name + '" style="width:26px;height:26px;object-fit:contain;">' +
+          '<span style="font-size:.8rem;font-weight:600;color:var(--text1);">' + sh.name + '</span>' +
+          '<span style="font-size:.7rem;color:var(--text3);">' + sh.title + '</span>' +
+          '<span style="font-size:.65rem;color:#22c55e;margin-left:auto;">⚔ Forged</span>' +
+        '</div>';
+      }).join('');
+    }
+  }
+  var devList = document.getElementById('dev-forged-list');
+  if (devList) {
+    devList.innerHTML = forged.length === 0
+      ? '<span style="color:#94a3b8;">No shields forged yet</span>'
+      : forged.map(function(sh) { return sh.emoji + ' ' + sh.name; }).join(' · ');
+  }
 }
 
 let guardianRank = 0;
@@ -4022,37 +4060,37 @@ const ACH_CATS = [
       {id:'lorekeeper',      label:'Lorekeeper',        desc:'Read the GUARD lore',            icon:'📜'},
       {id:'ecosystem_scout', label:'Ecosystem Scout',   desc:'Explore the Ecosystem tab',      icon:'🧭'},
       {id:'explorer',        label:'Explorer',          desc:'Visit all major pages',          icon:'🗺'},
-      {id:'shielded',        label:'Shielded',          desc:'Complete profile setup',         icon:'🛡'},
+      {id:'shielded',        label:'Shielded',          desc:'Hold at least 10,000 GUARD',     icon:'🛡'},
     ]
   },
   { id:'holding', label:'Holding Achievements', icon:'🪙',
     items:[
-      {id:'holder_1', label:'Holder I',   desc:'Hold or stake 10,000 GUARD (combined)',     icon:'🪙', req:10000},
-      {id:'holder_2', label:'Holder II',  desc:'Hold or stake 200,000 GUARD (combined)',    icon:'🪙', req:200000},
-      {id:'holder_3', label:'Holder III', desc:'Hold or stake 1,500,000 GUARD (combined)',  icon:'🪙', req:1500000},
-      {id:'holder_4', label:'Holder IV',  desc:'Hold or stake 5,000,000 GUARD (combined)',  icon:'🪙', req:5000000},
-      {id:'holder_5', label:'Holder V',   desc:'Hold or stake 10,000,000 GUARD (combined)', icon:'🪙', req:10000000},
-      {id:'holder_6', label:'Holder VI',  desc:'Hold or stake 20,000,000 GUARD (combined)', icon:'🪙', req:20000000},
+      {id:'holder_1', label:'Holder I',   desc:'Hold or stake 10,000 GUARD',     icon:'🪙', req:10000},
+      {id:'holder_2', label:'Holder II',  desc:'Hold or stake 200,000 GUARD',    icon:'🪙', req:200000},
+      {id:'holder_3', label:'Holder III', desc:'Hold or stake 1,500,000 GUARD',  icon:'🪙', req:1500000},
+      {id:'holder_4', label:'Holder IV',  desc:'Hold or stake 5,000,000 GUARD',  icon:'🪙', req:5000000},
+      {id:'holder_5', label:'Holder V',   desc:'Hold or stake 10,000,000 GUARD', icon:'🪙', req:10000000},
+      {id:'holder_6', label:'Holder VI',  desc:'Hold or stake 20,000,000 GUARD', icon:'🪙', req:20000000},
     ]
   },
   { id:'lp', label:'LP Achievements', icon:'💧',
     items:[
-      {id:'lp_1', label:'Liquidity Added',  desc:'First LP position',          icon:'💧'},
-      {id:'lp_2', label:'Market Maker',     desc:'100 XPR LP equivalent',      icon:'💧'},
+      {id:'lp_1', label:'Liquidity Added',  desc:'100 XPR LP equivalent',      icon:'💧'},
+      {id:'lp_2', label:'Market Maker',     desc:'250 XPR LP equivalent',      icon:'💧'},
       {id:'lp_3', label:'Depth Provider',   desc:'500 XPR LP equivalent',      icon:'💧'},
-      {id:'lp_4', label:'Guardian Pool',    desc:'2,000 XPR LP equivalent',    icon:'💧'},
-      {id:'lp_5', label:'Liquidity Pillar', desc:'5,000 XPR LP equivalent',    icon:'💧'},
+      {id:'lp_4', label:'Guardian Pool',    desc:'1,000 XPR LP equivalent',    icon:'💧'},
+      {id:'lp_5', label:'Liquidity Pillar', desc:'2,500 XPR LP equivalent',    icon:'💧'},
     ]
   },
   { id:'staking', label:'Staking Achievements', icon:'🔥',
     items:[
-      {id:'stake_1', label:'Stake I',   desc:'Stake 10,000 GUARD on BlastPad',      icon:'🔥', req:10000},
-      {id:'stake_2', label:'Stake II',  desc:'Stake 50,000 GUARD on BlastPad',      icon:'🔥', req:50000},
-      {id:'stake_3', label:'Stake III', desc:'Stake 150,000 GUARD on BlastPad',     icon:'🔥', req:150000},
-      {id:'stake_4', label:'Stake IV',  desc:'Stake 500,000 GUARD on BlastPad',     icon:'🔥', req:500000},
-      {id:'stake_5', label:'Stake V',   desc:'Stake 1,500,000 GUARD on BlastPad',   icon:'🔥', req:1500000},
-      {id:'stake_6', label:'Stake VI',  desc:'Stake 5,000,000 GUARD on BlastPad',   icon:'🔥', req:5000000},
-      {id:'stake_7', label:'Stake VII', desc:'Stake 10,000,000 GUARD on BlastPad',  icon:'🔥', req:10000000},
+      {id:'stake_1', label:'Stake I',   desc:'Hold or stake 10,000 GUARD on BlastPad',      icon:'🔥', req:10000},
+      {id:'stake_2', label:'Stake II',  desc:'Hold or stake 50,000 GUARD on BlastPad',      icon:'🔥', req:50000},
+      {id:'stake_3', label:'Stake III', desc:'Hold or stake 150,000 GUARD on BlastPad',     icon:'🔥', req:150000},
+      {id:'stake_4', label:'Stake IV',  desc:'Hold or stake 500,000 GUARD on BlastPad',     icon:'🔥', req:500000},
+      {id:'stake_5', label:'Stake V',   desc:'Hold or stake 1,500,000 GUARD on BlastPad',   icon:'🔥', req:1500000},
+      {id:'stake_6', label:'Stake VI',  desc:'Hold or stake 5,000,000 GUARD on BlastPad',   icon:'🔥', req:5000000},
+      {id:'stake_7', label:'Stake VII', desc:'Hold or stake 10,000,000 GUARD on BlastPad',  icon:'🔥', req:10000000},
     ]
   },
   { id:'loyalty', label:'Loyalty Achievements', icon:'⏳',
@@ -4148,8 +4186,8 @@ function calcGuardianScore(bal){
   return Math.min(100,Math.round((hold+bonus+gameBonus)*10)/10);
 }
 function updateHoldingAchs(bal){
-  const combined = bal + Math.max(0, guardianStaked);
-  ACH_CATS.find(c=>c.id==='holding').items.forEach(a=>{ if(combined >= a.req) unlockAch(a.id); });
+  const stk = Math.max(0, guardianStaked);
+  ACH_CATS.find(c=>c.id==='holding').items.forEach(a=>{ if(bal >= a.req || stk >= a.req) unlockAch(a.id); });
 }
 function trackPageVisit(pid){
   try{
@@ -4335,7 +4373,7 @@ function getRankReqs(rankIdx, bal){
       htReq(365),
       stakeReq(7000000),
       shardReq(6),
-      {label:'Complete all shield quests', detail:cs, met:false, soon:true},
+      //{label:'Complete all shield quests', detail:cs, met:false, soon:true},
       {label:'Earn 10 achievements',    detail:cs, met:false, soon:true},
       {label:'Maintain Rank 6 for 90+ days', detail:cs, met:false, soon:true},
     ],
@@ -4600,11 +4638,11 @@ function onLpLoaded(lpTokens, xprEquivalent) {
       el.style.color = 'var(--gold-l)';
     }
   }
-  if (xprEquivalent > 0)    unlockAch('lp_1');
-  if (xprEquivalent >= 100) unlockAch('lp_2');
-  if (xprEquivalent >= 500) unlockAch('lp_3');
-  if (xprEquivalent >= 2000) unlockAch('lp_4');
-  if (xprEquivalent >= 5000) unlockAch('lp_5');
+  if (xprEquivalent >= 100)  unlockAch('lp_1');
+  if (xprEquivalent >= 250)  unlockAch('lp_2');
+  if (xprEquivalent >= 500)  unlockAch('lp_3');
+  if (xprEquivalent >= 1000) unlockAch('lp_4');
+  if (xprEquivalent >= 2500) unlockAch('lp_5');
   renderProgress(guardianBalance);
 }
 
@@ -4755,7 +4793,7 @@ async function fetchStakingData(actor) {
 
 function unlockStakingAchs(staked) {
   const tiers = [10000, 50000, 150000, 500000, 1500000, 5000000, 10000000];
-  tiers.forEach((t, i) => { if (staked >= t) unlockAch('stake_' + (i + 1)); });
+  tiers.forEach((t, i) => { if (staked >= t || guardianBalance >= t) unlockAch('stake_' + (i + 1)); });
 }
 
 // ===== WEBAUTH WALLET INTEGRATION =====
@@ -5875,7 +5913,7 @@ function waveOK(){
   for(let i=g.pus.length-1;i>=0;i--){collectPU(g.pus[i],i);}
   // Auto-collect remaining shards
   if(g.wsShards&&g.wsShards.length){
-    g.wsShards.forEach(()=>{if(typeof ShardTracker!=='undefined')ShardTracker.collectShard();});
+    g.wsShards.forEach(function(s){if(typeof ShardTracker!=='undefined'&&s&&s.shieldName&&s.shardNum)ShardTracker.collectShard(s.shieldName,s.shardNum);});
     g.wsShards=[];
     if(typeof renderShardDisplay!=='undefined')renderShardDisplay();
   }
