@@ -6740,7 +6740,7 @@ var FG = {
   pb: parseInt(localStorage.getItem('fg_pb')||'0'),
   pbDaily: parseInt(localStorage.getItem('fg_daily_pb')||'0'),
   gp: 0,
-  speed: 1.7, gapSize: 172,
+  speed: 1.7, gapSize: 172, _gapScale: 1,
   shield: false, shieldTimer: 0,
   skipNext: false,
   doublePoints: false, dpTimer: 0,
@@ -6814,9 +6814,11 @@ var FG = {
       var vw=window.innerWidth,vh=window.innerHeight;
       cw=vw;ch=vh;
       this.gravity=0.28*(ch/580);this.flapPower=-5.5*(ch/580);
+      this._gapScale=(vw<=768)?(ch/580):1;
       var _z=FG_ZONES[this.zoneIdx||0];cont.style.background=_z?_z.bg:'#000';
     }else{
       this.gravity=0.28;this.flapPower=-5.5;
+      this._gapScale=1;
       var rawW=cont.clientWidth;
       cw=rawW>0?Math.min(480,rawW-16):480;ch=Math.round(580*cw/480);
       if(ch>window.innerHeight-180){ch=window.innerHeight-180;cw=Math.round(480*ch/580);}
@@ -6973,7 +6975,7 @@ var FG = {
     var zoneEndScore = nextZone ? nextZone.score : zone.score + 90;
     var zp = Math.min(1, Math.max(0, (this.score - zone.score) / (zoneEndScore - zone.score)));
     var baseSpeed = zone.spdStart + (zone.spdEnd - zone.spdStart) * zp;
-    this.gapSize = Math.round(zone.gapStart + (zone.gapEnd - zone.gapStart) * zp);
+    this.gapSize = Math.round((zone.gapStart + (zone.gapEnd - zone.gapStart) * zp) * (this._gapScale||1));
 
     // === Power-up timers ===
     if (this.shield) { this.shieldTimer -= 1/60; if (this.shieldTimer <= 0) { this.shield = false; this.shieldTimer = 0; } }
@@ -6996,7 +6998,8 @@ var FG = {
 
     // === Barrier spawn — variable rate per zone, gap-aligned for fairness ===
     if (this.frameCount >= this._nextBarrier) {
-      var minTopH = 50, maxTopH = h - this.gapSize - 50;
+      var gs = this._gapScale || 1;
+      var minTopH = Math.round(50 * gs), maxTopH = h - this.gapSize - minTopH;
       var topH;
       if (this._lastTopH === null) {
         // First barrier of a run: place gap near screen center
@@ -7006,8 +7009,8 @@ var FG = {
         // Going UP requires flapping (~130px reachable in the reaction window with 2 flaps).
         // Going DOWN is free fall (~220px safe).
         var prevCenter = this._lastTopH + this.gapSize / 2;
-        var maxUpShift   = 130; // max the player can reliably flap upward between barriers
-        var maxDownShift = 220; // free-fall is generous
+        var maxUpShift   = Math.round(130 * gs); // scales with gap on mobile fullscreen
+        var maxDownShift = Math.round(220 * gs); // scales with gap on mobile fullscreen
         var lo = Math.max(minTopH + this.gapSize / 2, prevCenter - maxUpShift);
         var hi = Math.min(maxTopH + this.gapSize / 2, prevCenter + maxDownShift);
         if (lo > hi) lo = hi; // degenerate guard
