@@ -780,7 +780,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
   <div class="section">
     <div class="sec-label reveal">Purpose</div>
     <h2 class="sec-title reveal">What is this site?</h2>
-    <p class="page-sub reveal">Stand Guard is a community-built front door to the XPR Network and the wider Metallicus ecosystem — made to help newcomers find their footing and to celebrate the community behind it. Explore the ecosystem, learn how DeFi works hands-on in the DeFi Forge, play games and earn Guardian shield ranks, and discover the communities that make this space what it is. GUARD is the heart of it all — a community token and the banner this site stands behind. Whether you're brand new or a longtime member, there's a place for you here.</p>
+    <p class="page-sub reveal">Stand Guard is a community-built front door to the XPR Network and the wider Metallicus ecosystem — made to help newcomers find their footing and to celebrate the community behind it. Explore the ecosystem, learn how DeFi works hands-on in the DeFi Forge, play games and earn Guardian shield ranks, and discover the communities that make this space what it is. GUARD is the community token this site is built around — the banner it stands behind. Whether you're brand new or a longtime member, there's a place for you here.</p>
     <div class="grid grid-auto mt3">
       <div class="card reveal"><div class="card-icon ci-gold"><img src="./img_xprlogo.png" style="width:100%;height:100%;object-fit:contain;" alt=""></div><h3>New to XPR?</h3><p>Start with the onboarding guide — wallet setup, identity verification, and your first transaction step by step.</p><span class="card-link" onclick="go('start')" style="cursor:pointer;">Start Here</span></div>
       <div class="card reveal"><div class="card-icon ci-pur">🌐</div><h3>Explore the Ecosystem</h3><p>Every tool explained — MetalX, WebAuth, Alcor, Blastpad, LOAN Protocol, SimpleDEX, Metal Pay, and more.</p><span class="card-link" onclick="go('ecosystem')" style="cursor:pointer;">View Ecosystem</span></div>
@@ -814,9 +814,11 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
         <span class="earrow">↓</span>
         <div style="font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:.3rem;">Apps &amp; DeFi</div>
         <div class="erow">
+          <button class="enode-sm" onclick="go('ecosystem');ecoTab('webauth')" style="display:inline-flex;align-items:center;gap:4px;"><img src="./img_webauthlogo.png" style="width:14px;height:14px;border-radius:2px;object-fit:contain;"> WebAuth</button>
           <button class="enode-sm" onclick="go('ecosystem');ecoTab('metalx')" style="display:inline-flex;align-items:center;gap:4px;"><img src="./Metalx.jpg" style="width:14px;height:14px;border-radius:2px;object-fit:contain;"> Metal X</button>
           <button class="enode-sm" onclick="go('ecosystem');ecoTab('simpledex')" style="display:inline-flex;align-items:center;gap:4px;"><img src="./SimpleDex.jpg" style="width:14px;height:14px;border-radius:2px;object-fit:contain;"> SimpleDEX</button>
           <button class="enode-sm" onclick="go('ecosystem');ecoTab('blastpad')" style="display:inline-flex;align-items:center;gap:4px;"><img src="./blastpad.png" style="width:14px;height:14px;border-radius:2px;object-fit:contain;"> BlastPad</button>
+          <button class="enode-sm" onclick="go('ecosystem');ecoTab('alcor')" style="display:inline-flex;align-items:center;gap:4px;"><img src="./Alcor.jpg" style="width:14px;height:14px;border-radius:2px;object-fit:contain;"> Alcor</button>
           <button class="enode-sm" onclick="go('ecosystem');ecoTab('metalpay')" style="display:inline-flex;align-items:center;gap:4px;"><img src="./Metal%20Pay.jpg" style="width:14px;height:14px;border-radius:2px;object-fit:contain;"> Metal Pay</button>
         </div>
         <span class="earrow">↓</span>
@@ -3428,7 +3430,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab'];
-const BUILD_VERSION='2026-06-19-BUILD-AK';
+const BUILD_VERSION='2026-06-19-BUILD-AL';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
 function go(id){
