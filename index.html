@@ -3262,7 +3262,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
   window.devSetRank=function(n){
     guardianRank=n;
-    try{localStorage.setItem('sg_rank',String(n));}catch(e){}
+    wSet('sg_rank',String(n));
     renderShield();
     var names=['Cryptide','Riftforge','Helion','Nebulon','Protonis','Keystone','Aegis'];
     devMsg('Rank set: '+names[n]);
@@ -3279,7 +3279,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     var name=document.getElementById('dev-shield-sel').value;
     ShardTracker.forge(name);
     guardianRank=computeShardRank();
-    try{localStorage.setItem('sg_rank',String(guardianRank));}catch(e){}
+    wSet('sg_rank',String(guardianRank));
     renderShield();renderShardDisplay();
     devMsg('Forged: '+name+' (rank '+guardianRank+')');
   };
@@ -3354,16 +3354,16 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     ['guard_shards','sg_rank','guard_arena_pb','guard_arena_tut','guard_arena_cp',
      'guard_achs_all','fg_pb','fg_daily_pb','fg_tutorial_done',
      'guard_achievements','guard_pages_visited','ksto_member','ksto_active'].forEach(function(k){
-      try{localStorage.removeItem(k);}catch(e){}
+      try{ var _k=wKey(k)||k; localStorage.removeItem(_k); }catch(e){}
     });
-    ShardTracker._data={};ShardTracker.save();
+    ShardTracker._data={};
     guardianRank=0;guardianBalance=0;
     saveRank();renderShield();renderShardDisplay();
     try{renderProgress(guardianBalance);}catch(e){}
     try{renderAchievements();}catch(e){}
     var h=window._devHooks;
     if(h&&h.updatePBBar)h.updatePBBar();
-    if(typeof FG!=='undefined'){try{FG.pb=0;FG.pbDaily=0;}catch(e){}}
+    if(typeof FG!=='undefined'){try{FG.pb=0;FG.pbDaily=0;FG._updatePbDisplay();}catch(e){}}
     if(h){h.stopLoop();h.hideComboBadge();h.setG(h.newG(false));h.drawStatic();}
     devMsg('Reset complete — clean new-user state');
   }
@@ -3829,27 +3829,64 @@ const SHIELDS = [
 ];
 const RANK_THRESHOLDS = SHIELDS.map(s => s.req);
 
+// ===== WALLET-KEYED STORAGE HELPERS =====
+// Returns the wallet-prefixed localStorage key when a wallet is connected, or null when not.
+// All per-wallet progress reads/writes return early / return defaults when this is null.
+function wKey(base) {
+  return (typeof walletActor !== 'undefined' && walletActor) ? base + '_' + walletActor : null;
+}
+function wGet(base, def) {
+  var k = wKey(base); if (!k) return def;
+  try { var v = localStorage.getItem(k); return v !== null ? v : def; } catch(e) { return def; }
+}
+function wGetJSON(base, def) {
+  var k = wKey(base); if (!k) return def;
+  try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(def)); } catch(e) { return def; }
+}
+function wSet(base, val) {
+  var k = wKey(base); if (!k) return;
+  try { localStorage.setItem(k, val); } catch(e) {}
+}
+function wSetJSON(base, val) {
+  var k = wKey(base); if (!k) return;
+  try { localStorage.setItem(k, JSON.stringify(val)); } catch(e) {}
+}
+function wRemove(base) {
+  var k = wKey(base); if (!k) return;
+  try { localStorage.removeItem(k); } catch(e) {}
+}
+
 // ===== SHIELD SHARDS (Part 2) =====
 var ShardTracker = {
-  KEY: 'guard_shards',
+  _baseKey: 'guard_shards',
   _data: null,
+  getKey: function() { return wKey(this._baseKey); },
   load: function() {
-    try { this._data = JSON.parse(localStorage.getItem(this.KEY) || '{}'); } catch(e) { this._data = {}; }
+    var k = this.getKey();
+    if (!k) { this._data = {}; return; }
+    try { this._data = JSON.parse(localStorage.getItem(k) || '{}'); } catch(e) { this._data = {}; }
   },
-  save: function() { try { localStorage.setItem(this.KEY, JSON.stringify(this._data)); } catch(e) {} },
+  save: function() {
+    var k = this.getKey(); if (!k) return;
+    try { localStorage.setItem(k, JSON.stringify(this._data)); } catch(e) {}
+  },
   _get: function(name) {
     if (!this._data) this.load();
     if (!this._data[name]) this._data[name] = {owned:[], forged:false};
     return this._data[name];
   },
   collectShard: function(shieldName, shardNum) {
+    if (!walletActor) return false;
     var s = this._get(shieldName);
     if (s.owned.includes(shardNum)) return false;
     s.owned.push(shardNum); s.owned.sort(function(a,b){return a-b;});
     this.save();
     return true;
   },
-  forge: function(name) { var s=this._get(name); s.forged=true; this.save(); },
+  forge: function(name) {
+    if (!walletActor) return;
+    var s=this._get(name); s.forged=true; this.save();
+  },
   isForged: function(n) { return this._get(n).forged===true; },
   ownedCount: function(n) { return this._get(n).owned.length; },
   hasShard: function(n, num) { return this._get(n).owned.includes(num); },
@@ -4127,12 +4164,13 @@ const ACH_CATS = [
 ];
 
 function getUnlockedAchs(){
-  try{ return JSON.parse(localStorage.getItem('guard_achievements')||'[]'); }catch(e){ return []; }
+  return wGetJSON('guard_achievements', []);
 }
 function saveUnlockedAchs(arr){
-  try{ localStorage.setItem('guard_achievements', JSON.stringify(arr)); }catch(e){}
+  wSetJSON('guard_achievements', arr);
 }
 function unlockAch(id){
+  if (!walletActor) return;
   const arr = getUnlockedAchs();
   if(!arr.includes(id)){
     arr.push(id);
@@ -4143,7 +4181,7 @@ function unlockAch(id){
   }
 }
 function selfVerify(achId, lsKey){
-  try{ localStorage.setItem(lsKey, 'true'); }catch(e){}
+  wSet(lsKey, 'true');
   unlockAch(achId);
 }
 let achToastTimer = null;
@@ -4183,7 +4221,7 @@ function calcGuardianScore(bal){
   }
   // Game bonus: up to 5% based on arena all-time best score (50,000 pts = 5%)
   let gameBonus=0;
-  try{const pb=JSON.parse(localStorage.getItem('guard_arena_pb')||'{}');gameBonus=Math.min(5,(pb.score||0)/10000);}catch(e){}
+  try{const pb=wGetJSON('guard_arena_pb',{});gameBonus=Math.min(5,(pb.score||0)/10000);}catch(e){}
   return Math.min(100,Math.round((hold+bonus+gameBonus)*10)/10);
 }
 function updateHoldingAchs(bal){
@@ -4191,9 +4229,10 @@ function updateHoldingAchs(bal){
   ACH_CATS.find(c=>c.id==='holding').items.forEach(a=>{ if(bal >= a.req || stk >= a.req) unlockAch(a.id); });
 }
 function trackPageVisit(pid){
+  if (!walletActor) return;
   try{
-    const v = JSON.parse(localStorage.getItem('guard_pages_visited')||'[]');
-    if(!v.includes(pid)){ v.push(pid); localStorage.setItem('guard_pages_visited', JSON.stringify(v)); }
+    const v = wGetJSON('guard_pages_visited', []);
+    if(!v.includes(pid)){ v.push(pid); wSetJSON('guard_pages_visited', v); }
     const major = ['home','guard','start','ecosystem','learn','shields','faq','community'];
     if(major.every(p => v.includes(p))) unlockAch('explorer');
   }catch(e){}
@@ -4430,7 +4469,7 @@ function computeShardRank(){
 async function loadRank(){
   // Rank is always derived from shard forge state, not balance
   guardianRank = computeShardRank();
-  try{localStorage.setItem('sg_rank',String(guardianRank));}catch(e){}
+  wSet('sg_rank', String(guardianRank));
   try{
     const h = await window.storage.get('guardian_handle');
     if(h && h.value){ const el=document.getElementById('guardian-handle'); if(el) el.value=h.value; }
@@ -4439,10 +4478,12 @@ async function loadRank(){
   renderTimeline();
   renderShardDisplay();
   renderAchievements();
-  try{if(localStorage.getItem('ksto_member')==='true') unlockAch('com_ksto1');}catch(e){}
-  try{if(localStorage.getItem('ksto_active')==='true') unlockAch('com_ksto2');}catch(e){}
+  if(walletActor){
+    try{if(wGet('ksto_member',null)==='true') unlockAch('com_ksto1');}catch(e){}
+    try{if(wGet('ksto_active',null)==='true') unlockAch('com_ksto2');}catch(e){}
+  }
 }
-async function saveRank(){ try{ await window.storage.set('guardian_rank', String(guardianRank)); }catch(e){} try{localStorage.setItem('sg_rank',String(guardianRank));}catch(e){} }
+async function saveRank(){ try{ await window.storage.set('guardian_rank', String(guardianRank)); }catch(e){} wSet('sg_rank', String(guardianRank)); }
 
 function renderShield(){
   const s = SHIELDS[guardianRank];
@@ -4979,7 +5020,7 @@ function manualForge(shieldName) {
   unlockAch('forge_' + shieldName.toLowerCase());
   // Rank advances when a shield is forged
   var newRank = computeShardRank();
-  if (newRank !== guardianRank) { guardianRank = newRank; try{localStorage.setItem('sg_rank',String(guardianRank));}catch(e){} renderShield(); }
+  if (newRank !== guardianRank) { guardianRank = newRank; wSet('sg_rank', String(guardianRank)); renderShield(); }
   triggerShieldForge(shieldName);
 }
 async function walletConnect() {
@@ -5151,6 +5192,23 @@ function onWalletConnected(actor) {
   if (rankDisplay) rankDisplay.style.display = 'block';
   if (actorShield) actorShield.textContent = '@' + actor;
 
+  // Load this wallet's keyed progress (clean default if first-time wallet)
+  ShardTracker.load();
+  guardianRank = computeShardRank();
+  renderShield();
+  renderTimeline();
+  renderShardDisplay();
+  renderAchievements();
+  if (typeof FG !== 'undefined') {
+    try {
+      FG.pb = parseInt(wGet('fg_pb', '0') || '0');
+      FG.pbDaily = parseInt(wGet('fg_daily_pb', '0') || '0');
+      FG._updatePbDisplay();
+    } catch(e) {}
+  }
+  var _h = window._devHooks;
+  if (_h && _h.updatePBBar) _h.updatePBBar();
+
   // Unlock first steps achievement
   if (typeof unlockAch === 'function') unlockAch('first_steps');
 
@@ -5170,7 +5228,7 @@ function onGuardBalanceLoaded(actor, bal) {
 
   // Rank is always from shard progression — balance shows eligibility only
   const shardRank = computeShardRank();
-  if (shardRank !== guardianRank) { guardianRank = shardRank; try{localStorage.setItem('sg_rank',String(guardianRank));}catch(e){} renderShield(); }
+  if (shardRank !== guardianRank) { guardianRank = shardRank; wSet('sg_rank', String(guardianRank)); renderShield(); }
   const eligibleRank = getRankForBalance(bal);
   const rankUnlockEl = document.getElementById('shield-rank-unlock');
   if (rankUnlockEl) {
@@ -5201,8 +5259,8 @@ function onGuardBalanceLoaded(actor, bal) {
   trackGuardianInHall(actor, guardianRank);
 
   // Restore self-verified community achievements
-  try{if(localStorage.getItem('ksto_member')==='true') unlockAch('com_ksto1');}catch(e){}
-  try{if(localStorage.getItem('ksto_active')==='true') unlockAch('com_ksto2');}catch(e){}
+  try{if(wGet('ksto_member',null)==='true') unlockAch('com_ksto1');}catch(e){}
+  try{if(wGet('ksto_active',null)==='true') unlockAch('com_ksto2');}catch(e){}
 
   // Fire on-chain data queries (LP position, hold time, NFT holdings)
   if (walletActor) fetchOnChainData(walletActor);
@@ -5229,10 +5287,18 @@ function onWalletDisconnected() {
   if (prompt) prompt.style.display = 'block';
   if (rankDisplay) rankDisplay.style.display = 'none';
 
-  // Reset rank and balance state
+  // Reset rank and balance state — clear in-memory shard data so nothing forged shows
+  ShardTracker._data = {};
   guardianRank = 0;
   guardianBalance = 0;
   saveRank();
+
+  // Reset forge game PBs in memory (display shows 0 while logged out)
+  if (typeof FG !== 'undefined') {
+    try { FG.pb = 0; FG.pbDaily = 0; FG._updatePbDisplay(); } catch(e) {}
+  }
+  var _h2 = window._devHooks;
+  if (_h2 && _h2.updatePBBar) _h2.updatePBBar();
 
   // Clear all balance/status displays
   const shieldBal = document.getElementById('shield-guard-bal');
@@ -5255,9 +5321,10 @@ function onWalletDisconnected() {
   renderShield();
   renderCard();
   renderTimeline();
+  renderShardDisplay();
   renderProgress(0);
 
-  // Achievements are permanent — once earned they persist across sessions and wallet changes
+  // Re-render achievements — shows empty while no wallet connected (wallet-keyed storage)
   renderAchievements();
   updateStartStep4();
   updatePlaysUI();
@@ -5403,7 +5470,7 @@ function buildWave(w,rng){
 
 // ─── New game state ───────────────────────────────────────────────────────────
 function newG(daily){
-  var _sgFallback=0;try{var _sgStr=localStorage.getItem('sg_rank');if(_sgStr!==null)_sgFallback=Math.min(6,Math.max(0,parseInt(_sgStr)||0));}catch(e){}
+  var _sgFallback=0;try{var _sgStr=wGet('sg_rank',null);if(_sgStr!==null)_sgFallback=Math.min(6,Math.max(0,parseInt(_sgStr)||0));}catch(e){}
   const rank=Math.max(Math.min(6,guardianRank),_sgFallback);
   const cfg=RC[rank];
   const dseed=parseInt(new Date().toISOString().slice(0,10).replace(/-/g,''));
@@ -5447,7 +5514,7 @@ function arenaInit(){
   coinImg=new Image();coinLoaded=false;
   coinImg.onload=()=>{coinLoaded=true;if(g&&['START','TUT'].includes(g.phase))drawStatic();};
   coinImg.src='./g_token.jpg';
-  const tutDone=localStorage.getItem('guard_arena_tut');
+  const tutDone=wGet('guard_arena_tut', null);
   g=newG(false);
   if(!tutDone){g.phase='TUT';g.tutStep=1;}
   drawStatic();updatePBBar();
@@ -5511,14 +5578,14 @@ function tapTut(cx,cy){
   if(s>1&&inBtn(cx,cy,52,27,80,30)){g.tutStep=s-1;drawStatic();return;}
   if(s===1){
     if(inBtn(cx,cy,CX+60,427,110,40)){g.tutStep=2;drawStatic();}
-    else if(inBtn(cx,cy,CX-70,427,130,40)){localStorage.setItem('guard_arena_tut','1');g.phase='START';drawStatic();}
+    else if(inBtn(cx,cy,CX-70,427,130,40)){wSet('guard_arena_tut','1');g.phase='START';drawStatic();}
   } else if(s===2){
     if(inBtn(cx,cy,CX,440,160,40)){g.tutStep=3;drawStatic();}
   } else if(s===3){
     // PLAY: rrect(CX-122,422,114,40) → center(CX-65,442)
-    if(inBtn(cx,cy,CX-65,442,114,40)){localStorage.setItem('guard_arena_tut','1');startGame(false);}
+    if(inBtn(cx,cy,CX-65,442,114,40)){wSet('guard_arena_tut','1');startGame(false);}
     // DAILY: rrect(CX+8,422,114,40) → center(CX+65,442)
-    else if(inBtn(cx,cy,CX+65,442,114,40)){localStorage.setItem('guard_arena_tut','1');startGame(true);}
+    else if(inBtn(cx,cy,CX+65,442,114,40)){wSet('guard_arena_tut','1');startGame(true);}
   }
 }
 function tapStart(cx,cy){
@@ -5526,7 +5593,7 @@ function tapStart(cx,cy){
 }
 function tapPause(cx,cy){
   if(inBtn(cx,cy,CX,374,180,44))togglePause();
-  else if(inBtn(cx,cy,CX,425,180,38)){localStorage.removeItem('guard_arena_cp');stopLoop();g=newG(false);drawStatic();}
+  else if(inBtn(cx,cy,CX,425,180,38)){wRemove('guard_arena_cp');stopLoop();g=newG(false);drawStatic();}
 }
 function tapGO(cx,cy){
   if(g.goTimer>0)return;
@@ -5537,7 +5604,7 @@ function tapGO(cx,cy){
     // PLAY AGAIN: rrect(CX-90,384,180,52) → center(CX,410)
     if(inBtn(cx,cy,CX,410,180,52)){checkAndUsePlay('ws',function(){startGame(false);});return;}
     // MAIN MENU: rrect(CX-90,448,180,46) → center(CX,471)
-    if(inBtn(cx,cy,CX,471,180,46)){localStorage.removeItem('guard_arena_cp');stopLoop();g=newG(false);drawStatic();return;}
+    if(inBtn(cx,cy,CX,471,180,46)){wRemove('guard_arena_cp');stopLoop();g=newG(false);drawStatic();return;}
   } else {
     // PLAY AGAIN: rrect(CX-90,340,180,52) → center(CX,366)
     if(inBtn(cx,cy,CX,366,180,52)){checkAndUsePlay('ws',function(){startGame(false);});return;}
@@ -5822,9 +5889,9 @@ function update(dt){
     updPtl(dt);
     if(g.dyingT<=0){
       g.phase='GAME_OVER';g.goTimer=2.0;
-      const pb=JSON.parse(localStorage.getItem('guard_arena_pb')||'{}');
+      const pb=wGetJSON('guard_arena_pb',{});
       g._nb=g.score>(pb.score||0);
-      if(g._nb)localStorage.setItem('guard_arena_pb',JSON.stringify({score:g.score,wave:g.wave}));
+      if(g._nb)wSetJSON('guard_arena_pb',{score:g.score,wave:g.wave});
       g._gp=Math.floor(g.score/5);
       updatePBBar();
     }
@@ -6565,7 +6632,7 @@ function drawStart(){
   ctx.textAlign='center';ctx.textBaseline='alphabetic';
   ctx.shadowBlur=12;ctx.shadowColor='#c9922a';ctx.fillStyle='#e8b84b';ctx.font='bold '+szTitle+'px "Cinzel Decorative",Cinzel,serif';ctx.fillText('SIEGE GUARD',CX,yTitle);
   ctx.shadowBlur=0;ctx.fillStyle='#b78df5';ctx.font=szRank+'px Cinzel,serif';ctx.fillText(rn+' — '+cfg.hp+' HP'+(cfg.abs&&cfg.abs.length?' — '+(cfg.abs.length===1?AB_NAMES[cfg.abs[0]]||cfg.abs[0]:cfg.abs.length+' abilities'):''),CX,yRank);
-  const pb=JSON.parse(localStorage.getItem('guard_arena_pb')||'{}');
+  const pb=wGetJSON('guard_arena_pb',{});
   ctx.fillStyle='rgba(255,255,255,0.55)';ctx.font=szHint+'px Cinzel,serif';ctx.fillText(pb.score?'Best: Wave '+pb.wave+' · Score '+pb.score:'No record yet',CX,yHint2);
   // PLAY button
   ctx.fillStyle='rgba(201,146,42,0.18)';rrect(CX-90,playTop,180,48,8);ctx.fill();ctx.strokeStyle='#c9922a';ctx.lineWidth=1.5;rrect(CX-90,playTop,180,48,8);ctx.stroke();
@@ -6584,7 +6651,7 @@ function drawGameOver(nb,gp){
   if(g.perfectWaves>0&&ny<=300){ctx.fillStyle='#22c55e';ctx.font='15px Cinzel,serif';ctx.fillText('🌟 '+g.perfectWaves+' perfect wave'+(g.perfectWaves!==1?'s':''),CX,ny);ny+=20;}
   const earned=g.achs.filter(k=>ACH_NAMES[k]);
   if(earned.length){
-    const allAchs=JSON.parse(localStorage.getItem('guard_achs_all')||'[]');
+    const allAchs=wGetJSON('guard_achs_all',[]);
     earned.forEach(k=>{
       if(ny>300)return;
       const isNew=!allAchs.includes(k);
@@ -6595,7 +6662,7 @@ function drawGameOver(nb,gp){
       ctx.fillText(ACH_DESC[k]||'',CX,ny);ny+=16;
     });
     const fresh=earned.filter(k=>!allAchs.includes(k));
-    if(fresh.length){localStorage.setItem('guard_achs_all',JSON.stringify([...new Set([...allAchs,...fresh])]));}
+    if(fresh.length){wSetJSON('guard_achs_all',[...new Set([...allAchs,...fresh])]);}
   }
   if(nb&&ny<=300){ctx.fillStyle='#22c55e';ctx.font='bold 16px "Cinzel Decorative",Cinzel,serif';ctx.shadowBlur=10;ctx.shadowColor='#22c55e';ctx.fillText('✦ NEW PERSONAL BEST ✦',CX,ny);ctx.shadowBlur=0;}
   // Waiting indicator during stats-reveal period
@@ -6630,7 +6697,7 @@ function drawGameOver(nb,gp){
 }
 
 // ─── Personal best bar ────────────────────────────────────────────────────────
-function updatePBBar(){const el=document.getElementById('arena-pb-display');if(!el)return;const pb=JSON.parse(localStorage.getItem('guard_arena_pb')||'{}');el.textContent=pb.score?'Wave '+pb.wave+' · '+pb.score+' pts':'No record yet — play to set one!';}
+function updatePBBar(){const el=document.getElementById('arena-pb-display');if(!el)return;const pb=wGetJSON('guard_arena_pb',{});el.textContent=pb.score?'Wave '+pb.wave+' · '+pb.score+' pts':'No record yet — play to set one!';}
 
 document.addEventListener('visibilitychange',function(){
   if(!document.hidden)return;
@@ -6742,8 +6809,8 @@ var FG = {
   canvas: null, ctx: null, animFrame: null,
   started: false, dead: false, paused: false,
   frameCount: 0, score: 0,
-  pb: parseInt(localStorage.getItem('fg_pb')||'0'),
-  pbDaily: parseInt(localStorage.getItem('fg_daily_pb')||'0'),
+  pb: 0,
+  pbDaily: 0,
   gp: 0,
   speed: 1.7, gapSize: 172, _gapScale: 1,
   shield: false, shieldTimer: 0,
@@ -6901,7 +6968,7 @@ var FG = {
       var tutBtnY = h * 0.88;
       var hit = !e; // spacebar always advances
       if (sx !== null && sx >= w/2-100 && sx <= w/2+100 && sy >= tutBtnY-22 && sy <= tutBtnY+22) hit = true;
-      if (hit) { localStorage.setItem('fg_tutorial_done','1'); this.showTut = false; }
+      if (hit) { wSet('fg_tutorial_done','1'); this.showTut = false; }
       return;
     }
     // Start screen
@@ -7179,9 +7246,9 @@ var FG = {
       });
     }
     if (this.isDaily) {
-      if (this.score > this.pbDaily) { this.pbDaily = this.score; localStorage.setItem('fg_daily_pb', String(this.pbDaily)); }
+      if (this.score > this.pbDaily) { this.pbDaily = this.score; wSet('fg_daily_pb', String(this.pbDaily)); }
     } else {
-      if (this.score > this.pb) { this.pb = this.score; localStorage.setItem('fg_pb', String(this.pb)); }
+      if (this.score > this.pb) { this.pb = this.score; wSet('fg_pb', String(this.pb)); }
     }
     this._updatePbDisplay();
   },
