@@ -505,6 +505,9 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
   #wallet-btn{display:none;}
   #arena-container{overflow:hidden;}
   #flappy-game-container{overflow:hidden;}
+  .foot-top{grid-template-columns:1fr;}
+  .foot-bottom{flex-direction:column;align-items:flex-start;}
+  footer{padding-bottom:80px;}
 }
 /* FULLVIEW GAME MODE (CSS-only screen takeover — no fullscreen API) */
 body.game-fullview #ticker-bar,body.game-fullview #nav,body.game-fullview #mobile-bottom-nav{display:none!important;}
@@ -3410,13 +3413,12 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
   </div>
 </div>
 
-<!-- FOOTER TEMPLATE -->
-<template id="foot-tpl">
-<footer>
+<!-- FOOTER -->
+<footer id="site-footer">
   <div class="foot-inner">
     <div class="foot-top">
       <div>
-        <div class="foot-brand"><img src="./img_coin.jpg?v=2" alt="GUARD"><span>Metallicus Guardian</span></div>
+        <div class="foot-brand"><img src="./img_coin.jpg?v=2" alt="GUARD"><span>Stand Guard</span></div>
         <p class="foot-desc">A community-built educational resource for the Metallicus and XPR Network ecosystem. Not affiliated with or endorsed by Metallicus.</p>
       </div>
       <div class="foot-col">
@@ -3445,13 +3447,15 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       </div>
     </div>
     <div class="foot-bottom">
-      <p class="foot-disc">Metallicus Guardian (GUARD) is an independent, community-created project. It is not affiliated with, sponsored by, endorsed by, or officially connected to Metallicus, XPR Network, WebAuth, Metal Blockchain, or any other product, company, or project referenced on this site. All product names, logos, and trademarks are the property of their respective owners and are used here for identification and educational purposes only (nominative use). This site is an unofficial educational resource. Nothing here is financial advice. Crypto assets are highly speculative — do your own research.</p>
+      <p class="foot-disc">Stand Guard (GUARD) is an independent, community-created project. It is not affiliated with, sponsored by, endorsed by, or officially connected to Metallicus, XPR Network, WebAuth, Metal Blockchain, or any other product, company, or project referenced on this site. All product names, logos, and trademarks are the property of their respective owners and are used here for identification and educational purposes only (nominative use). This site is an unofficial educational resource. Nothing here is financial advice. Crypto assets are highly speculative — do your own research.</p>
       <p style="font-size:.72rem;color:var(--text3);text-align:center;font-style:italic;margin-top:.4rem;">⚠ Community educational resource — not affiliated with or officially endorsed by Metallicus or XPR Network.</p>
-      <span style="font-size:.7rem;color:var(--text3);white-space:nowrap;">© 2026 GUARD Community</span>
+      <div style="display:flex;flex-direction:column;gap:.2rem;">
+        <span style="font-size:.7rem;color:var(--text3);white-space:nowrap;">© 2026 Stand Guard</span>
+        <span style="font-size:.65rem;color:var(--text3);font-style:italic;">Actively maintained and continuously improved.</span>
+      </div>
     </div>
   </div>
 </footer>
-</template>
 
 <script>
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab'];
