@@ -352,7 +352,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 0
 /* ── FORGE OVERLAY ── */
 #shield-forge-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.97);flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;padding:1.5rem;}
 #shield-forge-overlay.active{display:flex;}
-#forge-anim-canvas{display:block;border-radius:12px;}
+#forge-anim-canvas{display:block;border-radius:12px;mix-blend-mode:screen;}
 @keyframes forgePulse{0%,100%{opacity:.4}50%{opacity:.8}}
 /* ── PROGRESS ── */
 .progress-track{background:var(--bg4);border-radius:8px;height:7px;overflow:hidden;margin:.35rem 0;}
@@ -485,7 +485,7 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 @keyframes pbDot{0%,100%{opacity:1;}50%{opacity:.3;}}
 /* LOADING SCREEN */
 #loading-screen{position:fixed;inset:0;z-index:99999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;transition:opacity .5s ease;}
-#loading-shield{width:110px;height:110px;object-fit:contain;animation:loadingPulse 1.8s ease-in-out infinite;}
+#loading-shield{width:110px;height:110px;object-fit:contain;animation:loadingPulse 1.8s ease-in-out infinite;mix-blend-mode:screen;}
 @keyframes loadingPulse{0%,100%{filter:drop-shadow(0 0 8px rgba(201,146,42,.25));transform:scale(1);}50%{filter:drop-shadow(0 0 32px rgba(201,146,42,.75));transform:scale(1.07);}}
 #loading-bar-wrap{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.08);}
 #loading-bar{height:100%;width:0%;background:linear-gradient(to right,#c9922a,#e8b84b);transition:width 1.5s linear;}
@@ -552,7 +552,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 .spotlight-title{font-family:'Cinzel',serif;font-size:1.25rem;color:var(--gold-l);margin-bottom:.35rem;}
 .spotlight-sub{font-size:.85rem;color:var(--text2);margin-bottom:1.5rem;line-height:1.65;}
 .spotlight-entry{display:flex;gap:1.5rem;align-items:flex-start;background:rgba(0,0,0,0.25);border:1px solid rgba(201,146,42,0.18);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem;}
-.spotlight-shield{width:90px;height:90px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 0 14px rgba(201,146,42,0.55));}
+.spotlight-shield{width:90px;height:90px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 0 14px rgba(201,146,42,0.55));mix-blend-mode:screen;}
 .spotlight-handle{font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold-l);margin-bottom:.25rem;}
 .spotlight-role{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--pur-g);margin-bottom:.6rem;font-weight:600;}
 .spotlight-desc{font-size:.88rem;color:var(--text2);line-height:1.65;}
@@ -662,7 +662,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 </div>
 <!-- LOADING SCREEN -->
 <div id="loading-screen">
-  <img src="./shield_aegis.png" id="loading-shield" alt="GUARD">
+  <img src="./proton key.png" id="loading-shield" alt="GUARD">
   <div id="loading-bar-wrap"><div id="loading-bar"></div></div>
 </div>
 
@@ -1765,7 +1765,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       <h2 class="spotlight-title">Guardians Making a Difference</h2>
       <p class="spotlight-sub">Each week we highlight a Guardian making a difference in the XPR Network ecosystem.</p>
       <div class="spotlight-entry">
-        <img src="./shield_aegis.png" class="spotlight-shield" alt="Aegis Shield">
+        <img src="./Aegis shield.png" class="spotlight-shield" alt="Aegis Shield">
         <div>
           <div class="spotlight-handle">@scubasteve4488</div>
           <div class="spotlight-role">Creator of GUARD · Founding Guardian · Aegis Rank</div>
@@ -3869,8 +3869,8 @@ const SHIELDS = [
   {name:'Helion',    title:'Sentinel',   emoji:'☀️', img:'./shield_helion.png',    req:200000,     lore:'Power under control. Light, guidance, and standing watch — actively protecting others, not just yourself.',                 abilityDesc:'Time Slow — halves enemy speed for 5s'},
   {name:'Nebulon',   title:'Ascendant',  emoji:'🌌', img:'./shield_nebulon.png',   req:1500000,    lore:'Cosmic scale begins. Mysterious and advanced — risen beyond the basic defender into something far greater.',                abilityDesc:'Orbital Strike — destroys non-boss enemies'},
   {name:'Protonis',  title:'Architect',  emoji:'⚛️', img:'./shield_protonis.png',  req:5000000,    lore:'The shield most tied to XPR Network. Technological and intentional — elite ecosystem knowledge and standing.',             abilityDesc:'Chain Lightning — electric arc chains through 10 enemies'},
-  {name:'Keystone',  title:'Gatekeeper', emoji:'🔑', img:'./shield_keystone.png',  req:10000000,   lore:'Near-final form. Custodian energy — keeper of access, protector of keys, guardian of the gate.',                          abilityDesc:'Fortify — temporary armor and bonus HP'},
-  {name:'Aegis',     title:'Guardian',   emoji:'🛡️', img:'./shield_aegis.png',     req:20000000,   lore:'God-tier. The final evolution — vault, protection, eternity. The fusion of all shields. To bear Aegis is to BE the Guardian.', abilityDesc:'Shield Bash + all abilities unlocked'},
+  {name:'Keystone',  title:'Gatekeeper', emoji:'🔑', img:'./keystone.png',         req:10000000,   lore:'Near-final form. Custodian energy — keeper of access, protector of keys, guardian of the gate.',                          abilityDesc:'Fortify — temporary armor and bonus HP'},
+  {name:'Aegis',     title:'Guardian',   emoji:'🛡️', img:'./Aegis shield.png',     req:20000000,   lore:'God-tier. The final evolution — vault, protection, eternity. The fusion of all shields. To bear Aegis is to BE the Guardian.', abilityDesc:'Shield Bash + all abilities unlocked'},
 ];
 const RANK_THRESHOLDS = SHIELDS.map(s => s.req);
 
