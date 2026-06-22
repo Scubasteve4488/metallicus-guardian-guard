@@ -676,17 +676,17 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     <button class="nav-arrow" onclick="scrollNav(-180)">&#8249;</button>
     <div id="navScroll">
       <button class="nav-btn active" id="t-home" onclick="go('home')">Home</button>
-      <button class="nav-btn" id="t-guard" onclick="go('guard')">🛡 GUARD</button>
-      <button class="nav-btn" id="t-arena" onclick="go('arena')">⚔ Stand Guard</button>
-      <button class="nav-btn" id="t-shields" onclick="go('shields')">🛡 Shields</button>
-      <div class="nav-dropdown" id="dd-communities" onmouseenter="openDropdown('dd-communities')" onmouseleave="scheduleCloseDropdowns()">
-        <button class="nav-btn nav-dropdown-btn" id="t-communities-group" onclick="toggleDropdown('dd-communities',event)">Community <span class="dd-caret">▾</span></button>
-      </div>
       <button class="nav-btn" id="t-ecosystem" onclick="go('ecosystem')">Ecosystem</button>
       <div class="nav-dropdown" id="dd-learn" onmouseenter="openDropdown('dd-learn')" onmouseleave="scheduleCloseDropdowns()">
         <button class="nav-btn nav-dropdown-btn" id="t-learn-group" onclick="toggleDropdown('dd-learn',event)">Learn <span class="dd-caret">▾</span></button>
       </div>
       <button class="nav-btn" id="t-defilab" onclick="go('defilab')">⚒️ DeFi Forge</button>
+      <div class="nav-dropdown" id="dd-communities" onmouseenter="openDropdown('dd-communities')" onmouseleave="scheduleCloseDropdowns()">
+        <button class="nav-btn nav-dropdown-btn" id="t-communities-group" onclick="toggleDropdown('dd-communities',event)">Community <span class="dd-caret">▾</span></button>
+      </div>
+      <button class="nav-btn" id="t-guard" onclick="go('guard')">🛡 GUARD</button>
+      <button class="nav-btn" id="t-arena" onclick="go('arena')">⚔ Stand Guard</button>
+      <button class="nav-btn" id="t-shields" onclick="go('shields')">🛡 Shields</button>
       <button class="nav-btn" id="t-vision" onclick="go('vision')">✨ The Vision</button>
       <button class="nav-btn" id="t-creator" onclick="go('creator')">Creator</button>
     </div>
@@ -712,16 +712,6 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 <div class="mobile-nav" id="mob">
   <button onclick="closeMenu()" style="position:absolute;top:1rem;right:1.5rem;background:none;border:none;color:var(--gold-l);font-size:1.8rem;line-height:1;cursor:pointer;">✕</button>
   <button class="mobile-nav-btn" onclick="go('home');closeMenu()">🏠 Home</button>
-  <button class="mobile-nav-btn" onclick="go('guard');closeMenu()">🛡 GUARD</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('arena')">⚔ Stand Guard</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('shields')">🛡 Shields</button>
-  <button class="mobile-nav-btn mob-acc-hdr" onclick="toggleMobAcc('mob-acc-comm')">👥 Community <span class="mob-acc-caret" id="caret-mob-acc-comm">▾</span></button>
-  <div class="mob-acc-body" id="mob-acc-comm" style="display:none;">
-    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('community')">👥 Community</button>
-    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('ksto')"><img src="./icon_ksto.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> KSTO</button>
-    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('cyphergang')"><img src="./icon_cyphergang.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> CypherGang</button>
-    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('snipverse')"><img src="./icon_snipverse.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> Snipverse</button>
-  </div>
   <button class="mobile-nav-btn" onclick="closeMenu();go('ecosystem')">🌐 Ecosystem</button>
   <button class="mobile-nav-btn mob-acc-hdr" onclick="toggleMobAcc('mob-acc-learn')">🎓 Learn <span class="mob-acc-caret" id="caret-mob-acc-learn">▾</span></button>
   <div class="mob-acc-body" id="mob-acc-learn" style="display:none;">
@@ -731,6 +721,16 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('faq')">❓ FAQ</button>
   </div>
   <button class="mobile-nav-btn" onclick="closeMenu();go('defilab')">⚒️ DeFi Forge</button>
+  <button class="mobile-nav-btn mob-acc-hdr" onclick="toggleMobAcc('mob-acc-comm')">👥 Community <span class="mob-acc-caret" id="caret-mob-acc-comm">▾</span></button>
+  <div class="mob-acc-body" id="mob-acc-comm" style="display:none;">
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('community')">👥 Community</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('ksto')"><img src="./icon_ksto.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> KSTO</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('cyphergang')"><img src="./icon_cyphergang.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> CypherGang</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('snipverse')"><img src="./icon_snipverse.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> Snipverse</button>
+  </div>
+  <button class="mobile-nav-btn" onclick="go('guard');closeMenu()">🛡 GUARD</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('arena')">⚔ Stand Guard</button>
+  <button class="mobile-nav-btn" onclick="closeMenu();go('shields')">🛡 Shields</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('vision')">✨ The Vision</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('creator')">👤 Creator</button>
   <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g mt2" style="justify-content:center;">⚔ Buy GUARD</a>
