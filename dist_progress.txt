@@ -1,0 +1,22 @@
+Discovering BlastPad staking contract...
+Trying common BlastPad staking patterns...
+
+Fetching all simpletoken scopes...
+  scopes page 1: 559 total
+  scopes page 2: 1559 total
+  scopes page 3: 2380 total
+Total scopes: 2380
+  balances: 0/2380 scanned, 2 GUARD holders so far
+  balances: 200/2380 scanned, 11 GUARD holders so far
+  balances: 400/2380 scanned, 19 GUARD holders so far
+  balances: 600/2380 scanned, 30 GUARD holders so far
+  balances: 800/2380 scanned, 37 GUARD holders so far
+  balances: 1000/2380 scanned, 47 GUARD holders so far
+  balances: 1200/2380 scanned, 55 GUARD holders so far
+  balances: 1400/2380 scanned, 65 GUARD holders so far
+  balances: 1600/2380 scanned, 77 GUARD holders so far
+  balances: 1800/2380 scanned, 91 GUARD holders so far
+  balances: 2000/2380 scanned, 103 GUARD holders so far
+  balances: 2200/2380 scanned, 109 GUARD holders so far
+
+Final: 115 GUARD holders (excluding reserved accounts)
