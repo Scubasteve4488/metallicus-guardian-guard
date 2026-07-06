@@ -1073,7 +1073,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
         <div class="step-l"><div class="step-n">1</div><div class="step-line"></div></div>
         <div class="step-body">
           <h3>What is XPR Network?</h3>
-          <p>XPR Network is a fast, <strong>zero-fee</strong> blockchain built for real apps — DeFi, gaming, identity, and payments. Every transaction settles in under 1 second with no gas fees, ever. It runs on Delegated Proof of Stake, meaning elected Block Producers (like BloxProd) validate all activity. GUARD is a community token built on top of this network.</p>
+          <p>XPR Network is a fast, <strong>zero-fee</strong> blockchain built for real apps — DeFi, gaming, identity, and payments. Transactions settle near-instantly with no gas fees, ever. It runs on Delegated Proof of Stake, meaning elected Block Producers (like BloxProd) validate all activity.</p>
           <div class="flex gap-sm wrap mt2">
             <a href="https://xprnetwork.org" target="_blank" class="btn btn-o" style="font-size:.78rem;">XPR Network →</a>
             <button class="btn btn-o" style="font-size:.78rem;" onclick="go('ecosystem')">🌐 Explore Ecosystem</button>
@@ -1143,7 +1143,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
         <div class="step-l"><div class="step-n">4</div><div class="step-line"></div></div>
         <div class="step-body">
           <h3>Connect Your Wallet</h3>
-          <p>Connect your WebAuth wallet to standguard.net to unlock your Guardian rank, track your GUARD balance, and play the daily arena. Hit Connect in the top right — it opens a WebAuth popup, just approve it.</p>
+          <p>Connect your WebAuth wallet to standguard.net to unlock your Guardian rank and play the daily arena. Hit Connect in the top right — it opens a WebAuth popup, just approve it.</p>
           <div id="start-step4-check" style="margin-top:.85rem;"></div>
           <button class="btn btn-g mt2" onclick="walletConnect()" id="start-connect-btn" style="font-size:.85rem;">Connect WebAuth Wallet →</button>
         </div>
@@ -1152,18 +1152,37 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       <div class="step reveal">
         <div class="step-l"><div class="step-n">5</div><div class="step-line"></div></div>
         <div class="step-body">
-          <h3>Check Your Shield Rank</h3>
-          <p>Your Shield Rank is determined by how many GUARD you hold (wallet + staked on BlastPad). Head to the Shields tab to see your current rank, the next threshold, and exactly how many GUARD you need to get there.</p>
-          <button class="btn btn-o mt2" style="font-size:.8rem;" onclick="go('shields')">🛡 View Shield Ranks →</button>
+          <h3>Explore Metal X</h3>
+          <p>Metal X is XPR Network's native decentralized exchange — built by Metallicus. Trade tokens, earn yield by providing liquidity, lend your crypto to earn interest, or borrow against your holdings. All with zero gas fees and full self-custody.</p>
+          <div class="flex gap-sm wrap mt2">
+            <a href="https://app.metalx.com" target="_blank" class="btn btn-g" style="font-size:.8rem;">Open Metal X →</a>
+            <a href="https://metalx.com/learn/exchange" target="_blank" class="btn btn-o" style="font-size:.78rem;">Learn About Metal X →</a>
+          </div>
         </div>
       </div>
 
       <div class="step reveal">
         <div class="step-l"><div class="step-n">6</div><div class="step-line"></div></div>
         <div class="step-body">
-          <h3>Play Your First Game</h3>
-          <p>Guardian Arena has two games: <strong>Siege Guard</strong> — defend your position against endless enemy waves — and <strong>GUARD Trials</strong>, a tap-to-flap reflex game. Play free anytime; connect your wallet to unlock the daily scored mode with leaderboard tracking.</p>
-          <button class="btn btn-g mt2" style="font-size:.8rem;" onclick="go('arena')">⚔ Open Guardian Arena →</button>
+          <h3>Join the Community</h3>
+          <p>XPR Network has an active, welcoming community across multiple platforms. Find your people and go deeper into the ecosystem.</p>
+          <div class="grid grid-auto mt2" style="gap:.75rem;">
+            <div class="card" style="padding:1rem;">
+              <div style="font-size:.8rem;font-weight:700;color:var(--gold-l);margin-bottom:.35rem;">KSTO</div>
+              <p style="font-size:.8rem;margin-bottom:.65rem;">Kulture Speaks Truth Onchain. Weekly X Spaces, ecosystem discussions, and the most active XPR community.</p>
+              <a href="https://twitter.com/Keep_Snipping" target="_blank" class="btn btn-o" style="font-size:.78rem;">Join KSTO →</a>
+            </div>
+            <div class="card" style="padding:1rem;">
+              <div style="font-size:.8rem;font-weight:700;color:var(--gold-l);margin-bottom:.35rem;">Snipverse</div>
+              <p style="font-size:.8rem;margin-bottom:.65rem;">XPR Network's own on-chain social platform. Post, earn SNIPS rewards, and connect with the ecosystem.</p>
+              <a href="https://snipverse.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">Open Snipverse →</a>
+            </div>
+            <div class="card" style="padding:1rem;">
+              <div style="font-size:.8rem;font-weight:700;color:var(--gold-l);margin-bottom:.35rem;">CypherGang</div>
+              <p style="font-size:.8rem;margin-bottom:.65rem;">A community NFT collection on XPR Network. 1,777 unique characters, active community, CYPHR token.</p>
+              <a href="https://cyphergang.com" target="_blank" class="btn btn-o" style="font-size:.78rem;">Explore CypherGang →</a>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1181,6 +1200,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       </div>
 
     </div>
+    <div style="font-size:.8rem;color:var(--text3);margin-top:1.25rem;text-align:center;">Already part of the Stand Guard community? Head to <button onclick="go('newtoguard')" style="background:none;border:none;color:var(--gold-l);font-size:.8rem;cursor:pointer;padding:0;font-family:inherit;text-decoration:underline;">New to GUARD →</button></div>
     <div class="disc mt3"><span>ℹ</span><div>Crypto assets carry risk. Only invest what you can afford to lose. This guide is educational only — not financial advice.</div></div>
   </div>
 </div>
