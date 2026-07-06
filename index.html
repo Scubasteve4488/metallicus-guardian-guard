@@ -699,6 +699,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 <div id="dd-learn-panel" class="nav-dd-panel" onmouseenter="cancelCloseDropdowns()" onmouseleave="scheduleCloseDropdowns()">
   <button class="nav-dd-item" onclick="go('start');closeAllDropdowns()"><img src="./img_xprlogo.png" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> New to XPR?</button>
   <button class="nav-dd-item" onclick="go('learn');closeAllDropdowns()"><img src="./char_bloxprod.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> Academy</button>
+  <button class="nav-dd-item" onclick="go('stablecoins');closeAllDropdowns()">💵 Stablecoins &amp; Payments</button>
   <button class="nav-dd-item" onclick="go('newtoguard');closeAllDropdowns()">🛡 New to GUARD?</button>
   <button class="nav-dd-item" onclick="go('faq');closeAllDropdowns()">❓ FAQ</button>
 </div>
@@ -717,6 +718,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
   <div class="mob-acc-body" id="mob-acc-learn" style="display:none;">
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('start')"><img src="./img_xprlogo.png" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> New to XPR?</button>
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('learn')"><img src="./char_bloxprod.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> Academy</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('stablecoins')">💵 Stablecoins &amp; Payments</button>
     <button class="mobile-nav-btn mob-acc-item" onclick="go('newtoguard');closeMenu()">🛡 New to GUARD?</button>
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('faq')">❓ FAQ</button>
   </div>
@@ -1276,6 +1278,48 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
     </div>
     <div class="disc mt3"><span>ℹ</span><div>GUARD is a community memecoin on XPR Network. Not financial advice. Only invest what you can afford to lose.</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════ PAGE: STABLECOINS & PAYMENTS ═══════ -->
+<div id="page-stablecoins" class="page">
+<div class="container">
+  <div class="section">
+    <div class="sec-label">Money on XPR Network</div>
+    <h1 class="page-title">Stablecoins &amp; Payments</h1>
+    <p class="page-sub">Digital dollars and instant payments — explained in plain English.</p>
+    <div class="cards mt4">
+
+      <div class="card reveal">
+        <div class="card-icon ci-gold">💵</div>
+        <h3>What is a Stablecoin?</h3>
+        <p>A stablecoin is a crypto token pegged to the US dollar — 1 token ≈ $1, always. No price swings. It gives you the speed of crypto with the stability of cash.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="card-icon ci-blue">🏦</div>
+        <h3>Meet the Metal Dollar (XMD)</h3>
+        <p>XMD is not backed by one company — it's backed by a basket of established stablecoins: USDC (Circle), PYUSD (PayPal), and USDP (Paxos). A smart contract automatically balances the basket to spread risk. Mint or redeem 1:1 on Metal X anytime. Governed by the Metal DAO community.</p>
+        <a href="https://metalx.com/learn/metal-dollar" target="_blank" class="btn btn-o mt2" style="font-size:.78rem;">Learn About XMD →</a>
+      </div>
+
+      <div class="card reveal">
+        <div class="card-icon ci-pur">💸</div>
+        <h3>Send Money Like a Text</h3>
+        <p>On XPR Network you send to @usernames, not wallet addresses. Type a name, enter an amount, confirm with Face ID or fingerprint. Done — instantly, with zero fees, anywhere in the world.</p>
+        <a href="https://help.xprnetwork.org/hc/en-us/articles/4410319613463-How-do-I-send-and-receive-Cryptocurrency-with-WebAuth-Wallet" target="_blank" class="btn btn-o mt2" style="font-size:.78rem;">How It Works →</a>
+      </div>
+
+      <div class="card reveal" style="border-color:rgba(201,146,42,0.4);">
+        <div class="card-icon ci-gold">🇺🇸</div>
+        <h3>The Bigger Picture</h3>
+        <p>This isn't theory — real US financial institutions are already building on this infrastructure. Metallicus is FedNow Service-certified (the Federal Reserve's instant payment system) and added Request for Payment certification in March 2026. St. Cloud Financial Credit Union issued Cloud Dollar — the first credit-union-issued stablecoin in the US. The Banking Innovation Program now connects 750+ credit unions, and a 50-credit-union pilot launched with CrossState in May 2026. Banks and credit unions can even add their own stablecoins into the Metal Dollar basket. The rails are being laid right now — quietly.</p>
+        <a href="https://www.metallicus.com/blog" target="_blank" class="btn btn-o mt2" style="font-size:.78rem;">Metallicus News →</a>
+      </div>
+
+    </div>
+    <div class="disc mt3"><span>ℹ</span><div>standguard.net is an independent community site, not affiliated with or endorsed by Metallicus. This page is educational only — not financial advice.</div></div>
   </div>
 </div>
 </div>
@@ -3507,7 +3551,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 </footer>
 
 <script>
-const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab'];
+const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab','stablecoins'];
 const BUILD_VERSION='2026-06-19-BUILD-AR';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
