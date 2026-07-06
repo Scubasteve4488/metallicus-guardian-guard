@@ -697,9 +697,9 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
   <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </nav>
 <div id="dd-learn-panel" class="nav-dd-panel" onmouseenter="cancelCloseDropdowns()" onmouseleave="scheduleCloseDropdowns()">
-  <button class="nav-dd-item" onclick="go('newtoguard');closeAllDropdowns()">🛡 New to GUARD?</button>
   <button class="nav-dd-item" onclick="go('start');closeAllDropdowns()"><img src="./img_xprlogo.png" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> New to XPR?</button>
   <button class="nav-dd-item" onclick="go('learn');closeAllDropdowns()"><img src="./char_bloxprod.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> Academy</button>
+  <button class="nav-dd-item" onclick="go('newtoguard');closeAllDropdowns()">🛡 New to GUARD?</button>
   <button class="nav-dd-item" onclick="go('faq');closeAllDropdowns()">❓ FAQ</button>
 </div>
 <div id="dd-communities-panel" class="nav-dd-panel" onmouseenter="cancelCloseDropdowns()" onmouseleave="scheduleCloseDropdowns()">
@@ -715,9 +715,9 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
   <button class="mobile-nav-btn" onclick="closeMenu();go('ecosystem')">🌐 Ecosystem</button>
   <button class="mobile-nav-btn mob-acc-hdr" onclick="toggleMobAcc('mob-acc-learn')">🎓 Learn <span class="mob-acc-caret" id="caret-mob-acc-learn">▾</span></button>
   <div class="mob-acc-body" id="mob-acc-learn" style="display:none;">
-    <button class="mobile-nav-btn mob-acc-item" onclick="go('newtoguard');closeMenu()">🛡 New to GUARD?</button>
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('start')"><img src="./img_xprlogo.png" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> New to XPR?</button>
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('learn')"><img src="./char_bloxprod.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> Academy</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="go('newtoguard');closeMenu()">🛡 New to GUARD?</button>
     <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('faq')">❓ FAQ</button>
   </div>
   <button class="mobile-nav-btn" onclick="closeMenu();go('defilab')">⚒️ DeFi Forge</button>
