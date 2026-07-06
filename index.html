@@ -485,8 +485,8 @@ body.wallet-on #mob-wallet-connect-btn{display:none!important;}
 @keyframes pbDot{0%,100%{opacity:1;}50%{opacity:.3;}}
 /* LOADING SCREEN */
 #loading-screen{position:fixed;inset:0;z-index:99999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;transition:opacity .5s ease;}
-#loading-shield{width:110px;height:110px;object-fit:contain;animation:loadingPulse 1.8s ease-in-out infinite;mix-blend-mode:screen;}
-@keyframes loadingPulse{0%,100%{filter:drop-shadow(0 0 8px rgba(201,146,42,.25));transform:scale(1);}50%{filter:drop-shadow(0 0 32px rgba(201,146,42,.75));transform:scale(1.07);}}
+#loading-shield{width:140px;height:140px;object-fit:contain;animation:keySpin 2.5s linear infinite;mix-blend-mode:screen;}
+@keyframes keySpin{0%{transform:rotate(0deg);filter:drop-shadow(0 0 8px rgba(201,146,42,.4));}50%{filter:drop-shadow(0 0 28px rgba(201,146,42,.9));}100%{transform:rotate(360deg);filter:drop-shadow(0 0 8px rgba(201,146,42,.4));}}
 #loading-bar-wrap{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.08);}
 #loading-bar{height:100%;width:0%;background:linear-gradient(to right,#c9922a,#e8b84b);transition:width 1.5s linear;}
 /* PAGE FADE */
@@ -662,7 +662,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 </div>
 <!-- LOADING SCREEN -->
 <div id="loading-screen">
-  <img src="./proton key.png" id="loading-shield" alt="GUARD">
+  <img src="./proton_key_single.png" id="loading-shield" alt="GUARD">
   <div id="loading-bar-wrap"><div id="loading-bar"></div></div>
 </div>
 
