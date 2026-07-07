@@ -646,6 +646,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 </style>
   <!-- WebAuth / Proton Web SDK -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proton-web-sdk/4.2.20/bundle.min.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="08e806c3-5499-435c-9ba1-29040ad69bdb"></script>
 </head>
 <body>
 <!-- build: 2026-06-14-v4 -->
@@ -692,7 +693,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     </div>
     <button class="nav-arrow" onclick="scrollNav(180)">&#8250;</button>
   </div>
-  <a href="https://simpledex.fun/token/172" target="_blank" class="nav-cta">⚔ <span class="buytext">Buy GUARD</span></a>
+  <a href="https://simpledex.fun/token/172" target="_blank" class="nav-cta" data-umami-event="buy-guard">⚔ <span class="buytext">Buy GUARD</span></a>
   <button id="wallet-btn" onclick="toggleWallet()" style="background:rgba(201,146,42,0.1);border:1px solid var(--border-gold);color:var(--gold-l);font-size:.72rem;padding:.35rem .8rem;border-radius:6px;cursor:pointer;white-space:nowrap;font-family:'Cinzel',serif;flex-shrink:0;line-height:1.4;">⚡ Connect</button>
   <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </nav>
@@ -735,7 +736,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
   <button class="mobile-nav-btn" onclick="closeMenu();go('shields')">🛡 Shields</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('vision')">✨ The Vision</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('creator')">👤 Creator</button>
-  <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g mt2" style="justify-content:center;">⚔ Buy GUARD</a>
+  <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g mt2" style="justify-content:center;" data-umami-event="buy-guard">⚔ Buy GUARD</a>
   <button id="mob-wallet-connect-btn" onclick="walletConnect();closeMenu();" class="mobile-nav-btn" style="color:var(--gold-l);border-color:var(--border-gold);border-top:1px solid var(--border-gold);margin-top:.75rem;padding-top:.75rem;text-align:center;width:100%;">⚡ Connect Wallet</button>
   <div id="mob-wallet-disconnect" style="display:none;border-top:1px solid var(--border-gold);margin-top:.75rem;padding-top:.75rem;">
     <div style="font-size:.75rem;color:var(--text3);text-align:center;padding:.4rem 1rem .5rem;">Connected: <span id="mob-wallet-actor" style="color:var(--gold-l);font-family:'Cinzel',serif;"></span></div>
@@ -869,7 +870,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
           <div class="card"><div class="stat" style="font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold-l);">Community</div><p style="font-size:.78rem;">Inspired by the ecosystem. Built to guard it.</p></div>
         </div>
         <div class="flex gap-sm wrap mt3">
-          <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g" style="font-size:.8rem;">⚔ Buy / Trade GUARD →</a>
+          <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g" style="font-size:.8rem;" data-umami-event="buy-guard">⚔ Buy / Trade GUARD →</a>
           <a href="https://simpledex.fun/pool/187" target="_blank" class="btn btn-o" style="font-size:.8rem;">View Liquidity Pool →</a>
         </div>
         <div class="disc mt3"><span>ℹ</span><div>GUARD stands alongside the XPR Network community as an independent, community-built tribute to the ecosystem.</div></div>
@@ -938,7 +939,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     <p style="font-family:'Cinzel',serif;font-size:1.05rem;color:var(--text2);line-height:1.7;margin:1.5rem auto .75rem;max-width:560px;letter-spacing:.02em;">The Metallicus Guardian is a community-created symbol inspired by the principles of security, identity, ownership, and participation within the Metallicus ecosystem.</p>
     <p style="font-family:'Cinzel',serif;font-size:.95rem;color:var(--gold-l);line-height:1.7;margin:0 auto 1.5rem;max-width:560px;letter-spacing:.02em;">Forged in the fires of XPR Network — armored, eternal, unstoppable.</p>
     <div class="flex gap-sm wrap" style="justify-content:center;">
-      <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g">⚔ Buy on SimpleDEX</a>
+      <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g" data-umami-event="buy-guard">⚔ Buy on SimpleDEX</a>
       <a href="https://simpledex.fun/pool/187" target="_blank" class="btn btn-o">💧 Liquidity Pool →</a>
       <a href="https://blastpad.io/staking-pool?poolId=791" target="_blank" class="btn btn-o" style="border-color:rgba(124,58,237,0.4);color:var(--pur-g);">🔥 Stake GUARD on BlastPad</a>
     </div>
@@ -950,10 +951,10 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     <h2 class="sec-title" style="text-align:center;">Straight From XPR Network</h2>
     <div id="live-stats" class="grid grid-2" style="max-width:640px;margin:1.5rem auto 0;">
       <div class="card" style="text-align:center;"><div class="stat" id="stat-supply" style="font-family:'Cinzel',serif;font-size:1.6rem;color:var(--gold-l);">—</div><p style="font-size:.78rem;">Forge Strength <span style="color:var(--green);">● live</span></p></div>
-      <a href="https://simpledex.fun/token/172" target="_blank" class="card" style="text-align:center;text-decoration:none;"><div class="stat" style="font-family:'Cinzel',serif;font-size:.95rem;color:var(--gold-l);">Price · Guardian Reserves · Guardians Standing</div><p style="font-size:.78rem;">View live on SimpleDEX →</p></a>
+      <a href="https://simpledex.fun/token/172" target="_blank" class="card" style="text-align:center;text-decoration:none;" data-umami-event="buy-guard"><div class="stat" style="font-family:'Cinzel',serif;font-size:.95rem;color:var(--gold-l);">Price · Guardian Reserves · Guardians Standing</div><p style="font-size:.78rem;">View live on SimpleDEX →</p></a>
     </div>
     <div style="text-align:center;margin-bottom:1rem;">
-      <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g" style="display:inline-flex;margin-right:.5rem;">🛒 Buy GUARD on SimpleDEX</a>
+      <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g" style="display:inline-flex;margin-right:.5rem;" data-umami-event="buy-guard">🛒 Buy GUARD on SimpleDEX</a>
       <button onclick="walletConnect()" id="guard-connect-btn" class="btn btn-o" style="display:inline-flex;">⚡ Connect Wallet</button>
     </div>
     <p id="live-status" style="text-align:center;font-size:.72rem;color:var(--text3);margin-top:1rem;">Loading supply from the chain…</p>
@@ -1095,9 +1096,9 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
           </a>
           <div style="font-size:.75rem;color:var(--text3);margin-top:.85rem;margin-bottom:.4rem;">Available on iPhone, Android, and web browser.</div>
           <div class="flex gap-sm wrap">
-            <a href="https://apps.apple.com/us/app/webauth/id1594500069" target="_blank" class="btn btn-o" style="font-size:.78rem;">Download on iOS →</a>
-            <a href="https://play.google.com/store/apps/details?id=com.metallicus.webauth" target="_blank" class="btn btn-o" style="font-size:.78rem;">Download on Android →</a>
-            <a href="https://webauth.com" target="_blank" class="btn btn-g" style="font-size:.78rem;">Use Web Browser →</a>
+            <a href="https://apps.apple.com/us/app/webauth/id1594500069" target="_blank" class="btn btn-o" style="font-size:.78rem;" data-umami-event="webauth-ios">Download on iOS →</a>
+            <a href="https://play.google.com/store/apps/details?id=com.metallicus.webauth" target="_blank" class="btn btn-o" style="font-size:.78rem;" data-umami-event="webauth-android">Download on Android →</a>
+            <a href="https://webauth.com" target="_blank" class="btn btn-g" style="font-size:.78rem;" data-umami-event="webauth-web">Use Web Browser →</a>
           </div>
         </div>
       </div>
@@ -1167,7 +1168,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
           <h3 style="display:flex;align-items:center;gap:.5rem;"><img src="./Metalx.jpg" style="width:28px;height:28px;object-fit:contain;border-radius:6px;flex-shrink:0;" alt="Metal X"> Trade on Metal X</h3>
           <p>Metal X is XPR Network's native DEX — trade, lend, borrow, and earn yield, all with zero gas fees. Use the Stand Guard referral link to get 5% off DEX trading fees for a full year. New accounts only.</p>
           <div class="flex gap-sm wrap mt2">
-            <a href="https://app.metalx.com/dex?referrer=guardops" target="_blank" class="btn btn-g" style="font-size:.8rem;">Start Trading on Metal X →</a>
+            <a href="https://app.metalx.com/dex?referrer=guardops" target="_blank" class="btn btn-g" style="font-size:.8rem;" data-umami-event="referral-metalx">Start Trading on Metal X →</a>
             <a href="https://metalx.com/learn/exchange" target="_blank" class="btn btn-o" style="font-size:.78rem;">Learn About Metal X →</a>
           </div>
           <div style="font-size:.72rem;color:var(--text3);margin-top:.4rem;">Referral applies to Metal X DEX trading fees only. New accounts only. One referral code per account.</div>
@@ -1226,7 +1227,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
           <p>GUARD is a community memecoin built on XPR Network — zero gas fees, instant transfers, and fully on-chain. It powers the Guardian rank system on this site: your GUARD balance determines your Shield rank, and you can play the Guardian Arena game. GUARD was launched on SimpleDEX (the community token launchpad on XPR) and is traded freely against XPR on SimpleDEX.</p>
           <div class="flex gap-sm wrap mt2">
             <button class="btn btn-o" style="font-size:.78rem;" onclick="go('guard')">🛡 View GUARD Token Page</button>
-            <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-o" style="font-size:.78rem;">SimpleDEX Token Page →</a>
+            <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-o" style="font-size:.78rem;" data-umami-event="buy-guard">SimpleDEX Token Page →</a>
           </div>
           <div class="info mt2"><span>ℹ</span><div>GUARD is a community memecoin, not a financial product. Only spend what you're comfortable losing.</div></div>
         </div>
@@ -1238,7 +1239,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
           <h3>Buy GUARD on SimpleDEX</h3>
           <p>Head to SimpleDEX and swap XPR for GUARD. The trade is instant, zero-fee, and fully on-chain. No KYC required beyond what your WebAuth wallet already has. You can buy as little or as much as you like.</p>
           <div class="flex gap-sm wrap mt2">
-            <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g" style="font-size:.8rem;">Buy GUARD on SimpleDEX →</a>
+            <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g" style="font-size:.8rem;" data-umami-event="buy-guard">Buy GUARD on SimpleDEX →</a>
           </div>
           <div class="info mt2"><span>💡</span><div>Need XPR first? Swap or buy XPR via <a href="https://webauth.com" target="_blank" style="color:var(--gold-l);">WebAuth Wallet</a> or <a href="https://www.metalpay.com/how-to-buy/xpr-network" target="_blank" style="color:var(--gold-l);">Metal Pay</a>.</div></div>
         </div>
@@ -1659,7 +1660,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
           <div id="gs-tip" style="display:none;font-size:.7rem;color:var(--text2);background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.25);border-radius:8px;padding:.5rem .7rem;margin-top:.5rem;line-height:1.55;">Guardian Score tracks your overall progress across GUARD holdings, staking, LP position, time held, achievements, and game performance. Higher score = closer to your next Shield rank. Play Guardian Arena to boost your score by up to +5% (reach 50,000 arena points). Collect Shield Shards in-game to forge shields and unlock alternative rank paths.</div>
         </div>
         <div class="flex gap-sm wrap" style="justify-content:center;">
-          <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g" style="font-size:.78rem;">🛒 Buy More GUARD →</a>
+          <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g" style="font-size:.78rem;" data-umami-event="buy-guard">🛒 Buy More GUARD →</a>
           <button id="btn-reset" class="btn btn-o" style="font-size:.78rem;" onclick="resetRank()">↺ Reset</button>
         </div>
         <p id="shield-maxed" style="display:none;font-family:'Cinzel',serif;color:var(--gold-l);margin-top:1rem;letter-spacing:.05em;font-size:.88rem;">⛨ Aegis — the eternal Guardian. The path is complete.</p>
@@ -1788,8 +1789,8 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     <p class="page-sub">Answers to the questions only this site can answer — about GUARD itself. For ecosystem and DeFi questions, the official help centers (linked below) are the best, most up-to-date source.</p>
     <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>What is GUARD?</span><span class="acc-icon">+</span></div><div class="acc-a">GUARD (Metallicus Guardian) is a community meme token on XPR Network launched on SimpleDEX by Tim Rangel. A grassroots community project — not an official Metallicus product. Created to contribute to the ecosystem through community building, education, and advocacy.</div></div>
     <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>Is GUARD an official Metallicus product?</span><span class="acc-icon">+</span></div><div class="acc-a">No. GUARD is entirely community-created and not affiliated with, endorsed by, or officially connected to Metallicus or any ecosystem project. It's a tribute, built by a community member.</div></div>
-    <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>How do I buy GUARD?</span><span class="acc-icon">+</span></div><div class="acc-a">You need a WebAuth wallet funded with XPR. The easiest on-ramp is Metal Pay — built by Metallicus, it supports XPR and the broader Metallicus token ecosystem. KuCoin and other exchanges that list XPR are also options (availability varies by region). Then visit <a href="https://simpledex.fun/token/172" target="_blank">simpledex.fun/token/172</a> and connect your wallet to trade. The Start Here page walks through wallet setup and funding step by step.</div></div>
-    <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>Can I sell GUARD?</span><span class="acc-icon">+</span></div><div class="acc-a">Yes. GUARD has graduated past its bonding curve to a live XPR/GUARD liquidity pool, so you can trade it any time on <a href="https://simpledex.fun/token/172" target="_blank">SimpleDEX</a>.</div></div>
+    <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>How do I buy GUARD?</span><span class="acc-icon">+</span></div><div class="acc-a">You need a WebAuth wallet funded with XPR. The easiest on-ramp is Metal Pay — built by Metallicus, it supports XPR and the broader Metallicus token ecosystem. KuCoin and other exchanges that list XPR are also options (availability varies by region). Then visit <a href="https://simpledex.fun/token/172" target="_blank" data-umami-event="buy-guard">simpledex.fun/token/172</a> and connect your wallet to trade. The Start Here page walks through wallet setup and funding step by step.</div></div>
+    <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>Can I sell GUARD?</span><span class="acc-icon">+</span></div><div class="acc-a">Yes. GUARD has graduated past its bonding curve to a live XPR/GUARD liquidity pool, so you can trade it any time on <a href="https://simpledex.fun/token/172" target="_blank" data-umami-event="buy-guard">SimpleDEX</a>.</div></div>
     <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>What are the risks of holding GUARD?</span><span class="acc-icon">+</span></div><div class="acc-a">GUARD is a speculative meme token. Price is driven entirely by community demand and can rise or fall sharply. Never invest more than you can afford to lose. This is not financial advice.</div></div>
     <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>Why does this site exist?</span><span class="acc-icon">+</span></div><div class="acc-a">Stand Guard is a community-built resource for the XPR Network and Metallicus ecosystem — newcomer onboarding, hands-on DeFi learning (DeFi Forge), Guardian shield ranks, community pages, and games. Not an official Metallicus resource; built by the community, for the community.</div></div>
     <div class="acc-item"><div class="acc-q" onclick="toggleAcc(this)"><span>What is XPR Network?</span><span class="acc-icon">+</span></div><div class="acc-a">XPR Network is a Layer 1 proof-of-stake blockchain built by Metallicus. It offers instant transactions, zero gas fees, on-chain identity verification, and human-readable @usernames. It powers WebAuth Wallet, Metal X, SimpleDEX, and dozens of community projects.</div></div>
@@ -2176,7 +2177,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
           <a href="https://x.com/scubasteve4488" target="_blank" class="c-link">✕ Twitter / X</a>
           <a href="https://snipverse.com/scubasteve44" target="_blank" class="c-link">✦ Snipverse</a>
           <a href="https://t.me/KSTOX/1" target="_blank" class="c-link">✈ KSTO Telegram</a>
-          <a href="https://simpledex.fun/token/172" target="_blank" class="c-link">⚔ GUARD Token</a>
+          <a href="https://simpledex.fun/token/172" target="_blank" class="c-link" data-umami-event="buy-guard">⚔ GUARD Token</a>
         </div>
       </div>
       <div class="creator-body">
@@ -3283,7 +3284,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       <div style="font-family:'Cinzel',serif;font-size:.82rem;color:var(--pur-g);font-weight:700;letter-spacing:.04em;margin-bottom:.5rem;">⚡ GUARD Play Rewards — Coming Soon</div>
       <p style="font-size:.8rem;color:var(--text2);margin:0 0 .9rem;line-height:1.6;">Premium plays, weekly leaderboard prizes, and GUARD token rewards are in development as part of the Guardian smart contract deployment on XPR Network. GUARD holders will receive exclusive game benefits.</p>
       <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
-        <a href="https://simpledex.fun/token/172" target="_blank" style="padding:.55rem 1.1rem;background:rgba(201,146,42,0.15);border:1px solid rgba(201,146,42,0.4);border-radius:8px;color:var(--gold-l);font-size:.8rem;text-decoration:none;white-space:nowrap;">Get GUARD on SimpleDEX</a>
+        <a href="https://simpledex.fun/token/172" target="_blank" style="padding:.55rem 1.1rem;background:rgba(201,146,42,0.15);border:1px solid rgba(201,146,42,0.4);border-radius:8px;color:var(--gold-l);font-size:.8rem;text-decoration:none;white-space:nowrap;" data-umami-event="buy-guard">Get GUARD on SimpleDEX</a>
         <a href="https://blastpad.io/staking-pool?poolId=791" target="_blank" style="padding:.55rem 1.1rem;background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.35);border-radius:8px;color:var(--pur-g);font-size:.8rem;text-decoration:none;white-space:nowrap;">Stake on BlastPad</a>
       </div>
       <p style="font-size:.67rem;color:var(--text3);margin:.9rem 0 0;font-style:italic;">GUARD is a community token on XPR Network. Rewards require smart contract deployment — in development. Not financial advice.</p>
@@ -3510,7 +3511,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,146,42,0.6),transparent);margin:1.2rem 0;"></div>
     <p style="font-size:.8rem;color:var(--text3);font-style:italic;margin:0 0 .6rem;">GUARD holders get exclusive benefits — coming soon</p>
     <div id="npo-balance" style="display:none;font-size:.78rem;color:var(--gold-l);font-family:'Cinzel',serif;margin:.4rem 0 .6rem;"></div>
-    <a href="https://simpledex.fun/token/172" target="_blank" style="display:inline-block;margin:.75rem 0 .5rem;padding:.7rem 1.6rem;background:linear-gradient(135deg,rgba(201,146,42,0.22),rgba(201,146,42,0.12));border:1px solid rgba(201,146,42,0.5);border-radius:10px;color:var(--gold-l);font-family:'Cinzel',serif;font-size:.85rem;text-decoration:none;">Buy GUARD on SimpleDEX →</a>
+    <a href="https://simpledex.fun/token/172" target="_blank" style="display:inline-block;margin:.75rem 0 .5rem;padding:.7rem 1.6rem;background:linear-gradient(135deg,rgba(201,146,42,0.22),rgba(201,146,42,0.12));border:1px solid rgba(201,146,42,0.5);border-radius:10px;color:var(--gold-l);font-family:'Cinzel',serif;font-size:.85rem;text-decoration:none;" data-umami-event="buy-guard">Buy GUARD on SimpleDEX →</a>
     <p style="font-size:.72rem;color:var(--text3);margin:1rem 0 1.2rem;">Come back tomorrow for 3 more free plays.</p>
     <button onclick="document.getElementById('no-plays-overlay').style.display='none';" style="background:rgba(30,41,59,0.6);border:1px solid rgba(71,85,105,0.4);color:var(--text3);padding:.55rem 1.4rem;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:inherit;">✕ Close</button>
   </div>
@@ -3545,7 +3546,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
         <a href="https://x.com/scubasteve4488" target="_blank">Twitter / X</a>
         <a href="https://snipverse.com/scubasteve44" target="_blank">Snipverse</a>
         <a href="https://t.me/KSTOX/1" target="_blank">KSTO Telegram</a>
-        <a href="https://simpledex.fun/token/172" target="_blank">Buy GUARD</a>
+        <a href="https://simpledex.fun/token/172" target="_blank" data-umami-event="buy-guard">Buy GUARD</a>
         <a href="https://xprnetwork.org" target="_blank">XPR Network</a>
         <a href="https://webauth.com" target="_blank">WebAuth Wallet</a>
       </div>
@@ -3585,6 +3586,7 @@ function go(id){
   const TAB_ACHS = {guard:'lorekeeper', ecosystem:'ecosystem_scout'};
   if(TAB_ACHS[id]) unlockAch(TAB_ACHS[id]);
   if(typeof trackPageVisit==='function') trackPageVisit(id);
+  if(typeof umami!=='undefined'){umami.track('page-'+id);}
   if(id==='arena'&&typeof arenaInit==='function'&&!window._arenaInited){window._arenaInited=true;setTimeout(arenaInit,30);}
   mbnActive(id);
 }
@@ -3684,10 +3686,10 @@ async function loadLiveData(){
   }
 
   if(gotAny){
-    status.innerHTML='⛓ Total supply is live from XPR Network · <a href="https://simpledex.fun/token/172" target="_blank" style="color:var(--gold-l);">full price &amp; pool data on SimpleDEX →</a>';
+    status.innerHTML='⛓ Total supply is live from XPR Network · <a href="https://simpledex.fun/token/172" target="_blank" data-umami-event="buy-guard" style="color:var(--gold-l);">full price &amp; pool data on SimpleDEX →</a>';
   }else{
     setStat('stat-supply','—');
-    status.innerHTML='📊 <a href="https://simpledex.fun/token/172" target="_blank" style="color:var(--gold-l);font-weight:600;">View live GUARD data on SimpleDEX →</a>';
+    status.innerHTML='📊 <a href="https://simpledex.fun/token/172" target="_blank" data-umami-event="buy-guard" style="color:var(--gold-l);font-weight:600;">View live GUARD data on SimpleDEX →</a>';
   }
 }
 // Run on load
@@ -5139,6 +5141,7 @@ function manualForge(shieldName) {
   triggerShieldForge(shieldName);
 }
 async function walletConnect() {
+  if(typeof umami!=='undefined'){umami.track('wallet-connect');}
   try {
     const ProtonWebSDK = window.ProtonWebSDK || window.protonWebSdk || window['@proton/web-sdk'];
     if (!ProtonWebSDK) {
