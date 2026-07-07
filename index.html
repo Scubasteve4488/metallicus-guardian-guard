@@ -4206,6 +4206,12 @@ let guardianLpXpr = -1;    // -1=loading, 0=no LP, >0=XPR equivalent
 let guardianDaysHeld = -1; // -1=loading, 0=never held GUARD, >0=days
 let guardianNfts = {snippy:0, funky:0, cyphergang:0};
 let guardianStaked = -1; // -1=loading, 0=no stake, >0=GUARD staked on BlastPad pool 791
+let ecoXprStaked = 0;       // whole XPR staked for voting (voter_info.staked / 10000)
+let ecoBpVotes = 0;         // BP vote slots filled (0–4)
+let ecoAccountMonths = 0;   // floor months since account created
+let ecoTokens = new Set();  // symbols with amount > 0 from get_tokens
+let _pointsRankTracked = false;
+const POINTS_THRESHOLDS = [0, 75, 200, 350, 550, 750, 950];
 
 // ----- Achievements -----
 const ACH_CATS = [
@@ -4400,31 +4406,7 @@ function renderProgress(bal){
   if(nextEl && next) nextEl.textContent = next.req.toLocaleString() + ' GUARD needed for ' + next.name;
   else if(nextEl)    nextEl.textContent = 'Maximum rank achieved — you are the eternal Guardian';
 
-  // Requirements
-  const anyOf = [null,1,2,2,3,3,4];
-  let html = '';
-  if(next){
-    html += `<div class="sec-label" style="margin-bottom:.4rem;">Current: Rank ${guardianRank+1} · ${cur.name} (${cur.title})</div>`;
-    html += `<div class="sec-label" style="color:var(--gold-l);margin-bottom:.75rem;">Next: Rank ${guardianRank+2} · ${next.name} (${next.title}) — complete ANY ${anyOf[guardianRank+1]} of:</div>`;
-    getRankReqs(guardianRank+1, bal).forEach(r=>{
-      const cls  = r.met ? 'req-met' : r.soon ? 'req-soon' : 'req-unmet';
-      const icon = r.met ? '✓' : r.soon ? '◷' : '○';
-      const bar  = r.progress!=null && !r.soon
-        ? `<div class="progress-track" style="margin-top:.3rem;"><div class="progress-fill" style="width:${r.progress}%"></div></div>`
-        : '';
-      html += `<div class="req-item">
-        <div class="req-status ${cls}">${icon}</div>
-        <div style="flex:1;min-width:0;">
-          <div style="font-size:.84rem;color:var(--text);font-weight:500;">${r.label}</div>
-          <div style="font-size:.72rem;color:var(--text3);margin-top:.1rem;">${r.detail}</div>
-          ${bar}
-        </div>
-      </div>`;
-    });
-  } else {
-    html = `<div class="req-item"><div class="req-status req-met">✓</div><div><div style="font-size:.88rem;color:var(--gold-l);font-weight:600;">Aegis achieved — you are the eternal Guardian.</div></div></div>`;
-  }
-  panel.innerHTML = html;
+  panel.innerHTML = buildPointsPanel(next, cur);
 }
 
 function getRankReqs(rankIdx, bal){
@@ -4584,8 +4566,8 @@ function computeShardRank(){
   return 0;
 }
 async function loadRank(){
-  // Rank is always derived from shard forge state, not balance
-  guardianRank = computeShardRank();
+  // Rank = max(shard forge path, ecosystem participation points)
+  guardianRank = Math.max(computeShardRank(), getPointsRank(computeGuardianPoints()));
   wSet('sg_rank', String(guardianRank));
   try{
     const h = await window.storage.get('guardian_handle');
@@ -4725,11 +4707,12 @@ function parseChainAmount(val) {
 }
 
 async function fetchOnChainData(actor) {
-  // Fire all four in parallel, each handles its own errors
+  // Fire all five in parallel, each handles its own errors
   fetchLpPosition(actor);
   fetchHoldTime(actor);
   fetchNftHoldings(actor);
   fetchStakingData(actor);
+  fetchEcosystemData(actor);
 }
 
 async function fetchLpPosition(actor) {
@@ -4950,6 +4933,63 @@ async function fetchStakingData(actor) {
   renderProgress(guardianBalance);
 }
 
+async function fetchEcosystemData(actor) {
+  // get_account — try each RPC for voter_info and account age
+  let accountData = null;
+  for (const rpc of DAPP_CONFIG.endpoints) {
+    try {
+      const r = await fetchTimeout(rpc + '/v1/chain/get_account', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({account_name: actor}),
+      }, 7000);
+      if (r.ok) { accountData = await r.json(); break; }
+    } catch(e) { /* try next */ }
+  }
+  if (accountData) {
+    try {
+      ecoAccountMonths = Math.max(0, Math.floor((Date.now() - new Date(accountData.created).getTime()) / (1000 * 60 * 60 * 24 * 30.44)));
+    } catch(e) { ecoAccountMonths = 0; }
+    try {
+      const vi = accountData.voter_info;
+      ecoBpVotes   = (vi && Array.isArray(vi.producers)) ? vi.producers.length : 0;
+      // voter_info.staked is a raw integer string at 4 decimal places — divide by 10000 for whole XPR
+      ecoXprStaked = (vi && vi.staked) ? Math.floor(parseInt(String(vi.staked), 10) / 10000) : 0;
+    } catch(e) { ecoBpVotes = 0; ecoXprStaked = 0; }
+  }
+  // get_tokens — v2 history endpoint (try each RPC, fail silently)
+  let tokensData = null;
+  for (const rpc of DAPP_CONFIG.endpoints) {
+    try {
+      const r = await fetchTimeout(rpc + '/v2/state/get_tokens?account=' + encodeURIComponent(actor), {}, 7000);
+      if (r.ok) { tokensData = await r.json(); break; }
+    } catch(e) { /* try next */ }
+  }
+  ecoTokens = new Set();
+  if (tokensData && Array.isArray(tokensData.tokens)) {
+    for (const t of tokensData.tokens) {
+      if (t.amount > 0) ecoTokens.add(t.symbol);
+    }
+  }
+  // Re-evaluate rank now that ecosystem data is available
+  if (typeof guardianRank !== 'undefined' && typeof walletActor !== 'undefined' && walletActor) {
+    const pts = computeGuardianPoints();
+    const newRank = Math.max(computeShardRank(), getPointsRank(pts));
+    if (newRank !== guardianRank) {
+      guardianRank = newRank;
+      wSet('sg_rank', String(guardianRank));
+      renderShield();
+      renderTimeline();
+    }
+    if (!_pointsRankTracked) {
+      _pointsRankTracked = true;
+      if (typeof umami !== 'undefined') { try { umami.track('points-rank-' + newRank); } catch(e) {} }
+    }
+    renderPointsHint(pts);
+    try { renderProgress(guardianBalance); } catch(e) {}
+  }
+}
+
 function unlockStakingAchs(staked) {
   const tiers = [10000, 50000, 150000, 500000, 1500000, 5000000, 10000000];
   tiers.forEach((t, i) => { if (staked >= t || guardianBalance >= t) unlockAch('stake_' + (i + 1)); });
@@ -5135,8 +5175,8 @@ function manualForge(shieldName) {
   if (!ShardTracker.allOwned(shieldName)) return;
   ShardTracker.forge(shieldName);
   unlockAch('forge_' + shieldName.toLowerCase());
-  // Rank advances when a shield is forged
-  var newRank = computeShardRank();
+  // Rank = max(forge path, points path)
+  var newRank = Math.max(computeShardRank(), getPointsRank(computeGuardianPoints()));
   if (newRank !== guardianRank) { guardianRank = newRank; wSet('sg_rank', String(guardianRank)); renderShield(); }
   triggerShieldForge(shieldName);
 }
@@ -5284,6 +5324,107 @@ function getRankForBalance(bal) {
   return rank;
 }
 
+function getPointsRank(pts) {
+  let rank = 0;
+  for (let i = POINTS_THRESHOLDS.length - 1; i >= 0; i--) {
+    if (pts >= POINTS_THRESHOLDS[i]) { rank = i; break; }
+  }
+  return rank;
+}
+
+function computeGuardianPoints() {
+  let pts = 0;
+  // Block Producer votes: ≥1 = 150, all 4 slots = +50 bonus (200 total)
+  if (ecoBpVotes >= 1) pts += 150;
+  if (ecoBpVotes >= 4) pts += 50;
+  // XPR staked for voting (highest tier only)
+  if      (ecoXprStaked >= 100000) pts += 300;
+  else if (ecoXprStaked >= 10000)  pts += 200;
+  else if (ecoXprStaked >= 1000)   pts += 100;
+  else if (ecoXprStaked >= 100)    pts += 50;
+  // Account age: 10 pts/month, capped at 240
+  pts += Math.min(240, ecoAccountMonths * 10);
+  // GUARD held (wallet + staked on BlastPad, highest tier only)
+  const totalGuard = guardianBalance + Math.max(0, guardianStaked);
+  if      (totalGuard >= 1500000) pts += 150;
+  else if (totalGuard >= 200000)  pts += 100;
+  else if (totalGuard >= 10000)   pts += 50;
+  // Ecosystem breadth: +25 each for LOAN, SNIPS, XMD held with balance > 0
+  if (ecoTokens.has('LOAN'))  pts += 25;
+  if (ecoTokens.has('SNIPS')) pts += 25;
+  if (ecoTokens.has('XMD'))   pts += 25;
+  return pts;
+}
+
+function renderPointsHint(pts) {
+  const el = document.getElementById('shield-rank-unlock');
+  if (!el) return;
+  if (guardianRank >= 6) { el.textContent = '✅ Maximum rank — Aegis Guardian'; return; }
+  const nextPts = POINTS_THRESHOLDS[guardianRank + 1];
+  const needed  = Math.max(0, nextPts - pts);
+  const nextShield = SHIELDS[guardianRank + 1].name;
+  const bpPts    = ecoBpVotes >= 4 ? 200 : ecoBpVotes >= 1 ? 150 : 0;
+  const xprPts   = ecoXprStaked >= 100000 ? 300 : ecoXprStaked >= 10000 ? 200 : ecoXprStaked >= 1000 ? 100 : ecoXprStaked >= 100 ? 50 : 0;
+  const agePts   = Math.min(240, ecoAccountMonths * 10);
+  const tg       = guardianBalance + Math.max(0, guardianStaked);
+  const guardPts = tg >= 1500000 ? 150 : tg >= 200000 ? 100 : tg >= 10000 ? 50 : 0;
+  const ecoPts   = (ecoTokens.has('LOAN') ? 25 : 0) + (ecoTokens.has('SNIPS') ? 25 : 0) + (ecoTokens.has('XMD') ? 25 : 0);
+  const parts = [];
+  if (bpPts)    parts.push('BP votes: ' + bpPts);
+  if (xprPts)   parts.push('Staked XPR: ' + xprPts);
+  if (agePts)   parts.push('Account age: ' + agePts);
+  if (guardPts) parts.push('GUARD: ' + guardPts);
+  if (ecoPts)   parts.push('Ecosystem: ' + ecoPts);
+  const breakdown = parts.length ? ' (' + parts.join(' · ') + ')' : '';
+  if (needed <= 0) {
+    el.textContent = '✨ ' + pts + ' pts' + breakdown + ' — forge ' + nextShield + ' shards to advance rank';
+  } else {
+    el.textContent = '⬆ ' + pts + ' pts' + breakdown + ' · ' + needed + ' more needed for ' + nextShield + ' · or forge ' + nextShield + ' shards in the Arena';
+  }
+}
+
+function buildPointsPanel(next, cur) {
+  if (!next) {
+    return '<div class="req-item"><div class="req-status req-met">✓</div><div><div style="font-size:.88rem;color:var(--gold-l);font-weight:600;">Aegis achieved — you are the eternal Guardian.</div></div></div>';
+  }
+  const pts     = computeGuardianPoints();
+  const nextPts = POINTS_THRESHOLDS[guardianRank + 1];
+  const needed  = Math.max(0, nextPts - pts);
+  const bpPts   = ecoBpVotes >= 4 ? 200 : ecoBpVotes >= 1 ? 150 : 0;
+  const xprPts  = ecoXprStaked >= 100000 ? 300 : ecoXprStaked >= 10000 ? 200 : ecoXprStaked >= 1000 ? 100 : ecoXprStaked >= 100 ? 50 : 0;
+  const agePts  = Math.min(240, ecoAccountMonths * 10);
+  const tg      = guardianBalance + Math.max(0, guardianStaked);
+  const guardPts = tg >= 1500000 ? 150 : tg >= 200000 ? 100 : tg >= 10000 ? 50 : 0;
+  const loanPts  = ecoTokens.has('LOAN')  ? 25 : 0;
+  const snipsPts = ecoTokens.has('SNIPS') ? 25 : 0;
+  const xmdPts   = ecoTokens.has('XMD')   ? 25 : 0;
+  const ecoPts   = loanPts + snipsPts + xmdPts;
+  function row(label, earned, maxPts, detail) {
+    const pct  = maxPts > 0 ? Math.min(100, Math.round(earned / maxPts * 100)) : (earned > 0 ? 100 : 0);
+    const cls  = earned >= maxPts ? 'req-met' : earned > 0 ? 'req-soon' : 'req-unmet';
+    const icon = earned >= maxPts ? '✓' : earned > 0 ? '◷' : '○';
+    const bar  = `<div class="progress-track" style="margin-top:.3rem;"><div class="progress-fill" style="width:${pct}%"></div></div>`;
+    return `<div class="req-item"><div class="req-status ${cls}">${icon}</div><div style="flex:1;min-width:0;"><div style="font-size:.84rem;color:var(--text);font-weight:500;">${label} <span style="color:var(--gold-l);font-size:.76rem;">+${earned} / ${maxPts} pts</span></div><div style="font-size:.72rem;color:var(--text3);margin-top:.1rem;">${detail}</div>${bar}</div></div>`;
+  }
+  const bpDetail    = ecoBpVotes >= 4 ? 'All 4 BP slots voted ✓' : ecoBpVotes >= 1 ? ecoBpVotes + ' of 4 slots voted · fill all 4 for +50 bonus' : 'Vote for Block Producers in your WebAuth wallet';
+  const xprDetail   = ecoXprStaked > 0 ? ecoXprStaked.toLocaleString() + ' XPR staked' + (xprPts >= 300 ? ' ✓' : ' · 100k XPR = max 300 pts') : 'Stake XPR in your WebAuth wallet to earn voting weight';
+  const ageDetail   = ecoAccountMonths > 0 ? ecoAccountMonths + ' month' + (ecoAccountMonths !== 1 ? 's' : '') + ' old · 10 pts/month, cap 240' : 'Loading account age…';
+  const guardDetail = tg > 0 ? tg.toLocaleString() + ' GUARD (wallet + staked)' + (guardPts >= 150 ? ' ✓' : '') : 'Buy GUARD on SimpleDEX to earn pts';
+  const ecoDetail   = ecoPts >= 75 ? 'LOAN ✓ · SNIPS ✓ · XMD ✓' : (loanPts ? 'LOAN ✓ ' : 'LOAN ○ ') + (snipsPts ? '· SNIPS ✓ ' : '· SNIPS ○ ') + (xmdPts ? '· XMD ✓' : '· XMD ○') + ' · +25 pts each';
+  const forged = (typeof ShardTracker !== 'undefined') && ShardTracker.isForged(next.name);
+  const forgeCount = (typeof ShardTracker !== 'undefined') ? (ShardTracker.ownedCount ? ShardTracker.ownedCount(next.name) : 0) : 0;
+  const forgeDetail = forged ? next.name + ' forged ✓' : 'Collect shards in GUARD Trials / Siege Guard (' + forgeCount + '/5) — either path advances your rank';
+  let html = `<div class="sec-label" style="margin-bottom:.4rem;">Current: Rank ${guardianRank+1} · ${cur.name} (${cur.title}) · ${pts} pts</div>`;
+  html += `<div class="sec-label" style="color:var(--gold-l);margin-bottom:.75rem;">Next: Rank ${guardianRank+2} · ${next.name} — ${needed > 0 ? needed + ' more pts needed (or forge shards)' : 'threshold met — forge shards to advance'}</div>`;
+  html += row('Block Producer Votes', bpPts, 200, bpDetail);
+  html += row('XPR Staked (voting weight)', xprPts, 300, xprDetail);
+  html += row('Account Age', agePts, 240, ageDetail);
+  html += row('GUARD Holdings', guardPts, 150, guardDetail);
+  html += row('Ecosystem Tokens (LOAN · SNIPS · XMD)', ecoPts, 75, ecoDetail);
+  html += `<div class="req-item" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.65rem;"><div class="req-status ${forged ? 'req-met' : 'req-unmet'}">${forged ? '✓' : '○'}</div><div style="flex:1;min-width:0;"><div style="font-size:.84rem;color:var(--text);font-weight:500;">Or forge ${next.name} shards in the Arena <span style="color:var(--pur-g);font-size:.76rem;">(alternative path)</span></div><div style="font-size:.72rem;color:var(--text3);margin-top:.1rem;">${forgeDetail}</div></div></div>`;
+  return html;
+}
+
 function toggleWallet(){ walletActor ? walletDisconnect() : walletConnect(); }
 
 function onWalletConnected(actor) {
@@ -5312,7 +5453,7 @@ function onWalletConnected(actor) {
 
   // Load this wallet's keyed progress (clean default if first-time wallet)
   ShardTracker.load();
-  guardianRank = computeShardRank();
+  guardianRank = Math.max(computeShardRank(), getPointsRank(computeGuardianPoints()));
   renderShield();
   renderTimeline();
   renderShardDisplay();
@@ -5344,23 +5485,11 @@ function onGuardBalanceLoaded(actor, bal) {
   const shieldBal = document.getElementById('shield-guard-bal');
   if (shieldBal) shieldBal.textContent = fmtBal;
 
-  // Rank is always from shard progression — balance shows eligibility only
-  const shardRank = computeShardRank();
-  if (shardRank !== guardianRank) { guardianRank = shardRank; wSet('sg_rank', String(guardianRank)); renderShield(); }
-  const eligibleRank = getRankForBalance(bal);
-  const rankUnlockEl = document.getElementById('shield-rank-unlock');
-  if (rankUnlockEl) {
-    if (guardianRank >= 6) {
-      rankUnlockEl.textContent = '✅ Maximum rank — Aegis Guardian';
-    } else if (eligibleRank > guardianRank) {
-      rankUnlockEl.textContent = '✨ Balance qualifies for ' + SHIELDS[eligibleRank].name + ' · forge ' + SHIELDS[guardianRank + 1].name + ' shards to advance rank';
-    } else if (eligibleRank === guardianRank && guardianRank < 6) {
-      rankUnlockEl.textContent = '🛡 Hold ' + RANK_THRESHOLDS[guardianRank + 1].toLocaleString() + ' GUARD to qualify for ' + SHIELDS[guardianRank + 1].name;
-    } else {
-      const nextEl = eligibleRank < 6 ? SHIELDS[eligibleRank + 1] : null;
-      rankUnlockEl.textContent = nextEl ? '○ Hold ' + nextEl.req.toLocaleString() + ' GUARD for ' + nextEl.name + ' eligibility' : '';
-    }
-  }
+  // Rank = max(shard forge path, ecosystem participation points)
+  const _balPts = computeGuardianPoints();
+  const _balNewRank = Math.max(computeShardRank(), getPointsRank(_balPts));
+  if (_balNewRank !== guardianRank) { guardianRank = _balNewRank; wSet('sg_rank', String(guardianRank)); renderShield(); }
+  renderPointsHint(_balPts);
 
   // Update Guardian card handle with wallet name if empty
   const handleInput = document.getElementById('guardian-handle');
@@ -5371,7 +5500,7 @@ function onGuardBalanceLoaded(actor, bal) {
 
   // Update systems
   updateHoldingAchs(bal);
-  if (eligibleRank >= 1) unlockAch('shielded');
+  if (getRankForBalance(bal) >= 1) unlockAch('shielded');
   renderTimeline();
   renderProgress(bal);
   trackGuardianInHall(actor, guardianRank);
