@@ -4241,6 +4241,9 @@ let ecoBpVotes = 0;         // BP vote slots filled (0–4)
 let ecoAccountMonths = 0;   // floor months since account created
 let ecoTokens = new Set();  // symbols with amount > 0 from get_tokens
 let ecoXprLiquid = 0;       // liquid (unstaked) XPR balance from eosio.token
+let ecoMetalXUsed = false;  // has interacted with Metal X AMM (proton.swaps)
+let ecoAnyLp = false;       // holds ≥1 SimpleDEX LP position (any pool)
+let ecoLendingUsed = false; // has a LOAN Protocol supplied position
 let _journeyTracked = false; // umami journey milestone fired once per session
 let _pointsRankTracked = false;
 const POINTS_THRESHOLDS = [0, 75, 200, 350, 550, 750, 950];
@@ -4746,6 +4749,9 @@ async function fetchOnChainData(actor) {
   fetchStakingData(actor);
   fetchEcosystemData(actor);
   fetchXprBalance(actor);
+  fetchMetalXUsage(actor);
+  fetchAnyLp(actor);
+  fetchLendingPosition(actor);
 }
 
 async function fetchXprBalance(actor) {
@@ -4769,6 +4775,75 @@ async function fetchXprBalance(actor) {
   ecoXprLiquid = 0; // all RPCs failed — silent zero
   try { renderJourney(); } catch(e) {}
   return 0;
+}
+
+// History-capable nodes (v2/history). eosusa confirmed; others tried as failover.
+const _HISTORY_ENDPOINTS = ['https://proton.eosusa.io', 'https://proton.cryptolions.io', 'https://api.protonnz.com'];
+
+async function fetchMetalXUsage(actor) {
+  // Metal X AMM usage — any proton.swaps action in the account's history
+  for (const rpc of _HISTORY_ENDPOINTS) {
+    try {
+      const r = await fetchTimeout(rpc + '/v2/history/get_actions?account=' + encodeURIComponent(actor) + '&filter=proton.swaps:*&limit=1', {}, 6000);
+      if (r.ok) {
+        const data = await r.json();
+        const total = data && data.total && typeof data.total.value === 'number' ? data.total.value : 0;
+        ecoMetalXUsed = total > 0;
+        try { renderJourney(); } catch(e) {}
+        return ecoMetalXUsed;
+      }
+    } catch(e) { /* try next history node */ }
+  }
+  ecoMetalXUsed = false; // silent-false on failure
+  try { renderJourney(); } catch(e) {}
+  return false;
+}
+
+async function fetchAnyLp(actor) {
+  // Any SimpleDEX LP position — lp table is owner-scoped
+  for (const rpc of DAPP_CONFIG.endpoints) {
+    try {
+      const r = await fetchTimeout(rpc + '/v1/chain/get_table_rows', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({json:true, code:'simpledex', scope:actor, table:'lp', limit:1}),
+      }, 5000);
+      if (r.ok) {
+        const data = await r.json();
+        ecoAnyLp = !!(data && Array.isArray(data.rows) && data.rows.length >= 1);
+        try { renderJourney(); } catch(e) {}
+        return ecoAnyLp;
+      }
+    } catch(e) { /* try next rpc */ }
+  }
+  ecoAnyLp = false; // silent-false
+  try { renderJourney(); } catch(e) {}
+  return false;
+}
+
+async function fetchLendingPosition(actor) {
+  // LOAN Protocol supplied position — shares table is contract-scoped, keyed by account
+  for (const rpc of DAPP_CONFIG.endpoints) {
+    try {
+      const r = await fetchTimeout(rpc + '/v1/chain/get_table_rows', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({json:true, code:'lending.loan', scope:'lending.loan', table:'shares',
+          lower_bound:actor, upper_bound:actor, key_type:'name', index_position:'1', limit:1}),
+      }, 5000);
+      if (r.ok) {
+        const data = await r.json();
+        const row = data && Array.isArray(data.rows) && data.rows[0];
+        ecoLendingUsed = !!(row && Array.isArray(row.tokens) && row.tokens.some(t => {
+          const v = t && t.value;
+          return (typeof v === 'number' ? v : parseFloat(v || 0)) > 0;
+        }));
+        try { renderJourney(); } catch(e) {}
+        return ecoLendingUsed;
+      }
+    } catch(e) { /* try next rpc */ }
+  }
+  ecoLendingUsed = false; // silent-false
+  try { renderJourney(); } catch(e) {}
+  return false;
 }
 
 async function fetchLpPosition(actor) {
@@ -5492,7 +5567,6 @@ function renderJourney() {
   const progEl = document.getElementById('journey-progress');
   if (!pathEl || !progEl) return;
   const connected = (typeof walletActor !== 'undefined') && !!walletActor;
-  const guardHeld = (guardianBalance > 0) || (Math.max(0, guardianStaked) > 0);
   const breadthCount = (ecoTokens.has('LOAN') ? 1 : 0) + (ecoTokens.has('XMD') ? 1 : 0) + (ecoTokens.has('XMT') ? 1 : 0) + (ecoTokens.has('METAL') ? 1 : 0);
   const stakeLink = 'https://app.metalx.com/staking';
   const milestones = [
@@ -5507,12 +5581,15 @@ function renderJourney() {
     { title: 'Vote for Block Producers', done: ecoBpVotes > 0,
       copy: 'Voting for Block Producers helps secure the network — and it counts toward your Guardian rank.',
       cta: { type: 'ext', target: stakeLink, label: 'Vote on Metal X →' } },
-    { title: 'Hold GUARD', done: guardHeld,
-      copy: 'GUARD is the community token this site stands behind — hold it in your wallet or stake it on BlastPad.',
-      cta: { type: 'go', target: 'newtoguard', label: 'New to GUARD →' } },
-    { title: 'Provide Liquidity', done: guardianLpXpr > 0,
-      copy: 'Add liquidity to the GUARD/XPR pool on SimpleDEX to help the market and earn a share of fees.',
+    { title: 'Use Metal X', done: ecoMetalXUsed,
+      copy: 'Swap, trade, or provide liquidity on Metal X — the ecosystem’s native DEX.',
+      cta: { type: 'ext', target: 'https://app.metalx.com/dex?referrer=guardops', label: 'Open Metal X →' } },
+    { title: 'Provide Liquidity', done: ecoAnyLp || guardianLpXpr > 0,
+      copy: 'Add liquidity to any SimpleDEX pool and earn a share of trading activity.',
       cta: { type: 'go', target: 'defilab', label: 'Learn liquidity in DeFi Forge →' } },
+    { title: 'Try Lending', done: ecoLendingUsed,
+      copy: 'Supply assets to the LOAN Protocol and earn interest — or borrow against your holdings.',
+      cta: { type: 'go', target: 'defilab', label: 'Learn lending in DeFi Forge →' } },
     { title: 'Explore the Ecosystem', done: breadthCount >= 2,
       copy: 'Hold Metallicus ecosystem tokens — LOAN, Metal Dollar (XMD), Metal DAO (XMT/MTL), and METAL — to broaden your footprint.',
       cta: { type: 'go', target: 'stablecoins', label: 'Explore Metallicus tokens →' } },
@@ -5557,7 +5634,7 @@ function renderJourney() {
 
   if (!_journeyTracked && connected) {
     _journeyTracked = true;
-    if (typeof umami !== 'undefined') { try { umami.track('journey-' + doneCount + 'of8'); } catch(e) {} }
+    if (typeof umami !== 'undefined') { try { umami.track('journey-' + doneCount + 'of9'); } catch(e) {} }
   }
 }
 
@@ -5716,6 +5793,7 @@ function onWalletDisconnected() {
   _guardLastConfirmedBal = -1;
   // Reset ecosystem / journey globals
   ecoXprStaked = 0; ecoBpVotes = 0; ecoAccountMonths = 0; ecoTokens = new Set(); ecoXprLiquid = 0;
+  ecoMetalXUsed = false; ecoAnyLp = false; ecoLendingUsed = false;
 
   // Re-render rank visuals back to Cryptide
   renderShield();
