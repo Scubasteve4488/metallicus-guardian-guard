@@ -792,6 +792,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       <div class="card reveal"><div class="card-icon ci-pur">🌐</div><h3>Explore the Ecosystem</h3><p>Every tool explained — Metal X, WebAuth, Alcor, Blastpad, LOAN Protocol, SimpleDEX, Metal Pay, and more.</p><span class="card-link" onclick="go('ecosystem')" style="cursor:pointer;">View Ecosystem</span></div>
       <div class="card reveal"><div class="card-icon ci-blue">🎓</div><h3>BloxProd Academy</h3><p>Community tutorials by BloxProd covering every major protocol on XPR Network.</p><span class="card-link" onclick="go('learn')" style="cursor:pointer;">Watch Videos</span></div>
       <div class="card reveal"><div class="card-icon ci-gold">🛡</div><h3>Meet GUARD</h3><p>The Metallicus Guardian — the community token and mascot at the heart of this site. Learn his story and role in the ecosystem.</p><span class="card-link" onclick="go('guard')" style="cursor:pointer;">Meet GUARD</span></div>
+      <div class="card reveal"><div class="card-icon ci-gold">🧭</div><h3>XPR Journey</h3><p>Track your path through the ecosystem — eight on-chain milestones from newcomer to Guardian.</p><span class="card-link" onclick="go('journey')" style="cursor:pointer;">View Journey</span></div>
     </div>
   </div>
   <div class="div-g"></div>
@@ -1205,7 +1206,8 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       </div>
 
     </div>
-    <div style="font-size:.8rem;color:var(--text3);margin-top:1.25rem;text-align:center;">Already part of the Stand Guard community? Head to <button onclick="go('newtoguard')" style="background:none;border:none;color:var(--gold-l);font-size:.8rem;cursor:pointer;padding:0;font-family:inherit;text-decoration:underline;">New to GUARD →</button></div>
+    <div style="font-size:.8rem;color:var(--text3);margin-top:1.25rem;text-align:center;">Connected your wallet? Track your progress on the <button onclick="go('journey')" style="background:none;border:none;color:var(--gold-l);font-size:.8rem;cursor:pointer;padding:0;font-family:inherit;text-decoration:underline;">XPR Journey →</button></div>
+    <div style="font-size:.8rem;color:var(--text3);margin-top:.5rem;text-align:center;">Already part of the Stand Guard community? Head to <button onclick="go('newtoguard')" style="background:none;border:none;color:var(--gold-l);font-size:.8rem;cursor:pointer;padding:0;font-family:inherit;text-decoration:underline;">New to GUARD →</button></div>
     <div class="disc mt3"><span>ℹ</span><div>Crypto assets carry risk. Only invest what you can afford to lose. This guide is educational only — not financial advice.</div></div>
   </div>
 </div>
@@ -1328,6 +1330,33 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 
     </div>
     <div class="disc mt3"><span>ℹ</span><div>standguard.net is an independent community site, not affiliated with or endorsed by Metallicus. This page is educational only — not financial advice.</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════ PAGE: JOURNEY ═══════ -->
+<div id="page-journey" class="page">
+<div class="container">
+  <div class="section">
+    <div class="sec-label">Your Path Through the Ecosystem</div>
+    <h1 class="page-title">XPR Journey</h1>
+    <p class="page-sub">Eight milestones from newcomer to Guardian — tracked live from your on-chain activity. No sign-ups, no forms. The chain already knows.</p>
+
+    <!-- Connect prompt — hidden when wallet connected -->
+    <div id="journey-wallet-prompt" style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.3);border-radius:var(--radius-lg);padding:1.75rem;text-align:center;max-width:460px;margin:1.5rem auto 0;">
+      <div style="font-size:2.5rem;margin-bottom:.75rem;">🧭</div>
+      <h3 style="font-family:'Cinzel',serif;color:var(--gold-l);margin-bottom:.5rem;">Connect Your WebAuth Wallet</h3>
+      <p style="font-size:.85rem;color:var(--text2);margin-bottom:1.25rem;">Connect your WebAuth wallet to see your Journey — every milestone is read straight from the blockchain.</p>
+      <button onclick="walletConnect()" class="btn btn-g" style="width:100%;justify-content:center;">⚡ Connect WebAuth Wallet</button>
+    </div>
+
+    <!-- Journey display — shown when connected -->
+    <div id="journey-display" style="display:none;">
+      <div id="journey-progress" style="max-width:600px;margin:1.5rem auto 1.5rem;"></div>
+      <div id="journey-path" class="steps"></div>
+      <p style="font-size:.72rem;color:var(--text3);text-align:center;margin-top:1.5rem;max-width:540px;margin-left:auto;margin-right:auto;">Milestones update automatically from public on-chain data. More milestones coming as the ecosystem grows.</p>
+      <div class="disc mt3"><span>ℹ</span><div>standguard.net is an independent community site, not affiliated with or endorsed by Metallicus. Educational only — not financial advice.</div></div>
+    </div>
   </div>
 </div>
 </div>
@@ -1723,6 +1752,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     <h2 class="sec-title">Path to the Next Shield</h2>
     <p style="font-size:.83rem;color:var(--text2);margin-bottom:1.25rem;max-width:600px;">Each rank requires completing a minimum number of conditions. LP positions and time-held tracking are on-chain features in development.</p>
     <div id="req-panel"><div style="font-size:.85rem;color:var(--text3);padding:.5rem 0;">Connect your wallet to see your rank requirements.</div></div>
+    <button class="btn btn-o mt2" style="font-size:.78rem;" onclick="go('journey')">🧭 View your full XPR Journey →</button>
 
     <!-- S5: ACHIEVEMENTS -->
     <div class="div-g" style="margin:2rem 0 1.5rem;"></div>
@@ -3563,7 +3593,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 </footer>
 
 <script>
-const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab','stablecoins'];
+const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab','stablecoins','journey'];
 const BUILD_VERSION='2026-06-19-BUILD-AR';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
@@ -4210,6 +4240,8 @@ let ecoXprStaked = 0;       // whole XPR staked for voting (voter_info.staked / 
 let ecoBpVotes = 0;         // BP vote slots filled (0–4)
 let ecoAccountMonths = 0;   // floor months since account created
 let ecoTokens = new Set();  // symbols with amount > 0 from get_tokens
+let ecoXprLiquid = 0;       // liquid (unstaked) XPR balance from eosio.token
+let _journeyTracked = false; // umami journey milestone fired once per session
 let _pointsRankTracked = false;
 const POINTS_THRESHOLDS = [0, 75, 200, 350, 550, 750, 950];
 
@@ -4713,6 +4745,30 @@ async function fetchOnChainData(actor) {
   fetchNftHoldings(actor);
   fetchStakingData(actor);
   fetchEcosystemData(actor);
+  fetchXprBalance(actor);
+}
+
+async function fetchXprBalance(actor) {
+  // Liquid (unstaked) XPR — get_currency_balance on eosio.token, RPC failover, silent-zero
+  for (const rpc of DAPP_CONFIG.endpoints) {
+    try {
+      const r = await fetchTimeout(rpc + '/v1/chain/get_currency_balance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: 'eosio.token', account: actor, symbol: 'XPR' }),
+      }, 5000);
+      if (r.ok) {
+        const data = await r.json();
+        const balStr = data && data[0] ? data[0] : null;
+        ecoXprLiquid = balStr ? (parseFloat(balStr.split(' ')[0]) || 0) : 0;
+        try { renderJourney(); } catch(e) {}
+        return ecoXprLiquid;
+      }
+    } catch(e) { /* try next rpc */ }
+  }
+  ecoXprLiquid = 0; // all RPCs failed — silent zero
+  try { renderJourney(); } catch(e) {}
+  return 0;
 }
 
 async function fetchLpPosition(actor) {
@@ -4786,6 +4842,7 @@ function onLpLoaded(lpTokens, xprEquivalent) {
   if (xprEquivalent >= 1000) unlockAch('lp_4');
   if (xprEquivalent >= 2500) unlockAch('lp_5');
   renderProgress(guardianBalance);
+  try { renderJourney(); } catch(e) {}
 }
 
 async function fetchHoldTime(actor) {
@@ -4987,6 +5044,7 @@ async function fetchEcosystemData(actor) {
     }
     renderPointsHint(pts);
     try { renderProgress(guardianBalance); } catch(e) {}
+    try { renderJourney(); } catch(e) {}
   }
 }
 
@@ -5349,10 +5407,13 @@ function computeGuardianPoints() {
   if      (totalGuard >= 1500000) pts += 150;
   else if (totalGuard >= 200000)  pts += 100;
   else if (totalGuard >= 10000)   pts += 50;
-  // Ecosystem breadth: +25 each for LOAN, SNIPS, XMD held with balance > 0
-  if (ecoTokens.has('LOAN'))  pts += 25;
-  if (ecoTokens.has('SNIPS')) pts += 25;
-  if (ecoTokens.has('XMD'))   pts += 25;
+  // Ecosystem breadth: Metallicus tokens — +25 each for LOAN, XMD, XMT (Metal DAO), METAL; capped at 75 (any 3 of 4)
+  let breadthPts = 0;
+  if (ecoTokens.has('LOAN'))  breadthPts += 25;
+  if (ecoTokens.has('XMD'))   breadthPts += 25;
+  if (ecoTokens.has('XMT'))   breadthPts += 25;
+  if (ecoTokens.has('METAL')) breadthPts += 25;
+  pts += Math.min(75, breadthPts);
   return pts;
 }
 
@@ -5368,7 +5429,7 @@ function renderPointsHint(pts) {
   const agePts   = Math.min(240, ecoAccountMonths * 10);
   const tg       = guardianBalance + Math.max(0, guardianStaked);
   const guardPts = tg >= 1500000 ? 150 : tg >= 200000 ? 100 : tg >= 10000 ? 50 : 0;
-  const ecoPts   = (ecoTokens.has('LOAN') ? 25 : 0) + (ecoTokens.has('SNIPS') ? 25 : 0) + (ecoTokens.has('XMD') ? 25 : 0);
+  const ecoPts   = Math.min(75, (ecoTokens.has('LOAN') ? 25 : 0) + (ecoTokens.has('XMD') ? 25 : 0) + (ecoTokens.has('XMT') ? 25 : 0) + (ecoTokens.has('METAL') ? 25 : 0));
   const parts = [];
   if (bpPts)    parts.push('BP votes: ' + bpPts);
   if (xprPts)   parts.push('Staked XPR: ' + xprPts);
@@ -5396,9 +5457,10 @@ function buildPointsPanel(next, cur) {
   const tg      = guardianBalance + Math.max(0, guardianStaked);
   const guardPts = tg >= 1500000 ? 150 : tg >= 200000 ? 100 : tg >= 10000 ? 50 : 0;
   const loanPts  = ecoTokens.has('LOAN')  ? 25 : 0;
-  const snipsPts = ecoTokens.has('SNIPS') ? 25 : 0;
   const xmdPts   = ecoTokens.has('XMD')   ? 25 : 0;
-  const ecoPts   = loanPts + snipsPts + xmdPts;
+  const xmtPts   = ecoTokens.has('XMT')   ? 25 : 0;
+  const metalPts = ecoTokens.has('METAL') ? 25 : 0;
+  const ecoPts   = Math.min(75, loanPts + xmdPts + xmtPts + metalPts);
   function row(label, earned, maxPts, detail) {
     const pct  = maxPts > 0 ? Math.min(100, Math.round(earned / maxPts * 100)) : (earned > 0 ? 100 : 0);
     const cls  = earned >= maxPts ? 'req-met' : earned > 0 ? 'req-soon' : 'req-unmet';
@@ -5410,7 +5472,7 @@ function buildPointsPanel(next, cur) {
   const xprDetail   = ecoXprStaked > 0 ? ecoXprStaked.toLocaleString() + ' XPR staked' + (xprPts >= 300 ? ' ✓' : ' · 100k XPR = max 300 pts') : 'Stake XPR in your WebAuth wallet to earn voting weight';
   const ageDetail   = ecoAccountMonths > 0 ? ecoAccountMonths + ' month' + (ecoAccountMonths !== 1 ? 's' : '') + ' old · 10 pts/month, cap 240' : 'Loading account age…';
   const guardDetail = tg > 0 ? tg.toLocaleString() + ' GUARD (wallet + staked)' + (guardPts >= 150 ? ' ✓' : '') : 'Buy GUARD on SimpleDEX to earn pts';
-  const ecoDetail   = ecoPts >= 75 ? 'LOAN ✓ · SNIPS ✓ · XMD ✓' : (loanPts ? 'LOAN ✓ ' : 'LOAN ○ ') + (snipsPts ? '· SNIPS ✓ ' : '· SNIPS ○ ') + (xmdPts ? '· XMD ✓' : '· XMD ○') + ' · +25 pts each';
+  const ecoDetail   = ecoPts >= 75 ? 'Any 3 of 4 Metallicus tokens ✓' : (loanPts ? 'LOAN ✓ ' : 'LOAN ○ ') + (xmdPts ? '· XMD ✓ ' : '· XMD ○ ') + (xmtPts ? '· Metal DAO ✓ ' : '· Metal DAO ○ ') + (metalPts ? '· METAL ✓' : '· METAL ○') + ' · +25 each, cap 75';
   const forged = (typeof ShardTracker !== 'undefined') && ShardTracker.isForged(next.name);
   const forgeCount = (typeof ShardTracker !== 'undefined') ? (ShardTracker.ownedCount ? ShardTracker.ownedCount(next.name) : 0) : 0;
   const forgeDetail = forged ? next.name + ' forged ✓' : 'Collect shards in GUARD Trials / Siege Guard (' + forgeCount + '/5) — either path advances your rank';
@@ -5420,9 +5482,83 @@ function buildPointsPanel(next, cur) {
   html += row('XPR Staked (voting weight)', xprPts, 300, xprDetail);
   html += row('Account Age', agePts, 240, ageDetail);
   html += row('GUARD Holdings', guardPts, 150, guardDetail);
-  html += row('Ecosystem Tokens (LOAN · SNIPS · XMD)', ecoPts, 75, ecoDetail);
+  html += row('Ecosystem Tokens (LOAN · XMD · Metal DAO · METAL)', ecoPts, 75, ecoDetail);
   html += `<div class="req-item" style="margin-top:.5rem;border-top:1px solid var(--border);padding-top:.65rem;"><div class="req-status ${forged ? 'req-met' : 'req-unmet'}">${forged ? '✓' : '○'}</div><div style="flex:1;min-width:0;"><div style="font-size:.84rem;color:var(--text);font-weight:500;">Or forge ${next.name} shards in the Arena <span style="color:var(--pur-g);font-size:.76rem;">(alternative path)</span></div><div style="font-size:.72rem;color:var(--text3);margin-top:.1rem;">${forgeDetail}</div></div></div>`;
   return html;
+}
+
+function renderJourney() {
+  const pathEl = document.getElementById('journey-path');
+  const progEl = document.getElementById('journey-progress');
+  if (!pathEl || !progEl) return;
+  const connected = (typeof walletActor !== 'undefined') && !!walletActor;
+  const guardHeld = (guardianBalance > 0) || (Math.max(0, guardianStaked) > 0);
+  const breadthCount = (ecoTokens.has('LOAN') ? 1 : 0) + (ecoTokens.has('XMD') ? 1 : 0) + (ecoTokens.has('XMT') ? 1 : 0) + (ecoTokens.has('METAL') ? 1 : 0);
+  const stakeLink = 'https://app.metalx.com/staking';
+  const milestones = [
+    { title: 'Create Your Wallet', done: connected,
+      copy: 'Your XPR Network identity exists.', cta: null },
+    { title: 'Get Your First XPR', done: (ecoXprLiquid > 0) || (ecoXprStaked > 0),
+      copy: 'XPR is the network’s native token — the fuel for everything on XPR Network.',
+      cta: { type: 'go', target: 'start', label: 'How to get XPR →' } },
+    { title: 'Stake Your XPR', done: ecoXprStaked > 0,
+      copy: 'Staking earns rewards and gives you voting weight in network governance.',
+      cta: { type: 'ext', target: stakeLink, label: 'Stake on Metal X →' } },
+    { title: 'Vote for Block Producers', done: ecoBpVotes > 0,
+      copy: 'Voting for Block Producers helps secure the network — and it counts toward your Guardian rank.',
+      cta: { type: 'ext', target: stakeLink, label: 'Vote on Metal X →' } },
+    { title: 'Hold GUARD', done: guardHeld,
+      copy: 'GUARD is the community token this site stands behind — hold it in your wallet or stake it on BlastPad.',
+      cta: { type: 'go', target: 'newtoguard', label: 'New to GUARD →' } },
+    { title: 'Provide Liquidity', done: guardianLpXpr > 0,
+      copy: 'Add liquidity to the GUARD/XPR pool on SimpleDEX to help the market and earn a share of fees.',
+      cta: { type: 'go', target: 'defilab', label: 'Learn liquidity in DeFi Forge →' } },
+    { title: 'Explore the Ecosystem', done: breadthCount >= 2,
+      copy: 'Hold Metallicus ecosystem tokens — LOAN, Metal Dollar (XMD), Metal DAO (XMT/MTL), and METAL — to broaden your footprint.',
+      cta: { type: 'go', target: 'stablecoins', label: 'Explore Metallicus tokens →' } },
+    { title: 'Become a Guardian', done: (typeof guardianRank !== 'undefined') && guardianRank >= 1,
+      copy: 'Reach Rank 1 or above — through ecosystem participation or Arena forging — to earn your first Shield.',
+      cta: { type: 'go', target: 'shields', label: 'View your Shield rank →' } },
+  ];
+  const total = milestones.length;
+  const doneCount = milestones.reduce((n, m) => n + (m.done ? 1 : 0), 0);
+
+  progEl.innerHTML = '<div style="text-align:center;">'
+    + '<div style="font-family:\'Cinzel\',serif;font-size:1.15rem;color:var(--gold-l);margin-bottom:.5rem;">' + doneCount + ' of ' + total + ' milestones</div>'
+    + '<div class="progress-track"><div class="progress-fill" style="width:' + Math.round(doneCount / total * 100) + '%"></div></div>'
+    + '</div>';
+
+  let html = '';
+  milestones.forEach((m, i) => {
+    const isLast = i === total - 1;
+    const nContent = m.done ? '✓' : (i + 1);
+    const nStyle = m.done
+      ? 'background:var(--gold);color:#080b12;box-shadow:0 0 12px rgba(201,146,42,0.55);border-color:var(--gold);'
+      : 'opacity:.55;';
+    const titleColor = m.done ? 'var(--gold-l)' : 'var(--text2)';
+    const bodyOpacity = m.done ? '1' : '.85';
+    let ctaHtml = '';
+    if (m.cta && !m.done) {
+      if (m.cta.type === 'go') {
+        ctaHtml = '<button class="btn btn-o mt2" style="font-size:.78rem;" onclick="go(\'' + m.cta.target + '\')">' + m.cta.label + '</button>';
+      } else {
+        ctaHtml = '<a href="' + m.cta.target + '" target="_blank" rel="noopener" class="btn btn-o mt2" style="font-size:.78rem;">' + m.cta.label + '</a>';
+      }
+    }
+    html += '<div class="step" style="opacity:' + bodyOpacity + ';">'
+      + '<div class="step-l"><div class="step-n" style="' + nStyle + '">' + nContent + '</div>' + (isLast ? '' : '<div class="step-line"></div>') + '</div>'
+      + '<div class="step-body">'
+      + '<h3 style="color:' + titleColor + ';">' + m.title + (m.done ? ' <span style="font-size:.8rem;color:var(--green);">✓ complete</span>' : '') + '</h3>'
+      + '<p>' + m.copy + '</p>'
+      + ctaHtml
+      + '</div></div>';
+  });
+  pathEl.innerHTML = html;
+
+  if (!_journeyTracked && connected) {
+    _journeyTracked = true;
+    if (typeof umami !== 'undefined') { try { umami.track('journey-' + doneCount + 'of8'); } catch(e) {} }
+  }
 }
 
 function toggleWallet(){ walletActor ? walletDisconnect() : walletConnect(); }
@@ -5451,6 +5587,12 @@ function onWalletConnected(actor) {
   if (rankDisplay) rankDisplay.style.display = 'block';
   if (actorShield) actorShield.textContent = '@' + actor;
 
+  // Journey page — same gating pattern as Shields
+  const jPrompt = document.getElementById('journey-wallet-prompt');
+  const jDisplay = document.getElementById('journey-display');
+  if (jPrompt) jPrompt.style.display = 'none';
+  if (jDisplay) jDisplay.style.display = 'block';
+
   // Load this wallet's keyed progress (clean default if first-time wallet)
   ShardTracker.load();
   guardianRank = Math.max(computeShardRank(), getPointsRank(computeGuardianPoints()));
@@ -5458,6 +5600,7 @@ function onWalletConnected(actor) {
   renderTimeline();
   renderShardDisplay();
   renderAchievements();
+  renderJourney();
   if (typeof FG !== 'undefined') {
     try {
       FG.pb = parseInt(wGet('fg_pb', '0') || '0');
@@ -5490,6 +5633,7 @@ function onGuardBalanceLoaded(actor, bal) {
   const _balNewRank = Math.max(computeShardRank(), getPointsRank(_balPts));
   if (_balNewRank !== guardianRank) { guardianRank = _balNewRank; wSet('sg_rank', String(guardianRank)); renderShield(); }
   renderPointsHint(_balPts);
+  try { renderJourney(); } catch(e) {}
 
   // Update Guardian card handle with wallet name if empty
   const handleInput = document.getElementById('guardian-handle');
@@ -5534,6 +5678,13 @@ function onWalletDisconnected() {
   if (prompt) prompt.style.display = 'block';
   if (rankDisplay) rankDisplay.style.display = 'none';
 
+  // Journey page — hide display, show connect prompt
+  const jPrompt = document.getElementById('journey-wallet-prompt');
+  const jDisplay = document.getElementById('journey-display');
+  if (jPrompt) jPrompt.style.display = 'block';
+  if (jDisplay) jDisplay.style.display = 'none';
+  _journeyTracked = false;
+
   // Reset rank and balance state — clear in-memory shard data so nothing forged shows
   ShardTracker._data = {};
   guardianRank = 0;
@@ -5563,6 +5714,8 @@ function onWalletDisconnected() {
   guardianNfts = {snippy:0, funky:0, cyphergang:0};
   guardianStaked = -1;
   _guardLastConfirmedBal = -1;
+  // Reset ecosystem / journey globals
+  ecoXprStaked = 0; ecoBpVotes = 0; ecoAccountMonths = 0; ecoTokens = new Set(); ecoXprLiquid = 0;
 
   // Re-render rank visuals back to Cryptide
   renderShield();
