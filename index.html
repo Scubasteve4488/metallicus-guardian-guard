@@ -609,6 +609,8 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 .track-hdr-r .track-label{color:#f87171;}
 .track-body{border:1px solid rgba(255,255,255,0.07);border-top:none;padding:1.25rem 1.1rem .85rem;border-radius:0 0 var(--radius-lg) var(--radius-lg);}
 .track-desc{font-size:.78rem;color:var(--text2);font-style:italic;margin-bottom:1.25rem;}
+.quiz-opts{display:flex;flex-direction:column;gap:.5rem;margin-top:.25rem;}
+.quiz-opt{width:100%;justify-content:flex-start;text-align:left;font-size:.82rem;}
 .cs-card{border:1px dashed rgba(255,255,255,0.13);border-radius:8px;display:flex;align-items:center;gap:.75rem;padding:.7rem .85rem;margin-bottom:.6rem;background:rgba(255,255,255,0.02);}
 .cs-thumb{width:96px;height:54px;flex-shrink:0;background:rgba(255,255,255,0.04);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:.58rem;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;text-align:center;padding:.25rem;}
 /* ── COMMUNITY FEATURE CARDS ── */
@@ -1493,6 +1495,13 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
         <a href="https://www.youtube.com/@bloxprod" target="_blank" class="badge br" style="text-decoration:none;font-size:.72rem;padding:.22rem .65rem;">YouTube ↗</a>
       </div>
     </div>
+
+    <!-- DAILY QUESTION -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(201,146,42,0.28);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.75rem;">
+      <div class="sec-label" style="margin-bottom:.75rem;">Daily Question</div>
+      <div id="quiz-card-body"></div>
+    </div>
+
     <!-- 🟢 BEGINNER TRACK -->
     <div class="track-section">
       <div class="track-hdr track-hdr-g"><div class="track-dot"></div><span class="track-label">🟢 BEGINNER TRACK — Start Here</span></div>
@@ -3647,6 +3656,7 @@ function go(id){
   if(typeof trackPageVisit==='function') trackPageVisit(id);
   if(typeof umami!=='undefined'){umami.track('page-'+id);}
   if(id==='arena'&&typeof arenaInit==='function'&&!window._arenaInited){window._arenaInited=true;setTimeout(arenaInit,30);}
+  if(id==='learn'&&typeof renderDailyQuiz==='function'){try{renderDailyQuiz();}catch(e){}}
   mbnActive(id);
 }
 window.addEventListener('hashchange',function(){var h=location.hash.replace(/^#/,'');if(PAGES.includes(h))go(h);});
@@ -4099,6 +4109,177 @@ var PlaysTracker = {
   }
 };
 
+// ===== DAILY QUESTION (Academy) =====
+const QUIZ_BANK = [
+{q:'What does it cost to send XPR to another user?', opts:['A 0.1% fee','Nothing — zero gas','1 XPR flat'], correct:1, why:'XPR Network transactions are gasless.', link:'start'},
+{q:'What do you use instead of a long wallet address on XPR Network?', opts:['QR codes only','An @username','An email address'], correct:1, why:'XPR Network uses human-readable @usernames.', link:'start'},
+{q:'What secures your daily WebAuth login?', opts:['A password','Typing your seed phrase each time','Face ID or fingerprint'], correct:2, why:'Biometrics handle daily login; the recovery phrase is only for device loss.', link:'start'},
+{q:'When do you actually need your 12-word recovery phrase?', opts:['Every login','Every transaction','Recovering your account if you lose your device'], correct:2, why:'Daily use is biometric — the phrase is your emergency backup.', link:'start'},
+{q:'Which characters can an XPR @username contain?', opts:['Any letters and numbers','Lowercase a–z and digits 1–5 only','Letters and symbols'], correct:1, why:'4–12 characters, lowercase a–z and 1–5 — and it is permanent.', link:'start'},
+{q:'Can you change your @username after creating it?', opts:['Yes, anytime','Once per year','No — it is permanent'], correct:2, why:'Choose carefully: usernames cannot be changed.', link:'start'},
+{q:'Creating a WebAuth account creates accounts on how many chains?', opts:['One','Two — XPR Network and Metal Blockchain','Five'], correct:1, why:'One signup covers both XPR Network and Metal Blockchain.', link:'start'},
+{q:'What is XMD (Metal Dollar) pegged to?', opts:['Gold','The US dollar','XPR'], correct:1, why:'XMD is pegged 1:1 to the US dollar.', link:'stablecoins'},
+{q:'What backs XMD?', opts:['A single issuer','An algorithm','A basket of reserve-backed stablecoins (USDC, PYUSD, USDP)'], correct:2, why:'XMD is a non-algorithmic stablecoin basket.', link:'stablecoins'},
+{q:'Who governs the Metal Dollar protocol?', opts:['Metallicus alone','Metal DAO (XMT holders)','Block Producers'], correct:1, why:'XMT holders vote on Metal Dollar decisions through Metal DAO.', link:'stablecoins'},
+{q:'On XPR Network, the Metal DAO token trades under which ticker?', opts:['MTL','XMT','XMD'], correct:1, why:'XMT became the Metal ticker on the network in 2020 — MTL is the same asset elsewhere.', link:'ecosystem'},
+{q:'How many Block Producers can one account vote for?', opts:['1','4','21'], correct:1, why:'Each account gets up to 4 Block Producer vote slots.', link:'defilab'},
+{q:'Does voting for Block Producers spend your XPR?', opts:['Yes','No — voting is free','Only the first vote'], correct:1, why:'Voting costs nothing and helps secure the network.', link:'defilab'},
+{q:'What consensus model does XPR Network use?', opts:['Proof of Work','Delegated Proof of Stake','Proof of History'], correct:1, why:'Elected Block Producers validate all activity.', link:'ecosystem'},
+{q:'Metal Blockchain (Layer 0) finds consensus using protocols introduced by which project?', opts:['Bitcoin','Avalanche (Snow protocols)','Ethereum'], correct:1, why:'Metal Blockchain runs on the Snow protocol family introduced by Avalanche.', link:'ecosystem'},
+{q:'What is the minimum METAL to run a Metal Blockchain validator?', opts:['25','2,000','100,000'], correct:1, why:'Validators stake 2,000 METAL minimum — delegation starts at just 25.', link:'https://metalblockchain.org/guides'},
+{q:'What is the LOAN token for?', opts:['A stablecoin','Governance and rewards for the LOAN Protocol lending markets','NFT minting'], correct:1, why:'LOAN powers governance and rewards for lending on Metal X.', link:'defilab'},
+{q:'What is Metal X?', opts:['A hardware wallet','XPR Network\'s native DEX for trading, lending, and liquidity','A game'], correct:1, why:'Metal X is the ecosystem\'s decentralized exchange.', link:'defilab'},
+{q:'Metallicus holds a certification from which US payment system — the only blockchain company to do so?', opts:['SWIFT','FedNow','Zelle'], correct:1, why:'Metallicus is FedNow Service-certified.', link:'stablecoins'},
+{q:'What was Cloud Dollar (CLDUSD)?', opts:['A meme token','The first credit-union-issued stablecoin in the US','An airdrop'], correct:1, why:'St. Cloud Financial CU issued it with Metallicus.', link:'stablecoins'},
+{q:'What is SimpleDEX?', opts:['A centralized exchange','The community token launchpad and DEX on XPR Network','A wallet'], correct:1, why:'SimpleDEX is where community tokens launch and trade on XPR.', link:'newtoguard'},
+{q:'What are XTokens (like XETH)?', opts:['Fake tokens','Wrapped assets from other chains, bridged to XPR Network','Test tokens'], correct:1, why:'The Metal X Bridge wraps external assets as XTokens.', link:'ecosystem'},
+{q:'Who founded Metallicus?', opts:['Marshall Hayner','Vitalik Buterin','Dan Larimer'], correct:0, why:'Marshall Hayner is co-founder and CEO.', link:'community'},
+{q:'In Metal DAO voting, what does 1 XMT equal?', opts:['1 vote','10 votes','Voting needs 100 XMT minimum'], correct:0, why:'Vote power equals your XMT balance — 1 token, 1 vote.', link:'ecosystem'},
+{q:'What must a Metal Blockchain validator maintain to earn rewards?', opts:['50% uptime','80% uptime','100% uptime'], correct:1, why:'80% uptime during the staking period is required.', link:'https://metalblockchain.org/guides'},
+{q:'Metal Pay lets you buy XPR with a debit card in which regions?', opts:['Worldwide','US, Australia & New Zealand','Europe only'], correct:1, why:'Metal Pay serves the US, Australia, and New Zealand.', link:'start'},
+{q:'What discount does the Metal X referral program give a new referred user on DEX trading fees?', opts:['5% for one year','50% forever','Free trades for a month'], correct:0, why:'Referred new accounts get 5% off DEX fees for a full year.', link:'start'},
+{q:'When must a Metal X referral code be applied?', opts:['Anytime','Before your first DEX trade — new accounts only','After 10 trades'], correct:1, why:'It cannot be applied retroactively.', link:'start'},
+{q:'What does Snipverse reward you with for posting?', opts:['XPR','SNIPS tokens','NFTs'], correct:1, why:'Snipverse pays SNIPS for posting and engagement.', link:'snipverse'},
+{q:'XPR Network smart contracts are primarily written in which language?', opts:['C++','TypeScript','Python'], correct:1, why:'TypeScript — a mainstream web language, unusual among blockchains.', link:'ecosystem'},
+{q:'Publishing a Metal DAO proposal costs how much XMT?', opts:['1','100','10,000'], correct:1, why:'100 XMT per the Metal DAO governance docs.', link:'ecosystem'},
+{q:'The admission fee for adding a stablecoin to the Metal Dollar basket is currently —', opts:['500 XMT','50,000 XMT','1,000,000 XMT'], correct:1, why:'50,000 XMT, modifiable by DAO vote.', link:'stablecoins'},
+{q:'The NFT standard used on XPR Network is —', opts:['ERC-721','AtomicAssets','Metaplex'], correct:1, why:'XPR NFTs use the AtomicAssets standard.', link:'ecosystem'},
+{q:'The Metal X Bridge connects XPR Network to other chains including —', opts:['Ethereum and Bitcoin','Only Metal Blockchain','No other chains'], correct:0, why:'Assets from Ethereum, Bitcoin and more arrive as wrapped XTokens.', link:'ecosystem'},
+{q:'GUARD is best described as —', opts:['An official Metallicus token','A community memecoin launched on SimpleDEX','A stablecoin'], correct:1, why:'GUARD is an independent community token — not affiliated with Metallicus.', link:'newtoguard'},
+{q:'SimpleDEX pool 187 pairs GUARD with —', opts:['XMD','XPR','METAL'], correct:1, why:'GUARD trades against XPR in pool 187.', link:'newtoguard'},
+{q:'Loans on the LOAN Protocol are —', opts:['Unsecured','Over-collateralized — backed by more value than you borrow','Credit-score based'], correct:1, why:'You borrow against crypto collateral worth more than the loan.', link:'defilab'},
+{q:'On Metal X lending, "loan health" tells you —', opts:['Your credit score','How close your position is to liquidation','Interest earned'], correct:1, why:'Low loan health means liquidation risk.', link:'defilab'},
+{q:'XPR uses how many decimal places?', opts:['4','8','18'], correct:0, why:'XPR has 4-decimal precision.', link:'ecosystem'},
+{q:'Besides earning rewards, staking XPR also —', opts:['Locks it forever','Powers your Block Producer votes','Mints XMD'], correct:1, why:'Staked XPR is your governance voting weight.', link:'defilab'},
+{q:'In March 2026 Metallicus expanded its FedNow certification with —', opts:['Instant loans','Request for Payment (RFP)','Credit cards'], correct:1, why:'RFP certification expanded their FedNow capabilities.', link:'stablecoins'},
+{q:'Metallicus\'s Banking Innovation Program network has grown past how many credit unions?', opts:['50','750','10,000'], correct:1, why:'Over 750 credit unions through leagues, CUSOs and fintechs.', link:'stablecoins'},
+{q:'WebAuth is available on —', opts:['iOS only','iOS, Android, and web browser','Desktop only'], correct:1, why:'Phone apps plus webauth.com in any browser.', link:'start'},
+{q:'The Metal DAO voting quorum is set at —', opts:['3% of voting power','51%','90%'], correct:0, why:'Proposals need 3% of voting power to participate.', link:'ecosystem'},
+{q:'XMD can be minted or redeemed on Metal X at what ratio?', opts:['Variable','1:1','2:1'], correct:1, why:'Mint and redeem 1:1, anytime.', link:'stablecoins'},
+{q:'XPR Network is which layer?', opts:['Layer 0','Layer 1','Layer 2'], correct:1, why:'XPR Network is the Layer 1; Metal Blockchain is the Layer 0 beneath it.', link:'ecosystem'},
+{q:'METAL is the gas token of —', opts:['XPR Network','Metal Blockchain (Layer 0)','Metal Pay'], correct:1, why:'METAL powers the Layer 0 foundation chain.', link:'ecosystem'},
+{q:'Metal Blockchain builds which US compliance framework into its base layer?', opts:['GDPR','Bank Secrecy Act (BSA)','MiFID'], correct:1, why:'BSA compliance is integrated at the protocol level.', link:'ecosystem'},
+{q:'Which exchange with XPR spot trading is NOT available to US customers?', opts:['KuCoin','Gate.io','Metal Pay'], correct:1, why:'Gate.io does not serve US customers.', link:'start'},
+{q:'Metal Blockchain validators can accept delegation up to —', opts:['No limit','5x their own stake','100 METAL total'], correct:1, why:'Delegation is capped at 5x the validator\'s own stake.', link:'https://metalblockchain.org/guides'}
+];
+
+// Deterministic daily index: YYYYMMDD hashed, mod 50 — same for everyone, rotates daily
+function todayQuizYMD(){
+  var d = new Date();
+  return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+}
+function todayQuizIndex(){
+  var ymd = todayQuizYMD();
+  var h = 0, s = String(ymd);
+  for (var i = 0; i < s.length; i++){ h = (h * 31 + s.charCodeAt(i)) >>> 0; }
+  return h % QUIZ_BANK.length;
+}
+
+// Answer handler — one attempt per day, wallet-tied storage only
+function answerQuiz(chosenIdx){
+  if (!walletActor) return;
+  var ymd = String(todayQuizYMD());
+  if (wGet('quiz_last_day', null) === ymd) return; // already answered today
+  var qi = todayQuizIndex();
+  var q = QUIZ_BANK[qi];
+  var isCorrect = chosenIdx === q.correct;
+
+  wSet('quiz_last_day', ymd);
+  wSet('quiz_last_result', isCorrect ? '1' : '0');
+  wSet('quiz_last_choice', String(chosenIdx));
+
+  // Lifetime correct count
+  if (isCorrect){
+    var total = parseInt(wGet('quiz_total_correct', '0') || '0', 10) + 1;
+    wSet('quiz_total_correct', String(total));
+  }
+
+  // Streak: consecutive days answered correctly
+  var prevDay = wGet('quiz_streak_day', null);
+  var streak = parseInt(wGet('quiz_streak', '0') || '0', 10);
+  if (isCorrect){
+    var y = new Date(); y.setDate(y.getDate() - 1);
+    var yesterdayYmd = String(y.getFullYear() * 10000 + (y.getMonth() + 1) * 100 + y.getDate());
+    if (prevDay === yesterdayYmd) streak = streak + 1;
+    else streak = 1;
+    wSet('quiz_streak', String(streak));
+    wSet('quiz_streak_day', ymd);
+    if (streak >= 7) unlockAch('quiz_streak_7');
+  } else {
+    streak = 0;
+    wSet('quiz_streak', '0');
+    wSet('quiz_streak_day', ymd);
+  }
+
+  if (typeof umami !== 'undefined'){ try { umami.track(isCorrect ? 'quiz-answered-correct' : 'quiz-answered-wrong'); } catch(e){} }
+  renderDailyQuiz();
+}
+
+function renderDailyQuiz(){
+  var card = document.getElementById('quiz-card-body');
+  if (!card) return;
+  var qi = todayQuizIndex();
+  var q = QUIZ_BANK[qi];
+  var connected = (typeof walletActor !== 'undefined') && !!walletActor;
+  var ymd = String(todayQuizYMD());
+  var answeredToday = connected && wGet('quiz_last_day', null) === ymd;
+  var lastResult = wGet('quiz_last_result', null);
+  var lastChoice = parseInt(wGet('quiz_last_choice', '-1') || '-1', 10);
+  var streak = parseInt(wGet('quiz_streak', '0') || '0', 10);
+  var totalCorrect = parseInt(wGet('quiz_total_correct', '0') || '0', 10);
+
+  var html = '<div style="font-size:.92rem;color:var(--text);font-weight:600;line-height:1.5;margin-bottom:.9rem;">' + q.q + '</div>';
+
+  function linkHtml(){
+    var isExternal = /^https?:/.test(q.link);
+    return isExternal
+      ? '<a href="' + q.link + '" target="_blank" rel="noopener" class="btn btn-o mt2" style="font-size:.74rem;">Learn more →</a>'
+      : '<button class="btn btn-o mt2" style="font-size:.74rem;" onclick="go(\'' + q.link + '\')">Learn more →</button>';
+  }
+  function whyHtml(){
+    return '<div style="font-size:.78rem;color:var(--text2);margin-top:.75rem;line-height:1.55;">' + q.why + '</div>';
+  }
+
+  if (!connected){
+    // Not connected — question visible, options disabled
+    html += '<div class="quiz-opts">';
+    q.opts.forEach(function(o){
+      html += '<button class="btn btn-o quiz-opt" disabled style="opacity:.55;cursor:not-allowed;">' + o + '</button>';
+    });
+    html += '</div>';
+    html += '<div style="font-size:.76rem;color:var(--text3);margin-top:.75rem;">Connect your wallet to answer and track your streak.</div>';
+  } else if (answeredToday){
+    // Locked — show today's result
+    html += '<div class="quiz-opts">';
+    q.opts.forEach(function(o, i){
+      var style = '';
+      if (i === q.correct) style = 'border-color:var(--gold);color:var(--gold-l);background:rgba(201,146,42,0.10);';
+      else if (i === lastChoice && lastResult === '0') style = 'border-color:#e0524d;color:#e0524d;background:rgba(224,82,77,0.08);';
+      else style = 'opacity:.5;';
+      html += '<button class="btn btn-o quiz-opt" disabled style="' + style + 'cursor:default;">' + o + '</button>';
+    });
+    html += '</div>';
+    html += '<div style="font-size:.82rem;font-weight:600;margin-top:.75rem;color:' + (lastResult === '1' ? 'var(--gold-l)' : '#e0524d') + ';">' + (lastResult === '1' ? '✓ Correct' : '✗ Not quite') + '</div>';
+    html += whyHtml();
+    html += '<div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-top:.35rem;">' + linkHtml() + '</div>';
+    html += '<div style="font-size:.74rem;color:var(--text3);margin-top:.6rem;">Next question tomorrow.</div>';
+  } else {
+    // Connected, unanswered — active options
+    html += '<div class="quiz-opts">';
+    q.opts.forEach(function(o, i){
+      html += '<button class="btn btn-o quiz-opt" onclick="answerQuiz(' + i + ')">' + o + '</button>';
+    });
+    html += '</div>';
+  }
+
+  // Streak / total in the corner (quiet)
+  if (connected && (streak > 0 || totalCorrect > 0)){
+    html += '<div style="font-size:.68rem;color:var(--text3);margin-top:.9rem;letter-spacing:.02em;">🔥 ' + streak + '-day streak · ' + totalCorrect + ' correct all-time</div>';
+  }
+
+  card.innerHTML = html;
+}
+
 function updatePlaysUI() {
   var ctWS = document.getElementById('plays-count-ws');
   var ctFG = document.getElementById('plays-count-fg');
@@ -4334,6 +4515,7 @@ const ACH_CATS = [
       {id:'loy_90',  label:'90 Days',  desc:'Standing GUARD for 90 days',  icon:'⏳'},
       {id:'loy_180', label:'180 Days', desc:'Standing GUARD for 180 days', icon:'⏳'},
       {id:'loy_365', label:'365 Days', desc:'Standing GUARD for 365 days', icon:'⏳'},
+      {id:'quiz_streak_7', label:'Scholar Guardian', desc:'Answer the daily question correctly 7 days in a row', icon:'📜'},
     ]
   },
   { id:'community', label:'Community Achievements', icon:'👥',
@@ -6047,6 +6229,7 @@ function onWalletConnected(actor) {
   renderAchievements();
   renderJourney();
   renderIntelligence();
+  renderDailyQuiz();
   if (typeof FG !== 'undefined') {
     try {
       FG.pb = parseInt(wGet('fg_pb', '0') || '0');
@@ -6182,6 +6365,7 @@ function onWalletDisconnected() {
 
   // Re-render achievements — shows empty while no wallet connected (wallet-keyed storage)
   renderAchievements();
+  try { renderDailyQuiz(); } catch(e) {}
   updateStartStep4();
   updatePlaysUI();
   var _db=document.getElementById('dev-toggle-btn');if(_db)_db.style.display='none';
