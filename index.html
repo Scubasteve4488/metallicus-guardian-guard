@@ -793,6 +793,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       <div class="card reveal"><div class="card-icon ci-blue">🎓</div><h3>BloxProd Academy</h3><p>Community tutorials by BloxProd covering every major protocol on XPR Network.</p><span class="card-link" onclick="go('learn')" style="cursor:pointer;">Watch Videos</span></div>
       <div class="card reveal"><div class="card-icon ci-gold">🛡</div><h3>Meet GUARD</h3><p>The Metallicus Guardian — the community token and mascot at the heart of this site. Learn his story and role in the ecosystem.</p><span class="card-link" onclick="go('guard')" style="cursor:pointer;">Meet GUARD</span></div>
       <div class="card reveal"><div class="card-icon ci-gold">🧭</div><h3>XPR Journey</h3><p>Track your path through the ecosystem — eight on-chain milestones from newcomer to Guardian.</p><span class="card-link" onclick="go('journey')" style="cursor:pointer;">View Journey</span></div>
+      <div class="card reveal"><div class="card-icon ci-blue">🔍</div><h3>Guardian Intelligence</h3><p>Your wallet, explained in plain English — live from the chain.</p><span class="card-link" onclick="go('intelligence')" style="cursor:pointer;">View Intelligence</span></div>
     </div>
   </div>
   <div class="div-g"></div>
@@ -1355,7 +1356,34 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       <div id="journey-progress" style="max-width:600px;margin:1.5rem auto 1.5rem;"></div>
       <div id="journey-path" class="steps"></div>
       <p style="font-size:.72rem;color:var(--text3);text-align:center;margin-top:1.5rem;max-width:540px;margin-left:auto;margin-right:auto;">Milestones update automatically from public on-chain data. More milestones coming as the ecosystem grows.</p>
+      <p style="font-size:.8rem;color:var(--text3);text-align:center;margin-top:1rem;">Want the full picture? <button onclick="go('intelligence')" style="background:none;border:none;color:var(--gold-l);font-size:.8rem;cursor:pointer;padding:0;font-family:inherit;text-decoration:underline;">Guardian Intelligence →</button></p>
       <div class="disc mt3"><span>ℹ</span><div>standguard.net is an independent community site, not affiliated with or endorsed by Metallicus. Educational only — not financial advice.</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════ PAGE: INTELLIGENCE ═══════ -->
+<div id="page-intelligence" class="page">
+<div class="container">
+  <div class="section">
+    <div class="sec-label">Your Wallet, Explained</div>
+    <h1 class="page-title">Guardian Intelligence</h1>
+    <p class="page-sub">Your on-chain position in plain English — read live from the blockchain. Not financial advice. Just clarity.</p>
+
+    <!-- Connect prompt — hidden when wallet connected -->
+    <div id="intelligence-wallet-prompt" style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.3);border-radius:var(--radius-lg);padding:1.75rem;text-align:center;max-width:460px;margin:1.5rem auto 0;">
+      <div style="font-size:2.5rem;margin-bottom:.75rem;">🔍</div>
+      <h3 style="font-family:'Cinzel',serif;color:var(--gold-l);margin-bottom:.5rem;">Connect Your WebAuth Wallet</h3>
+      <p style="font-size:.85rem;color:var(--text2);margin-bottom:1.25rem;">Connect your WebAuth wallet to read your on-chain position — every figure comes straight from the blockchain.</p>
+      <button onclick="walletConnect()" class="btn btn-g" style="width:100%;justify-content:center;">⚡ Connect WebAuth Wallet</button>
+    </div>
+
+    <!-- Intelligence display — shown when connected -->
+    <div id="intelligence-display" style="display:none;">
+      <div id="intelligence-cards" class="grid grid-auto mt3"></div>
+      <p style="font-size:.72rem;color:var(--text3);text-align:center;margin-top:1.5rem;max-width:560px;margin-left:auto;margin-right:auto;">All data read live from public on-chain sources. Estimates marked as such.</p>
+      <div class="disc mt3"><span>ℹ</span><div>standguard.net is an independent community site, not affiliated with or endorsed by Metallicus. This is educational information, not financial advice.</div></div>
     </div>
   </div>
 </div>
@@ -1753,6 +1781,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
     <p style="font-size:.83rem;color:var(--text2);margin-bottom:1.25rem;max-width:600px;">Each rank requires completing a minimum number of conditions. LP positions and time-held tracking are on-chain features in development.</p>
     <div id="req-panel"><div style="font-size:.85rem;color:var(--text3);padding:.5rem 0;">Connect your wallet to see your rank requirements.</div></div>
     <button class="btn btn-o mt2" style="font-size:.78rem;" onclick="go('journey')">🧭 View your full XPR Journey →</button>
+    <button class="btn btn-o mt2" style="font-size:.78rem;" onclick="go('intelligence')">🔍 Guardian Intelligence →</button>
 
     <!-- S5: ACHIEVEMENTS -->
     <div class="div-g" style="margin:2rem 0 1.5rem;"></div>
@@ -3593,7 +3622,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 </footer>
 
 <script>
-const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab','stablecoins','journey'];
+const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab','stablecoins','journey','intelligence'];
 const BUILD_VERSION='2026-06-19-BUILD-AR';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
@@ -4244,6 +4273,15 @@ let ecoXprLiquid = 0;       // liquid (unstaked) XPR balance from eosio.token
 let ecoMetalXUsed = false;  // has interacted with Metal X AMM (proton.swaps)
 let ecoAnyLp = false;       // holds ≥1 SimpleDEX LP position (any pool)
 let ecoLendingUsed = false; // has a LOAN Protocol supplied position
+// Guardian Intelligence — detailed on-chain state (null = not yet loaded / unavailable)
+let intelLp = null;        // array of {poolId, pair, sharePct, tokenA, tokenB, aAmt, bAmt, xprValue} | 'error'
+let intelLending = null;   // array of {sym, underlyingSym, underlyingAmt, borrowedVar, borrowedStable} | 'error'
+let intelWallet = null;    // array of {symbol, contract, amount, precision} incl merged XPR+GUARD | 'error'
+let ecoRefund = null;      // null or {request_time, net_amount (XPR string), cpu_amount}
+let ecoProxy = '';         // voter_info.proxy ('' = direct voting)
+let ecoProducers = [];     // voter_info.producers (BP names actually voted for)
+let _journeyDone = 0;      // milestones complete (set by renderJourney) for Participation card
+let _intelTracked = false; // umami intelligence-viewed once per session
 let _journeyTracked = false; // umami journey milestone fired once per session
 let _pointsRankTracked = false;
 const POINTS_THRESHOLDS = [0, 75, 200, 350, 550, 750, 950];
@@ -4752,7 +4790,18 @@ async function fetchOnChainData(actor) {
   fetchMetalXUsage(actor);
   fetchAnyLp(actor);
   fetchLendingPosition(actor);
+  fetchAllLpDetails(actor);
+  fetchLendingDetails(actor);
+  fetchWalletComposition(actor);
 }
+
+// Coerce EOSIO uint64 (arrives as string when large, number when small) to a JS number safely
+function _u64(x){ return parseFloat(String(x == null ? 0 : x)) || 0; }
+// Parse the numeric amount off an EOSIO asset string like "123.4567 XPR"
+function _assetNum(q){ if(q==null) return 0; return parseFloat(String(q).trim().split(' ')[0]) || 0; }
+// Precision lookup for display (fallbacks derived from symbol when unknown)
+const _TOKEN_PRECISION = { XPR:4, GUARD:4, XMT:8, XMD:6, LOAN:4, METAL:8,
+  LETH:8, LXLM:6, LXRP:6, LUSDC:6, LXPR:4, LXMT:8, LADA:6, LBTC:8 };
 
 async function fetchXprBalance(actor) {
   // Liquid (unstaked) XPR — get_currency_balance on eosio.token, RPC failover, silent-zero
@@ -4768,12 +4817,14 @@ async function fetchXprBalance(actor) {
         const balStr = data && data[0] ? data[0] : null;
         ecoXprLiquid = balStr ? (parseFloat(balStr.split(' ')[0]) || 0) : 0;
         try { renderJourney(); } catch(e) {}
+        try { renderIntelligence(); } catch(e) {}
         return ecoXprLiquid;
       }
     } catch(e) { /* try next rpc */ }
   }
   ecoXprLiquid = 0; // all RPCs failed — silent zero
   try { renderJourney(); } catch(e) {}
+  try { renderIntelligence(); } catch(e) {}
   return 0;
 }
 
@@ -4844,6 +4895,165 @@ async function fetchLendingPosition(actor) {
   ecoLendingUsed = false; // silent-false
   try { renderJourney(); } catch(e) {}
   return false;
+}
+
+// Helper: POST get_table_rows against endpoints with failover; returns parsed json or null
+async function _tableRows(body){
+  for (const rpc of DAPP_CONFIG.endpoints){
+    try {
+      const r = await fetchTimeout(rpc + '/v1/chain/get_table_rows', {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body),
+      }, 7000);
+      if (r.ok) return await r.json();
+    } catch(e){ /* next */ }
+  }
+  return null;
+}
+async function _currencyStatsSupply(code, symbol){
+  for (const rpc of DAPP_CONFIG.endpoints){
+    try {
+      const r = await fetchTimeout(rpc + '/v1/chain/get_currency_stats', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ code, symbol }),
+      }, 6000);
+      if (r.ok){ const d = await r.json(); const row = d && d[symbol]; return row ? _assetNum(row.supply) : null; }
+    } catch(e){ /* next */ }
+  }
+  return null;
+}
+async function _currencyBalance(code, account, symbol){
+  for (const rpc of DAPP_CONFIG.endpoints){
+    try {
+      const r = await fetchTimeout(rpc + '/v1/chain/get_currency_balance', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ code, account, symbol }),
+      }, 6000);
+      if (r.ok){ const d = await r.json(); return (d && d[0]) ? _assetNum(d[0]) : 0; }
+    } catch(e){ /* next */ }
+  }
+  return null;
+}
+function _prec(sym){ return _TOKEN_PRECISION[sym] != null ? _TOKEN_PRECISION[sym] : 4; }
+
+async function fetchAllLpDetails(actor){
+  try {
+    // 1) All owner-scoped LP rows (paginate past more:true)
+    let lpRows = [], lb = '';
+    for (let guard=0; guard<10; guard++){
+      const body = {json:true, code:'simpledex', scope:actor, table:'lp', limit:100};
+      if (lb) body.lower_bound = lb;
+      const d = await _tableRows(body);
+      if (!d || !Array.isArray(d.rows)) { if (lpRows.length===0) throw new Error('lp fetch failed'); break; }
+      lpRows = lpRows.concat(d.rows);
+      if (!d.more) break;
+      lb = d.next_key;
+      if (!lb) break;
+    }
+    if (lpRows.length === 0){ intelLp = []; try{renderIntelligence();}catch(e){} return; }
+    // 2) Pool rows for each held poolId (parallel)
+    const pools = await Promise.all(lpRows.map(async r => {
+      const pid = _u64(r.poolId);
+      const d = await _tableRows({json:true, code:'simpledex', scope:'simpledex', table:'pools',
+        lower_bound:pid, upper_bound:pid, limit:1, key_type:'i64', index_position:'1'});
+      return (d && d.rows && d.rows[0]) ? d.rows[0] : null;
+    }));
+    // 3) Compute per-position underlying + XPR-equivalent value
+    const out = [];
+    lpRows.forEach((r, i) => {
+      const p = pools[i]; if (!p) return;
+      const userLp = _u64(r.lpTokens), totalLp = _u64(p.totalLpTokens);
+      if (totalLp <= 0) return;
+      const share = userLp / totalLp;
+      const aSym = String(p.tokenASymbol||',').split(',')[1] || '?';
+      const bSym = String(p.tokenBSymbol||',').split(',')[1] || '?';
+      const aPrec = parseInt(String(p.tokenASymbol||'4,').split(',')[0]) || _prec(aSym);
+      const bPrec = parseInt(String(p.tokenBSymbol||'4,').split(',')[0]) || _prec(bSym);
+      const reserveA = _u64(p.reserveA), reserveB = _u64(p.reserveB);
+      const aAmt = share * reserveA / Math.pow(10, aPrec);
+      const bAmt = share * reserveB / Math.pow(10, bPrec);
+      // pools are XPR-paired (tokenA = XPR, 4 decimals) — value = 2 × XPR side
+      const xprValue = 2 * share * reserveA / 1e4;
+      out.push({ poolId:_u64(r.poolId), pair:aSym+'/'+bSym, tokenA:aSym, tokenB:bSym,
+        sharePct: share*100, aAmt, bAmt, xprValue });
+    });
+    out.sort((x,y) => y.xprValue - x.xprValue);
+    intelLp = out;
+  } catch(e){ intelLp = 'error'; }
+  try { renderIntelligence(); } catch(e){}
+}
+
+async function fetchLendingDetails(actor){
+  try {
+    // supplied shares row for the account
+    const sh = await _tableRows({json:true, code:'lending.loan', scope:'lending.loan', table:'shares',
+      lower_bound:actor, upper_bound:actor, key_type:'name', index_position:'1', limit:1});
+    if (!sh || !Array.isArray(sh.rows)) throw new Error('shares fetch failed');
+    const shareRow = sh.rows[0];
+    // borrows row for the account
+    const br = await _tableRows({json:true, code:'lending.loan', scope:'lending.loan', table:'borrows',
+      lower_bound:actor, upper_bound:actor, key_type:'name', index_position:'1', limit:1});
+    const borrowRow = (br && br.rows && br.rows[0]) ? br.rows[0] : null;
+    if (!shareRow || !Array.isArray(shareRow.tokens)){ intelLending = []; try{renderIntelligence();}catch(e){} return; }
+    const held = shareRow.tokens.filter(t => _u64(t.value) > 0);
+    if (held.length === 0){ intelLending = []; try{renderIntelligence();}catch(e){} return; }
+    // markets (paginate) to map share sym -> market
+    let markets = [], lb = '';
+    for (let g=0; g<10; g++){
+      const body = {json:true, code:'lending.loan', scope:'lending.loan', table:'markets', limit:100};
+      if (lb) body.lower_bound = lb;
+      const d = await _tableRows(body);
+      if (!d || !Array.isArray(d.rows)) break;
+      markets = markets.concat(d.rows);
+      if (!d.more) break; lb = d.next_key; if(!lb) break;
+    }
+    const out = [];
+    for (const t of held){
+      const shareSym = String(t.key.sym).split(',')[1];               // e.g. LXPR
+      const sharePrec = parseInt(String(t.key.sym).split(',')[0]) || _prec(shareSym);
+      const mkt = markets.find(m => String(m.share_symbol.sym).split(',')[1] === shareSym);
+      if (!mkt){ out.push({ sym:shareSym, underlyingSym:shareSym, underlyingAmt:null, shares:_u64(t.value)/Math.pow(10,sharePrec), borrowedVar:0, borrowedStable:0 }); continue; }
+      const underlyingSym = String(mkt.underlying_symbol.sym).split(',')[1];
+      const uPrec = parseInt(String(mkt.underlying_symbol.sym).split(',')[0]) || _prec(underlyingSym);
+      const shareSupply = await _currencyStatsSupply('shares.loan', shareSym);
+      const cash = await _currencyBalance(mkt.underlying_symbol.contract, 'lending.loan', underlyingSym);
+      let underlyingAmt = null;
+      if (shareSupply != null && shareSupply > 0 && cash != null){
+        const varB = _assetNum(mkt.total_variable_borrows && mkt.total_variable_borrows.quantity);
+        const stB  = _assetNum(mkt.total_stable_borrows && mkt.total_stable_borrows.quantity);
+        const res  = _assetNum(mkt.total_reserves && mkt.total_reserves.quantity);
+        const exchangeRate = (cash + varB + stB - res) / shareSupply; // underlying per share
+        const userShares = _u64(t.value) / Math.pow(10, sharePrec);
+        underlyingAmt = userShares * exchangeRate;
+      }
+      // borrows for this underlying (principal per market key)
+      let bVar = 0, bStable = 0;
+      if (borrowRow && Array.isArray(borrowRow.tokens)){
+        const bt = borrowRow.tokens.find(x => String(x.key.sym).split(',')[1] === underlyingSym);
+        if (bt && bt.value){ bVar = _u64(bt.value.variable_principal) / Math.pow(10, uPrec); bStable = _u64(bt.value.stable_principal) / Math.pow(10, uPrec); }
+      }
+      out.push({ sym:shareSym, underlyingSym, underlyingAmt, borrowedVar:bVar, borrowedStable:bStable });
+    }
+    intelLending = out;
+  } catch(e){ intelLending = 'error'; }
+  try { renderIntelligence(); } catch(e){}
+}
+
+async function fetchWalletComposition(actor){
+  try {
+    // get_tokens (v2) — omits XPR and GUARD
+    let tokensData = null;
+    for (const rpc of _HISTORY_ENDPOINTS){
+      try { const r = await fetchTimeout(rpc + '/v2/state/get_tokens?account=' + encodeURIComponent(actor), {}, 7000);
+        if (r.ok){ tokensData = await r.json(); break; } } catch(e){}
+    }
+    const list = [];
+    if (tokensData && Array.isArray(tokensData.tokens)){
+      for (const t of tokensData.tokens){ if (t.amount > 0) list.push({ symbol:t.symbol, contract:t.contract, amount:t.amount, precision:t.precision }); }
+    } else { throw new Error('get_tokens failed'); }
+    // XPR + GUARD (omitted by get_tokens) are merged live at render time
+    intelWallet = list;
+  } catch(e){ intelWallet = 'error'; }
+  try { renderIntelligence(); } catch(e){}
 }
 
 async function fetchLpPosition(actor) {
@@ -5084,10 +5294,17 @@ async function fetchEcosystemData(actor) {
     } catch(e) { ecoAccountMonths = 0; }
     try {
       const vi = accountData.voter_info;
-      ecoBpVotes   = (vi && Array.isArray(vi.producers)) ? vi.producers.length : 0;
+      ecoProducers = (vi && Array.isArray(vi.producers)) ? vi.producers.slice() : [];
+      ecoBpVotes   = ecoProducers.length;
       // voter_info.staked is a raw integer string at 4 decimal places — divide by 10000 for whole XPR
       ecoXprStaked = (vi && vi.staked) ? Math.floor(parseInt(String(vi.staked), 10) / 10000) : 0;
-    } catch(e) { ecoBpVotes = 0; ecoXprStaked = 0; }
+      ecoProxy     = (vi && vi.proxy) ? String(vi.proxy) : '';
+    } catch(e) { ecoBpVotes = 0; ecoXprStaked = 0; ecoProxy = ''; ecoProducers = []; }
+    try {
+      // refund_request: null when not unstaking; else {owner, request_time, net_amount, cpu_amount}
+      const rr = accountData.refund_request;
+      ecoRefund = rr ? { request_time: rr.request_time, net_amount: rr.net_amount, cpu_amount: rr.cpu_amount } : null;
+    } catch(e) { ecoRefund = null; }
   }
   // get_tokens — v2 history endpoint (try each RPC, fail silently)
   let tokensData = null;
@@ -5120,6 +5337,7 @@ async function fetchEcosystemData(actor) {
     renderPointsHint(pts);
     try { renderProgress(guardianBalance); } catch(e) {}
     try { renderJourney(); } catch(e) {}
+    try { renderIntelligence(); } catch(e) {}
   }
 }
 
@@ -5599,6 +5817,7 @@ function renderJourney() {
   ];
   const total = milestones.length;
   const doneCount = milestones.reduce((n, m) => n + (m.done ? 1 : 0), 0);
+  _journeyDone = doneCount;
 
   progEl.innerHTML = '<div style="text-align:center;">'
     + '<div style="font-family:\'Cinzel\',serif;font-size:1.15rem;color:var(--gold-l);margin-bottom:.5rem;">' + doneCount + ' of ' + total + ' milestones</div>'
@@ -5638,6 +5857,149 @@ function renderJourney() {
   }
 }
 
+// ─── Guardian Intelligence ──────────────────────────────────────────────────
+function _fmtAmt(n, prec){
+  if (n == null || isNaN(n)) return '—';
+  const p = prec == null ? 4 : prec;
+  if (Math.abs(n) >= 1) return n.toLocaleString(undefined, {maximumFractionDigits: Math.min(p, 4)});
+  return n.toLocaleString(undefined, {maximumFractionDigits: p});
+}
+function _intelCard(title, bodyHtml, delay){
+  return '<div class="card reveal" style="transition-delay:' + (delay||0) + 'ms;">'
+    + '<h3 style="font-family:\'Cinzel\',serif;color:var(--gold-l);font-size:.95rem;margin-bottom:.6rem;">' + title + '</h3>'
+    + bodyHtml + '</div>';
+}
+const _INTEL_UNAVAIL = '<div style="font-size:.82rem;color:var(--text3);">Data unavailable right now.</div>';
+const _LOGO_MAP = { XPR:'img_xprlogo.png', XMD:'Metal%20Dollar%20XMD.png', LOAN:'LOAN%20Protocol.jpg',
+  METAL:'metal-blockchain-l0.png', XMT:'Metal%20L2.jpg', GUARD:'g_token.jpg' };
+
+function renderIntelligence(){
+  const wrap = document.getElementById('intelligence-cards');
+  if (!wrap) return;
+  const connected = (typeof walletActor !== 'undefined') && !!walletActor;
+  if (!connected) return;
+  let cards = '';
+
+  // 1) IDLE ASSETS
+  try {
+    let b;
+    const liquid = ecoXprLiquid, staked = ecoXprStaked;
+    b = '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">You hold ' + _fmtAmt(liquid,4) + ' XPR liquid and ' + _fmtAmt(staked,0) + ' XPR staked.</p>';
+    if (ecoRefund){
+      const amt = _assetNum(ecoRefund.net_amount) + _assetNum(ecoRefund.cpu_amount);
+      const when = ecoRefund.request_time ? String(ecoRefund.request_time).split('T')[0] : '';
+      b += '<p style="font-size:.8rem;color:var(--gold-l);margin-top:.5rem;">Currently unstaking ' + _fmtAmt(amt,4) + ' XPR (available ~3 days after ' + when + ').</p>';
+    }
+    if (liquid > staked * 0.5){
+      b += '<p style="font-size:.78rem;color:var(--text3);margin-top:.5rem;">Staked XPR earns rewards and powers governance votes.</p>';
+    }
+    b += '<a href="https://app.metalx.com/staking" target="_blank" rel="noopener" class="btn btn-o mt2" style="font-size:.76rem;">Metal X Staking →</a>';
+    cards += _intelCard('Idle Assets', b, 0);
+  } catch(e){ cards += _intelCard('Idle Assets', _INTEL_UNAVAIL, 0); }
+
+  // 2) STAKING & GOVERNANCE
+  try {
+    let b = '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">' + _fmtAmt(ecoXprStaked,0) + ' XPR staked. Using ' + ecoBpVotes + ' of 4 Block Producer vote slots.</p>';
+    if (ecoProducers.length){
+      b += '<div style="font-size:.76rem;color:var(--text3);margin-top:.4rem;">Voting for: ' + ecoProducers.map(p => '@' + p).join(', ') + '</div>';
+    }
+    b += '<div style="font-size:.78rem;color:var(--text3);margin-top:.4rem;">' + (ecoProxy ? 'Delegated to @' + ecoProxy : 'Voting directly') + '</div>';
+    if (ecoBpVotes < 4){ b += '<p style="font-size:.78rem;color:var(--text3);margin-top:.4rem;">Voting is free and doesn’t spend your XPR.</p>'; }
+    b += '<a href="https://app.metalx.com/staking" target="_blank" rel="noopener" class="btn btn-o mt2" style="font-size:.76rem;">Manage on Metal X →</a>';
+    cards += _intelCard('Staking &amp; Governance', b, 60);
+  } catch(e){ cards += _intelCard('Staking &amp; Governance', _INTEL_UNAVAIL, 60); }
+
+  // 3) LIQUIDITY POSITIONS
+  try {
+    if (intelLp === 'error' || intelLp == null){ cards += _intelCard('Liquidity Positions', (intelLp==='error'?_INTEL_UNAVAIL:'<div style="font-size:.82rem;color:var(--text3);">Reading positions…</div>'), 120); }
+    else if (intelLp.length === 0){ cards += _intelCard('Liquidity Positions', '<p style="font-size:.85rem;color:var(--text2);">No SimpleDEX liquidity positions found.</p>', 120); }
+    else {
+      const big = intelLp.filter(p => p.xprValue >= 100);
+      const small = intelLp.filter(p => p.xprValue < 100);
+      let b = '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">' + intelLp.length + ' liquidity position' + (intelLp.length!==1?'s':'') + ' across SimpleDEX pools.</p>';
+      (big.length ? big : intelLp.slice(0,3)).slice(0,5).forEach(p => {
+        b += '<div style="font-size:.78rem;color:var(--text2);margin-top:.5rem;border-top:1px solid var(--border);padding-top:.4rem;">'
+          + '<strong style="color:var(--text);">' + p.pair + '</strong> · ' + p.sharePct.toFixed(2) + '% of pool<br>'
+          + '<span style="color:var(--text3);">' + _fmtAmt(p.aAmt, _prec(p.tokenA)) + ' ' + p.tokenA + ' + ' + _fmtAmt(p.bAmt, _prec(p.tokenB)) + ' ' + p.tokenB + ' · ≈ ' + _fmtAmt(p.xprValue,0) + ' XPR</span></div>';
+      });
+      if (small.length){
+        b += '<details style="margin-top:.5rem;"><summary style="font-size:.76rem;color:var(--text3);cursor:pointer;">' + small.length + ' small/dormant position' + (small.length!==1?'s':'') + ' (under 100 XPR)</summary>';
+        small.forEach(p => { b += '<div style="font-size:.72rem;color:var(--text3);margin-top:.35rem;">' + p.pair + ' · ' + p.sharePct.toFixed(2) + '% · ≈ ' + _fmtAmt(p.xprValue,0) + ' XPR</div>'; });
+        b += '</details>';
+      }
+      b += '<p style="font-size:.72rem;color:var(--text3);margin-top:.5rem;">Values estimated from live pool reserves.</p>';
+      b += '<button class="btn btn-o mt2" style="font-size:.76rem;" onclick="go(\'defilab\')">Learn liquidity →</button>';
+      cards += _intelCard('Liquidity Positions', b, 120);
+    }
+  } catch(e){ cards += _intelCard('Liquidity Positions', _INTEL_UNAVAIL, 120); }
+
+  // 4) LENDING POSITIONS
+  try {
+    if (intelLending === 'error' || intelLending == null){ cards += _intelCard('Lending Positions', (intelLending==='error'?_INTEL_UNAVAIL:'<div style="font-size:.82rem;color:var(--text3);">Reading positions…</div>'), 180); }
+    else if (intelLending.length === 0){ cards += _intelCard('Lending Positions', '<p style="font-size:.85rem;color:var(--text2);">No LOAN Protocol positions found.</p>', 180); }
+    else {
+      let b = '';
+      intelLending.forEach(m => {
+        const supplied = m.underlyingAmt != null ? '≈ ' + _fmtAmt(m.underlyingAmt, _prec(m.underlyingSym)) + ' ' + m.underlyingSym : m.sym + ' shares';
+        b += '<div style="font-size:.8rem;color:var(--text2);margin-top:.45rem;border-top:1px solid var(--border);padding-top:.4rem;">Supplying ' + supplied + ' <span style="color:var(--text3);">(via ' + m.sym + ')</span>';
+        const borrowed = (m.borrowedVar||0) + (m.borrowedStable||0);
+        if (borrowed > 0){ b += '<br><span style="color:var(--gold-l);">Borrowing ' + _fmtAmt(borrowed, _prec(m.underlyingSym)) + ' ' + m.underlyingSym + '</span>'; }
+        b += '</div>';
+      });
+      b += '<p style="font-size:.72rem;color:var(--text3);margin-top:.5rem;">Converted from share tokens at the live exchange rate.</p>';
+      b += '<button class="btn btn-o mt2" style="font-size:.76rem;" onclick="go(\'defilab\')">Learn lending →</button>';
+      cards += _intelCard('Lending Positions', b, 180);
+    }
+  } catch(e){ cards += _intelCard('Lending Positions', _INTEL_UNAVAIL, 180); }
+
+  // 5) WALLET COMPOSITION
+  try {
+    if (intelWallet === 'error' || intelWallet == null){ cards += _intelCard('Wallet Composition', (intelWallet==='error'?_INTEL_UNAVAIL:'<div style="font-size:.82rem;color:var(--text3);">Reading tokens…</div>'), 240); }
+    else {
+      // merge XPR + GUARD live (omitted by get_tokens)
+      const merged = intelWallet.slice();
+      if (ecoXprLiquid > 0) merged.push({ symbol:'XPR', contract:'eosio.token', amount:ecoXprLiquid, precision:4 });
+      if (guardianBalance > 0) merged.push({ symbol:'GUARD', contract:'simpletoken', amount:guardianBalance, precision:4 });
+      merged.sort((a,b) => b.amount - a.amount);
+      const dust = merged.filter(t => t.amount > 0 && t.amount < 1).length;
+      let b = '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">' + merged.length + ' distinct token' + (merged.length!==1?'s':'') + ' held.</p>';
+      merged.slice(0,6).forEach(t => {
+        const logo = _LOGO_MAP[t.symbol];
+        const icon = logo ? '<img src="./' + logo + '" alt="" style="width:18px;height:18px;border-radius:4px;object-fit:contain;vertical-align:middle;margin-right:.4rem;">' : '';
+        b += '<div style="font-size:.78rem;color:var(--text2);margin-top:.4rem;">' + icon + '<strong style="color:var(--text);">' + t.symbol + '</strong> · ' + _fmtAmt(t.amount, t.precision) + '</div>';
+      });
+      if (dust){ b += '<p style="font-size:.72rem;color:var(--text3);margin-top:.5rem;">' + dust + ' token' + (dust!==1?'s':'') + ' held in dust amounts (under 1).</p>'; }
+      cards += _intelCard('Wallet Composition', b, 240);
+    }
+  } catch(e){ cards += _intelCard('Wallet Composition', _INTEL_UNAVAIL, 240); }
+
+  // 6) PARTICIPATION PROFILE
+  try {
+    const yrs = Math.floor(ecoAccountMonths / 12), mos = ecoAccountMonths % 12;
+    const ageStr = ecoAccountMonths >= 12 ? (yrs + ' year' + (yrs!==1?'s':'') + (mos ? ', ' + mos + ' month' + (mos!==1?'s':'') : '')) : (ecoAccountMonths + ' month' + (ecoAccountMonths!==1?'s':''));
+    const breadth = (ecoTokens.has('LOAN')?1:0)+(ecoTokens.has('XMD')?1:0)+(ecoTokens.has('XMT')?1:0)+(ecoTokens.has('METAL')?1:0);
+    const rankName = (typeof SHIELDS !== 'undefined' && SHIELDS[guardianRank]) ? SHIELDS[guardianRank].name : 'Cryptide';
+    let b = '<div style="font-size:.8rem;color:var(--text2);line-height:1.7;">'
+      + 'Account age: <strong style="color:var(--text);">' + ageStr + '</strong><br>'
+      + 'Metal X: ' + (ecoMetalXUsed ? 'used' : 'not yet used') + '<br>'
+      + 'Ecosystem breadth: ' + breadth + ' of 4 Metallicus tokens<br>'
+      + 'Guardian rank: <strong style="color:var(--gold-l);">' + rankName + '</strong> (Rank ' + (guardianRank+1) + ')<br>'
+      + 'Journey: ' + _journeyDone + ' of 9 milestones</div>';
+    b += '<div class="flex gap-sm wrap mt2">'
+      + '<button class="btn btn-o" style="font-size:.76rem;" onclick="go(\'shields\')">View Shields →</button>'
+      + '<button class="btn btn-o" style="font-size:.76rem;" onclick="go(\'journey\')">View Journey →</button></div>';
+    cards += _intelCard('Participation Profile', b, 300);
+  } catch(e){ cards += _intelCard('Participation Profile', _INTEL_UNAVAIL, 300); }
+
+  wrap.innerHTML = cards;
+  try { rev(); } catch(e){}
+
+  if (!_intelTracked){
+    _intelTracked = true;
+    if (typeof umami !== 'undefined'){ try { umami.track('intelligence-viewed'); } catch(e){} }
+  }
+}
+
 function toggleWallet(){ walletActor ? walletDisconnect() : walletConnect(); }
 
 function onWalletConnected(actor) {
@@ -5670,6 +6032,12 @@ function onWalletConnected(actor) {
   if (jPrompt) jPrompt.style.display = 'none';
   if (jDisplay) jDisplay.style.display = 'block';
 
+  // Intelligence page — same gating pattern
+  const iPrompt = document.getElementById('intelligence-wallet-prompt');
+  const iDisplay = document.getElementById('intelligence-display');
+  if (iPrompt) iPrompt.style.display = 'none';
+  if (iDisplay) iDisplay.style.display = 'block';
+
   // Load this wallet's keyed progress (clean default if first-time wallet)
   ShardTracker.load();
   guardianRank = Math.max(computeShardRank(), getPointsRank(computeGuardianPoints()));
@@ -5678,6 +6046,7 @@ function onWalletConnected(actor) {
   renderShardDisplay();
   renderAchievements();
   renderJourney();
+  renderIntelligence();
   if (typeof FG !== 'undefined') {
     try {
       FG.pb = parseInt(wGet('fg_pb', '0') || '0');
@@ -5711,6 +6080,7 @@ function onGuardBalanceLoaded(actor, bal) {
   if (_balNewRank !== guardianRank) { guardianRank = _balNewRank; wSet('sg_rank', String(guardianRank)); renderShield(); }
   renderPointsHint(_balPts);
   try { renderJourney(); } catch(e) {}
+  try { renderIntelligence(); } catch(e) {}
 
   // Update Guardian card handle with wallet name if empty
   const handleInput = document.getElementById('guardian-handle');
@@ -5761,6 +6131,14 @@ function onWalletDisconnected() {
   if (jPrompt) jPrompt.style.display = 'block';
   if (jDisplay) jDisplay.style.display = 'none';
   _journeyTracked = false;
+
+  // Intelligence page — hide display, show connect prompt, clear data
+  const iPrompt = document.getElementById('intelligence-wallet-prompt');
+  const iDisplay = document.getElementById('intelligence-display');
+  if (iPrompt) iPrompt.style.display = 'block';
+  if (iDisplay) iDisplay.style.display = 'none';
+  intelLp = null; intelLending = null; intelWallet = null;
+  ecoRefund = null; ecoProxy = ''; ecoProducers = []; _intelTracked = false;
 
   // Reset rank and balance state — clear in-memory shard data so nothing forged shows
   ShardTracker._data = {};
