@@ -6661,10 +6661,9 @@ function tapGO(cx,cy){
 }
 function tapChoice(cx,cy){
   var opts=ensureChoiceOpts();
-  var w=360,h=78,gap=16,startY=150; // vertical stack, generous hitboxes for phone
-  for(var i=0;i<opts.length;i++){
-    var cyc=startY+h/2+i*(h+gap);
-    if(inBtn(cx,cy,CX,cyc,w,h)){applyChoice(opts[i].id);return;}
+  var L=overlayCardLayout(opts.length);
+  for(var i=0;i<opts.length;i++){var c=L.cards[i];
+    if(inBtn(cx,cy,c.cx,c.cy,c.w,c.h)){applyChoice(opts[i].id);return;}
   }
 }
 var _fvHistPushed=false,_fvHintTimer=null;
@@ -6932,9 +6931,27 @@ function buildChoiceOptions(){
   });
   opts.push({id:'u_swift',  title:'Swift Recovery', sub:'Cooldowns −15%'});
   opts.push({id:'u_core',   title:'Fortified Core', sub:'+1 Max HP · heal 1'});
-  opts.push({id:'u_medic',  title:'Field Medic',    sub:'+1 HP now'});
+  // Field Medic ineligible at full HP (same rule as heart drops) so a card is never dead
+  if(g.hp < g.mhp+MAX_HP_BONUS) opts.push({id:'u_medic', title:'Field Medic', sub:'+1 HP now'});
   opts.push({id:'u_golden', title:'Golden Wave',    sub:'2× points next wave'});
   return opts;
+}
+// Font size (logical) that renders at ~realPx after the cscale transform. Guarantees phone-readable output.
+function fpx(realPx){return Math.max(9,Math.round(realPx/(cscale||1)));}
+// Shared overlay card layout — sizes/centres cards against the ACTUAL canvas height (dynamic CH in fullview).
+// Used by BOTH the CHOICE draw+tap and the AB_SELECT draw+tap so hitboxes always match the drawn cards.
+function overlayCardLayout(n){
+  var w=Math.min(460,CW-50);
+  var headerH=Math.max(fpx(30)*2.4, CH*0.14);
+  var botPad=Math.max(fpx(17), CH*0.045);
+  var gap=Math.max(fpx(14), CH*0.02);
+  var avail=Math.max(80, CH-headerH-botPad);
+  var h=Math.min(140,(avail-gap*Math.max(0,n-1))/Math.max(1,n));
+  var stackH=h*n+gap*Math.max(0,n-1);
+  var startY=headerH+Math.max(0,(avail-stackH)/2);
+  var cards=[];
+  for(var i=0;i<n;i++){var y=startY+i*(h+gap);cards.push({x:CX-w/2,y:y,w:w,h:h,cx:CX,cy:y+h/2});}
+  return {cards:cards,w:w,h:h,headerH:headerH};
 }
 // Draw 3, no duplicates. Uses the run's seeded g.rng (NOT Math.random) so daily mode stays deterministic.
 function drawChoiceOptions(){
@@ -7088,34 +7105,31 @@ function checkAbSelect(){
 function tapAbSelect(cx,cy){
   const abs=g.cfg.abs||[];
   if(!abs.length)return;
-  const bw=220,bh=52,gap=14;
-  const totalH=abs.length*(bh+gap)-gap;
-  const startY=CY-totalH/2;
-  for(let i=0;i<abs.length;i++){
-    const by=startY+i*(bh+gap);
-    if(inBtn(cx,cy,CX,by+bh/2,bw,bh)){g.selectedAb=abs[i];startCountdown();return;}
+  var L=overlayCardLayout(abs.length);
+  for(let i=0;i<abs.length;i++){var c=L.cards[i];
+    if(inBtn(cx,cy,c.cx,c.cy,c.w,c.h)){g.selectedAb=abs[i];startCountdown();return;}
   }
 }
 function drawAbSelect(){
   bgCanvas();
-  ctx.textAlign='center';ctx.textBaseline='alphabetic';
-  ctx.shadowBlur=14;ctx.shadowColor='#c9922a';
-  ctx.fillStyle='#e8b84b';ctx.font='bold 22px "Cinzel Decorative",Cinzel,serif';
-  ctx.fillText('CHOOSE ABILITY',CX,78);
-  ctx.shadowBlur=0;ctx.fillStyle='#94a3b8';ctx.font='13px Cinzel,serif';
-  ctx.fillText('Select for Wave '+(g.wave+1),CX,100);
   const abs=g.cfg.abs||[];
+  var L=overlayCardLayout(abs.length),hH=L.headerH;
+  ctx.fillStyle='rgba(4,6,12,0.9)';ctx.fillRect(0,0,CW,CH); // darkened backdrop for contrast
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.shadowBlur=14;ctx.shadowColor='#c9922a';
+  ctx.fillStyle='#e8b84b';ctx.font='bold '+fpx(30)+'px "Cinzel Decorative",Cinzel,serif';
+  ctx.fillText('CHOOSE ABILITY',CX,hH*0.38);
+  ctx.shadowBlur=0;ctx.fillStyle='#e2e8f0';ctx.font=fpx(17)+'px Cinzel,serif';
+  ctx.fillText('Select for Wave '+(g.wave+1),CX,hH*0.66);
   const abCols={bash:'#38bdf8',ring:'#f97316',slow:'#14b8a6',strike:'#a855f7',fortify:'#c9922a'};
-  const bw=220,bh=52,gap=14;
-  const totalH=abs.length*(bh+gap)-gap;
-  const startY=CY-totalH/2;
   for(let i=0;i<abs.length;i++){
-    const ab=abs[i];const col=abCols[ab]||'#e2e8f0';
-    const by=startY+i*(bh+gap);const bx=CX-bw/2;
-    ctx.fillStyle='rgba(0,0,0,0.45)';rrect(bx,by,bw,bh,10);ctx.fill();
-    ctx.strokeStyle=col+'88';ctx.lineWidth=1.5;rrect(bx,by,bw,bh,10);ctx.stroke();
-    ctx.fillStyle=col;ctx.font='bold 14px Cinzel,serif';ctx.textBaseline='middle';
-    ctx.fillText(AB_NAMES[ab]||ab.toUpperCase(),CX,by+bh/2);
+    const ab=abs[i];const col=abCols[ab]||'#e2e8f0';const c=L.cards[i];
+    const lv=(g.abLvl&&g.abLvl[ab])?g.abLvl[ab]:null;
+    ctx.fillStyle='rgba(0,0,0,0.6)';rrect(c.x,c.y,c.w,c.h,14);ctx.fill();
+    ctx.strokeStyle=col;ctx.lineWidth=2.5;ctx.shadowBlur=10;ctx.shadowColor=col;rrect(c.x,c.y,c.w,c.h,14);ctx.stroke();ctx.shadowBlur=0;
+    ctx.fillStyle='#fff';ctx.font='bold '+fpx(24)+'px Cinzel,serif';
+    ctx.fillText(AB_NAMES[ab]||ab.toUpperCase(),CX,lv?c.cy-fpx(11):c.cy);
+    if(lv){ctx.fillStyle='#e2e8f0';ctx.font=fpx(15)+'px Cinzel,serif';ctx.fillText('Lv '+lv,CX,c.cy+fpx(15));}
   }
   ctx.textBaseline='alphabetic';muteIcon();
 }
@@ -7554,22 +7568,33 @@ function drawPhaseOverlay(){
   }
   if(g.phase==='CHOICE'){
     var _opts=ensureChoiceOpts();
+    var _L=overlayCardLayout(_opts.length),_hH=_L.headerH;
     ctx.save();
-    ctx.fillStyle='rgba(8,11,18,0.9)';ctx.fillRect(0,0,CW,CH);
+    ctx.fillStyle='rgba(4,6,12,0.94)';ctx.fillRect(0,0,CW,CH); // darkened backdrop for contrast
     ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillStyle='#e8b84b';ctx.font='bold 22px "Cinzel Decorative",Cinzel,serif';ctx.fillText('CHOOSE YOUR PATH',CX,66);
-    ctx.fillStyle='#64748b';ctx.font='12px Cinzel,serif';ctx.fillText('After Wave '+g.wave,CX,92);
-    // Current ability levels — small plain fill text, no glow
-    var _lvlParts=[];['ring','chain','bash','slow','fortify'].forEach(function(ab){if((g.cfg.abs||[]).indexOf(ab)>=0)_lvlParts.push(AB_NAMES[ab]+' Lv'+(g.abLvl[ab]||1));});
-    if(_lvlParts.length){ctx.fillStyle='#94a3b8';ctx.font='10px Cinzel,serif';ctx.fillText(_lvlParts.join(' · '),CX,114);}
-    var _w=360,_h=78,_gap=16,_startY=150;
+    // Title (accent gold, glow OK on paused overlay)
+    ctx.shadowBlur=14;ctx.shadowColor='#c9922a';
+    ctx.fillStyle='#e8b84b';ctx.font='bold '+fpx(30)+'px "Cinzel Decorative",Cinzel,serif';ctx.fillText('CHOOSE YOUR PATH',CX,_hH*0.34);
+    ctx.shadowBlur=0;
+    ctx.fillStyle='#e2e8f0';ctx.font=fpx(17)+'px Cinzel,serif';ctx.fillText('After Wave '+g.wave,CX,_hH*0.60);
+    // Current ability levels — full names if they fit one line, else compact; always ≥15px, ≥#e2e8f0
+    var _short={ring:'Ring',chain:'Chain',bash:'Bash',slow:'Slow',fortify:'Fort'};
+    var _full=[],_abbr=[];
+    ['ring','chain','bash','slow','fortify'].forEach(function(ab){if((g.cfg.abs||[]).indexOf(ab)>=0){var lv=g.abLvl[ab]||1;_full.push(AB_NAMES[ab]+' Lv'+lv);_abbr.push(_short[ab]+' L'+lv);}});
+    if(_full.length){
+      ctx.fillStyle='#e2e8f0';ctx.font=fpx(15)+'px Cinzel,serif';
+      var _txt=_full.join('  ·  ');
+      if(ctx.measureText(_txt).width>CW-40)_txt=_abbr.join('  ·  ');
+      ctx.fillText(_txt,CX,_hH*0.84);
+    }
+    // Cards
     for(var _i=0;_i<_opts.length;_i++){
-      var _o=_opts[_i],_by=_startY+_i*(_h+_gap),_bx=CX-_w/2,_cyc=_by+_h/2;
+      var _o=_opts[_i],_c=_L.cards[_i];
       var _col=_o.kind==='ability'?'#f5c842':'#38bdf8';
-      ctx.fillStyle='rgba(0,0,0,0.5)';rrect(_bx,_by,_w,_h,12);ctx.fill();
-      ctx.strokeStyle=_col;ctx.lineWidth=1.5;rrect(_bx,_by,_w,_h,12);ctx.stroke();
-      ctx.fillStyle=_col;ctx.font='bold 15px Cinzel,serif';ctx.fillText(_o.title,CX,_cyc-11);
-      ctx.fillStyle='#cbd5e1';ctx.font='12px Cinzel,serif';ctx.fillText(_o.sub,CX,_cyc+13);
+      ctx.fillStyle='rgba(0,0,0,0.6)';rrect(_c.x,_c.y,_c.w,_c.h,14);ctx.fill();
+      ctx.strokeStyle=_col;ctx.lineWidth=2.5;ctx.shadowBlur=10;ctx.shadowColor=_col;rrect(_c.x,_c.y,_c.w,_c.h,14);ctx.stroke();ctx.shadowBlur=0;
+      ctx.fillStyle='#fff';ctx.font='bold '+fpx(24)+'px Cinzel,serif';ctx.fillText(_o.title,CX,_c.cy-fpx(13));
+      ctx.fillStyle='#e2e8f0';ctx.font=fpx(17)+'px Cinzel,serif';ctx.fillText(_o.sub,CX,_c.cy+fpx(15));
     }
     ctx.textBaseline='alphabetic';ctx.restore();
   }
