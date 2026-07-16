@@ -6942,11 +6942,11 @@ function fpx(realPx){return Math.max(9,Math.round(realPx/(cscale||1)));}
 // Used by BOTH the CHOICE draw+tap and the AB_SELECT draw+tap so hitboxes always match the drawn cards.
 function overlayCardLayout(n){
   var w=Math.min(460,CW-50);
-  var headerH=Math.max(fpx(30)*2.4, CH*0.14);
-  var botPad=Math.max(fpx(17), CH*0.045);
-  var gap=Math.max(fpx(14), CH*0.02);
+  var headerH=Math.max(fpx(26)*2.2, CH*0.11);
+  var botPad=Math.max(fpx(15), CH*0.038);
+  var gap=Math.max(fpx(12), CH*0.017);
   var avail=Math.max(80, CH-headerH-botPad);
-  var h=Math.min(140,(avail-gap*Math.max(0,n-1))/Math.max(1,n));
+  var h=Math.min(118,(avail-gap*Math.max(0,n-1))/Math.max(1,n));
   var stackH=h*n+gap*Math.max(0,n-1);
   var startY=headerH+Math.max(0,(avail-stackH)/2);
   var cards=[];
@@ -7117,9 +7117,9 @@ function drawAbSelect(){
   ctx.fillStyle='rgba(4,6,12,0.9)';ctx.fillRect(0,0,CW,CH); // darkened backdrop for contrast
   ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.shadowBlur=14;ctx.shadowColor='#c9922a';
-  ctx.fillStyle='#e8b84b';ctx.font='bold '+fpx(30)+'px "Cinzel Decorative",Cinzel,serif';
+  ctx.fillStyle='#e8b84b';ctx.font='bold '+fpx(26)+'px "Cinzel Decorative",Cinzel,serif';
   ctx.fillText('CHOOSE ABILITY',CX,hH*0.38);
-  ctx.shadowBlur=0;ctx.fillStyle='#e2e8f0';ctx.font=fpx(17)+'px Cinzel,serif';
+  ctx.shadowBlur=0;ctx.fillStyle='#e2e8f0';ctx.font=fpx(15)+'px Cinzel,serif';
   ctx.fillText('Select for Wave '+(g.wave+1),CX,hH*0.66);
   const abCols={bash:'#38bdf8',ring:'#f97316',slow:'#14b8a6',strike:'#a855f7',fortify:'#c9922a'};
   for(let i=0;i<abs.length;i++){
@@ -7127,9 +7127,9 @@ function drawAbSelect(){
     const lv=(g.abLvl&&g.abLvl[ab])?g.abLvl[ab]:null;
     ctx.fillStyle='rgba(0,0,0,0.6)';rrect(c.x,c.y,c.w,c.h,14);ctx.fill();
     ctx.strokeStyle=col;ctx.lineWidth=2.5;ctx.shadowBlur=10;ctx.shadowColor=col;rrect(c.x,c.y,c.w,c.h,14);ctx.stroke();ctx.shadowBlur=0;
-    ctx.fillStyle='#fff';ctx.font='bold '+fpx(24)+'px Cinzel,serif';
-    ctx.fillText(AB_NAMES[ab]||ab.toUpperCase(),CX,lv?c.cy-fpx(11):c.cy);
-    if(lv){ctx.fillStyle='#e2e8f0';ctx.font=fpx(15)+'px Cinzel,serif';ctx.fillText('Lv '+lv,CX,c.cy+fpx(15));}
+    ctx.fillStyle='#fff';ctx.font='bold '+fpx(21)+'px Cinzel,serif';
+    ctx.fillText(AB_NAMES[ab]||ab.toUpperCase(),CX,lv?c.cy-fpx(9):c.cy);
+    if(lv){ctx.fillStyle='#e2e8f0';ctx.font=fpx(13)+'px Cinzel,serif';ctx.fillText('Lv '+lv,CX,c.cy+fpx(13));}
   }
   ctx.textBaseline='alphabetic';muteIcon();
 }
@@ -7574,15 +7574,15 @@ function drawPhaseOverlay(){
     ctx.textAlign='center';ctx.textBaseline='middle';
     // Title (accent gold, glow OK on paused overlay)
     ctx.shadowBlur=14;ctx.shadowColor='#c9922a';
-    ctx.fillStyle='#e8b84b';ctx.font='bold '+fpx(30)+'px "Cinzel Decorative",Cinzel,serif';ctx.fillText('CHOOSE YOUR PATH',CX,_hH*0.34);
+    ctx.fillStyle='#e8b84b';ctx.font='bold '+fpx(26)+'px "Cinzel Decorative",Cinzel,serif';ctx.fillText('CHOOSE YOUR PATH',CX,_hH*0.34);
     ctx.shadowBlur=0;
-    ctx.fillStyle='#e2e8f0';ctx.font=fpx(17)+'px Cinzel,serif';ctx.fillText('After Wave '+g.wave,CX,_hH*0.60);
+    ctx.fillStyle='#e2e8f0';ctx.font=fpx(15)+'px Cinzel,serif';ctx.fillText('After Wave '+g.wave,CX,_hH*0.60);
     // Current ability levels — full names if they fit one line, else compact; always ≥15px, ≥#e2e8f0
     var _short={ring:'Ring',chain:'Chain',bash:'Bash',slow:'Slow',fortify:'Fort'};
     var _full=[],_abbr=[];
     ['ring','chain','bash','slow','fortify'].forEach(function(ab){if((g.cfg.abs||[]).indexOf(ab)>=0){var lv=g.abLvl[ab]||1;_full.push(AB_NAMES[ab]+' Lv'+lv);_abbr.push(_short[ab]+' L'+lv);}});
     if(_full.length){
-      ctx.fillStyle='#e2e8f0';ctx.font=fpx(15)+'px Cinzel,serif';
+      ctx.fillStyle='#e2e8f0';ctx.font=fpx(13)+'px Cinzel,serif';
       var _txt=_full.join('  ·  ');
       if(ctx.measureText(_txt).width>CW-40)_txt=_abbr.join('  ·  ');
       ctx.fillText(_txt,CX,_hH*0.84);
@@ -7593,8 +7593,8 @@ function drawPhaseOverlay(){
       var _col=_o.kind==='ability'?'#f5c842':'#38bdf8';
       ctx.fillStyle='rgba(0,0,0,0.6)';rrect(_c.x,_c.y,_c.w,_c.h,14);ctx.fill();
       ctx.strokeStyle=_col;ctx.lineWidth=2.5;ctx.shadowBlur=10;ctx.shadowColor=_col;rrect(_c.x,_c.y,_c.w,_c.h,14);ctx.stroke();ctx.shadowBlur=0;
-      ctx.fillStyle='#fff';ctx.font='bold '+fpx(24)+'px Cinzel,serif';ctx.fillText(_o.title,CX,_c.cy-fpx(13));
-      ctx.fillStyle='#e2e8f0';ctx.font=fpx(17)+'px Cinzel,serif';ctx.fillText(_o.sub,CX,_c.cy+fpx(15));
+      ctx.fillStyle='#fff';ctx.font='bold '+fpx(21)+'px Cinzel,serif';ctx.fillText(_o.title,CX,_c.cy-fpx(11));
+      ctx.fillStyle='#e2e8f0';ctx.font=fpx(15)+'px Cinzel,serif';ctx.fillText(_o.sub,CX,_c.cy+fpx(13));
     }
     ctx.textBaseline='alphabetic';ctx.restore();
   }
