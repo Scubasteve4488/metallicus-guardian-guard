@@ -6433,6 +6433,15 @@ const ED={
 };
 const ALL_ABS=['bash','ring','slow','strike','fortify','chain'];
 const AB_CD={bash:30,ring:45,slow:60,strike:90,fortify:120,chain:75};
+// Per-level ability scaling (Phase 1). Level 1 = current live values. Clamped read: arr[min(lvl-1, arr.length-1)]. Max level 6.
+const AB_STATS={
+  ring:    {radius:[190,210,230,255,280,310], damage:[1,1,2,2,3,3]},
+  chain:   {count:[10,12,14,17,20,24],        damage:[2,2,3,3,4,5]},
+  bash:    {damage:[3,4,5,6,8,10]},
+  slow:    {duration:[8,9,10,12,14,16]},
+  fortify: {duration:[8,9,10,12,14,16]},
+};
+function abStat(ab,key,lvl){var a=AB_STATS[ab]&&AB_STATS[ab][key];if(!a)return 0;return a[Math.min((lvl||1)-1,a.length-1)];}
 const PUD={hp:{emoji:'❤️',col:'#ef4444',glow:'rgba(239,68,68,0.7)'},ab:{emoji:'⚡',col:'#f5c842',glow:'rgba(245,200,66,0.7)'},pts:{emoji:'🔥',col:'#f97316',glow:'rgba(249,115,22,0.7)'}};
 const ACH_NAMES={first_blood:'First Blood',wave5:'Wave Rider',wave10:'Wave Veteran',score1k:'Legendary Defender',untouchable:'Untouchable',boss_slayer:'Boss Slayer',daily_warrior:'Daily Warrior'};
 const ACH_DESC={first_blood:'First kill of the run',wave5:'Survived to Wave 5',wave10:'Survived to Wave 10',score1k:'Scored 1,000+ points',untouchable:'Cleared a wave with no damage',boss_slayer:'Defeated a boss',daily_warrior:'Completed a Daily Challenge'};
@@ -6534,7 +6543,8 @@ function newG(daily){
     _nb:false,_gp:0,
     _prePause:null,rng,
     zoneAnn:null,zoneAnnPending:null,abilVfx:[],
-    wsShards:[], _shardDropped:false, _killCount:0, _shardDropAtKill:-1};
+    wsShards:[], _shardDropped:false, _killCount:0, _shardDropAtKill:-1,
+    abLvl:{ring:1,chain:1,bash:1,slow:1,fortify:1}, cdMult:1, choiceOpts:null};
 }
 
 // ─── Init / resize ─────────────────────────────────────────────────────────────
@@ -6544,11 +6554,8 @@ function arenaInit(){
   resize();window.addEventListener('resize',resize);window.addEventListener('orientationchange',function(){setTimeout(resize,80);});
   cvs.addEventListener('click',onTap);cvs.addEventListener('touchstart',onTouch,{passive:false});
   cvs.addEventListener('mousemove',function(e){
-    if(!g||g.phase!=='CHOICE'){cvs.style.cursor='crosshair';return;}
-    const r=cvs.getBoundingClientRect(),lx=(e.clientX-r.left)/cscale,ly=(e.clientY-r.top)/cscale;
-    const hpFull=g.hp>=g.mhp+MAX_HP_BONUS;
-    if(hpFull&&inBtn(lx,ly,CX-100,245,170,70))cvs.style.cursor='not-allowed';
-    else cvs.style.cursor='crosshair';
+    // CHOICE now offers 3 always-selectable cards — plain crosshair everywhere
+    cvs.style.cursor='crosshair';
   });
   window.addEventListener('keydown',onKey);
   coinImg=new Image();coinLoaded=false;
@@ -6653,10 +6660,12 @@ function tapGO(cx,cy){
   }
 }
 function tapChoice(cx,cy){
-  // A: rrect(CX-185,210,170,70) → center (CX-100, 245) — blocked if HP full
-  if(inBtn(cx,cy,CX-100,245,170,70)){if(g.hp<g.mhp+MAX_HP_BONUS)applyChoice('A');return;}
-  // B: rrect(CX+15,210,170,70) → center (CX+100, 245)
-  else if(inBtn(cx,cy,CX+100,245,170,70))applyChoice('B');
+  var opts=ensureChoiceOpts();
+  var w=360,h=78,gap=16,startY=150; // vertical stack, generous hitboxes for phone
+  for(var i=0;i<opts.length;i++){
+    var cyc=startY+h/2+i*(h+gap);
+    if(inBtn(cx,cy,CX,cyc,w,h)){applyChoice(opts[i].id);return;}
+  }
 }
 var _fvHistPushed=false,_fvHintTimer=null;
 function _fvShowHint(){
@@ -6869,36 +6878,39 @@ function activateAb(){
   const ab=g.selectedAb;
   if(!ab)return;
   snd('ability');
-  g.abLeft=AB_CD[ab]||30;
+  g.abLeft=(AB_CD[ab]||30)*Math.max(0.4,g.cdMult||1);
   if(!g.abilVfx)g.abilVfx=[];
   const sc=(en)=>{g.score+=en.pts;g.kills[en.type]=(g.kills[en.type]||0)+1;};
   if(ab==='bash'){
     g.abilVfx.push({type:'bash',life:0.55,maxL:0.55});
-    g.enemies.forEach(en=>{en.hp-=3;burst(en.pos.x,en.pos.y,'#38bdf8',6);});
+    var _bashDmg=abStat('bash','damage',g.abLvl.bash);
+    g.enemies.forEach(en=>{en.hp-=_bashDmg;burst(en.pos.x,en.pos.y,'#38bdf8',6);});
     g.enemies=g.enemies.filter(en=>{if(en.hp<=0){sc(en);return false;}return true;});
     flt('SHIELD BASH!',CX,CY-70,'#38bdf8',20);
   } else if(ab==='ring'){
     g.abilVfx.push({type:'ring',life:0.5,maxL:0.5});
-    g.enemies.forEach(en=>{if(dst(en.pos,{x:CX,y:CY})<190){en.hp--;burst(en.pos.x,en.pos.y,'#f97316',6);}});
+    var _ringR=abStat('ring','radius',g.abLvl.ring),_ringDmg=abStat('ring','damage',g.abLvl.ring);
+    g.enemies.forEach(en=>{if(dst(en.pos,{x:CX,y:CY})<_ringR){en.hp-=_ringDmg;burst(en.pos.x,en.pos.y,'#f97316',6);}});
     g.enemies=g.enemies.filter(en=>{if(en.hp<=0){sc(en);return false;}return true;});
     flt('FIRE RING!',CX,CY-70,'#f97316',20);
   } else if(ab==='slow'){
     g.abilVfx.push({type:'slow',life:0.5,maxL:0.5});
-    g.timeSlow=true;g.tsT=8;flt('TIME SLOW!',CX,CY-70,'#14b8a6',20);
+    g.timeSlow=true;g.tsT=abStat('slow','duration',g.abLvl.slow);flt('TIME SLOW!',CX,CY-70,'#14b8a6',20);
   } else if(ab==='strike'){
     g.abilVfx.push({type:'strike',life:0.4,maxL:0.4});
     g.enemies=g.enemies.filter(en=>{if(['fud','hack','swarm','boss'].includes(en.type)){burst(en.pos.x,en.pos.y,'#a855f7',14);sc(en);return false;}return true;});
     flt('ORBITAL STRIKE!',CX,CY-70,'#a855f7',20);
   } else if(ab==='fortify'){
     g.abilVfx.push({type:'fortify',life:0.6,maxL:0.6});
-    g.fort=true;g.ftT=8;g.ftBonus=g.mhp;g.hp=Math.min(g.hp+g.mhp,g.mhp+MAX_HP_BONUS);
+    g.fort=true;g.ftT=abStat('fortify','duration',g.abLvl.fortify);g.ftBonus=g.mhp;g.hp=Math.min(g.hp+g.mhp,g.mhp+MAX_HP_BONUS);
     flt('FORTIFY!',CX,CY-70,'#c9922a',20);
   } else if(ab==='chain'){
     const _coin={x:CX,y:CY};
     const _sorted=[...g.enemies].sort((a,b)=>dst(a.pos,_coin)-dst(b.pos,_coin));
-    const _targets=_sorted.slice(0,10);
+    const _targets=_sorted.slice(0,abStat('chain','count',g.abLvl.chain));
+    const _chainDmg=abStat('chain','damage',g.abLvl.chain);
     const _pts=[_coin,..._targets.map(e=>({x:e.pos.x,y:e.pos.y}))];
-    _targets.forEach(en=>{en.hp-=2;burst(en.pos.x,en.pos.y,'#38bdf8',8);});
+    _targets.forEach(en=>{en.hp-=_chainDmg;burst(en.pos.x,en.pos.y,'#38bdf8',8);});
     g.enemies=g.enemies.filter(en=>{if(en.hp<=0){sc(en);return false;}return true;});
     g.abilVfx.push({type:'chain',life:0.55,maxL:0.55,pts:_pts});
     flt('CHAIN LIGHTNING!',CX,CY-70,'#38bdf8',20);
@@ -6909,9 +6921,37 @@ function activateAb(){
 function ach(k){if(!g.achs.includes(k))g.achs.push(k);}
 
 // ─── Choices ─────────────────────────────────────────────────────────────────
-function applyChoice(opt){
-  if(opt==='A'){const mx=g.mhp+MAX_HP_BONUS;if(g.hp<mx){g.hp=Math.min(g.hp+1,mx);snd('hp_restore');}flt('+1 HP',CX,CY-40,'#22c55e',18);}
-  else{g.doublePts=true;g.dpT=999;flt('2X NEXT WAVE!',CX,CY-40,'#f97316',16);snd('powerup');}
+// Build the eligible upgrade set for this CHOICE. Ability level-ups gated by rank pool (g.cfg.abs) + level<6. Universals always eligible.
+function buildChoiceOptions(){
+  var opts=[],pool=g.cfg.abs||[];
+  ['ring','chain','bash','slow','fortify'].forEach(function(ab){
+    if(pool.indexOf(ab)>=0 && (g.abLvl[ab]||1)<6){
+      var lv=g.abLvl[ab]||1;
+      opts.push({id:'lvl_'+ab, kind:'ability', title:AB_NAMES[ab], sub:'Lv'+lv+' → Lv'+(lv+1)});
+    }
+  });
+  opts.push({id:'u_swift',  title:'Swift Recovery', sub:'Cooldowns −15%'});
+  opts.push({id:'u_core',   title:'Fortified Core', sub:'+1 Max HP · heal 1'});
+  opts.push({id:'u_medic',  title:'Field Medic',    sub:'+1 HP now'});
+  opts.push({id:'u_golden', title:'Golden Wave',    sub:'2× points next wave'});
+  return opts;
+}
+// Draw 3, no duplicates. Uses the run's seeded g.rng (NOT Math.random) so daily mode stays deterministic.
+function drawChoiceOptions(){
+  var pool=buildChoiceOptions();
+  for(var i=pool.length-1;i>0;i--){var j=Math.floor(g.rng()*(i+1));var t=pool[i];pool[i]=pool[j];pool[j]=t;}
+  return pool.slice(0,3);
+}
+function ensureChoiceOpts(){ if(!g.choiceOpts) g.choiceOpts=drawChoiceOptions(); return g.choiceOpts; }
+
+function applyChoice(id){
+  var mx=g.mhp+MAX_HP_BONUS;
+  if(id==='u_swift'){g.cdMult=Math.max(0.4,(g.cdMult||1)*0.85);flt('SWIFT RECOVERY!',CX,CY-40,'#38bdf8',16);snd('powerup');}
+  else if(id==='u_core'){g.mhp+=1;g.hp=Math.min(g.hp+1,g.mhp+MAX_HP_BONUS);flt('FORTIFIED CORE!',CX,CY-40,'#c9922a',16);snd('hp_restore');}
+  else if(id==='u_medic'){if(g.hp<mx){g.hp=Math.min(g.hp+1,mx);snd('hp_restore');}flt('+1 HP',CX,CY-40,'#22c55e',18);}
+  else if(id==='u_golden'){g.doublePts=true;g.dpT=999;flt('2X NEXT WAVE!',CX,CY-40,'#f97316',16);snd('powerup');}
+  else if(id&&id.indexOf('lvl_')===0){var ab=id.slice(4);if((g.abLvl[ab]||1)<6){g.abLvl[ab]=(g.abLvl[ab]||1)+1;flt(AB_NAMES[ab]+' Lv'+g.abLvl[ab]+'!',CX,CY-40,'#f5c842',16);snd('powerup');}}
+  g.choiceOpts=null;
   checkAbSelect();
 }
 
@@ -7513,29 +7553,24 @@ function drawPhaseOverlay(){
     ctx.restore();
   }
   if(g.phase==='CHOICE'){
+    var _opts=ensureChoiceOpts();
     ctx.save();
-    ctx.fillStyle='rgba(8,11,18,0.88)';ctx.fillRect(0,0,CW,CH);
+    ctx.fillStyle='rgba(8,11,18,0.9)';ctx.fillRect(0,0,CW,CH);
     ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillStyle='#e8b84b';ctx.font='bold 22px "Cinzel Decorative",Cinzel,serif';ctx.shadowBlur=14;ctx.shadowColor='#c9922a';ctx.fillText('CHOOSE YOUR PATH',CX,96);
-    ctx.shadowBlur=0;ctx.fillStyle='#64748b';ctx.font='12px Cinzel,serif';ctx.fillText('After Wave '+g.wave,CX,122);
-    const _hpFull=g.hp>=g.mhp+MAX_HP_BONUS;
-    // Banner when HP is capped
-    if(_hpFull){ctx.fillStyle='#f97316';ctx.font='bold 11px Cinzel,serif';ctx.shadowBlur=6;ctx.shadowColor='#c9922a';ctx.fillText('HP FULL — select 2× Points to continue',CX,165);ctx.shadowBlur=0;}
-    // Option A — disabled when HP full
-    ctx.save();ctx.globalAlpha=_hpFull?0.35:1;
-    ctx.fillStyle=_hpFull?'rgba(71,85,105,0.1)':'rgba(34,197,94,0.1)';rrect(CX-185,210,170,70,10);ctx.fill();
-    ctx.strokeStyle=_hpFull?'#334155':'#22c55e';ctx.lineWidth=1.5;rrect(CX-185,210,170,70,10);ctx.stroke();
-    ctx.fillStyle=_hpFull?'#64748b':'#22c55e';ctx.font='bold 14px Cinzel,serif';ctx.fillText('OPTION A',CX-100,238);
-    ctx.fillStyle='#475569';ctx.font='11px Cinzel,serif';if(_hpFull){ctx.fillText('HP FULL',CX-100,258);ctx.fillText('already at max',CX-100,274);}else{ctx.fillStyle='#e2e8f0';ctx.fillText('+1 HP now',CX-100,258);ctx.fillText('Skip wave bonus',CX-100,274);}
-    ctx.restore();
-    // Option B — highlighted when HP full
-    var bBright=_hpFull;
-    ctx.fillStyle=bBright?'rgba(249,115,22,0.22)':'rgba(249,115,22,0.1)';rrect(CX+15,210,170,70,10);ctx.fill();
-    ctx.strokeStyle='#f97316';ctx.lineWidth=bBright?2.5:1.5;
-    if(bBright){ctx.shadowBlur=14;ctx.shadowColor='#f97316';}
-    rrect(CX+15,210,170,70,10);ctx.stroke();ctx.shadowBlur=0;
-    ctx.fillStyle=bBright?'#ffb86c':'#f97316';ctx.font='bold 14px Cinzel,serif';ctx.fillText('OPTION B',CX+100,238);
-    ctx.fillStyle='#e2e8f0';ctx.font='11px Cinzel,serif';ctx.fillText('2× points earned',CX+100,258);ctx.fillText('next wave',CX+100,274);
+    ctx.fillStyle='#e8b84b';ctx.font='bold 22px "Cinzel Decorative",Cinzel,serif';ctx.fillText('CHOOSE YOUR PATH',CX,66);
+    ctx.fillStyle='#64748b';ctx.font='12px Cinzel,serif';ctx.fillText('After Wave '+g.wave,CX,92);
+    // Current ability levels — small plain fill text, no glow
+    var _lvlParts=[];['ring','chain','bash','slow','fortify'].forEach(function(ab){if((g.cfg.abs||[]).indexOf(ab)>=0)_lvlParts.push(AB_NAMES[ab]+' Lv'+(g.abLvl[ab]||1));});
+    if(_lvlParts.length){ctx.fillStyle='#94a3b8';ctx.font='10px Cinzel,serif';ctx.fillText(_lvlParts.join(' · '),CX,114);}
+    var _w=360,_h=78,_gap=16,_startY=150;
+    for(var _i=0;_i<_opts.length;_i++){
+      var _o=_opts[_i],_by=_startY+_i*(_h+_gap),_bx=CX-_w/2,_cyc=_by+_h/2;
+      var _col=_o.kind==='ability'?'#f5c842':'#38bdf8';
+      ctx.fillStyle='rgba(0,0,0,0.5)';rrect(_bx,_by,_w,_h,12);ctx.fill();
+      ctx.strokeStyle=_col;ctx.lineWidth=1.5;rrect(_bx,_by,_w,_h,12);ctx.stroke();
+      ctx.fillStyle=_col;ctx.font='bold 15px Cinzel,serif';ctx.fillText(_o.title,CX,_cyc-11);
+      ctx.fillStyle='#cbd5e1';ctx.font='12px Cinzel,serif';ctx.fillText(_o.sub,CX,_cyc+13);
+    }
     ctx.textBaseline='alphabetic';ctx.restore();
   }
 }
