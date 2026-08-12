@@ -2,23 +2,36 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- Routes are real paths now (incl. nested /community/*), so relative ./asset refs must
+     keep resolving from the site root. Do not remove. -->
+<base href="/">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="description" content="Metallicus Guardian — A community-built educational resource for the Metallicus and XPR Network ecosystem.">
-<title>Metallicus Guardian | Stand GUARD</title>
+<meta name="description" content="A community-built front door to XPR Network and the Metallicus ecosystem: explore the tools, learn DeFi hands-on, earn Guardian shield ranks, meet GUARD.">
+<title>Stand Guard — The XPR Network &amp; Metallicus Community Guide</title>
+<link rel="canonical" href="https://standguard.net/">
 <!-- Social share preview (OpenGraph + Twitter) -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Stand Guard">
-<meta property="og:title" content="Metallicus Guardian | Stand GUARD">
-<meta property="og:description" content="A community-built guide to the Metallicus &amp; XPR Network ecosystem. Meet GUARD, learn the tools, stand guard.">
+<meta property="og:title" content="Stand Guard — The XPR Network &amp; Metallicus Community Guide">
+<meta property="og:description" content="A community-built front door to XPR Network and the Metallicus ecosystem: explore the tools, learn DeFi hands-on, earn Guardian shield ranks, meet GUARD.">
 <meta property="og:image" content="https://standguard.net/guard-card-v6.jpg">
 <meta property="og:url" content="https://standguard.net/">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Metallicus Guardian | Stand GUARD">
-<meta name="twitter:description" content="A community-built guide to the Metallicus &amp; XPR Network ecosystem. Meet GUARD, learn the tools, stand guard.">
+<meta name="twitter:title" content="Stand Guard — The XPR Network &amp; Metallicus Community Guide">
+<meta name="twitter:description" content="A community-built front door to XPR Network and the Metallicus ecosystem: explore the tools, learn DeFi hands-on, earn Guardian shield ranks, meet GUARD.">
 <meta name="twitter:image" content="https://standguard.net/guard-card-v6.jpg">
 <meta name="theme-color" content="#c9922a">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Stand Guard",
+  "url": "https://standguard.net/",
+  "description": "A community-built educational resource for XPR Network and the Metallicus ecosystem. Not affiliated with or endorsed by Metallicus."
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@500;700&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -3595,19 +3608,19 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       </div>
       <div class="foot-col">
         <h4>Navigate</h4>
-        <a href="#" onclick="go('home');return false;">Home</a>
-        <a href="#" onclick="go('guard');return false;">GUARD</a>
-        <a href="#" onclick="go('start');return false;">Start Here</a>
-        <a href="#" onclick="go('ecosystem');return false;">Ecosystem</a>
-        <a href="#" onclick="go('learn');return false;">Academy</a>
-        <a href="#" onclick="go('faq');return false;">FAQ</a>
-        <a href="#" onclick="go('community');return false;">Community Hub</a>
-        <a href="#" onclick="go('ksto');return false;">KSTO</a>
-        <a href="#" onclick="go('cyphergang');return false;">CypherGang</a>
-        <a href="#" onclick="go('snipverse');return false;">Snipverse</a>
-        <a href="#" onclick="go('shields');return false;">Shields</a>
-        <a href="#" onclick="go('creator');return false;">Creator</a>
-        <a href="#" onclick="go('arena');return false;">Stand Guard</a>
+        <a href="/" onclick="go('home');return false;">Home</a>
+        <a href="/guard" onclick="go('guard');return false;">GUARD</a>
+        <a href="/start-here" onclick="go('start');return false;">Start Here</a>
+        <a href="/ecosystem" onclick="go('ecosystem');return false;">Ecosystem</a>
+        <a href="/academy" onclick="go('learn');return false;">Academy</a>
+        <a href="/faq" onclick="go('faq');return false;">FAQ</a>
+        <a href="/community" onclick="go('community');return false;">Community Hub</a>
+        <a href="/community/ksto" onclick="go('ksto');return false;">KSTO</a>
+        <a href="/community/cyphergang" onclick="go('cyphergang');return false;">CypherGang</a>
+        <a href="/community/snipverse" onclick="go('snipverse');return false;">Snipverse</a>
+        <a href="/shields" onclick="go('shields');return false;">Shields</a>
+        <a href="/creator" onclick="go('creator');return false;">Creator</a>
+        <a href="/arena" onclick="go('arena');return false;">Stand Guard</a>
       </div>
       <div class="foot-col">
         <h4>Connect</h4>
@@ -3635,8 +3648,105 @@ const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','
 const BUILD_VERSION='2026-06-19-BUILD-AR';
 
 const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
-function go(id){
-  if(location.hash!=='#'+id)location.hash=id;
+
+// ── Routing ────────────────────────────────────────────────────────────────────
+// Real paths via history.pushState. Page id <-> path.
+const SITE_ORIGIN='https://standguard.net';
+const ROUTES={
+  home:'/',
+  guard:'/guard',
+  start:'/start-here',
+  newtoguard:'/new-to-guard',
+  ecosystem:'/ecosystem',
+  learn:'/academy',
+  shields:'/shields',
+  arena:'/arena',
+  defilab:'/defi-forge',
+  journey:'/xpr-journey',
+  intelligence:'/guardian-intelligence',
+  stablecoins:'/stablecoins-payments',
+  vision:'/vision',
+  creator:'/creator',
+  faq:'/faq',
+  community:'/community',
+  ksto:'/community/ksto',
+  cyphergang:'/community/cyphergang',
+  snipverse:'/community/snipverse'
+};
+const PATH_TO_PAGE=(function(){var m={};for(var k in ROUTES)m[ROUTES[k]]=k;return m;})();
+// Own-property check only — otherwise '#constructor' etc. would resolve to a truthy
+// Object.prototype member and put garbage in the address bar.
+function isRoute(id){return typeof id==='string'&&Object.prototype.hasOwnProperty.call(ROUTES,id);}
+
+// Per-route <title> + meta description, written from each page's actual content.
+const ROUTE_META={
+  home:{t:"Stand Guard — The XPR Network & Metallicus Community Guide",d:"A community-built front door to XPR Network and the Metallicus ecosystem: explore the tools, learn DeFi hands-on, earn Guardian shield ranks, meet GUARD."},
+  guard:{t:"GUARD Token — Meet the Metallicus Guardian on XPR Network",d:"GUARD is a community token on XPR Network launched on SimpleDEX. Past its bonding curve into a live XPR/GUARD pool, and stakeable on BlastPad. Not official."},
+  start:{t:"Start Here — Set Up Your XPR Network Wallet in Six Steps",d:"New to XPR Network? Six steps in order: create a WebAuth wallet, verify your identity, fund it, and make your first trade. Under 15 minutes, and free."},
+  newtoguard:{t:"New to GUARD? Six Steps From First Buy to First Arena Game",d:"Already know XPR Network? Six steps into GUARD: what it is, buying on SimpleDEX, optional BlastPad staking, connecting your wallet, shield rank, Arena."},
+  ecosystem:{t:"Metallicus Ecosystem Guide — Every Tool in Plain English",d:"A plain-English map of the Metallicus ecosystem: Metal Blockchain, XPR Network, Metal L2, WebAuth, Metal X, SimpleDEX, Alcor, BlastPad, LOAN, XMD and more."},
+  learn:{t:"BloxProd Academy — Free XPR Network Tutorials & Quizzes",d:"Free video tutorials from BloxProd, an elected XPR Network Block Producer. Beginner, intermediate and advanced tracks, plus a daily ecosystem question."},
+  shields:{t:"Guardian Shields — The Seven Ranks From Cryptide to Aegis",d:"Seven Guardian shield ranks from Cryptide to Aegis. Your rank is read from on-chain participation — XPR staking, votes, tenure, holdings — or earned in-game."},
+  arena:{t:"Guardian Arena — Play Siege Guard and GUARD Trials Free",d:"Two free browser games on XPR Network: Siege Guard wave defence and GUARD Trials tap-to-fly. Three plays each per day, weekly boards, shield shard drops."},
+  defilab:{t:"DeFi Forge — Learn How DeFi Works on XPR Network, Risk-Free",d:"Interactive simulators for lending, liquidity pools, farming, borrowing and staking, using numbers you choose. No real funds, no transactions, no risk."},
+  journey:{t:"XPR Journey — Nine On-Chain Milestones to Guardian Rank",d:"Nine milestones from newcomer to Guardian, tracked live from your own on-chain activity. Connect a WebAuth wallet — there are no sign-ups and no forms."},
+  intelligence:{t:"Guardian Intelligence — Your XPR Network Wallet Explained",d:"Connect your WebAuth wallet to read your on-chain position in plain English: balances, staking, LP and account tenure, live from XPR Network. Not advice."},
+  stablecoins:{t:"Stablecoins & Payments on XPR Network, Plainly Explained",d:"What a stablecoin is, how the Metal Dollar (XMD) basket of USDC, PYUSD and USDP works, and how zero-fee @username payments and FedNow rails fit together."},
+  vision:{t:"The Vision — What Stand Guard Is Today and What Comes Next",d:"What Stand Guard is today and the ideas being explored next, shaped by the XPR Network community. These are directions under consideration, not promises."},
+  creator:{t:"Meet Tim Rangel — The Community Member Who Created GUARD",d:"Tim Rangel (@scubasteve4488) built GUARD and this site. A healthcare worker and community member, not a company, drawn in by the technology behind crypto."},
+  faq:{t:"GUARD FAQ — Common Questions About GUARD and XPR Network",d:"Answers about GUARD: what it is, how to buy and sell it, the risks, how Guardian ranks work, plus XPR Network and WebAuth basics and official help centres."},
+  community:{t:"The XPR Network Community — The People, Projects & Spaces",d:"The XPR Network ecosystem is built by its community. Meet the Guardian Spotlight, KSTO, CypherGang and Snipverse — independent projects and the people in them."},
+  ksto:{t:"KSTO Community — Kulture Speaks Truth Onchain on XPR Network",d:"KSTO is one of the most active XPR Network communities, with X Spaces every Wednesday at 8 PM EST, Snippy the fox mascot, and the Funkyverse art project."},
+  cyphergang:{t:"CypherGang — The OG XPR Network NFT Community Since 2021",d:"CypherGang launched on XPR Network in 2021 by ProtonPunk: 1,777 hand-crafted fighter NFTs that earn CYPHR passively, plus the CypherBrawls arena game."},
+  snipverse:{t:"Snipverse — Get Paid to Post, Web3 Social on XPR Network",d:"Snipverse is a Web3 social platform on XPR Network by Jervis Dent. Sign in with WebAuth, earn SNIPS for posting, tip in crypto, and stake for higher tiers."}
+};
+
+var _currentRoute=null;
+
+// Unknown / malformed paths fall back to home rather than a blank screen.
+function pathToPageId(pathname){
+  var p=(pathname||'/').toLowerCase();
+  try{p=decodeURIComponent(p);}catch(e){}
+  if(p.length>1)p=p.replace(/\/+$/,'');   // tolerate trailing slashes
+  if(p==='')p='/';
+  if(p==='/index.html')p='/';
+  return PATH_TO_PAGE[p]||'home';
+}
+
+function _setMetaTag(attr,name,content){
+  var el=document.head.querySelector('meta['+attr+'="'+name+'"]');
+  if(!el){el=document.createElement('meta');el.setAttribute(attr,name);document.head.appendChild(el);}
+  el.setAttribute('content',content);
+}
+
+function applyRouteMeta(id){
+  var m=ROUTE_META[id]||ROUTE_META.home;
+  var url=SITE_ORIGIN+(ROUTES[id]||'/');
+  document.title=m.t;
+  _setMetaTag('name','description',m.d);
+  _setMetaTag('property','og:title',m.t);
+  _setMetaTag('property','og:description',m.d);
+  _setMetaTag('property','og:url',url);
+  _setMetaTag('name','twitter:title',m.t);
+  _setMetaTag('name','twitter:description',m.d);
+  var c=document.head.querySelector('link[rel="canonical"]');
+  if(!c){c=document.createElement('link');c.setAttribute('rel','canonical');document.head.appendChild(c);}
+  c.setAttribute('href',url);
+}
+
+// opts.noPush — render only, don't touch history (used by popstate + initial load)
+// opts.replace — replaceState instead of pushState
+function go(id,opts){
+  if(!isRoute(id))id='home';
+  opts=opts||{};
+  var path=ROUTES[id];
+  if(!opts.noPush){
+    if(opts.replace)history.replaceState({route:id},'',path);
+    else if(location.pathname!==path)history.pushState({route:id},'',path);
+    else history.replaceState({route:id},'',path);
+  }
+  _currentRoute=id;
+  applyRouteMeta(id);
   PAGES.forEach(p=>{
     const el=document.getElementById('page-'+p);
     const tb=document.getElementById('t-'+p);
@@ -3659,7 +3769,36 @@ function go(id){
   if(id==='learn'&&typeof renderDailyQuiz==='function'){try{renderDailyQuiz();}catch(e){}}
   mbnActive(id);
 }
-window.addEventListener('hashchange',function(){var h=location.hash.replace(/^#/,'');if(PAGES.includes(h))go(h);});
+// Route popstate. Registered BEFORE the Arena fullview popstate listener (which lives in
+// the game IIFE further down), so this one runs first on every back/forward.
+//
+// Coexistence with Arena fullview: enterFullview() pushes {fullview:true} on top of the
+// current {route:'arena'} entry WITHOUT changing the URL. Pressing back pops us to that
+// same route entry, so `id === _currentRoute` and we bail out here without re-rendering —
+// then the fullview listener runs and closes fullview. Any genuine route change (state
+// carries a different route, or no state at all) is handled normally.
+window.addEventListener('popstate',function(e){
+  var id=(e.state&&e.state.route)?e.state.route:pathToPageId(location.pathname);
+  if(id===_currentRoute)return;          // fullview exit, or a no-op pop
+  go(id,{noPush:true});
+});
+
+// Initial route: real path wins, legacy #hash links are upgraded to the real path.
+function initRoute(){
+  var h=location.hash.replace(/^#/,'');
+  var id=isRoute(h)?h:pathToPageId(location.pathname);
+  // Normalise the address bar: drops legacy hashes, trailing slashes, and unknown paths.
+  history.replaceState({route:id},'',ROUTES[id]);
+  var homeEl=document.getElementById('page-home');
+  if(id==='home'&&homeEl&&homeEl.classList.contains('active')){
+    // Home is already the active div from markup — don't re-render, just claim the route.
+    _currentRoute='home';
+    applyRouteMeta('home');
+    mbnActive('home');
+    return;
+  }
+  go(id,{noPush:true});
+}
 
 // ── Mobile bottom nav ──────────────────────────────────────────────────────────
 const _MBN={home:'mbn-home',shields:'mbn-shields',arena:'mbn-arena',ecosystem:'mbn-ecosystem',learn:'mbn-learn',newtoguard:'mbn-learn',start:'mbn-learn',faq:'mbn-learn'};
@@ -7818,8 +7957,7 @@ resetWalletBarUI();
 // Try to restore session on page load
 window.addEventListener('load', () => {
   setTimeout(walletRestore, 1000);
-  var h=location.hash.replace(/^#/,'');
-  if(PAGES.includes(h))go(h);
+  initRoute();
   updatePlaysUI();
   setInterval(updatePlaysUI, 60000);
   updateNavArrows();
