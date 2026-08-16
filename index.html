@@ -5191,13 +5191,46 @@ async function fetchMetalXUsage(actor) {
   return false;
 }
 
+// ── All-numeric account names and get_table_rows ───────────────────────────────
+// XPR names may use digits 1-5 only, so '333555' is a valid account name. Names are
+// base32-encoded to u64 using '.12345abcdefghijklmnopqrstuvwxyz' — but get_table_rows
+// sees an all-digit string and treats it as the raw integer instead, a completely
+// different value. The query then returns an EMPTY result with HTTP 200 and no error.
+//
+// That is a silent wrong answer, not a failure: the caller sees "no positions" and states
+// it as fact. Same class as the silent-zero defect — R3, a failed check must never render
+// as a clean result. The ecoStatus sentinel cannot catch this one, because nothing failed.
+//
+// Documented in the official XPR Network developer skill, skill/rpc-queries.md.
+// Verified: xprNameToU64('333555') === '1785205097907617792', matching that document.
+// get_currency_balance is NOT affected and needs no wrapper.
+function xprNameToU64(name) {
+  const charmap = '.12345abcdefghijklmnopqrstuvwxyz';
+  let value = 0n;
+  for (let i = 0; i <= 12; i++) {
+    let c = 0n;
+    if (i < name.length) { const idx = charmap.indexOf(name[i]); c = BigInt(idx < 0 ? 0 : idx); }
+    if (i < 12) { c &= 0x1fn; c <<= BigInt(64 - 5 * (i + 1)); } else { c &= 0x0fn; }
+    value |= c;
+  }
+  return value.toString();
+}
+// `scope` has no string workaround — it must be pre-encoded.
+function safeScope(name) {
+  return /^[0-9]+$/.test(String(name)) ? xprNameToU64(String(name)) : name;
+}
+// `lower_bound` / `upper_bound` accept a trailing '.' which forces name parsing.
+function safeBound(name) {
+  return /^[0-9]+$/.test(String(name)) ? String(name) + '.' : name;
+}
+
 async function fetchAnyLp(actor) {
   // Any SimpleDEX LP position — lp table is owner-scoped
   for (const rpc of DAPP_CONFIG.endpoints) {
     try {
       const r = await fetchTimeout(rpc + '/v1/chain/get_table_rows', {
         method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({json:true, code:'simpledex', scope:actor, table:'lp', limit:1}),
+        body: JSON.stringify({json:true, code:'simpledex', scope:safeScope(actor), table:'lp', limit:1}),
       }, 5000);
       if (r.ok) {
         const data = await r.json();
@@ -5219,7 +5252,7 @@ async function fetchLendingPosition(actor) {
       const r = await fetchTimeout(rpc + '/v1/chain/get_table_rows', {
         method: 'POST', headers: {'Content-Type':'application/json'},
         body: JSON.stringify({json:true, code:'lending.loan', scope:'lending.loan', table:'shares',
-          lower_bound:actor, upper_bound:actor, key_type:'name', index_position:'1', limit:1}),
+          lower_bound:safeBound(actor), upper_bound:safeBound(actor), key_type:'name', index_position:'1', limit:1}),
       }, 5000);
       if (r.ok) {
         const data = await r.json();
@@ -5281,7 +5314,7 @@ async function fetchAllLpDetails(actor){
     // 1) All owner-scoped LP rows (paginate past more:true)
     let lpRows = [], lb = '';
     for (let guard=0; guard<10; guard++){
-      const body = {json:true, code:'simpledex', scope:actor, table:'lp', limit:100};
+      const body = {json:true, code:'simpledex', scope:safeScope(actor), table:'lp', limit:100};
       if (lb) body.lower_bound = lb;
       const d = await _tableRows(body);
       if (!d || !Array.isArray(d.rows)) { if (lpRows.length===0) throw new Error('lp fetch failed'); break; }
@@ -5327,12 +5360,12 @@ async function fetchLendingDetails(actor){
   try {
     // supplied shares row for the account
     const sh = await _tableRows({json:true, code:'lending.loan', scope:'lending.loan', table:'shares',
-      lower_bound:actor, upper_bound:actor, key_type:'name', index_position:'1', limit:1});
+      lower_bound:safeBound(actor), upper_bound:safeBound(actor), key_type:'name', index_position:'1', limit:1});
     if (!sh || !Array.isArray(sh.rows)) throw new Error('shares fetch failed');
     const shareRow = sh.rows[0];
     // borrows row for the account
     const br = await _tableRows({json:true, code:'lending.loan', scope:'lending.loan', table:'borrows',
-      lower_bound:actor, upper_bound:actor, key_type:'name', index_position:'1', limit:1});
+      lower_bound:safeBound(actor), upper_bound:safeBound(actor), key_type:'name', index_position:'1', limit:1});
     const borrowRow = (br && br.rows && br.rows[0]) ? br.rows[0] : null;
     if (!shareRow || !Array.isArray(shareRow.tokens)){ intelLending = []; try{renderIntelligence();}catch(e){} return; }
     const held = shareRow.tokens.filter(t => _u64(t.value) > 0);
@@ -5402,7 +5435,7 @@ async function fetchLpPosition(actor) {
   try {
     // Step 1: user LP row for pool 187 — try actor scope then pool-id scopes as fallbacks
     let row = null;
-    const lpScopes = [actor, '187', 187];
+    const lpScopes = [safeScope(actor), '187', 187];
     for (const scope of lpScopes) {
       const lpR = await fetchTimeout(endpoint + '/v1/chain/get_table_rows', {
         method: 'POST', headers: {'Content-Type':'application/json'},
