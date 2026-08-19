@@ -1,0 +1,1 @@
+{"probe":"static-file-serving-test","purpose":"verify Cloudflare Pages serves a real file from a dotted directory despite the SPA catch-all","remove":"immediately after verification"}
