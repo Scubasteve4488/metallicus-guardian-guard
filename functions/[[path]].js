@@ -10,6 +10,10 @@
 // adopts a root 404.html as its own not-found handler and it pre-empts the SPA rewrite.
 // Hence: no file named 404.html in this project, ever. The body lives in not-found.html.
 //
+// Pages strips .html and 308-redirects: /index.html -> / and /not-found.html ->
+// /not-found (measured 2026-08-23). The subrequests below use the canonical form so
+// they do not spend a redirect hop, and so a 308 body can never be returned as a 404.
+//
 // Order below is deliberate: a real file always wins, so a future
 // /.well-known/agent.json (#98 step 3) serves normally without touching this list.
 
@@ -47,7 +51,7 @@ export async function onRequest(context) {
   // 2. A known app route: hand over the app at 200.
   const path = url.pathname !== '/' ? url.pathname.replace(/\/+$/, '') : '/';
   if (ROUTES.has(path)) {
-    const app = await fetch(new URL('/index.html', url));
+    const app = await fetch(new URL('/', url));
     return new Response(app.body, {
       status: 200,
       headers: { 'content-type': 'text/html; charset=utf-8' },
@@ -55,7 +59,7 @@ export async function onRequest(context) {
   }
 
   // 3. Nothing here. Say so with a real status, not 200 plus the homepage.
-  const nf = await fetch(new URL('/not-found.html', url));
+  const nf = await fetch(new URL('/not-found', url));
   return new Response(nf.body, {
     status: 404,
     headers: { 'content-type': 'text/html; charset=utf-8' },
