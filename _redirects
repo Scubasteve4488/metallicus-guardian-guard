@@ -1,1 +1,25 @@
+# Absent agent/metadata probe paths -> a real 404, NOT the app.
+#
+# The catch-all at the bottom makes real routes like /defi-forge work on a single-page
+# site. Its side effect: ANY missing path returned 200 plus the full homepage, so an
+# automated client asking "do you have an llms.txt?" was told yes and handed HTML.
+#
+# The destination is not-found.html, NOT 404.html, and the name is the whole point.
+# On 2026-08-18 a root 404.html was added here and took down every deep route: Cloudflare
+# Pages adopts a root 404.html as its own not-found handler, which pre-empts the SPA
+# rewrite. Renaming the file keeps the 404 body without triggering that behaviour.
+#
+# Listed explicitly rather than by a wildcard such as /*.json: splat semantics for
+# mid-path patterns are unverified here and an over-broad rule would break routing.
+/llms.txt                 /not-found.html   404
+/llms-full.txt            /not-found.html   404
+/agents.json              /not-found.html   404
+/agent.json               /not-found.html   404
+/ucp.json                 /not-found.html   404
+/acp.json                 /not-found.html   404
+/openapi.json             /not-found.html   404
+/mcp.json                 /not-found.html   404
+/.well-known/*            /not-found.html   404
+
+# Single-page app fallback - every real route is served by index.html.
 /*    /index.html   200
