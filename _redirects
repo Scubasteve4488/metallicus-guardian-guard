@@ -1,11 +1,8 @@
-# ISOLATION TEST. Two rule forms, one deploy, to find out which the platform honours.
-# A: a 302 redirect - proves whether this file is parsed and rules fire at all.
-/redirect-probe           /guard            302
-# B: the 404 rewrites - the thing that did not fire on the last preview.
-/llms.txt                 /not-found.html   404
-/agents.json              /not-found.html   404
-/.well-known/*            /not-found.html   404
-# C: a 200 rewrite to the not-found body - does the destination resolve when status is 200?
-/rewrite-probe            /not-found.html   200
-
-/*    /index.html   200
+# Intentionally empty of routing rules.
+#
+# The SPA fallback and the 404 both live in functions/[[path]].js now, because
+# _redirects cannot express a 404 on Cloudflare Pages - proven on this project's
+# preview URL 2026-08-23: a 302 rule fired, the identical 404 rules were discarded.
+#
+# Do not reintroduce `/*  /index.html  200` here. It would pre-empt the Function and
+# bring back the bug where every missing file answers 200 plus the homepage.
