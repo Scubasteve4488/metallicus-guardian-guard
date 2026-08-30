@@ -702,7 +702,9 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
       </div>
       <button class="nav-btn" id="t-guard" onclick="go('guard')">🛡 GUARD</button>
       <button class="nav-btn" id="t-arena" onclick="go('arena')">⚔ Stand Guard</button>
-      <button class="nav-btn" id="t-shields" onclick="go('shields')">🛡 Shields</button>
+      <div class="nav-dropdown" id="dd-wallet" onmouseenter="openDropdown('dd-wallet')" onmouseleave="scheduleCloseDropdowns()">
+        <button class="nav-btn nav-dropdown-btn" id="t-wallet-group" onclick="toggleDropdown('dd-wallet',event)">Your Wallet <span class="dd-caret">▾</span></button>
+      </div>
       <button class="nav-btn" id="t-vision" onclick="go('vision')">✨ The Vision</button>
       <button class="nav-btn" id="t-creator" onclick="go('creator')">Creator</button>
     </div>
@@ -724,6 +726,11 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
   <button class="nav-dd-item" onclick="go('ksto');closeAllDropdowns()"><img src="./icon_ksto.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> KSTO</button>
   <button class="nav-dd-item" onclick="go('cyphergang');closeAllDropdowns()"><img src="./icon_cyphergang.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> CypherGang</button>
   <button class="nav-dd-item" onclick="go('snipverse');closeAllDropdowns()"><img src="./icon_snipverse.jpg" style="width:18px;height:18px;object-fit:contain;border-radius:3px;vertical-align:middle;" alt=""> Snipverse</button>
+</div>
+<div id="dd-wallet-panel" class="nav-dd-panel" onmouseenter="cancelCloseDropdowns()" onmouseleave="scheduleCloseDropdowns()">
+  <button class="nav-dd-item" onclick="go('intelligence');closeAllDropdowns()">🔍 Guardian Intelligence</button>
+  <button class="nav-dd-item" onclick="go('shields');closeAllDropdowns()">🛡 Shields</button>
+  <button class="nav-dd-item" onclick="go('journey');closeAllDropdowns()">🧭 XPR Journey</button>
 </div>
 
 <div class="mobile-nav" id="mob">
@@ -748,7 +755,12 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
   </div>
   <button class="mobile-nav-btn" onclick="go('guard');closeMenu()">🛡 GUARD</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('arena')">⚔ Stand Guard</button>
-  <button class="mobile-nav-btn" onclick="closeMenu();go('shields')">🛡 Shields</button>
+  <button class="mobile-nav-btn mob-acc-hdr" onclick="toggleMobAcc('mob-acc-wallet')">🔑 Your Wallet <span class="mob-acc-caret" id="caret-mob-acc-wallet">▾</span></button>
+  <div class="mob-acc-body" id="mob-acc-wallet" style="display:none;">
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('intelligence')">🔍 Guardian Intelligence</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('shields')">🛡 Shields</button>
+    <button class="mobile-nav-btn mob-acc-item" onclick="closeMenu();go('journey')">🧭 XPR Journey</button>
+  </div>
   <button class="mobile-nav-btn" onclick="closeMenu();go('vision')">✨ The Vision</button>
   <button class="mobile-nav-btn" onclick="closeMenu();go('creator')">👤 Creator</button>
   <a href="https://simpledex.fun/token/172" target="_blank" class="btn btn-g mt2" style="justify-content:center;" data-umami-event="buy-guard">⚔ Buy GUARD</a>
@@ -3671,7 +3683,7 @@ body.game-fullview #flappy-game-container>*:not(canvas){display:none!important;}
 const PAGES=['home','guard','start','ecosystem','learn','shields','faq','ksto','cyphergang','snipverse','creator','arena','newtoguard','community','vision','defilab','stablecoins','journey','intelligence'];
 const BUILD_VERSION='2026-06-19-BUILD-AR';
 
-const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group'};
+const _DD_PARENT={start:'t-learn-group',learn:'t-learn-group',faq:'t-learn-group',newtoguard:'t-learn-group',community:'t-communities-group',ksto:'t-communities-group',cyphergang:'t-communities-group',snipverse:'t-communities-group',intelligence:'t-wallet-group',shields:'t-wallet-group',journey:'t-wallet-group'};
 
 // ── Routing ────────────────────────────────────────────────────────────────────
 // Real paths via history.pushState. Page id <-> path.
@@ -4609,6 +4621,10 @@ let guardianLpXpr = -1;    // -1=loading, 0=no LP, >0=XPR equivalent
 let guardianDaysHeld = -1; // -1=loading, 0=never held GUARD, >0=days
 let guardianNfts = {snippy:0, funky:0, cyphergang:0};
 let guardianStaked = -1; // -1=loading, 0=no stake, >0=GUARD staked on BlastPad pool 791
+let guardianStakedStatus = 'pending'; // 'pending' | 'ok' | 'error' — separate from the
+  // number above because BlastPad has no ABI: a lookup failure and a genuine zero both
+  // used to collapse to guardianStaked=0. Intelligence's own rule is never to state a
+  // balance that was not retrieved, so it needs this to tell the two apart.
 let ecoXprStaked = 0;       // whole XPR staked for voting (voter_info.staked / 10000)
 let ecoBpVotes = 0;         // BP vote slots filled (0–4)
 let ecoAccountMonths = 0;   // floor months since account created
@@ -5656,12 +5672,18 @@ async function fetchStakingData(actor) {
       else if (d.from === 'blastpad') totalOut += d.amount;
     }
     guardianStaked = Math.max(0, totalIn - totalOut);
+    guardianStakedStatus = 'ok';
   } catch(e) {
     console.warn('[GUARD] fetchStakingData error:', e.message);
+    // guardianStaked stays 0 so achievement/rank math degrades safely (not-yet-met,
+    // never a crash) — but that 0 is not a fact, so the status flag is what Intelligence
+    // actually checks before printing a number.
     guardianStaked = 0;
+    guardianStakedStatus = 'error';
   }
   unlockStakingAchs(guardianStaked);
   renderProgress(guardianBalance);
+  try { renderIntelligence(); } catch(e) {}
 }
 
 async function fetchEcosystemData(actor) {
@@ -6406,6 +6428,21 @@ function renderIntelligence(){
     }
   } catch(e){ cards += _intelCard('Participation Profile', _INTEL_FAILED, 300); }
 
+  // 7) GUARD STAKING (BLASTPAD)
+  try {
+    if (guardianStakedStatus === 'error') { cards += _intelCard('GUARD Staking', _INTEL_FAILED, 360); }
+    else if (guardianStakedStatus === 'pending') { cards += _intelCard('GUARD Staking', _INTEL_PENDING, 360); }
+    else {
+      const stakeLink = '<a href="https://blastpad.io/staking-pool?poolId=791" target="_blank" rel="noopener" class="btn btn-o mt2" style="font-size:.76rem;">' + (guardianStaked > 0 ? 'Manage on BlastPad →' : '🔥 Stake on BlastPad →') + '</a>';
+      let b = guardianStaked > 0
+        ? '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">' + _fmtAmt(guardianStaked,0) + ' GUARD staked on BlastPad Pool 791.</p>'
+        : '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">No GUARD staked on BlastPad found for this wallet.</p>';
+      b += '<p style="font-size:.72rem;color:var(--text3);margin-top:.5rem;">BlastPad has no queryable staking table, so this is derived from your GUARD transfer history to the pool rather than read directly — it can undercount for wallets with very heavy transfer activity or recent reward payouts.</p>';
+      b += stakeLink;
+      cards += _intelCard('GUARD Staking', b, 360);
+    }
+  } catch(e){ cards += _intelCard('GUARD Staking', _INTEL_FAILED, 360); }
+
   wrap.innerHTML = cards;
   try { rev(); } catch(e){}
 
@@ -6585,6 +6622,7 @@ function onWalletDisconnected() {
   guardianDaysHeld = -1;
   guardianNfts = {snippy:0, funky:0, cyphergang:0};
   guardianStaked = -1;
+  guardianStakedStatus = 'pending';
   _guardLastConfirmedBal = -1;
   // Reset ecosystem / journey globals
   ecoXprStaked = 0; ecoBpVotes = 0; ecoAccountMonths = 0; ecoTokens = new Set(); ecoXprLiquid = 0;
@@ -8065,7 +8103,7 @@ window.addEventListener('load', () => {
 function scrollNav(amount){
   document.getElementById('navScroll').scrollBy({left:amount,behavior:'smooth'});
 }
-var _DD_PANELS={'dd-learn':{btnId:'t-learn-group',panelId:'dd-learn-panel'},'dd-communities':{btnId:'t-communities-group',panelId:'dd-communities-panel'}};
+var _DD_PANELS={'dd-learn':{btnId:'t-learn-group',panelId:'dd-learn-panel'},'dd-communities':{btnId:'t-communities-group',panelId:'dd-communities-panel'},'dd-wallet':{btnId:'t-wallet-group',panelId:'dd-wallet-panel'}};
 var _ddCloseTimer=null;
 function openDropdown(id){
   clearTimeout(_ddCloseTimer);
