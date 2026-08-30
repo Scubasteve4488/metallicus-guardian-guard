@@ -55,30 +55,38 @@ export async function onRequest(context) {
   // 1. Anything that is not HTML-at-200 is the asset server speaking for itself:
   //    robots.txt, sitemap.xml, images, a future /.well-known/agent.json (#98 step 3),
   //    and the .html -> extensionless 308s. A real file always wins. Pass it straight
-  //    through, untouched, so it keeps its own ETag and caching.
+  //    through, untouched, so it keeps its own ETag and caching. This runs before the
+  //    casing rule below, so a genuinely capitalised FILENAME is never redirected.
   if (asset.status !== 200 || !isHtml) return asset;
 
   // 2. HTML at 200 is only trustworthy for a path we actually publish. For those,
   //    that response IS the app - no subrequest needed.
-  if (ROUTES.has(path)) return withMark(asset, 200);
+  if (ROUTES.has(path)) return asset;
 
-  // 3. The not-found page itself, reached directly. Serve it, but never at 200.
-  if (path === '/not-found') return withMark(asset, 404);
+  // 3. Same route, wrong case (/GUARD). The old catch-all answered these 200 because
+  //    it answered everything 200; strict matching would now 404 a link someone has
+  //    already shared. Send them to the canonical lowercase form instead, so the route
+  //    keeps working and crawlers still see exactly one URL per page.
+  const lower = path.toLowerCase();
+  if (lower !== path && ROUTES.has(lower)) {
+    const dest = new URL(url);
+    dest.pathname = lower;
+    return Response.redirect(dest.toString(), 301);
+  }
 
-  // 4. Everything else got here on the SPA fallback, not because anything is
+  // 4. The not-found page itself, reached directly. Serve it, but never at 200.
+  if (path === '/not-found') {
+    return new Response(asset.body, {
+      status: 404,
+      headers: { 'content-type': 'text/html; charset=utf-8' },
+    });
+  }
+
+  // 5. Everything else got here on the SPA fallback, not because anything is
   //    published at this address. Say so with a real status.
   const nf = await next(new Request(new URL('/not-found', url), request));
-  return withMark(nf, 404);
-}
-
-// PREVIEW MARKER: proves the Function ran, rather than Pages answering on its own.
-// Both look identical from outside without it. Remove before this reaches production.
-function withMark(response, status) {
-  return new Response(response.body, {
-    status,
-    headers: {
-      'content-type': 'text/html; charset=utf-8',
-      'x-sg-router': 'function',
-    },
+  return new Response(nf.body, {
+    status: 404,
+    headers: { 'content-type': 'text/html; charset=utf-8' },
   });
 }
