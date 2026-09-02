@@ -4628,7 +4628,8 @@ let blastpadStatus = 'pending';   // 'pending' | 'ok' | 'error'
 let blastpadPartial = false;     // true when the wallet has more transfers than the page cap
 let blastpadTotalUsd = null;     // portfolio value, null when pricing never returned
 let blastpadPricedCount = 0;     // how many positions carried a usable price
-let blastpadGuardSeries = null;  // GUARD position value over time     // true when the wallet has more transfers than the page cap
+let blastpadGuardSeries = null;  // GUARD position value over time
+let blastpadPortfolio = null;    // {series, covered, of} - whole-portfolio value over time     // true when the wallet has more transfers than the page cap
 let ecoXprStaked = 0;       // whole XPR staked for voting (voter_info.staked / 10000)
 let ecoBpVotes = 0;         // BP vote slots filled (0–4)
 let ecoAccountMonths = 0;   // floor months since account created
@@ -5728,7 +5729,11 @@ async function fetchStakingData(actor) {
     guardianStaked = g ? g.net : 0;
     guardianStakedStatus = 'ok';
     blastpadStatus = 'ok';
-    try { blastpadGuardSeries = g ? await _bpGuardValueSeries(g.events) : null; } catch(e) { blastpadGuardSeries = null; }
+    try { blastpadPortfolio = await _bpPortfolioSeries(blastpadPositions); } catch(e) { blastpadPortfolio = null; }
+    try {
+      const gh = g ? await _bpHistory('GUARD') : null;
+      blastpadGuardSeries = gh ? _bpSeriesFor(g.events, gh) : null;
+    } catch(e) { blastpadGuardSeries = null; }
   } catch(e) {
     console.warn('[GUARD] fetchStakingData error:', e.message);
     // guardianStaked stays 0 so achievement/rank math degrades safely (not-yet-met,
@@ -5738,7 +5743,7 @@ async function fetchStakingData(actor) {
     guardianStakedStatus = 'error';
     blastpadPositions = [];
     blastpadStatus = 'error';
-    blastpadTotalUsd = null; blastpadPricedCount = 0; blastpadGuardSeries = null;
+    blastpadTotalUsd = null; blastpadPricedCount = 0; blastpadGuardSeries = null; blastpadPortfolio = null; blastpadPortfolio = null;
   }
   unlockStakingAchs(guardianStaked);
   renderProgress(guardianBalance);
@@ -6390,44 +6395,60 @@ const _LOGO_MAP = { XPR:'img_xprlogo.png', XMD:'Metal%20Dollar%20XMD.png', LOAN:
   METAL:'metal-blockchain-l0.png', XMT:'Metal%20L2.jpg', GUARD:'g_token.jpg' };
 
 // ─── BlastPad position pricing ──────────────────────────────────────────────
-// Two sources, because neither alone covers the long tail of XPR tokens: Alcor lists
-// ~2,900 and carries scam/trust flags, SimpleDEX ~470 bonding-curve tokens that Alcor
-// often has not listed. Alcor wins where both have a price, because safe_usd_price is
-// its manipulation-resistant figure. Coverage is still not total - measured 44 of 79
-// positions on one heavy wallet - so the card always says how many it could price
-// rather than presenting a partial sum as the whole.
-let bpPrices = null;   // { "SYM@contract": {usd, scam, trusted} }
+// Two sources, because neither alone covers the long tail: Alcor lists ~2,900 tokens
+// and carries scam/trust flags, SimpleDEX ~470 bonding-curve tokens Alcor has not
+// listed. Alcor wins where both have a price (safe_usd_price is its manipulation-
+// resistant figure).
+//
+// Lookup is contract-qualified first, then falls back to symbol alone - but only when
+// exactly one contract on file uses that symbol, so an ambiguous ticker never gets
+// priced from the wrong token. The fallback matters: some tokens are reported by the
+// price APIs under a different contract than the one that issued the staked transfer,
+// and without it those positions read as unpriced (measured: recovers 1 of 3 on one
+// wallet, 4 of 35 on a heavy one).
+let bpPrices = null;   // { byKey: {"SYM@contract": {...}}, bySym: {"SYM": {...}|null} }
 
 async function _bpLoadPrices() {
   if (bpPrices) return bpPrices;
-  const map = Object.create(null);
-  const put = (sym, contract, usd, extra) => {
+  const byKey = Object.create(null);
+  const seen = Object.create(null);   // SYM -> Set of contracts
+  const add = (sym, contract, usd, extra) => {
     if (!sym || !(usd > 0)) return;
-    const k = String(sym).toUpperCase() + '@' + contract;
-    if (!map[k] || map[k].weak) map[k] = Object.assign({ usd: usd }, extra || {});
+    const S = String(sym).toUpperCase();
+    const k = S + '@' + contract;
+    if (!byKey[k] || byKey[k].weak) byKey[k] = Object.assign({ usd: usd, contract: contract }, extra || {});
+    (seen[S] = seen[S] || new Set()).add(contract);
   };
-  const jobs = [
+  await Promise.all([
     fetchTimeout('https://proton.alcor.exchange/api/v2/tokens', {}, 9000)
       .then(r => r.ok ? r.json() : []).then(list => {
-        for (const t of (list || [])) {
-          const usd = (t.safe_usd_price != null ? t.safe_usd_price : t.usd_price);
-          put(t.symbol, t.contract, usd, { scam: !!t.is_scam, trusted: !!t.is_trusted });
-        }
+        for (const t of (list || [])) add(t.symbol, t.contract,
+          (t.safe_usd_price != null ? t.safe_usd_price : t.usd_price),
+          { scam: !!t.is_scam, trusted: !!t.is_trusted });
       }).catch(() => {}),
     fetchTimeout('https://indexer.protonnz.com/api/prices', {}, 9000)
       .then(r => r.ok ? r.json() : []).then(list => {
-        for (const t of (list || [])) put(t.symbol, t.contract || 'simpletoken', t.price, { weak: true });
+        for (const t of (list || [])) add(t.symbol, t.contract || 'simpletoken', t.price, { weak: true });
       }).catch(() => {}),
-  ];
-  await Promise.all(jobs);
-  bpPrices = map;
-  return map;
+  ]);
+  const bySym = Object.create(null);
+  for (const S in seen) {
+    const contracts = Array.from(seen[S]);
+    bySym[S] = contracts.length === 1 ? byKey[S + '@' + contracts[0]] : null;   // null = ambiguous
+  }
+  bpPrices = { byKey: byKey, bySym: bySym };
+  return bpPrices;
+}
+
+function _bpLookup(prices, sym, contract) {
+  const S = String(sym).toUpperCase();
+  return prices.byKey[S + '@' + contract] || prices.bySym[S] || null;
 }
 
 function _bpApplyPrices(positions, prices) {
   let total = 0, priced = 0;
   for (const p of positions) {
-    const hit = prices[p.sym.toUpperCase() + '@' + p.contract];
+    const hit = _bpLookup(prices, p.sym, p.contract);
     p.usd = hit && hit.usd > 0 ? p.net * hit.usd : null;
     p.scam = !!(hit && hit.scam);
     if (p.usd != null) { priced++; if (!p.scam) total += p.usd; }
@@ -6435,38 +6456,79 @@ function _bpApplyPrices(positions, prices) {
   // Sorting by token count is meaningless across tokens - a billion of a worthless token
   // would outrank a real position. Priced positions rank by value, unpriced fall below.
   positions.sort((a, b) => (b.usd || -1) - (a.usd || -1));
-  return { total, priced };
+  return { total: total, priced: priced };
 }
 
-// Value of the GUARD position over time: staked balance replayed against real price
-// history (SimpleDEX publishes ~30 days at roughly 5-minute resolution). This is the
-// "value growth over time" the request asked for; it is limited to GUARD because a
-// whole-portfolio version needs one history call per token.
-async function _bpGuardValueSeries(events) {
-  if (!events || !events.length) return null;
+// ─── Value over time ────────────────────────────────────────────────────────
+// The request asked for value growth, not token counts, and for the portfolio rather
+// than one token. SimpleDEX publishes ~30 days of price history at roughly 5-minute
+// resolution; not every token has it (several return an empty series), so this covers
+// the largest positions that do and reports how many that was, rather than drawing a
+// line that silently means less than it appears to.
+const BP_SERIES_MAX = 8;   // bounds the number of history calls on a heavy wallet
+
+async function _bpHistory(sym) {
   try {
-    const r = await fetchTimeout('https://indexer.protonnz.com/api/prices/GUARD/history', {}, 9000);
+    const r = await fetchTimeout('https://indexer.protonnz.com/api/prices/'
+      + encodeURIComponent(String(sym).toUpperCase()) + '/history', {}, 9000);
     if (!r.ok) return null;
     const j = await r.json();
     const hist = (j && j.history) || [];
-    if (hist.length < 2) return null;
-    const bal = [];
-    let run = 0;
-    for (const e of events) { run += e.d; bal.push({ t: new Date(e.t).getTime(), v: run }); }
-    const step = Math.max(1, Math.floor(hist.length / 140));
-    const out = [];
-    for (let i = 0; i < hist.length; i += step) {
-      const ts = hist[i].timestamp * 1000;
-      let b = 0;
-      for (const p of bal) { if (p.t <= ts) b = p.v; else break; }
-      if (b > 0) out.push({ t: ts, v: b * hist[i].price });
-    }
-    return out.length >= 2 ? out : null;
+    return hist.length >= 2 ? hist : null;
   } catch(e) { return null; }
 }
 
-// Same renderer as the balance chart, fed a value series instead.
-function _bpValueChart(series) {
+function _bpBalanceAt(events, ts) {
+  let bal = 0;
+  for (const e of events) { if (new Date(e.t).getTime() <= ts) bal += e.d; else break; }
+  return bal > 0 ? bal : 0;
+}
+
+function _bpSeriesFor(events, hist) {
+  if (!events || !events.length || !hist || hist.length < 2) return null;
+  const step = Math.max(1, Math.floor(hist.length / 140));
+  const out = [];
+  for (let i = 0; i < hist.length; i += step) {
+    const ts = hist[i].timestamp * 1000;
+    const b = _bpBalanceAt(events, ts);
+    if (b > 0 && hist[i].price > 0) out.push({ t: ts, v: b * hist[i].price });
+  }
+  return out.length >= 2 ? out : null;
+}
+
+async function _bpPortfolioSeries(positions) {
+  const cands = positions.filter(p => p.usd != null && !p.scam && p.net > 0 && p.events && p.events.length)
+                         .slice(0, BP_SERIES_MAX);
+  if (!cands.length) return null;
+  const hists = await Promise.all(cands.map(p => _bpHistory(p.sym)));
+  const used = [];
+  for (let i = 0; i < cands.length; i++) if (hists[i]) used.push({ pos: cands[i], hist: hists[i] });
+  if (!used.length) return null;
+
+  let lo = Infinity, hi = -Infinity;
+  for (const u of used) {
+    lo = Math.min(lo, u.hist[0].timestamp * 1000);
+    hi = Math.max(hi, u.hist[u.hist.length - 1].timestamp * 1000);
+  }
+  if (!(hi > lo)) return null;
+
+  const N = 120, step = (hi - lo) / (N - 1), out = [];
+  const idx = used.map(() => 0);
+  for (let n = 0; n < N; n++) {
+    const ts = lo + step * n;
+    let v = 0;
+    for (let u = 0; u < used.length; u++) {
+      const hist = used[u].hist;
+      while (idx[u] < hist.length - 1 && hist[idx[u] + 1].timestamp * 1000 <= ts) idx[u]++;
+      const px = hist[idx[u]].price;
+      if (hist[idx[u]].timestamp * 1000 <= ts && px > 0) v += _bpBalanceAt(used[u].pos.events, ts) * px;
+    }
+    out.push({ t: ts, v: v });
+  }
+  return out.some(p => p.v > 0) ? { series: out, covered: used.length, of: positions.length } : null;
+}
+
+function _bpValueChart(series, caption) {
   if (!series || series.length < 2) return '';
   const W = 260, H = 54, P = 3;
   const t0 = series[0].t, t1 = series[series.length - 1].t;
@@ -6476,15 +6538,14 @@ function _bpValueChart(series) {
   const y = v => H - P - (v / max) * (H - 2 * P);
   let d = 'M' + x(series[0].t).toFixed(1) + ',' + y(series[0].v).toFixed(1);
   for (let i = 1; i < series.length; i++) d += ' L' + x(series[i].t).toFixed(1) + ',' + y(series[i].v).toFixed(1);
-  const first = series[0].v, last = series[series.length - 1].v;
-  const up = last >= first;
+  const up = series[series.length - 1].v >= series[0].v;
   return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" width="100%" height="' + H + '" role="img" '
-    + 'aria-label="GUARD position value over time" style="display:block;margin-top:.45rem;overflow:visible;">'
+    + 'aria-label="' + _esc(caption || 'value over time') + '" style="display:block;margin-top:.45rem;overflow:visible;">'
     + '<path d="' + d + '" fill="none" stroke="' + (up ? 'var(--gold-l)' : '#e07a5f') + '" stroke-width="1.6" '
     + 'stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>'
-    + '<div style="display:flex;justify-content:space-between;font-size:.66rem;color:var(--text3);margin-top:.15rem;">'
+    + '<div style="display:flex;justify-content:space-between;font-size:.66rem;color:var(--text3);margin-top:.15rem;gap:.5rem;">'
     + '<span>' + new Date(t0).toISOString().slice(0, 10) + '</span>'
-    + '<span>value of your GUARD stake</span>'
+    + '<span style="text-align:center;">' + _esc(caption || '') + '</span>'
     + '<span>' + new Date(t1).toISOString().slice(0, 10) + '</span></div>';
 }
 
@@ -6683,6 +6744,8 @@ function renderIntelligence(){
               ? '<div style="font-size:.71rem;color:var(--text3);margin-top:.3rem;">Priced ' + blastpadPricedCount + ' of ' + nPos
                 + ' — the rest are not listed on Alcor or SimpleDEX, so they are shown below but not counted in this total.</div>'
               : '')
+          + (blastpadPortfolio ? _bpValueChart(blastpadPortfolio.series,
+              'portfolio value — ' + blastpadPortfolio.covered + ' of ' + nPos + ' positions with price history') : '')
           + '</div>';
       } else {
         b += '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">'
@@ -6698,7 +6761,7 @@ function renderIntelligence(){
           + (g.usd != null ? ' <span style="font-size:.8rem;color:var(--text2);">≈ $' + _fmtAmt(g.usd, 2) + '</span>' : '')
           + '</div>'
           + (g.rewards > 0 ? '<div style="font-size:.74rem;color:var(--text2);margin-top:.2rem;">+' + _fmtAmt(g.rewards, 0) + ' GUARD claimed in rewards</div>' : '')
-          + (blastpadGuardSeries ? _bpValueChart(blastpadGuardSeries) : _bpSparkline(g.events))
+          + (blastpadGuardSeries ? _bpValueChart(blastpadGuardSeries, 'value of your GUARD stake') : _bpSparkline(g.events))
           + '</div>';
       }
 
