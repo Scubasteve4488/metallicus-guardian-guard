@@ -3998,6 +3998,7 @@ async function fetchHomePrice() {
 
   // Update price bar
   const fmt = n => n >= 1e9 ? '$' + (n/1e9).toFixed(2)+'B' : n >= 1e6 ? '$' + (n/1e6).toFixed(2)+'M' : n >= 1e3 ? '$' + (n/1e3).toFixed(1)+'K' : '$' + n.toFixed(2);
+  guardUsdPrice = price > 0 ? price : 0;
   const _priceStr = price > 0 ? (price < 0.000001 ? '$' + price.toExponential(2) : price < 0.01 ? '$' + price.toFixed(8) : price < 1 ? '$' + price.toFixed(6) : '$' + price.toFixed(4)) : '—';
   setStat('hp-price', _priceStr);
   setStat('es-price', price > 0 ? _priceStr : 'N/A');
@@ -4625,6 +4626,10 @@ let guardianStakedStatus = 'pending'; // 'pending' | 'ok' | 'error' — separate
   // number above because BlastPad has no ABI: a lookup failure and a genuine zero both
   // used to collapse to guardianStaked=0. Intelligence's own rule is never to state a
   // balance that was not retrieved, so it needs this to tell the two apart.
+let guardUsdPrice = 0;           // last known GUARD/USD, 0 when never retrieved
+let blastpadPositions = [];      // every BlastPad position, richest first
+let blastpadStatus = 'pending';   // 'pending' | 'ok' | 'error'
+let blastpadPartial = false;     // true when the wallet has more transfers than the page cap
 let ecoXprStaked = 0;       // whole XPR staked for voting (voter_info.staked / 10000)
 let ecoBpVotes = 0;         // BP vote slots filled (0–4)
 let ecoAccountMonths = 0;   // floor months since account created
@@ -5653,26 +5658,72 @@ async function fetchNftHoldings(actor) {
 }
 
 async function fetchStakingData(actor) {
-  // blastpad has no deployed ABI — tables are not queryable via get_table_rows.
-  // Instead, derive net staked GUARD by summing token transfers to/from blastpad
-  // via the XPR history API (inbound = staking, outbound = unstaking/rewards).
+  // BlastPad keeps no on-chain state: the `blastpad` account has an empty code hash, so
+  // there is no contract and no table to read. Every position is reconstructed from the
+  // token transfers in and out of that account.
+  //
+  // The memo is what makes that possible - BlastPad writes its intent into every transfer:
+  //   IN   "<user> staked tokens into existing Staking Pool -<nonce>"
+  //   OUT  "<user> has unstaked their staking pool -<nonce>"
+  //   OUT  "<user> has redeemed the staking pool rewards -<nonce>"   (also "the reward")
+  //
+  // Reading those memos is not optional. Across 6,000 sampled blastpad transfers there were
+  // 5,172 reward redemptions against 355 real unstakes, so treating every outbound transfer
+  // as an unstake - as this function used to - subtracts claimed rewards from the position.
+  // That understates every staker who has ever claimed, and Math.max(0, ...) can floor a
+  // long-term staker to zero, silently costing them Stake achievement tiers. Measured before
+  // the fix: nevibes understated by 6,793 GUARD, owlnoctun by 863.
+  //
+  // The trailing nonce is per-transaction, not a pool id (3,800 sampled, none repeated), so
+  // positions can be grouped by token but not split per pool when one token has several.
+  //
+  // Hyperion's transfer.to / transfer.from filters return only the blastpad transfers rather
+  // than the wallet's whole history, which is both accurate and far cheaper than scanning.
+  blastpadStatus = 'pending';
   try {
-    const url = `https://proton.eosusa.io/v2/history/get_actions?account=${encodeURIComponent(actor)}&filter=simpletoken%3Atransfer&limit=500&sort=desc`;
-    const r = await fetchTimeout(url, {}, 10000);
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const data = await r.json();
-    const actions = data.actions || [];
-    let totalIn = 0, totalOut = 0;
-    for (const a of actions) {
-      const act = a.act;
-      if (!act || act.account !== 'simpletoken') continue;
-      const d = act.data;
-      if (!d || d.symbol !== 'GUARD') continue;
-      if (d.to === 'blastpad')   totalIn  += d.amount;
-      else if (d.from === 'blastpad') totalOut += d.amount;
+    const [inb, outb] = await Promise.all([_bpFetchDir(actor, 'in'), _bpFetchDir(actor, 'out')]);
+    blastpadPartial = inb.partial || outb.partial;
+
+    const map = Object.create(null);
+    const touch = (sym, contract) => {
+      const k = sym + '@' + contract;
+      if (!map[k]) map[k] = { sym, contract, staked: 0, unstaked: 0, rewards: 0, first: null, last: null, events: [] };
+      return map[k];
+    };
+    const note = (p, ts) => {
+      if (!ts) return;
+      if (!p.first || ts < p.first) p.first = ts;
+      if (!p.last  || ts > p.last)  p.last  = ts;
+    };
+
+    for (const a of inb.actions) {
+      const d = a.act && a.act.data; if (!d) continue;
+      const { amt, sym } = _bpAmount(d); if (!amt || !sym) continue;
+      if (!/staked tokens into/i.test(d.memo || '')) continue;   // skips pool create/update funding
+      const p = touch(sym, a.act.account);
+      p.staked += amt; p.events.push({ t: a.timestamp, d: amt }); note(p, a.timestamp);
     }
-    guardianStaked = Math.max(0, totalIn - totalOut);
+    for (const a of outb.actions) {
+      const d = a.act && a.act.data; if (!d) continue;
+      const { amt, sym } = _bpAmount(d); if (!amt || !sym) continue;
+      const memo = d.memo || '';
+      const p = touch(sym, a.act.account);
+      if (/has unstaked/i.test(memo)) { p.unstaked += amt; p.events.push({ t: a.timestamp, d: -amt }); note(p, a.timestamp); }
+      else if (/redeemed/i.test(memo)) { p.rewards += amt; note(p, a.timestamp); }
+    }
+
+    blastpadPositions = Object.keys(map).map(k => {
+      const p = map[k];
+      p.net = Math.max(0, p.staked - p.unstaked);
+      p.events.sort((x, y) => (x.t < y.t ? -1 : x.t > y.t ? 1 : 0));
+      return p;
+    }).filter(p => p.net > 0 || p.rewards > 0)
+      .sort((a, b) => b.net - a.net);
+
+    const g = blastpadPositions.find(p => p.sym === 'GUARD');
+    guardianStaked = g ? g.net : 0;
     guardianStakedStatus = 'ok';
+    blastpadStatus = 'ok';
   } catch(e) {
     console.warn('[GUARD] fetchStakingData error:', e.message);
     // guardianStaked stays 0 so achievement/rank math degrades safely (not-yet-met,
@@ -5680,10 +5731,42 @@ async function fetchStakingData(actor) {
     // actually checks before printing a number.
     guardianStaked = 0;
     guardianStakedStatus = 'error';
+    blastpadPositions = [];
+    blastpadStatus = 'error';
   }
   unlockStakingAchs(guardianStaked);
   renderProgress(guardianBalance);
   try { renderIntelligence(); } catch(e) {}
+}
+
+// simpletoken sends {amount, symbol}; standard Antelope tokens send {quantity:"1.0000 SYM"}.
+function _bpAmount(d) {
+  if (d.quantity != null) {
+    const parts = String(d.quantity).trim().split(/\s+/);
+    return { amt: parseFloat(parts[0]) || 0, sym: parts[1] || '' };
+  }
+  return { amt: parseFloat(d.amount) || 0, sym: d.symbol || '' };
+}
+
+async function _bpFetchDir(actor, dir) {
+  const key = dir === 'in' ? 'transfer.to' : 'transfer.from';
+  const PAGE = 500, CAP = 3000;   // CAP bounds RPC load; heavy stakers can exceed it
+  const actions = [];
+  let partial = false;
+  for (let skip = 0; skip < CAP; skip += PAGE) {
+    const url = 'https://proton.eosusa.io/v2/history/get_actions'
+      + '?account=' + encodeURIComponent(actor)
+      + '&filter=%2A%3Atransfer&' + key + '=blastpad'
+      + '&limit=' + PAGE + '&skip=' + skip + '&sort=desc';
+    const r = await fetchTimeout(url, {}, 12000);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    const acts = data.actions || [];
+    actions.push.apply(actions, acts);
+    if (skip === 0 && data.total && (data.total.value || 0) > CAP) partial = true;
+    if (acts.length < PAGE) break;
+  }
+  return { actions, partial };
 }
 
 async function fetchEcosystemData(actor) {
@@ -6279,6 +6362,13 @@ function _fmtAmt(n, prec){
   if (Math.abs(n) >= 1) return n.toLocaleString(undefined, {maximumFractionDigits: Math.min(p, 4)});
   return n.toLocaleString(undefined, {maximumFractionDigits: p});
 }
+// Full-width variant: the BlastPad table has four columns and can run to dozens of rows,
+// which does not fit a one-third-width grid cell.
+function _intelCardWide(title, bodyHtml, delay){
+  return '<div class="card reveal" style="grid-column:1/-1;transition-delay:' + (delay||0) + 'ms;">'
+    + '<h3 style="font-family:\x27Cinzel\x27,serif;color:var(--gold-l);font-size:.95rem;margin-bottom:.6rem;">' + title + '</h3>'
+    + bodyHtml + '</div>';
+}
 function _intelCard(title, bodyHtml, delay){
   return '<div class="card reveal" style="transition-delay:' + (delay||0) + 'ms;">'
     + '<h3 style="font-family:\'Cinzel\',serif;color:var(--gold-l);font-size:.95rem;margin-bottom:.6rem;">' + title + '</h3>'
@@ -6292,6 +6382,39 @@ const _INTEL_FAILED = '<div style="font-size:.82rem;color:var(--gold-l);">⚠ Co
 const _INTEL_PENDING = '<div style="font-size:.82rem;color:var(--text3);">Reading from the blockchain…</div>';
 const _LOGO_MAP = { XPR:'img_xprlogo.png', XMD:'Metal%20Dollar%20XMD.png', LOAN:'LOAN%20Protocol.jpg',
   METAL:'metal-blockchain-l0.png', XMT:'Metal%20L2.jpg', GUARD:'g_token.jpg' };
+
+function _esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+// Staked balance over time, drawn inline so the page pulls in no charting library.
+// Steps rather than smooths: the balance genuinely is flat between stakes.
+function _bpSparkline(events){
+  if (!events || events.length < 2) return '';
+  const W = 260, H = 54, P = 3;
+  let bal = 0;
+  const pts = events.map(e => { bal += e.d; return { t: new Date(e.t).getTime(), v: bal }; })
+                    .filter(p => isFinite(p.t));
+  if (pts.length < 2) return '';
+  const t0 = pts[0].t, t1 = pts[pts.length - 1].t;
+  const span = (t1 - t0) || 1;
+  const max = Math.max.apply(null, pts.map(p => p.v)) || 1;
+  const x = t => P + ((t - t0) / span) * (W - 2 * P);
+  const y = v => H - P - (v / max) * (H - 2 * P);
+  let d = 'M' + x(pts[0].t).toFixed(1) + ',' + y(pts[0].v).toFixed(1);
+  for (let i = 1; i < pts.length; i++) {
+    d += ' L' + x(pts[i].t).toFixed(1) + ',' + y(pts[i - 1].v).toFixed(1)
+      +  ' L' + x(pts[i].t).toFixed(1) + ',' + y(pts[i].v).toFixed(1);
+  }
+  d += ' L' + (W - P).toFixed(1) + ',' + y(pts[pts.length - 1].v).toFixed(1);
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" width="100%" height="' + H + '" role="img" '
+    + 'aria-label="Staked balance over time, ' + pts.length + ' changes" '
+    + 'style="display:block;margin-top:.45rem;overflow:visible;">'
+    + '<path d="' + d + '" fill="none" stroke="var(--gold-l)" stroke-width="1.6" '
+    + 'stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>'
+    + '<div style="display:flex;justify-content:space-between;font-size:.66rem;color:var(--text3);margin-top:.15rem;">'
+    + '<span>' + new Date(t0).toISOString().slice(0,10) + '</span>'
+    + '<span>staked balance</span>'
+    + '<span>' + new Date(t1).toISOString().slice(0,10) + '</span></div>';
+}
 
 function renderIntelligence(){
   const wrap = document.getElementById('intelligence-cards');
@@ -6428,20 +6551,66 @@ function renderIntelligence(){
     }
   } catch(e){ cards += _intelCard('Participation Profile', _INTEL_FAILED, 300); }
 
-  // 7) GUARD STAKING (BLASTPAD)
+  // 7) BLASTPAD POSITIONS — every pool this wallet is in, not just GUARD
   try {
-    if (guardianStakedStatus === 'error') { cards += _intelCard('GUARD Staking', _INTEL_FAILED, 360); }
-    else if (guardianStakedStatus === 'pending') { cards += _intelCard('GUARD Staking', _INTEL_PENDING, 360); }
-    else {
-      const stakeLink = '<a href="https://blastpad.io/staking-pool?poolId=791" target="_blank" rel="noopener" class="btn btn-o mt2" style="font-size:.76rem;">' + (guardianStaked > 0 ? 'Manage on BlastPad →' : '🔥 Stake on BlastPad →') + '</a>';
-      let b = guardianStaked > 0
-        ? '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">' + _fmtAmt(guardianStaked,0) + ' GUARD staked on BlastPad Pool 791.</p>'
-        : '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">No GUARD staked on BlastPad found for this wallet.</p>';
-      b += '<p style="font-size:.72rem;color:var(--text3);margin-top:.5rem;">BlastPad has no queryable staking table, so this is derived from your GUARD transfer history to the pool rather than read directly — it can undercount for wallets with very heavy transfer activity or recent reward payouts.</p>';
-      b += stakeLink;
-      cards += _intelCard('GUARD Staking', b, 360);
+    if (blastpadStatus === 'error') { cards += _intelCard('BlastPad Positions', _INTEL_FAILED, 360); }
+    else if (blastpadStatus === 'pending') { cards += _intelCard('BlastPad Positions', _INTEL_PENDING, 360); }
+    else if (!blastpadPositions.length) {
+      cards += _intelCard('BlastPad Positions',
+        '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">No BlastPad staking found for this wallet.</p>'
+        + '<a href="https://blastpad.io" target="_blank" rel="noopener" class="btn btn-o mt2" style="font-size:.76rem;">🔥 Stake on BlastPad →</a>', 360);
+    } else {
+      const g = blastpadPositions.find(p => p.sym === 'GUARD');
+      const rewarded = blastpadPositions.filter(p => p.rewards > 0).length;
+      let b = '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">'
+        + '<strong style="color:var(--gold-l);">' + blastpadPositions.length + '</strong> staking position'
+        + (blastpadPositions.length === 1 ? '' : 's')
+        + (rewarded ? ', <strong style="color:var(--gold-l);">' + rewarded + '</strong> having paid rewards' : '')
+        + '.</p>';
+
+      if (g) {
+        const usd = (typeof guardUsdPrice === 'number' && guardUsdPrice > 0) ? g.net * guardUsdPrice : 0;
+        b += '<div style="margin:.6rem 0;padding:.6rem .7rem;border:1px solid rgba(201,146,42,0.3);border-radius:8px;">'
+          + '<div style="font-size:.72rem;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;">Your GUARD</div>'
+          + '<div style="font-family:\'Cinzel\',serif;font-size:1.05rem;color:var(--gold-l);">' + _fmtAmt(g.net, 0) + ' GUARD'
+          + (usd > 0 ? ' <span style="font-size:.8rem;color:var(--text2);">≈ $' + _fmtAmt(usd, 2) + '</span>' : '')
+          + '</div>'
+          + (g.rewards > 0 ? '<div style="font-size:.74rem;color:var(--text2);margin-top:.2rem;">+' + _fmtAmt(g.rewards, 0) + ' GUARD claimed in rewards</div>' : '')
+          + _bpSparkline(g.events)
+          + '</div>';
+      }
+
+      b += '<div style="max-height:320px;overflow-y:auto;overflow-x:auto;margin-top:.5rem;-webkit-overflow-scrolling:touch;">'
+        + '<table style="width:100%;border-collapse:collapse;font-size:.76rem;">'
+        + '<thead><tr style="color:var(--text3);text-align:left;">'
+        + '<th style="padding:.3rem .4rem;font-weight:600;">Token</th>'
+        + '<th style="padding:.3rem .4rem;font-weight:600;text-align:right;">Staked</th>'
+        + '<th style="padding:.3rem .4rem;font-weight:600;text-align:right;">Rewards</th>'
+        + '<th style="padding:.3rem .4rem;font-weight:600;text-align:right;">Since</th>'
+        + '</tr></thead><tbody>';
+      for (const p of blastpadPositions) {
+        b += '<tr style="border-top:1px solid rgba(201,146,42,0.14);">'
+          + '<td style="padding:.32rem .4rem;color:var(--text);">' + _esc(p.sym) + '</td>'
+          + '<td style="padding:.32rem .4rem;text-align:right;color:var(--text2);">' + _fmtAmt(p.net, 2) + '</td>'
+          + '<td style="padding:.32rem .4rem;text-align:right;color:var(--text2);">' + (p.rewards > 0 ? _fmtAmt(p.rewards, 2) : '—') + '</td>'
+          + '<td style="padding:.32rem .4rem;text-align:right;color:var(--text3);">' + (p.first ? String(p.first).slice(0, 10) : '—') + '</td>'
+          + '</tr>';
+      }
+      b += '</tbody></table></div>';
+
+      b += '<p style="font-size:.72rem;color:var(--text3);margin-top:.55rem;line-height:1.55;">'
+        + 'BlastPad stores no data on chain, so these positions are reconstructed from your staking '
+        + 'and unstaking transfers. <strong>Rewards shown are what you have already claimed</strong> — '
+        + 'rewards still accruing are held in BlastPad\'s own records and cannot be read from the chain, '
+        + 'so open BlastPad for those.</p>';
+      if (blastpadPartial) {
+        b += '<p style="font-size:.72rem;color:var(--gold-l);margin-top:.4rem;">⚠ This wallet has more BlastPad '
+          + 'transfers than one read covers, so older activity may be missing and these figures may be incomplete.</p>';
+      }
+      b += '<a href="https://blastpad.io" target="_blank" rel="noopener" class="btn btn-o mt2" style="font-size:.76rem;">Manage on BlastPad →</a>';
+      cards += _intelCardWide('BlastPad Positions', b, 360);
     }
-  } catch(e){ cards += _intelCard('GUARD Staking', _INTEL_FAILED, 360); }
+  } catch(e){ cards += _intelCard('BlastPad Positions', _INTEL_FAILED, 360); }
 
   wrap.innerHTML = cards;
   try { rev(); } catch(e){}
@@ -6623,6 +6792,7 @@ function onWalletDisconnected() {
   guardianNfts = {snippy:0, funky:0, cyphergang:0};
   guardianStaked = -1;
   guardianStakedStatus = 'pending';
+  blastpadPositions = []; blastpadStatus = 'pending'; blastpadPartial = false;
   _guardLastConfirmedBal = -1;
   // Reset ecosystem / journey globals
   ecoXprStaked = 0; ecoBpVotes = 0; ecoAccountMonths = 0; ecoTokens = new Set(); ecoXprLiquid = 0;
