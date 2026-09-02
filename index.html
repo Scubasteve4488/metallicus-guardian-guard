@@ -6662,142 +6662,14 @@ function renderIntelligence(){
   if (!connected) return;
   let cards = '';
 
-  // 1) IDLE ASSETS
+  // 1) BLASTPAD POSITIONS — every pool this wallet is in, not just GUARD
   try {
-    // R3 — never state a balance that was not retrieved.
-    if (ecoStatus.balance === 'error' || ecoStatus.account === 'error') {
-      cards += _intelCard('Idle Assets', _INTEL_FAILED, 0);
-    } else if (ecoStatus.balance === 'pending' || ecoStatus.account === 'pending') {
-      cards += _intelCard('Idle Assets', _INTEL_PENDING, 0);
-    } else {
-    let b;
-    const liquid = ecoXprLiquid, staked = ecoXprStaked;
-    b = '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">You hold ' + _fmtAmt(liquid,4) + ' XPR liquid and ' + _fmtAmt(staked,0) + ' XPR staked.</p>';
-    if (ecoRefund){
-      const amt = _assetNum(ecoRefund.net_amount) + _assetNum(ecoRefund.cpu_amount);
-      const when = ecoRefund.request_time ? String(ecoRefund.request_time).split('T')[0] : '';
-      b += '<p style="font-size:.8rem;color:var(--gold-l);margin-top:.5rem;">Currently unstaking ' + _fmtAmt(amt,4) + ' XPR (available ~3 days after ' + when + ').</p>';
-    }
-    if (liquid > staked * 0.5){
-      b += '<p style="font-size:.78rem;color:var(--text3);margin-top:.5rem;">Staked XPR earns rewards and powers governance votes.</p>';
-    }
-    b += '<a href="https://app.metalx.com/staking" target="_blank" rel="noopener" class="btn btn-o mt2" style="font-size:.76rem;">Metal X Staking →</a>';
-    cards += _intelCard('Idle Assets', b, 0);
-    }
-  } catch(e){ cards += _intelCard('Idle Assets', _INTEL_FAILED, 0); }
-
-  // 2) STAKING & GOVERNANCE
-  try {
-    // R3 — every figure in this card comes from the account lookup.
-    if (ecoStatus.account === 'error') { cards += _intelCard('Staking &amp; Governance', _INTEL_FAILED, 60); }
-    else if (ecoStatus.account === 'pending') { cards += _intelCard('Staking &amp; Governance', _INTEL_PENDING, 60); }
-    else {
-    let b = '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">' + _fmtAmt(ecoXprStaked,0) + ' XPR staked. Using ' + ecoBpVotes + ' of 4 Block Producer vote slots.</p>';
-    if (ecoProducers.length){
-      b += '<div style="font-size:.76rem;color:var(--text3);margin-top:.4rem;">Voting for: ' + ecoProducers.map(p => '@' + p).join(', ') + '</div>';
-    }
-    b += '<div style="font-size:.78rem;color:var(--text3);margin-top:.4rem;">' + (ecoProxy ? 'Delegated to @' + ecoProxy : 'Voting directly') + '</div>';
-    if (ecoBpVotes < 4){ b += '<p style="font-size:.78rem;color:var(--text3);margin-top:.4rem;">Voting is free and doesn’t spend your XPR.</p>'; }
-    b += '<a href="https://app.metalx.com/staking" target="_blank" rel="noopener" class="btn btn-o mt2" style="font-size:.76rem;">Manage on Metal X →</a>';
-    cards += _intelCard('Staking &amp; Governance', b, 60);
-    }
-  } catch(e){ cards += _intelCard('Staking &amp; Governance', _INTEL_FAILED, 60); }
-
-  // 3) LIQUIDITY POSITIONS
-  try {
-    if (intelLp === 'error' || intelLp == null){ cards += _intelCard('Liquidity Positions', (intelLp==='error'?_INTEL_UNAVAIL:'<div style="font-size:.82rem;color:var(--text3);">Reading positions…</div>'), 120); }
-    else if (intelLp.length === 0){ cards += _intelCard('Liquidity Positions', '<p style="font-size:.85rem;color:var(--text2);">No SimpleDEX liquidity positions found.</p>', 120); }
-    else {
-      const big = intelLp.filter(p => p.xprValue >= 100);
-      const small = intelLp.filter(p => p.xprValue < 100);
-      let b = '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">' + intelLp.length + ' liquidity position' + (intelLp.length!==1?'s':'') + ' across SimpleDEX pools.</p>';
-      (big.length ? big : intelLp.slice(0,3)).slice(0,5).forEach(p => {
-        b += '<div style="font-size:.78rem;color:var(--text2);margin-top:.5rem;border-top:1px solid var(--border);padding-top:.4rem;">'
-          + '<strong style="color:var(--text);">' + p.pair + '</strong> · ' + p.sharePct.toFixed(2) + '% of pool<br>'
-          + '<span style="color:var(--text3);">' + _fmtAmt(p.aAmt, _prec(p.tokenA)) + ' ' + p.tokenA + ' + ' + _fmtAmt(p.bAmt, _prec(p.tokenB)) + ' ' + p.tokenB + ' · ≈ ' + _fmtAmt(p.xprValue,0) + ' XPR</span></div>';
-      });
-      if (small.length){
-        b += '<details style="margin-top:.5rem;"><summary style="font-size:.76rem;color:var(--text3);cursor:pointer;">' + small.length + ' small/dormant position' + (small.length!==1?'s':'') + ' (under 100 XPR)</summary>';
-        small.forEach(p => { b += '<div style="font-size:.72rem;color:var(--text3);margin-top:.35rem;">' + p.pair + ' · ' + p.sharePct.toFixed(2) + '% · ≈ ' + _fmtAmt(p.xprValue,0) + ' XPR</div>'; });
-        b += '</details>';
-      }
-      b += '<p style="font-size:.72rem;color:var(--text3);margin-top:.5rem;">Values estimated from live pool reserves.</p>';
-      b += '<button class="btn btn-o mt2" style="font-size:.76rem;" onclick="go(\'defilab\')">Learn liquidity →</button>';
-      cards += _intelCard('Liquidity Positions', b, 120);
-    }
-  } catch(e){ cards += _intelCard('Liquidity Positions', _INTEL_UNAVAIL, 120); }
-
-  // 4) LENDING POSITIONS
-  try {
-    if (intelLending === 'error' || intelLending == null){ cards += _intelCard('Lending Positions', (intelLending==='error'?_INTEL_UNAVAIL:'<div style="font-size:.82rem;color:var(--text3);">Reading positions…</div>'), 180); }
-    else if (intelLending.length === 0){ cards += _intelCard('Lending Positions', '<p style="font-size:.85rem;color:var(--text2);">No LOAN Protocol positions found.</p>', 180); }
-    else {
-      let b = '';
-      intelLending.forEach(m => {
-        const supplied = m.underlyingAmt != null ? '≈ ' + _fmtAmt(m.underlyingAmt, _prec(m.underlyingSym)) + ' ' + m.underlyingSym : m.sym + ' shares';
-        b += '<div style="font-size:.8rem;color:var(--text2);margin-top:.45rem;border-top:1px solid var(--border);padding-top:.4rem;">Supplying ' + supplied + ' <span style="color:var(--text3);">(via ' + m.sym + ')</span>';
-        const borrowed = (m.borrowedVar||0) + (m.borrowedStable||0);
-        if (borrowed > 0){ b += '<br><span style="color:var(--gold-l);">Borrowing ' + _fmtAmt(borrowed, _prec(m.underlyingSym)) + ' ' + m.underlyingSym + '</span>'; }
-        b += '</div>';
-      });
-      b += '<p style="font-size:.72rem;color:var(--text3);margin-top:.5rem;">Converted from share tokens at the live exchange rate.</p>';
-      b += '<button class="btn btn-o mt2" style="font-size:.76rem;" onclick="go(\'defilab\')">Learn lending →</button>';
-      cards += _intelCard('Lending Positions', b, 180);
-    }
-  } catch(e){ cards += _intelCard('Lending Positions', _INTEL_UNAVAIL, 180); }
-
-  // 5) WALLET COMPOSITION
-  try {
-    if (intelWallet === 'error' || intelWallet == null){ cards += _intelCard('Wallet Composition', (intelWallet==='error'?_INTEL_UNAVAIL:'<div style="font-size:.82rem;color:var(--text3);">Reading tokens…</div>'), 240); }
-    else {
-      // merge XPR + GUARD live (omitted by get_tokens)
-      const merged = intelWallet.slice();
-      if (ecoXprLiquid > 0) merged.push({ symbol:'XPR', contract:'eosio.token', amount:ecoXprLiquid, precision:4 });
-      if (guardianBalance > 0) merged.push({ symbol:'GUARD', contract:'simpletoken', amount:guardianBalance, precision:4 });
-      merged.sort((a,b) => b.amount - a.amount);
-      const dust = merged.filter(t => t.amount > 0 && t.amount < 1).length;
-      let b = '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">' + merged.length + ' distinct token' + (merged.length!==1?'s':'') + ' held.</p>';
-      merged.slice(0,6).forEach(t => {
-        const logo = _LOGO_MAP[t.symbol];
-        const icon = logo ? '<img src="./' + logo + '" alt="" style="width:18px;height:18px;border-radius:4px;object-fit:contain;vertical-align:middle;margin-right:.4rem;">' : '';
-        b += '<div style="font-size:.78rem;color:var(--text2);margin-top:.4rem;">' + icon + '<strong style="color:var(--text);">' + t.symbol + '</strong> · ' + _fmtAmt(t.amount, t.precision) + '</div>';
-      });
-      if (dust){ b += '<p style="font-size:.72rem;color:var(--text3);margin-top:.5rem;">' + dust + ' token' + (dust!==1?'s':'') + ' held in dust amounts (under 1).</p>'; }
-      cards += _intelCard('Wallet Composition', b, 240);
-    }
-  } catch(e){ cards += _intelCard('Wallet Composition', _INTEL_UNAVAIL, 240); }
-
-  // 6) PARTICIPATION PROFILE
-  try {
-    // R3 — account age and breadth both come from the account lookup.
-    if (ecoStatus.account === 'error') { cards += _intelCard('Participation Profile', _INTEL_FAILED, 300); }
-    else if (ecoStatus.account === 'pending') { cards += _intelCard('Participation Profile', _INTEL_PENDING, 300); }
-    else {
-    const yrs = Math.floor(ecoAccountMonths / 12), mos = ecoAccountMonths % 12;
-    const ageStr = ecoAccountMonths >= 12 ? (yrs + ' year' + (yrs!==1?'s':'') + (mos ? ', ' + mos + ' month' + (mos!==1?'s':'') : '')) : (ecoAccountMonths + ' month' + (ecoAccountMonths!==1?'s':''));
-    const breadth = (ecoTokens.has('LOAN')?1:0)+(ecoTokens.has('XMD')?1:0)+(ecoTokens.has('XMT')?1:0)+(ecoTokens.has('METAL')?1:0);
-    const rankName = (typeof SHIELDS !== 'undefined' && SHIELDS[guardianRank]) ? SHIELDS[guardianRank].name : 'Cryptide';
-    let b = '<div style="font-size:.8rem;color:var(--text2);line-height:1.7;">'
-      + 'Account age: <strong style="color:var(--text);">' + ageStr + '</strong><br>'
-      + 'Metal X: ' + (ecoMetalXUsed ? 'used' : 'not yet used') + '<br>'
-      + 'Ecosystem breadth: ' + breadth + ' of 4 Metallicus tokens<br>'
-      + 'Guardian rank: <strong style="color:var(--gold-l);">' + rankName + '</strong> (Rank ' + (guardianRank+1) + ')<br>'
-      + 'Journey: ' + _journeyDone + ' of 9 milestones</div>';
-    b += '<div class="flex gap-sm wrap mt2">'
-      + '<button class="btn btn-o" style="font-size:.76rem;" onclick="go(\'shields\')">View Shields →</button>'
-      + '<button class="btn btn-o" style="font-size:.76rem;" onclick="go(\'journey\')">View Journey →</button></div>';
-    cards += _intelCard('Participation Profile', b, 300);
-    }
-  } catch(e){ cards += _intelCard('Participation Profile', _INTEL_FAILED, 300); }
-
-  // 7) BLASTPAD POSITIONS — every pool this wallet is in, not just GUARD
-  try {
-    if (blastpadStatus === 'error') { cards += _intelCard('BlastPad Positions', _INTEL_FAILED, 360); }
-    else if (blastpadStatus === 'pending') { cards += _intelCard('BlastPad Positions', _INTEL_PENDING, 360); }
+    if (blastpadStatus === 'error') { cards += _intelCard('BlastPad Positions', _INTEL_FAILED, 0); }
+    else if (blastpadStatus === 'pending') { cards += _intelCard('BlastPad Positions', _INTEL_PENDING, 0); }
     else if (!blastpadPositions.length) {
       cards += _intelCard('BlastPad Positions',
         '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">No BlastPad staking found for this wallet.</p>'
-        + '<a href="https://blastpad.io" target="_blank" rel="noopener" class="btn btn-o mt2" style="font-size:.76rem;">🔥 Stake on BlastPad →</a>', 360);
+        + '<a href="https://blastpad.io" target="_blank" rel="noopener" class="btn btn-o mt2" style="font-size:.76rem;">🔥 Stake on BlastPad →</a>', 0);
     } else {
       const g = blastpadPositions.find(p => p.sym === 'GUARD');
       const rewarded = blastpadPositions.filter(p => p.rewards > 0).length;
@@ -6876,9 +6748,139 @@ function renderIntelligence(){
           + 'transfers than one read covers, so older activity may be missing and these figures may be incomplete.</p>';
       }
       b += '<a href="https://blastpad.io" target="_blank" rel="noopener" class="btn btn-o mt2" style="font-size:.76rem;">Manage on BlastPad &rarr;</a>';
-      cards += _intelCardWide('BlastPad Positions', b, 360);
+      cards += _intelCardWide('BlastPad Positions', b, 0);
     }
-  } catch(e){ cards += _intelCard('BlastPad Positions', _INTEL_FAILED, 360); }
+  } catch(e){ cards += _intelCard('BlastPad Positions', _INTEL_FAILED, 0); }
+
+  // 2) IDLE ASSETS
+  try {
+    // R3 — never state a balance that was not retrieved.
+    if (ecoStatus.balance === 'error' || ecoStatus.account === 'error') {
+      cards += _intelCard('Idle Assets', _INTEL_FAILED, 0);
+    } else if (ecoStatus.balance === 'pending' || ecoStatus.account === 'pending') {
+      cards += _intelCard('Idle Assets', _INTEL_PENDING, 0);
+    } else {
+    let b;
+    const liquid = ecoXprLiquid, staked = ecoXprStaked;
+    b = '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">You hold ' + _fmtAmt(liquid,4) + ' XPR liquid and ' + _fmtAmt(staked,0) + ' XPR staked.</p>';
+    if (ecoRefund){
+      const amt = _assetNum(ecoRefund.net_amount) + _assetNum(ecoRefund.cpu_amount);
+      const when = ecoRefund.request_time ? String(ecoRefund.request_time).split('T')[0] : '';
+      b += '<p style="font-size:.8rem;color:var(--gold-l);margin-top:.5rem;">Currently unstaking ' + _fmtAmt(amt,4) + ' XPR (available ~3 days after ' + when + ').</p>';
+    }
+    if (liquid > staked * 0.5){
+      b += '<p style="font-size:.78rem;color:var(--text3);margin-top:.5rem;">Staked XPR earns rewards and powers governance votes.</p>';
+    }
+    b += '<a href="https://app.metalx.com/staking" target="_blank" rel="noopener" class="btn btn-o mt2" style="font-size:.76rem;">Metal X Staking →</a>';
+    cards += _intelCard('Idle Assets', b, 0);
+    }
+  } catch(e){ cards += _intelCard('Idle Assets', _INTEL_FAILED, 0); }
+
+  // 3) STAKING & GOVERNANCE
+  try {
+    // R3 — every figure in this card comes from the account lookup.
+    if (ecoStatus.account === 'error') { cards += _intelCard('Staking &amp; Governance', _INTEL_FAILED, 60); }
+    else if (ecoStatus.account === 'pending') { cards += _intelCard('Staking &amp; Governance', _INTEL_PENDING, 60); }
+    else {
+    let b = '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">' + _fmtAmt(ecoXprStaked,0) + ' XPR staked. Using ' + ecoBpVotes + ' of 4 Block Producer vote slots.</p>';
+    if (ecoProducers.length){
+      b += '<div style="font-size:.76rem;color:var(--text3);margin-top:.4rem;">Voting for: ' + ecoProducers.map(p => '@' + p).join(', ') + '</div>';
+    }
+    b += '<div style="font-size:.78rem;color:var(--text3);margin-top:.4rem;">' + (ecoProxy ? 'Delegated to @' + ecoProxy : 'Voting directly') + '</div>';
+    if (ecoBpVotes < 4){ b += '<p style="font-size:.78rem;color:var(--text3);margin-top:.4rem;">Voting is free and doesn’t spend your XPR.</p>'; }
+    b += '<a href="https://app.metalx.com/staking" target="_blank" rel="noopener" class="btn btn-o mt2" style="font-size:.76rem;">Manage on Metal X →</a>';
+    cards += _intelCard('Staking &amp; Governance', b, 60);
+    }
+  } catch(e){ cards += _intelCard('Staking &amp; Governance', _INTEL_FAILED, 60); }
+
+  // 4) LIQUIDITY POSITIONS
+  try {
+    if (intelLp === 'error' || intelLp == null){ cards += _intelCard('Liquidity Positions', (intelLp==='error'?_INTEL_UNAVAIL:'<div style="font-size:.82rem;color:var(--text3);">Reading positions…</div>'), 120); }
+    else if (intelLp.length === 0){ cards += _intelCard('Liquidity Positions', '<p style="font-size:.85rem;color:var(--text2);">No SimpleDEX liquidity positions found.</p>', 120); }
+    else {
+      const big = intelLp.filter(p => p.xprValue >= 100);
+      const small = intelLp.filter(p => p.xprValue < 100);
+      let b = '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">' + intelLp.length + ' liquidity position' + (intelLp.length!==1?'s':'') + ' across SimpleDEX pools.</p>';
+      (big.length ? big : intelLp.slice(0,3)).slice(0,5).forEach(p => {
+        b += '<div style="font-size:.78rem;color:var(--text2);margin-top:.5rem;border-top:1px solid var(--border);padding-top:.4rem;">'
+          + '<strong style="color:var(--text);">' + p.pair + '</strong> · ' + p.sharePct.toFixed(2) + '% of pool<br>'
+          + '<span style="color:var(--text3);">' + _fmtAmt(p.aAmt, _prec(p.tokenA)) + ' ' + p.tokenA + ' + ' + _fmtAmt(p.bAmt, _prec(p.tokenB)) + ' ' + p.tokenB + ' · ≈ ' + _fmtAmt(p.xprValue,0) + ' XPR</span></div>';
+      });
+      if (small.length){
+        b += '<details style="margin-top:.5rem;"><summary style="font-size:.76rem;color:var(--text3);cursor:pointer;">' + small.length + ' small/dormant position' + (small.length!==1?'s':'') + ' (under 100 XPR)</summary>';
+        small.forEach(p => { b += '<div style="font-size:.72rem;color:var(--text3);margin-top:.35rem;">' + p.pair + ' · ' + p.sharePct.toFixed(2) + '% · ≈ ' + _fmtAmt(p.xprValue,0) + ' XPR</div>'; });
+        b += '</details>';
+      }
+      b += '<p style="font-size:.72rem;color:var(--text3);margin-top:.5rem;">Values estimated from live pool reserves.</p>';
+      b += '<button class="btn btn-o mt2" style="font-size:.76rem;" onclick="go(\'defilab\')">Learn liquidity →</button>';
+      cards += _intelCard('Liquidity Positions', b, 120);
+    }
+  } catch(e){ cards += _intelCard('Liquidity Positions', _INTEL_UNAVAIL, 120); }
+
+  // 5) LENDING POSITIONS
+  try {
+    if (intelLending === 'error' || intelLending == null){ cards += _intelCard('Lending Positions', (intelLending==='error'?_INTEL_UNAVAIL:'<div style="font-size:.82rem;color:var(--text3);">Reading positions…</div>'), 180); }
+    else if (intelLending.length === 0){ cards += _intelCard('Lending Positions', '<p style="font-size:.85rem;color:var(--text2);">No LOAN Protocol positions found.</p>', 180); }
+    else {
+      let b = '';
+      intelLending.forEach(m => {
+        const supplied = m.underlyingAmt != null ? '≈ ' + _fmtAmt(m.underlyingAmt, _prec(m.underlyingSym)) + ' ' + m.underlyingSym : m.sym + ' shares';
+        b += '<div style="font-size:.8rem;color:var(--text2);margin-top:.45rem;border-top:1px solid var(--border);padding-top:.4rem;">Supplying ' + supplied + ' <span style="color:var(--text3);">(via ' + m.sym + ')</span>';
+        const borrowed = (m.borrowedVar||0) + (m.borrowedStable||0);
+        if (borrowed > 0){ b += '<br><span style="color:var(--gold-l);">Borrowing ' + _fmtAmt(borrowed, _prec(m.underlyingSym)) + ' ' + m.underlyingSym + '</span>'; }
+        b += '</div>';
+      });
+      b += '<p style="font-size:.72rem;color:var(--text3);margin-top:.5rem;">Converted from share tokens at the live exchange rate.</p>';
+      b += '<button class="btn btn-o mt2" style="font-size:.76rem;" onclick="go(\'defilab\')">Learn lending →</button>';
+      cards += _intelCard('Lending Positions', b, 180);
+    }
+  } catch(e){ cards += _intelCard('Lending Positions', _INTEL_UNAVAIL, 180); }
+
+  // 6) WALLET COMPOSITION
+  try {
+    if (intelWallet === 'error' || intelWallet == null){ cards += _intelCard('Wallet Composition', (intelWallet==='error'?_INTEL_UNAVAIL:'<div style="font-size:.82rem;color:var(--text3);">Reading tokens…</div>'), 240); }
+    else {
+      // merge XPR + GUARD live (omitted by get_tokens)
+      const merged = intelWallet.slice();
+      if (ecoXprLiquid > 0) merged.push({ symbol:'XPR', contract:'eosio.token', amount:ecoXprLiquid, precision:4 });
+      if (guardianBalance > 0) merged.push({ symbol:'GUARD', contract:'simpletoken', amount:guardianBalance, precision:4 });
+      merged.sort((a,b) => b.amount - a.amount);
+      const dust = merged.filter(t => t.amount > 0 && t.amount < 1).length;
+      let b = '<p style="font-size:.85rem;color:var(--text2);line-height:1.6;">' + merged.length + ' distinct token' + (merged.length!==1?'s':'') + ' held.</p>';
+      merged.slice(0,6).forEach(t => {
+        const logo = _LOGO_MAP[t.symbol];
+        const icon = logo ? '<img src="./' + logo + '" alt="" style="width:18px;height:18px;border-radius:4px;object-fit:contain;vertical-align:middle;margin-right:.4rem;">' : '';
+        b += '<div style="font-size:.78rem;color:var(--text2);margin-top:.4rem;">' + icon + '<strong style="color:var(--text);">' + t.symbol + '</strong> · ' + _fmtAmt(t.amount, t.precision) + '</div>';
+      });
+      if (dust){ b += '<p style="font-size:.72rem;color:var(--text3);margin-top:.5rem;">' + dust + ' token' + (dust!==1?'s':'') + ' held in dust amounts (under 1).</p>'; }
+      cards += _intelCard('Wallet Composition', b, 240);
+    }
+  } catch(e){ cards += _intelCard('Wallet Composition', _INTEL_UNAVAIL, 240); }
+
+  // 7) PARTICIPATION PROFILE
+  try {
+    // R3 — account age and breadth both come from the account lookup.
+    if (ecoStatus.account === 'error') { cards += _intelCard('Participation Profile', _INTEL_FAILED, 300); }
+    else if (ecoStatus.account === 'pending') { cards += _intelCard('Participation Profile', _INTEL_PENDING, 300); }
+    else {
+    const yrs = Math.floor(ecoAccountMonths / 12), mos = ecoAccountMonths % 12;
+    const ageStr = ecoAccountMonths >= 12 ? (yrs + ' year' + (yrs!==1?'s':'') + (mos ? ', ' + mos + ' month' + (mos!==1?'s':'') : '')) : (ecoAccountMonths + ' month' + (ecoAccountMonths!==1?'s':''));
+    const breadth = (ecoTokens.has('LOAN')?1:0)+(ecoTokens.has('XMD')?1:0)+(ecoTokens.has('XMT')?1:0)+(ecoTokens.has('METAL')?1:0);
+    const rankName = (typeof SHIELDS !== 'undefined' && SHIELDS[guardianRank]) ? SHIELDS[guardianRank].name : 'Cryptide';
+    let b = '<div style="font-size:.8rem;color:var(--text2);line-height:1.7;">'
+      + 'Account age: <strong style="color:var(--text);">' + ageStr + '</strong><br>'
+      + 'Metal X: ' + (ecoMetalXUsed ? 'used' : 'not yet used') + '<br>'
+      + 'Ecosystem breadth: ' + breadth + ' of 4 Metallicus tokens<br>'
+      + 'Guardian rank: <strong style="color:var(--gold-l);">' + rankName + '</strong> (Rank ' + (guardianRank+1) + ')<br>'
+      + 'Journey: ' + _journeyDone + ' of 9 milestones</div>';
+    b += '<div class="flex gap-sm wrap mt2">'
+      + '<button class="btn btn-o" style="font-size:.76rem;" onclick="go(\'shields\')">View Shields →</button>'
+      + '<button class="btn btn-o" style="font-size:.76rem;" onclick="go(\'journey\')">View Journey →</button></div>';
+    cards += _intelCard('Participation Profile', b, 300);
+    }
+  } catch(e){ cards += _intelCard('Participation Profile', _INTEL_FAILED, 300); }
+
+
 
   wrap.innerHTML = cards;
   try { rev(); } catch(e){}
