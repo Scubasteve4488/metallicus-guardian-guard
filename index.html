@@ -5673,7 +5673,7 @@ async function fetchStakingData(actor) {
   // as an unstake - as this function used to - subtracts claimed rewards from the position.
   // That understates every staker who has ever claimed, and Math.max(0, ...) can floor a
   // long-term staker to zero, silently costing them Stake achievement tiers. Measured before
-  // the fix: nevibes understated by 6,793 GUARD, owlnoctun by 863.
+  // the fix: one wallet understated by 6,793 GUARD, another by 863.
   //
   // The trailing nonce is per-transaction, not a pool id (3,800 sampled, none repeated), so
   // positions can be grouped by token but not split per pool when one token has several.
