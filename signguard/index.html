@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SignGuard — Learn ASL, get corrected</title>
+<meta name="description" content="Learn American Sign Language and get corrected while you do it. Real signing video, in-browser hand tracking. Built on XPR Network.">
+<meta property="og:title" content="SignGuard — Learn ASL, get corrected">
+<meta property="og:description" content="Every ASL site plays you a video and hopes. SignGuard watches your hands and tells you what to fix.">
+<link rel="stylesheet" href="s.css">
+</head>
+<body>
+<nav><div class="nv">
+<div class="mk">&#9995;</div><div style="font-weight:800;font-size:15px;letter-spacing:-.02em">SignGuard</div>
+<div class="cp">Concept demo</div>
+</div></nav>
+
+<header><div class="w">
+<div class="lb">An XPR Network dApp &middot; powered by GUARD.IAN</div>
+<h1>Learn to sign.<br><span class="gr">Get corrected instantly.</span></h1>
+<p class="sb" style="margin-top:18px">Every free ASL resource shows you a video and hopes. Nothing tells you whether you got it right &mdash; so people learning alone build bad habits for months. SignGuard watches your hands and tells you exactly what to fix.</p>
+<div style="display:flex;gap:10px;margin-top:26px;flex-wrap:wrap">
+<button class="bt" onclick="document.getElementById('try').scrollIntoView({behavior:'smooth'})">Try it now</button>
+<button class="bt gh" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">How it works</button>
+</div>
+<div class="st">
+<div class="s1"><div class="k">Sign library</div><div class="v">4,000+</div><div class="d">public domain</div></div>
+<div class="s1"><div class="k">Real signer clips</div><div class="v">21,000</div><div class="d">2,000 words</div></div>
+<div class="s1"><div class="k">Cost per practice</div><div class="v">Zero gas</div><div class="d">XPR Network</div></div>
+<div class="s1"><div class="k">Your camera</div><div class="v">Stays local</div><div class="d">nothing uploaded</div></div>
+</div>
+</div></header>
+
+<section id="try"><div class="w">
+<div class="lb">Step 1 &mdash; watch it signed</div>
+<h2 style="margin-bottom:14px">The letter <span id="ltr" class="gr">A</span></h2>
+<div class="lab">
+<div class="pn">
+<div style="position:relative;background:#000;aspect-ratio:1/1;display:grid;place-items:center">
+<video id="vid" autoplay loop muted playsinline controls style="width:100%;height:100%;object-fit:contain"></video>
+<div id="vmsg" style="position:absolute;inset:0;display:grid;place-items:center;background:var(--bg2);padding:20px;text-align:center">
+<div><div style="width:24px;height:24px;border:2px solid var(--line);border-top-color:var(--ac);border-radius:50%;margin:0 auto 10px;animation:sp .8s linear infinite"></div>
+<div id="vmsgt" style="font-size:12.5px;color:var(--dim)">Loading&hellip;</div></div></div>
+</div>
+<div style="padding:11px 14px;border-top:1px solid var(--line);display:flex;gap:7px;align-items:center;flex-wrap:wrap">
+<span style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700">Speed</span>
+<button class="spd mn" data-s="0.25" style="padding:6px 11px;font-size:12px">0.25&times;</button>
+<button class="spd mn" data-s="0.5" style="padding:6px 11px;font-size:12px">0.5&times;</button>
+<button class="spd mn" data-s="1" style="padding:6px 11px;font-size:12px;background:linear-gradient(135deg,var(--ac2),var(--ac));color:#08090D;border-color:transparent">1&times;</button>
+</div>
+<div style="padding:13px 15px;border-top:1px solid var(--line)"><div id="desc" style="font-size:14px;line-height:1.6"></div></div>
+</div>
+<div>
+<div class="pn"><div class="ph">Alphabet</div>
+<div id="alpha" style="display:flex;flex-wrap:wrap;gap:5px;padding:14px"></div></div>
+<div class="pn" style="margin-top:13px"><div class="ph">Why the speed control</div>
+<div style="padding:14px;font-size:13px;color:var(--dim);line-height:1.6">At quarter speed you can see exactly where the thumb sits. That one detail is the difference between A and S &mdash; and it is what a still image can never show you.</div></div>
+</div>
+</div>
+</div></section>
+
+<section><div class="w">
+<div class="lb">Step 2 &mdash; now you try</div>
+<h2 style="margin-bottom:14px">Your turn</h2>
+<p class="sb" style="margin-bottom:24px">Copy what you just watched. Your camera reads 21 points on your hand and names what to move. Nothing leaves your device.</p>
+<div class="lab">
+<div class="pn">
+<div class="ph">Camera <span style="margin-left:auto;text-transform:none;letter-spacing:0;color:var(--dim)" id="stat">Not started</span></div>
+<div class="sg">
+<video id="cam" autoplay playsinline muted></video><canvas id="ov"></canvas>
+<div class="id" id="idle"><div><div class="tg" id="tgt2">A</div>
+<p style="font-size:12.5px;color:var(--dim);margin-top:14px;max-width:250px">Press start, then make the letter you just watched.</p></div></div>
+</div>
+<div style="padding:14px;display:flex;gap:8px;flex-wrap:wrap">
+<button class="mn" id="go">&#9654; Start camera</button>
+<button class="mn" id="nx">Next letter &rarr;</button>
+</div>
+</div>
+<div class="pn">
+<div class="ph">Feedback</div>
+<div style="padding:15px">
+<div id="vd" style="font-size:14px;font-weight:700;margin-bottom:7px;color:var(--dim)">Waiting for your hand&hellip;</div>
+<div id="hn" style="font-size:13px;color:var(--dim);line-height:1.6">Start the camera and hold the shape steady.</div>
+<div style="height:5px;background:var(--line);border-radius:99px;overflow:hidden;margin:13px 0 4px"><div id="fl" style="height:100%;width:0;border-radius:99px;background:var(--bd);transition:width .25s,background .25s"></div></div>
+<div style="font-size:10.5px;color:var(--faint);display:flex;justify-content:space-between"><span>Match</span><span id="pc">0%</span></div>
+</div></div>
+</div>
+<div class="nt"><b>What is real:</b> the hand tracking is genuine &mdash; Google MediaPipe, 21 landmarks, running in your browser. The matching here is simplified geometry for a dozen letters as proof of concept. The full build compares your hand against motion-capture pose data &mdash; 133&nbsp;KB of exact joint positions per letter.</div>
+</div></section>
+
+<section id="how"><div class="w">
+<div class="lb">Why this is possible now</div>
+<h2>Three sources, three jobs</h2>
+<div class="g3">
+<div class="cd"><span class="tag t3">Real humans</span><h3>Actual signers</h3><p>2,000 words, 21,000 clips, indexed frame-accurately so you jump to the exact second &mdash; and see the same word signed by different people. Videos stay with their creators. We index, we never copy.</p></div>
+<div class="cd"><span class="tag t1">CC0 public domain</span><h3>Motion capture</h3><p>The complete alphabet plus thousands of signs, released to the public domain. In the full build it is never shown &mdash; it is the 3D ground truth your handshape gets measured against.</p></div>
+<div class="cd"><span class="tag t3">In-browser</span><h3>Hand tracking</h3><p>21 landmarks per hand at video speed, running locally. Around 98% on fingerspelling in published benchmarks. No upload, no server, no privacy problem.</p></div>
+</div>
+<div class="nt" style="border-left-color:var(--bd)"><b>A rule that lives in the code, not just the pitch:</b> SignGuard never generates a sign with an AI video model. Those produce hands that move without signing anything, and to a Deaf user that is worse than nothing. The player shows real captured motion or it refuses.</div>
+</div></section>
+
+<section><div class="w">
+<div class="lb">Honest limits</div>
+<h2>What this does and does not do</h2>
+<div class="g3">
+<div class="cd"><span class="tag t1">Works</span><h3>Letters, numbers, vocabulary</h3><p>Fingerspelling recognition is a solved problem. It is also where every beginner starts.</p></div>
+<div class="cd"><span class="tag t2">Not solved</span><h3>Conversational signing</h3><p>Continuous sign recognition is open research. AWS ships something it calls "approximated" ASL. We will not claim otherwise.</p></div>
+<div class="cd"><span class="tag t2">Required</span><h3>Deaf review</h3><p>A hearing person building ASL tools without Deaf review is how this goes wrong. It is a build requirement before anything ships.</p></div>
+</div>
+</div></section>
+
+<section><div class="w">
+<div class="lb">Why XPR Network</div>
+<h2 style="margin-bottom:16px">Zero gas is not a nice-to-have here</h2>
+<div class="g3">
+<div class="cd"><h3>Fifty reps, zero fees</h3><p>A learner doing fifty practice attempts cannot pay a fee per attempt. On most chains this idea is dead on arrival.</p></div>
+<div class="cd"><h3>Progress belongs to the learner</h3><p>Their record sits against their own account, not in our database.</p></div>
+<div class="cd"><h3>Learn-to-earn already works here</h3><p>Snipverse pays people to post. Paying people to learn a language is the same mechanic, pointed somewhere that matters.</p></div>
+</div>
+</div></section>
+
+<footer><div class="w">
+<b style="color:var(--dim)">Concept demo by @Scubasteve4488.</b> Not affiliated with or endorsed by Metallicus, Inc. or XPR Network &mdash; styling is an approximation, not official brand assets.<br>
+Sign video: <a href="https://github.com/StudioGalt/Sign-Language-Mocap-Archive">StudioGalt Sign-Language-Mocap-Archive</a> (CC0 public domain). Word index: <a href="https://github.com/dxli94/WLASL">WLASL</a>. Hand tracking: Google MediaPipe.<br>
+ASL-LEX reference videos are deliberately not used &mdash; they are copyrighted and non-commercial only.
+</div></footer>
+<script src="a.js"></script>
+</body>
+</html>
