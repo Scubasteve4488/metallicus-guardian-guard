@@ -1,1 +1,8 @@
-/*    /index.html   200
+# Intentionally empty of routing rules.
+#
+# The SPA fallback and the 404 both live in functions/[[path]].js now, because
+# _redirects cannot express a 404 on Cloudflare Pages - proven on this project's
+# preview URL 2026-08-23: a 302 rule fired, the identical 404 rules were discarded.
+#
+# Do not reintroduce `/*  /index.html  200` here. It would pre-empt the Function and
+# bring back the bug where every missing file answers 200 plus the homepage.
