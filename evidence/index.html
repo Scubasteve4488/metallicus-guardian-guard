@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Evidence — the method, the samples, the source lock and the corrections</title>
-<meta name="description" content="How Guard.IAN labels evidence, what a public receipt contains, what the source lock records, and how a wrong claim gets corrected rather than quietly edited.">
+<title>Evidence — how we label what we find</title>
+<meta name="description" content="The labels we use, the rules every report follows, what a receipt contains, and what this site was built against.">
 <link rel="canonical" href="https://standguard.net/evidence">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="StandGuard">
-<meta property="og:title" content="Evidence — the method, the samples, the source lock and the corrections">
-<meta property="og:description" content="How Guard.IAN labels evidence, what a public receipt contains, what the source lock records, and how a wrong claim gets corrected rather than quietly edited.">
+<meta property="og:title" content="Evidence — how we label what we find">
+<meta property="og:description" content="The labels we use, the rules every report follows, what a receipt contains, and what this site was built against.">
 <meta property="og:url" content="https://standguard.net/evidence">
 <meta property="og:image" content="https://standguard.net/assets/img/guard-card-v6.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -47,102 +47,95 @@
 
   <section class="section">
     <p class="sec-label">Evidence</p>
-    <h1 class="page-title">See what was checked &mdash; not just what the agent concluded.</h1>
-    <p class="lead mt2">This page is the standard the work is held to. If a report on this site ever fails one of the rules below, that is a defect and the <a href="/corrections">corrections process</a> applies.</p>
+    <h1 class="page-title">How we label what we find</h1>
+    <p class="lead mt2">This is the standard the work is held to.</p>
+    <p class="lead">If something on this site breaks one of these rules, that's a fault. Tell us and we'll fix it.</p>
   </section>
 
   <div class="div-g"></div>
 
   <section class="section" id="method">
-    <p class="sec-label">Method</p>
     <h2 class="sec-title">Every answer is built the same way</h2>
-    <ol class="ac-list mb3" style="max-width:620px;list-style:decimal;">
-      <li>Verified public facts</li>
-      <li>Plain-English meaning</li>
-      <li>Attention items</li>
-      <li>Could not verify</li>
-      <li>What would confirm it</li>
-      <li>Sources and timestamps</li>
-      <li>Scope and limitations</li>
+    <ol class="ac-list mb3" style="max-width:480px;list-style:decimal;">
+      <li>What we checked and found</li>
+      <li>What it means</li>
+      <li>What's worth a second look</li>
+      <li>What we could not find out</li>
+      <li>What would settle it</li>
+      <li>Where it came from, and when</li>
     </ol>
-    <p class="page-sub">The fourth and fifth sections are the product. Any wallet tool gives you a green check; the disciplined statement of what could not be established is the part that is actually worth paying for.</p>
+    <p class="lead">Four and five are the point. Anything can show you a green tick.</p>
 
-    <h3 class="sec-title" style="font-size:1rem;">The labels</h3>
+    <h3 class="sec-title mt4" style="font-size:1rem;">The labels</h3>
     <div class="tbl-wrap">
       <table class="tbl">
-        <thead><tr><th>Label</th><th>What it commits to</th><th>What it does not mean</th></tr></thead>
+        <thead><tr><th>Label</th><th>Means</th><th>Does not mean</th></tr></thead>
         <tbody>
-          <tr><td><strong>Verified</strong></td><td>Read from a primary source, with the source and retrieval time recorded.</td><td>That it is still true now, or that the thing itself is trustworthy.</td></tr>
-          <tr><td><strong>Attention</strong></td><td>Something a reasonable person would want to look at.</td><td>An accusation or a claim of wrongdoing.</td></tr>
-          <tr><td><strong>Could not verify</strong></td><td>A check was attempted and did not return a usable answer.</td><td>That the thing is absent.</td></tr>
-          <tr><td><strong>Contradicted</strong></td><td>A public claim conflicts with the evidence found.</td><td>That anyone lied. Stale and wrong are different.</td></tr>
-          <tr><td><strong>Unknown</strong></td><td>No source could answer it at all.</td><td>Anything. It is the honest empty set.</td></tr>
+          <tr><td><strong>Checked</strong></td><td>Read from the source, with the time noted.</td><td>That it's still true now.</td></tr>
+          <tr><td><strong>Worth a look</strong></td><td>Something you'd want to see.</td><td>That anyone did anything wrong.</td></tr>
+          <tr><td><strong>Couldn't check</strong></td><td>We tried and got nothing.</td><td>That it isn't there.</td></tr>
+          <tr><td><strong>Contradicted</strong></td><td>A claim doesn't match the evidence.</td><td>That anyone lied.</td></tr>
+          <tr><td><strong>Unknown</strong></td><td>Nothing could answer it.</td><td>Anything at all.</td></tr>
         </tbody>
       </table>
     </div>
 
-    <h3 class="sec-title mt4" style="font-size:1rem;">Rules that hold on every report</h3>
-    <ul class="ac-list" style="max-width:760px;">
-      <li>A failed read is never rendered as a zero.</li>
-      <li>Missing data is never evidence that nothing happened.</li>
-      <li>Incomplete indexer or RPC coverage is disclosed.</li>
-      <li>A capped or paginated endpoint never supports a claim of complete history.</li>
-      <li>Conflicting provider results are shown as conflicting, not averaged into confidence.</li>
-      <li>Ownership, KYC level, trust score and community membership are never treated as proof of honesty.</li>
-      <li>No verdict is published about a named natural person.</li>
-      <li>No account is named as a bad actor without a block or a trade behind it.</li>
-      <li>A paid report never buys favourable treatment, and holding any token never improves a conclusion.</li>
+    <h3 class="sec-title mt4" style="font-size:1rem;">Rules on every report</h3>
+    <ul class="ac-list" style="max-width:640px;">
+      <li>A failed check is never shown as a zero.</li>
+      <li>Missing data never means nothing happened.</li>
+      <li>If a source only gave us part of the picture, we say so.</li>
+      <li>If two sources disagree, you see both.</li>
+      <li>A trust score or KYC badge never counts as proof of honesty.</li>
+      <li>No verdict about a named person, ever.</li>
+      <li>No calling an account a bad actor without pointing at what it did.</li>
+      <li>Paying never buys a kinder answer. Holding a token never improves one.</li>
     </ul>
   </section>
 
   <div class="div"></div>
 
   <section class="section" id="samples">
-    <p class="sec-label">Samples</p>
-    <h2 class="sec-title">Three samples are planned. None is published.</h2>
-    <p class="page-sub">A Chain Answer, a Launch Readiness Check, and Guard.IAN&rsquo;s own agent diagnostic run against itself. Each is produced by a real timed run and published with its failures intact. Writing them in advance as marketing and labelling them evidence would break the first rule on this page.</p>
-    <div class="grid grid-3">
-      <div class="card"><h3>Sample Chain Answer</h3><p><span class="state-pill state-planned">Planned</span></p></div>
-      <div class="card"><h3>Sample Launch Readiness Check</h3><p><span class="state-pill state-planned">Planned</span></p></div>
-      <div class="card"><h3>Guard.IAN Self-Diagnostic</h3><p><span class="state-pill state-planned">Planned</span></p></div>
+    <h2 class="sec-title">Example reports</h2>
+    <p class="lead">Three planned. None written.</p>
+    <p class="lead mt2">A chain answer, a launch check, and Guard.IAN's own diagnostic run on itself. Each comes from a real job, published with its mistakes intact.</p>
+    <div class="grid grid-3 mt3">
+      <div class="card"><h3>Chain Answer</h3><p><span class="state-pill state-planned">Planned</span></p></div>
+      <div class="card"><h3>Launch Check</h3><p><span class="state-pill state-planned">Planned</span></p></div>
+      <div class="card"><h3>Our own diagnostic</h3><p><span class="state-pill state-planned">Planned</span></p></div>
     </div>
-    <p class="muted mt3">Publishing any customer case requires that customer&rsquo;s separate explicit permission and redaction. None exists.</p>
+    <p class="muted mt3">Publishing anyone's job needs their permission first. Nobody has given it, because there are no jobs.</p>
   </section>
 
   <div class="div"></div>
 
   <section class="section" id="receipts">
-    <p class="sec-label">Receipts</p>
-    <h2 class="sec-title">What a published receipt contains</h2>
-    <div class="srcbox">
-      <p>Receipt ID &middot; service or job ID where public &middot; subject &middot; question or scope &middot; created time in UTC &middot; Guard.IAN release &middot; source-lock revisions &middot; evidence sources and retrieval times &middot; verified facts &middot; attention items &middot; could not verify &middot; limitations &middot; correction status &middot; artifact hash where appropriate.</p>
-    </div>
-    <p class="muted mt2">Observations may be immutable. Conclusions stay revocable &mdash; no verdict is written to IPFS or to a chain, because a conclusion that cannot be withdrawn is a conclusion that cannot be corrected.</p>
+    <h2 class="sec-title">What a receipt holds</h2>
+    <p class="lead">A receipt ID, the subject, the question, the time, every source and when we read it, what we found, what we couldn't check, and whether it's since been corrected.</p>
+    <p class="lead mt2">Observations can be permanent. Conclusions stay changeable. We never write a verdict somewhere it can't be taken back.</p>
   </section>
 
   <div class="div"></div>
 
   <section class="section" id="sources">
-    <p class="sec-label">Source lock</p>
-    <h2 class="sec-title">What this site was built against</h2>
-    <div class="srcbox">
-      <h4>Recorded 2026-09-21</h4>
+    <h2 class="sec-title">What this site was built on</h2>
+    <div class="srcbox" style="max-width:600px;">
       <dl class="kv">
-        <dt>Public site source</dt><dd><a href="https://github.com/Scubasteve4488/metallicus-guardian-guard" rel="noopener">metallicus-guardian-guard</a></dd>
-        <dt>Pre-rework site preserved at</dt><dd><code>archive/site-before-rework-2026-09-21</code> &rarr; <code>6ff7384468daf520994edc0a2d09ed14780c9f10</code></dd>
-        <dt>Chain</dt><dd>XPR Network mainnet</dd>
-        <dt>Public nodes read by the account check</dt><dd>proton.eosusa.io &middot; api.protonnz.com &middot; proton.cryptolions.io &middot; api-xprnetwork-main.saltant.io</dd>
-        <dt>Agent registry figures</dt><dd>carried from the 2026-09-21 investigation record &mdash; <strong>not re-verified by this build</strong></dd>
+        <dt>Checked</dt><dd>21 September 2026</dd>
+        <dt>Chain</dt><dd>XPR Network, the real one</dd>
+        <dt>Servers we read</dt><dd>proton.eosusa.io, api.protonnz.com, proton.cryptolions.io, api-xprnetwork-main.saltant.io</dd>
+        <dt>Agent numbers</dt><dd>written down 21 September 2026, not re-checked since</dd>
       </dl>
     </div>
+    <p class="muted mt2">Dates in text go stale. If a number here matters to a decision you're making, check the source yourself. They're all linked.</p>
   </section>
 
   <div class="div"></div>
 
   <section class="section" id="corrections">
-    <p class="sec-label">Corrections</p>
-    <h2 class="sec-title">A wrong claim gets a correction, not a quiet edit</h2>
-    <p class="page-sub">Point at the specific claim and the process runs from there. It is written out in full on the <a href="/corrections">corrections page</a>.</p>
+    <h2 class="sec-title">If we got it wrong</h2>
+    <p class="lead">It gets a correction with its history visible, not a silent edit.</p>
+    <p class="mt3"><a class="btn btn-o" href="/corrections">How that works</a></p>
   </section>
 
 </div>
