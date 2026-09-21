@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Status — live, testing, planned and parked</title>
+<meta name="description" content="What is currently working, what is implemented but unproven, what is approved but unbuilt, and what is preserved but not being developed. Including every parked feature.">
+<link rel="canonical" href="https://standguard.net/status">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="StandGuard">
+<meta property="og:title" content="Status — live, testing, planned and parked">
+<meta property="og:description" content="What is currently working, what is implemented but unproven, what is approved but unbuilt, and what is preserved but not being developed. Including every parked feature.">
+<meta property="og:url" content="https://standguard.net/status">
+<meta property="og:image" content="https://standguard.net/assets/img/guard-card-v6.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0e1220">
+<link rel="icon" href="/assets/img/img_coin.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Cinzel:wght@500;700&amp;family=Cinzel+Decorative:wght@700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<nav id="nav" aria-label="Primary">
+  <a class="nav-brand" href="/">
+    <img src="/assets/img/img_coin.jpg" alt="" width="34" height="34">
+    <span>StandGuard</span>
+  </a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+    <span></span><span></span><span></span>
+    <span class="vh">Menu</span>
+  </button>
+  <div class="nav-links" id="nav-links">
+    <a class="nav-link" href="/">Home</a>
+    <a class="nav-link" href="/ian">Guard.IAN</a>
+    <a class="nav-link" href="/services">Services</a>
+    <a class="nav-link" href="/tools">Tools &amp; Evidence</a>
+    <a class="nav-link" href="/learn">Learn</a>
+    <a class="nav-link" href="/community">Community</a>
+    <a class="nav-link" href="/about">About</a>
+  </div>
+  <a class="nav-cta" href="/services">Join the service waitlist</a>
+</nav>
+<main id="main">
+<div class="container">
+
+  <section class="section">
+    <p class="sec-label">Status</p>
+    <h1 class="page-title">Live, testing, planned, parked</h1>
+    <p class="lead mt2">One page that says what is actually true about this project, so nothing elsewhere on the site has to imply more than it can support.</p>
+    <div class="attn mt3">
+      <span>&#9888;</span>
+      <div>This page is a <strong>dated static record</strong>, last updated <strong>2026-09-21</strong>. It is not a live health check. Where a figure came from an earlier investigation and was not re-verified for this build, it says so.</div>
+    </div>
+  </section>
+
+  <div class="div-g"></div>
+
+  <section class="section" id="live">
+    <p class="sec-label"><span class="state-pill state-live">Live</span></p>
+    <h2 class="sec-title">Currently functioning and checked</h2>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Item</th><th>What is true about it</th></tr></thead>
+        <tbody>
+          <tr><td>Account Check</td><td>Reads public XPR account state from four public nodes, in your browser. Failed reads are reported as failures.</td></tr>
+          <tr><td>DeFi Forge</td><td>Five simulators. Pure arithmetic on numbers you type; reads nothing and signs nothing.</td></tr>
+          <tr><td>Learn, Community, GUARD, Evidence, Services pages</td><td>Content published, with a verification date on every time-sensitive claim.</td></tr>
+          <tr><td>Guard.IAN agent registration</td><td>Registered and active. <em>Recorded 2026-09-21; not re-verified by this build.</em></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section" id="testing">
+    <p class="sec-label"><span class="state-pill state-testing">Testing</span></p>
+    <h2 class="sec-title">Implemented but not yet proven for general use</h2>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Item</th><th>What is missing before it counts as live</th></tr></thead>
+        <tbody>
+          <tr><td>Guard.IAN chat</td><td>Reachable on the agent runtime; not wired into this site, and not yet stating live-data use, retrieval time and source failures on every answer.</td></tr>
+          <tr><td>Agent card capability accuracy</td><td>An expected-versus-actual capability test has not been run and published. Until it is, the card is a claim, not evidence.</td></tr>
+          <tr><td>Bounded launch readiness review</td><td>The method exists. Three timed dry-runs per service have not been completed.</td></tr>
+          <tr><td>XPR Agent Diagnostic</td><td>Same: method exists, dry-runs not completed, no published sample.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section" id="planned">
+    <p class="sec-label"><span class="state-pill state-planned">Planned</span></p>
+    <h2 class="sec-title">Approved direction, implementation not complete</h2>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Item</th><th>State</th></tr></thead>
+        <tbody>
+          <tr><td>Machine-readable <code>/health</code></td><td>Returned the human page rather than machine health at the time of record. Belongs to the agent runtime, not this site.</td></tr>
+          <tr><td>Public status endpoint for this site</td><td>Does not exist. Until it does, the home page shows a dated static statement and says so.</td></tr>
+          <tr><td>Three published evidence samples</td><td>Produced from real timed runs, published with failures intact. None written yet.</td></tr>
+          <tr><td>Launch Rehearsal</td><td>Direction approved; no scope, no deliverables, no price.</td></tr>
+          <tr><td>Utility Watch</td><td>Bounded 30-day form defined; publishes only after durable baseline and state continuity are proven.</td></tr>
+          <tr><td>Paid service listings on XPR Agents</td><td>Blocked until dry-runs, capacity, prices, legal and privacy review, and a separate listing approval all exist.</td></tr>
+          <tr><td>Evidence receipt pages</td><td>The receipt format is defined; no receipt is published.</td></tr>
+          <tr><td>Self-hosted fonts and a tighter style policy</td><td>This build still loads Google Fonts and still relies on inline styles carried over from the old page.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section" id="parked">
+    <p class="sec-label"><span class="state-pill state-parked">Parked</span></p>
+    <h2 class="sec-title">Preserved, not being developed</h2>
+    <div class="disc mb3">
+      <span>&#8505;</span>
+      <div><strong>Parked is not deleted.</strong> Every item below is preserved in full at <code>archive/site-before-rework-2026-09-21</code> &rarr; <code>6ff7384468daf520994edc0a2d09ed14780c9f10</code>, and the asset and code files remain in the repository under <code>legacy/</code>. Nothing was thrown away. Reviving any of it requires a fresh decision, not a quiet switch.</div>
+    </div>
+    <div class="grid grid-auto">
+      <div class="card"><h3>Guardian Arena</h3><p>The games hub.</p></div>
+      <div class="card"><h3>Siege Guard</h3><p>Wave-defence game.</p></div>
+      <div class="card"><h3>GUARD Trials</h3><p>Tap-to-fly game.</p></div>
+      <div class="card"><h3>Shield rank progression</h3><p>The seven ranks, Cryptide to Aegis. May return one day as a new design &mdash; that needs its own decision.</p></div>
+      <div class="card"><h3>Shield score</h3><p>The points engine behind the ranks.</p></div>
+      <div class="card"><h3>Shard drops and forging</h3><p>In-game shard collection and shield forging.</p></div>
+      <div class="card"><h3>Daily plays</h3><p>Three free plays per day and the play counter.</p></div>
+      <div class="card"><h3>Leaderboards and scoreboards</h3><p>Including the planned on-chain leaderboard.</p></div>
+      <div class="card"><h3>Achievements</h3><p>The achievement catalogue and unlock toasts.</p></div>
+      <div class="card"><h3>Game development controls</h3><p>The in-page developer tools for the games.</p></div>
+      <div class="card"><h3>XPR Journey progression</h3><p>Nine-milestone progression. The education it carried lives on in <a href="/learn">Learn</a>; the progression product is parked.</p></div>
+      <div class="card"><h3>SignGuard</h3><p>The ASL learning platform concept demo.</p></div>
+      <div class="card"><h3>On-chain ranks, badges and leaderboards</h3><p>The smart-contract plans behind all of the above.</p></div>
+      <div class="card"><h3>Token and NFT access tiers</h3><p>Gating anything on holding a token.</p></div>
+      <div class="card"><h3>GUARD / IAN holding tiers and holder discounts</h3><p>Parked until a service has paying users &mdash; and it is not a default even then.</p></div>
+      <div class="card"><h3>Revenue-sharing concepts</h3><p>Any implication that holding a token shares in service income.</p></div>
+      <div class="card"><h3>Wallet connection</h3><p>Removed from this site entirely in this rebuild. There is no signing surface here at all.</p></div>
+      <div class="card"><h3>The Vision page</h3><p>Its promises are replaced by this page. Ideas without dates belong here, labelled, not on a page of their own.</p></div>
+    </div>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section" id="known-gaps">
+    <p class="sec-label">Known gaps in this build</p>
+    <h2 class="sec-title">Things worth knowing before you trust a page here</h2>
+    <ul class="ac-list" style="max-width:780px;">
+      <li>Agent registry figures (services, jobs, trust score) are carried from the 2026-09-21 record and were <strong>not</strong> re-queried.</li>
+      <li>Ported Learn and Community content is dated 2026-08-12 and has not been individually re-confirmed with each project.</li>
+      <li>Redirects from old routes are temporary (302) until the new destinations are validated in preview.</li>
+      <li>The site still loads fonts from Google Fonts, and its content security policy still allows inline styles because the ported pages use them heavily.</li>
+      <li>No analytics of any kind runs on this site in this build.</li>
+    </ul>
+    <p class="muted mt3">Found something wrong? <a href="/corrections">Corrections</a> explains what happens next.</p>
+  </section>
+
+</div>
+
+</main>
+<footer id="site-footer">
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand"><img src="/assets/img/img_coin.jpg" alt="" width="30" height="30"><span>StandGuard</span></div>
+        <p class="foot-desc">The public home of Guard.IAN &mdash; an evidence-first XPR Network agent that explains public on-chain activity and leaves receipts.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="/ian">Guard.IAN</a>
+        <a href="/services">Services</a>
+        <a href="/tools">Tools</a>
+        <a href="/evidence#method">Evidence Method</a>
+        <a href="/learn">Learn</a>
+        <a href="/community">Community</a>
+        <a href="/guard">GUARD</a>
+        <a href="/status">Status</a>
+      </div>
+      <div class="foot-col">
+        <h4>Boundaries</h4>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/corrections">Corrections</a>
+        <a href="/contact">Contact</a>
+        <a href="https://xpragents.io/agent/safeguard5" rel="noopener">XPR Agents profile</a>
+        <a href="https://github.com/Scubasteve4488/metallicus-guardian-guard" rel="noopener">GitHub public repository</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p class="foot-disc">StandGuard and Guard.IAN are independent community-built projects. They are not official Metallicus, XPR Network, WebAuth, SimpleDEX, or XPR Agents products. Information is educational and evidence-based, not financial, legal, security, or investment advice.</p>
+      <p class="foot-meta">&copy; <span id="foot-year">2026</span> StandGuard &middot; built by <a href="https://x.com/scubasteve4488" rel="noopener">@Scubasteve4488</a> &middot; <a href="/status">what is live, testing, planned and parked</a></p>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js"></script>
+
+</body>
+</html>

@@ -1,4 +1,49 @@
-/
-  Cache-Control: no-store
-/index.html
-  Cache-Control: no-store
+# StandGuard response headers — rebuilt 2026-09-21
+#
+# The Content-Security-Policy below was written from what the pages actually
+# load, audited across every generated file:
+#   script-src  'self'            — no inline script, no CDN, no analytics.
+#                                   Every handler is bound in /assets/js/*.
+#   style-src   + 'unsafe-inline' — the pages ported from the previous
+#                                   single-file site use inline style
+#                                   attributes throughout. Removing them is
+#                                   tracked on /status as a planned change;
+#                                   until then, claiming a stricter policy
+#                                   than the pages can keep would just break
+#                                   the site.
+#   font-src    fonts.gstatic.com — Google Fonts. Self-hosting them (and
+#                                   dropping both Google origins) is also on
+#                                   the planned list.
+#   img-src     + img.youtube.com — Academy video thumbnails.
+#   connect-src                   — exactly the four public XPR Network RPC
+#                                   hosts the read-only account check reads,
+#                                   and nothing else.
+#
+# No HSTS yet. It is deliberately absent: it must not be enabled until every
+# subdomain that needs to serve HTTPS has been verified, because it is hard
+# to withdraw once browsers have cached it.
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://img.youtube.com; connect-src 'self' https://proton.eosusa.io https://api.protonnz.com https://proton.cryptolions.io https://api-xprnetwork-main.saltant.io; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; manifest-src 'self'; upgrade-insecure-requests
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), ambient-light-sensor=(), autoplay=(), camera=(), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), usb=(), xr-spatial-tracking=()
+  X-Frame-Options: DENY
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+
+# Hashed-forever assets do not exist yet, so styles and scripts get a short
+# cache with revalidation rather than a long one that strands a fix.
+/assets/css/*
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/assets/js/*
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/assets/img/*
+  Cache-Control: public, max-age=604800
+
+# HTML is revalidated every time. The old site sent no-store on the whole
+# document; this keeps content current without refetching on every navigation.
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
