@@ -1,1 +1,10 @@
 node_modules/
+
+# Parked games, shields, shards, SignGuard and old distribution scripts.
+# Preserved in the repository (and in full at
+# archive/site-before-rework-2026-09-21) but deliberately NOT deployed.
+legacy/
+
+# Build-time notes and checks; not part of the served site.
+docs/
+tools/
