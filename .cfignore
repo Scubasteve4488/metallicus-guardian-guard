@@ -5,6 +5,10 @@ node_modules/
 # archive/site-before-rework-2026-09-21) but deliberately NOT deployed.
 legacy/
 
-# Build-time notes and checks; not part of the served site.
+# Repo notes and the site check script. Not part of the served site.
+#
+# NOTE: do NOT add tools/ here — tools/index.html IS the /tools route and
+# tools/account-check/ is the account inspector. The check script lives in
+# checks/ precisely so this folder can never be excluded by accident.
 docs/
-tools/
+checks/

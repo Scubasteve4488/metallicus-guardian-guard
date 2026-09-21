@@ -21,11 +21,11 @@ No framework was introduced. No build step was added. Cloudflare Pages still dep
 index.html                     assets/css/site.css          legacy/games/       (43 files)
 404.html                       assets/js/site.js            legacy/scripts/     (10 files)
 _headers                       assets/js/account-check.js   legacy/signguard/   (4 files)
-_redirects                     assets/js/defi-forge.js      tools/check-site.py
+_redirects                     assets/js/defi-forge.js      checks/check-site.py
 robots.txt  sitemap.xml        assets/img/                  (48 images)
 ```
 
-Each route is a directory containing `index.html`. Nav and footer are inlined identically in every page; `tools/check-site.py` fails if they ever drift apart. That script is a **test**, not a build step — Cloudflare never runs it.
+Each route is a directory containing `index.html`. Nav and footer are inlined identically in every page; `checks/check-site.py` fails if they ever drift apart. That script is a **test**, not a build step — Cloudflare never runs it.
 
 ### Routes built (32 + 404)
 
@@ -104,7 +104,7 @@ CSP: `script-src 'self'` with **zero inline script and zero third-party script**
 
 ## 8. Checks run, and what they found
 
-`python3 tools/check-site.py` — **PASS.** 33 pages: every internal link and asset resolves; every old route has a rule or a page; nav and footer byte-identical across all 33; name/email scan clean.
+`python3 checks/check-site.py` — **PASS.** 33 pages: every internal link and asset resolves; every old route has a rule or a page; nav and footer byte-identical across all 33; name/email scan clean.
 
 HTTP smoke test (local server, all 28 primary routes + 404): **all 200.**
 
