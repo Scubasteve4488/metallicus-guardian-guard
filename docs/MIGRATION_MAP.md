@@ -84,7 +84,7 @@ Nothing was deleted. Parking is not deletion.
 
 ## 5. Name and email scan (STEP 5 result)
 
-`tools/check-site.py` scans every `.html`, `.css`, `.js`, `.xml`, `.txt`, `.json` and `.md` file in the repository for the operator's legal surname, a personal first name used as a name (word-boundary matched, so `verbatim` does not trip it), and any email address.
+`checks/check-site.py` scans every `.html`, `.css`, `.js`, `.xml`, `.txt`, `.json` and `.md` file in the repository for the operator's legal surname, a personal first name used as a name (word-boundary matched, so `verbatim` does not trip it), and any email address.
 
 **Result on this branch: clean.** Zero hits, in deployed files and in `legacy/` alike.
 
