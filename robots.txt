@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 
+# Parked material: preserved in the repository, not part of the active site.
+Disallow: /legacy/
+
 Sitemap: https://standguard.net/sitemap.xml

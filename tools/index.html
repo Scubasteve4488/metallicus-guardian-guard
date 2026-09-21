@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tools & Evidence — see what was checked, not just what was concluded</title>
+<meta name="description" content="Read-only XPR tools, sample reports, the evidence method, the source lock and the correction process. No wallet connection and no signing anywhere on this site.">
+<link rel="canonical" href="https://standguard.net/tools">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="StandGuard">
+<meta property="og:title" content="Tools & Evidence — see what was checked, not just what was concluded">
+<meta property="og:description" content="Read-only XPR tools, sample reports, the evidence method, the source lock and the correction process. No wallet connection and no signing anywhere on this site.">
+<meta property="og:url" content="https://standguard.net/tools">
+<meta property="og:image" content="https://standguard.net/assets/img/guard-card-v6.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0e1220">
+<link rel="icon" href="/assets/img/img_coin.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Cinzel:wght@500;700&amp;family=Cinzel+Decorative:wght@700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<nav id="nav" aria-label="Primary">
+  <a class="nav-brand" href="/">
+    <img src="/assets/img/img_coin.jpg" alt="" width="34" height="34">
+    <span>StandGuard</span>
+  </a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+    <span></span><span></span><span></span>
+    <span class="vh">Menu</span>
+  </button>
+  <div class="nav-links" id="nav-links">
+    <a class="nav-link" href="/">Home</a>
+    <a class="nav-link" href="/ian">Guard.IAN</a>
+    <a class="nav-link" href="/services">Services</a>
+    <a class="nav-link" href="/tools">Tools &amp; Evidence</a>
+    <a class="nav-link" href="/learn">Learn</a>
+    <a class="nav-link" href="/community">Community</a>
+    <a class="nav-link" href="/about">About</a>
+  </div>
+  <a class="nav-cta" href="/services">Join the service waitlist</a>
+</nav>
+<main id="main">
+<div class="container">
+
+  <section class="section">
+    <p class="sec-label">Tools &amp; Evidence</p>
+    <h1 class="page-title">See what was checked &mdash; not just what the agent concluded.</h1>
+    <p class="lead mt2">A conclusion you cannot audit is just an opinion with a timestamp. Everything in this section exists so someone else can repeat the work and disagree with it.</p>
+  </section>
+
+  <div class="div-g"></div>
+
+  <section class="section" id="tools">
+    <p class="sec-label">1 &mdash; Read-only tools</p>
+    <h2 class="sec-title">Nothing here asks you to connect a wallet</h2>
+    <div class="grid grid-2 mt3">
+      <div class="card">
+        <div class="card-icon ci-blue">&#128269;</div>
+        <h3>Account Check <span class="state-pill state-live">Live</span></h3>
+        <p>Type any public XPR Network account name and read its current on-chain state: creation date, resources, staking and voting, delegated permissions, liquid XPR, tokens held, and SimpleDEX or LOAN positions &mdash; each labelled verified, not found, or could not verify.</p>
+        <a class="card-link" href="/tools/account-check">Check an account</a>
+      </div>
+      <div class="card">
+        <div class="card-icon ci-gold">&#9878;</div>
+        <h3>DeFi Forge <span class="state-pill state-live">Live</span></h3>
+        <p>Risk-free simulators for lending, liquidity pools, farming, borrowing and staking, using numbers you choose. No real funds, no transactions, no chain reads at all.</p>
+        <a class="card-link" href="/learn/defi-forge">Open the lab</a>
+      </div>
+    </div>
+    <div class="disc mt3">
+      <span>&#128274;</span>
+      <div><strong>This site has no wallet connection.</strong> There is no signing session, no seed-phrase field, and no transaction path in any page here. The account check sends a public account name to public XPR nodes, the way a block explorer does, and nothing is stored &mdash; this site has no server and no database.</div>
+    </div>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section" id="samples">
+    <p class="sec-label">2 &mdash; Sample reports</p>
+    <h2 class="sec-title">Not published yet, and that is deliberate</h2>
+    <p class="page-sub">Three samples are planned: a Chain Answer, a Launch Readiness Check, and Guard.IAN&rsquo;s diagnostic run against itself. Each will be produced by an actual timed run and published with everything it got wrong, rather than written as marketing and labelled as evidence.</p>
+    <p>A sample from a customer case requires that customer&rsquo;s separate explicit permission and redaction. None exists.</p>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section" id="method">
+    <p class="sec-label">3 &mdash; Evidence method</p>
+    <h2 class="sec-title">The labels, and what each one commits to</h2>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Label</th><th>What it means</th><th>What it does not mean</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Verified</strong></td><td>Read from a primary source, with the source and retrieval time recorded.</td><td>That it is still true now, or that the underlying thing is trustworthy.</td></tr>
+          <tr><td><strong>Attention</strong></td><td>Something in the evidence a reasonable person would want to look at.</td><td>An accusation, or a claim of wrongdoing.</td></tr>
+          <tr><td><strong>Could not verify</strong></td><td>A check was attempted and did not return a usable answer.</td><td>That the thing is absent. A failed read is never reported as a zero.</td></tr>
+          <tr><td><strong>Contradicted</strong></td><td>A public claim conflicts with the evidence found.</td><td>That the claimant lied. Stale and wrong are different things.</td></tr>
+          <tr><td><strong>Unknown</strong></td><td>No source was available that could answer it at all.</td><td>Anything at all. It is the honest empty set.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3 class="sec-title mt4" style="font-size:1rem;">Rules that hold on every report</h3>
+    <ul class="ac-list" style="max-width:740px;">
+      <li>Missing data is never presented as evidence that nothing happened.</li>
+      <li>Incomplete indexer or RPC coverage is disclosed, not smoothed over.</li>
+      <li>A capped or paginated endpoint never supports a claim of complete history.</li>
+      <li>Conflicting results from different providers are shown as conflicting, not merged into one confident number.</li>
+      <li>Ownership, KYC level, trust score and community membership are never treated as proof of honesty.</li>
+      <li>No verdict is published about a named natural person.</li>
+      <li>No account is named as a bad actor without a block or a trade behind it.</li>
+    </ul>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section" id="sources">
+    <p class="sec-label">4 &mdash; Source lock</p>
+    <h2 class="sec-title">What this site was built against</h2>
+    <div class="srcbox">
+      <h4>Recorded 2026-09-21</h4>
+      <dl class="kv">
+        <dt>Public site source</dt><dd>github.com/Scubasteve4488/metallicus-guardian-guard</dd>
+        <dt>Pre-rework site preserved at</dt><dd><code>archive/site-before-rework-2026-09-21</code> &rarr; <code>6ff7384468daf520994edc0a2d09ed14780c9f10</code></dd>
+        <dt>Chain</dt><dd>XPR Network mainnet</dd>
+        <dt>Nodes the account check reads</dt><dd>proton.eosusa.io, api.protonnz.com, proton.cryptolions.io, api-xprnetwork-main.saltant.io</dd>
+        <dt>Agent state figures</dt><dd>from the 2026-09-21 investigation record; <strong>not re-verified by this build</strong></dd>
+      </dl>
+    </div>
+    <p class="muted mt2">A revision written into prose goes stale quickly. Where a figure here matters to a decision you are making, read the primary source yourself &mdash; every one of them is linked.</p>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section" id="corrections">
+    <p class="sec-label">5 &mdash; Corrections</p>
+    <h2 class="sec-title">If something here is wrong</h2>
+    <p class="page-sub">Point at the specific claim. The full process, including how a challenged claim is recorded and resolved, is on the <a href="/corrections">corrections page</a>.</p>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section">
+    <p class="sec-label">6 &amp; 7 &mdash; Utility Forge and Utility Watch</p>
+    <h2 class="sec-title">Deciding what should exist, and noticing when that changes</h2>
+    <div class="grid grid-2 mt3">
+      <div class="card">
+        <h3>Utility Forge <span class="state-pill state-beta">Private beta</span></h3>
+        <p>Research, rejection and validation before anything is built. The winning result can be: do not build yet.</p>
+        <a class="card-link" href="/services/utility-forge">How the Forge works</a>
+      </div>
+      <div class="card">
+        <h3>Utility Watch <span class="state-pill state-planned">Planned</span></h3>
+        <p>A bounded 30-day watch over agreed sources, reporting only evidence that changes the plan.</p>
+        <a class="card-link" href="/services/utility-watch">What it watches</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</main>
+<footer id="site-footer">
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand"><img src="/assets/img/img_coin.jpg" alt="" width="30" height="30"><span>StandGuard</span></div>
+        <p class="foot-desc">The public home of Guard.IAN &mdash; an evidence-first XPR Network agent that explains public on-chain activity and leaves receipts.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="/ian">Guard.IAN</a>
+        <a href="/services">Services</a>
+        <a href="/tools">Tools</a>
+        <a href="/evidence#method">Evidence Method</a>
+        <a href="/learn">Learn</a>
+        <a href="/community">Community</a>
+        <a href="/guard">GUARD</a>
+        <a href="/status">Status</a>
+      </div>
+      <div class="foot-col">
+        <h4>Boundaries</h4>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/corrections">Corrections</a>
+        <a href="/contact">Contact</a>
+        <a href="https://xpragents.io/agent/safeguard5" rel="noopener">XPR Agents profile</a>
+        <a href="https://github.com/Scubasteve4488/metallicus-guardian-guard" rel="noopener">GitHub public repository</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p class="foot-disc">StandGuard and Guard.IAN are independent community-built projects. They are not official Metallicus, XPR Network, WebAuth, SimpleDEX, or XPR Agents products. Information is educational and evidence-based, not financial, legal, security, or investment advice.</p>
+      <p class="foot-meta">&copy; <span id="foot-year">2026</span> StandGuard &middot; built by <a href="https://x.com/scubasteve4488" rel="noopener">@Scubasteve4488</a> &middot; <a href="/status">what is live, testing, planned and parked</a></p>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js"></script>
+
+</body>
+</html>

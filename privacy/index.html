@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy and retention — draft, pending legal review</title>
+<meta name="description" content="What this site collects (nothing), what a service intake would collect, how long it is kept, who sees it, and what happens to public-chain identifiers. First honest draft.">
+<link rel="canonical" href="https://standguard.net/privacy">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="StandGuard">
+<meta property="og:title" content="Privacy and retention — draft, pending legal review">
+<meta property="og:description" content="What this site collects (nothing), what a service intake would collect, how long it is kept, who sees it, and what happens to public-chain identifiers. First honest draft.">
+<meta property="og:url" content="https://standguard.net/privacy">
+<meta property="og:image" content="https://standguard.net/assets/img/guard-card-v6.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0e1220">
+<link rel="icon" href="/assets/img/img_coin.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Cinzel:wght@500;700&amp;family=Cinzel+Decorative:wght@700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<nav id="nav" aria-label="Primary">
+  <a class="nav-brand" href="/">
+    <img src="/assets/img/img_coin.jpg" alt="" width="34" height="34">
+    <span>StandGuard</span>
+  </a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+    <span></span><span></span><span></span>
+    <span class="vh">Menu</span>
+  </button>
+  <div class="nav-links" id="nav-links">
+    <a class="nav-link" href="/">Home</a>
+    <a class="nav-link" href="/ian">Guard.IAN</a>
+    <a class="nav-link" href="/services">Services</a>
+    <a class="nav-link" href="/tools">Tools &amp; Evidence</a>
+    <a class="nav-link" href="/learn">Learn</a>
+    <a class="nav-link" href="/community">Community</a>
+    <a class="nav-link" href="/about">About</a>
+  </div>
+  <a class="nav-cta" href="/services">Join the service waitlist</a>
+</nav>
+<main id="main">
+<div class="container">
+  <section class="section">
+    <p class="sec-label">Privacy</p>
+    <h1 class="page-title">Privacy and retention</h1>
+    <div class="attn mt3">
+      <span>&#9888;</span>
+      <div><strong>DRAFT &mdash; pending legal review.</strong> This is a first honest description written from how the site and services actually work today, not a lawyer-reviewed policy. It will be reviewed before any paid service opens, and it will change. Where it is vague, that is because the thing it describes is not built yet.</div>
+    </div>
+    <p class="muted mt2">Version: first draft, 2026-09-21.</p>
+  </section>
+
+  <div class="div-g"></div>
+
+  <section class="section prose" style="max-width:780px;">
+
+    <h2 class="sec-title">This website</h2>
+    <p><strong>standguard.net collects nothing.</strong> It is static files served from a CDN. There is no server, no database, no account system, no login, no analytics, no advertising and no tracking pixel. Nothing you do on these pages is recorded by this project.</p>
+    <p>Two consequences worth stating plainly:</p>
+    <ul>
+      <li><strong>The account check runs in your browser.</strong> When you type an account name and press the button, your browser sends that public account name directly to public XPR Network nodes. Those nodes are operated by third parties, and like any web server they can see the request and your IP address. That is the same exposure you have using a block explorer. The result is never sent to us, because there is no us to send it to.</li>
+      <li><strong>The hosting provider sees requests.</strong> Cloudflare Pages serves these files and, like any host, handles the network request. Its own logging is governed by its policies, not ours.</li>
+    </ul>
+    <p>Fonts are currently loaded from Google Fonts, which means your browser makes a request to Google when a page loads. Self-hosting those fonts to remove that request is on the <a href="/status#planned">planned</a> list.</p>
+
+    <h2 class="sec-title mt4">Service intake, when services open</h2>
+    <p>No service is open, so no intake data exists yet. When one does open, this is what it will involve:</p>
+    <ul>
+      <li><strong>What is collected:</strong> what you send in order to be helped &mdash; your question or brief, the exact public identifiers (accounts, token ids, contracts, transactions, collections, pools), your project links, and any private material you choose to share for a readiness check.</li>
+      <li><strong>Why:</strong> solely to perform and deliver the work you asked for.</li>
+      <li><strong>Whether it is stored:</strong> yes, in a case workspace, for as long as the job and its revision window are open.</li>
+      <li><strong>Where:</strong> operator-controlled storage. The specific infrastructure is not published, because publishing it helps nobody but an attacker.</li>
+      <li><strong>How long:</strong> the retention period will be stated here as an exact number before any paid service opens. It is not stated yet, because guessing one now would be a promise nobody has tested.</li>
+      <li><strong>Who can access it:</strong> the operator. Not other customers, and not the public.</li>
+      <li><strong>Third-party AI and API providers:</strong> yes &mdash; research work passes through third-party model and API providers. Assume that anything you send may be processed by one. Do not send anything you would not be willing to have processed that way.</li>
+      <li><strong>Correction and deletion:</strong> ask, and it will be corrected or deleted where the work is not already delivered through an external platform that keeps its own record.</li>
+    </ul>
+
+    <h2 class="sec-title mt4">Public-chain identifiers</h2>
+    <p>Account names, transactions, token holdings and contract interactions on XPR Network are public by design. Anyone can read them and this site does not change that.</p>
+    <p>Being public is not the same as being fair game. This project treats them responsibly: no verdict is published about a named natural person, no account is named as a bad actor without a block or a trade behind it, and no report draws a conclusion about who someone <em>is</em> from what an address <em>did</em>.</p>
+
+    <h2 class="sec-title mt4">Evidence delivered through XPR Agents</h2>
+    <p>Where a job is delivered through the XPR Agents platform, part of that job record may be publicly visible according to how the platform works. That visibility is the platform&rsquo;s behaviour, not a choice made here, and it will be pointed out before you buy anything.</p>
+    <p>Using your case as a public sample requires your separate, explicit permission and redaction. It is never assumed from a purchase.</p>
+
+    <h2 class="sec-title mt4">What you will never be asked for</h2>
+    <p>A seed phrase, a private key, a recovery phrase, a wallet password, an API secret, or a signing credential. Not by this site, not by Guard.IAN, not in chat, not in an intake form. No page here has a field for one. Anyone asking for one while claiming to be this project is not this project.</p>
+
+    <h2 class="sec-title mt4">Questions</h2>
+    <p>Ask through the <a href="/contact">contact page</a>.</p>
+  </section>
+</div>
+
+</main>
+<footer id="site-footer">
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand"><img src="/assets/img/img_coin.jpg" alt="" width="30" height="30"><span>StandGuard</span></div>
+        <p class="foot-desc">The public home of Guard.IAN &mdash; an evidence-first XPR Network agent that explains public on-chain activity and leaves receipts.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="/ian">Guard.IAN</a>
+        <a href="/services">Services</a>
+        <a href="/tools">Tools</a>
+        <a href="/evidence#method">Evidence Method</a>
+        <a href="/learn">Learn</a>
+        <a href="/community">Community</a>
+        <a href="/guard">GUARD</a>
+        <a href="/status">Status</a>
+      </div>
+      <div class="foot-col">
+        <h4>Boundaries</h4>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/corrections">Corrections</a>
+        <a href="/contact">Contact</a>
+        <a href="https://xpragents.io/agent/safeguard5" rel="noopener">XPR Agents profile</a>
+        <a href="https://github.com/Scubasteve4488/metallicus-guardian-guard" rel="noopener">GitHub public repository</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p class="foot-disc">StandGuard and Guard.IAN are independent community-built projects. They are not official Metallicus, XPR Network, WebAuth, SimpleDEX, or XPR Agents products. Information is educational and evidence-based, not financial, legal, security, or investment advice.</p>
+      <p class="foot-meta">&copy; <span id="foot-year">2026</span> StandGuard &middot; built by <a href="https://x.com/scubasteve4488" rel="noopener">@Scubasteve4488</a> &middot; <a href="/status">what is live, testing, planned and parked</a></p>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js"></script>
+
+</body>
+</html>

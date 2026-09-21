@@ -1,1 +1,34 @@
-/*    /index.html   200
+# StandGuard redirect map — rebuilt 2026-09-21
+#
+# The catch-all rewrite (/*  /index.html  200) that served the old single-page
+# app is GONE. Every route is now a real file, so a wrong URL must 404 instead
+# of silently rendering the home page with a 200.
+#
+# All redirects are 302 (temporary) on purpose. They become 301 only after each
+# destination has been validated in preview and the operator has approved it —
+# a 301 is cached by browsers and is very hard to take back.
+
+# ── Old routes -> new homes ────────────────────────────────────────────────
+/start-here               /learn                        302
+/new-to-guard             /learn#new-to-guard           302
+/ecosystem                /learn/ecosystem              302
+/academy                  /learn/academy                302
+/defi-forge               /learn/defi-forge             302
+/stablecoins-payments     /learn/stablecoins-payments   302
+/guardian-intelligence    /tools/account-check          302
+/faq                      /about#faq                    302
+/vision                   /status                       302
+
+# ── Parked features: preserved, not deleted ────────────────────────────────
+/shields                  /status#parked                302
+/arena                    /status#parked                302
+/xpr-journey              /status#parked                302
+/signguard                /status#parked                302
+/signguard/*              /status#parked                302
+
+# ── Routes that keep their address but changed content ─────────────────────
+# /, /guard, /creator, /community, /community/ksto, /community/cyphergang and
+# /community/snipverse are real pages at the same paths and need no rule.
+
+# ── Everything else ────────────────────────────────────────────────────────
+/*                        /404.html                     404
