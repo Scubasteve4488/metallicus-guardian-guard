@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Account Check — read any public XPR account, read-only</title>
-<meta name="description" content="Type a public XPR Network account name and read its current on-chain state from public nodes. No wallet connection, no signing, nothing stored. Failed reads are reported as failures.">
+<title>Account Check — look up any XPR account</title>
+<meta name="description" content="Type a public XPR Network account name and see its current state. No wallet, no signing, nothing stored. Failed checks are shown as failed.">
 <link rel="canonical" href="https://standguard.net/tools/account-check">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="StandGuard">
-<meta property="og:title" content="Account Check — read any public XPR account, read-only">
-<meta property="og:description" content="Type a public XPR Network account name and read its current on-chain state from public nodes. No wallet connection, no signing, nothing stored. Failed reads are reported as failures.">
+<meta property="og:title" content="Account Check — look up any XPR account">
+<meta property="og:description" content="Type a public XPR Network account name and see its current state. No wallet, no signing, nothing stored. Failed checks are shown as failed.">
 <meta property="og:url" content="https://standguard.net/tools/account-check">
 <meta property="og:image" content="https://standguard.net/assets/img/guard-card-v6.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -47,28 +47,25 @@
   <p class="breadcrumb"><a href="/tools">Tools &amp; Evidence</a> &rsaquo; Account Check</p>
 
   <section class="section">
-    <p class="sec-label">Read-only tool</p>
     <h1 class="page-title">Account Check</h1>
-    <p class="lead mt2">Read the current public state of any XPR Network account, in plain English, with every source and every failure named.</p>
+    <p class="lead mt2">Look up any XPR Network account. See what it holds and what it does, in plain English.</p>
 
     <div class="disc mt3">
       <span>&#128274;</span>
-      <div>
-        <strong>Nothing is connected and nothing is stored.</strong> There is no wallet connection on this page &mdash; no signing session, no seed-phrase field, no transaction path. Typing a name sends that public account name to public XPR Network nodes from your own browser, exactly as a block explorer does. standguard.net has no server and no database, so nothing you type reaches us or is kept anywhere.
-      </div>
+      <div><strong>Nothing connects, nothing is saved.</strong> No wallet, no signing, no seed phrase box. Your browser asks public XPR servers directly, the same way a block explorer does. This site has no server, so nothing reaches us.</div>
     </div>
 
     <form class="ac-form mt4" id="ac-form">
       <div class="ac-field">
-        <label class="ac-label" for="ac-account">XPR Network account name</label>
+        <label class="ac-label" for="ac-account">Account name</label>
         <input class="ac-input" id="ac-account" name="account" type="text" inputmode="text"
                autocomplete="off" autocapitalize="none" spellcheck="false"
                maxlength="13" placeholder="e.g. safeguard5"
                aria-describedby="ac-hint ac-error">
       </div>
-      <button class="btn btn-g" type="submit">Check account</button>
+      <button class="btn btn-g" type="submit">Check it</button>
     </form>
-    <p class="ac-hint" id="ac-hint">1&ndash;12 characters using a&ndash;z, digits 1&ndash;5, and &ldquo;.&rdquo; only. A leading @ is fine &mdash; it will be ignored.</p>
+    <p class="ac-hint" id="ac-hint">Letters a&ndash;z, digits 1&ndash;5, and dots. A leading @ is fine.</p>
     <p class="ac-err" id="ac-error" role="alert" aria-live="polite"></p>
 
     <div class="ac-results" id="ac-results" aria-live="polite" hidden></div>
@@ -77,22 +74,22 @@
   <div class="div"></div>
 
   <section class="section">
-    <h2 class="sec-title">What this tool will not tell you</h2>
-    <ul class="ac-list" style="max-width:740px;">
-      <li><strong>Whether an account is safe.</strong> It cannot, and neither can anything else. On-chain state says what an account did, never who controls it or what they intend.</li>
-      <li><strong>Whether a token it holds is legitimate.</strong> Anyone can send any token to any account. A symbol appearing in the list is not an endorsement of it &mdash; and someone else can put a token in your account without asking you.</li>
-      <li><strong>Its full history.</strong> This reads current state. History needs a history node and a different kind of report.</li>
-      <li><strong>Anything off this chain.</strong> Other chains, exchange accounts and custodial balances are invisible here.</li>
+    <h2 class="sec-title">What this won't tell you</h2>
+    <ul class="ac-list" style="max-width:620px;">
+      <li><strong>Whether an account is safe.</strong> Nothing can. The chain shows what an account did, never who's behind it or what they intend.</li>
+      <li><strong>Whether a token it holds is any good.</strong> Anyone can send any token to anyone. Seeing it listed means nothing.</li>
+      <li><strong>Its full history.</strong> This shows what's true right now.</li>
+      <li><strong>Anything off this chain.</strong> Other blockchains and exchange accounts are invisible here.</li>
     </ul>
-
-    <h2 class="sec-title mt4">Why a failed read is shown as a failure</h2>
-    <p class="lead" style="font-size:.92rem;">If every node fails, this tool says so. It does not print a zero. The difference matters: &ldquo;this account has no liquidity positions&rdquo; and &ldquo;we could not find out whether this account has liquidity positions&rdquo; lead to opposite decisions, and a tool that blurs them is worse than no tool.</p>
-    <p class="lead mt2" style="font-size:.92rem;">The same rule covers one specific trap carried over from the previous version of this tool: XPR account names may contain the digits 1&ndash;5, so an all-numeric name like <code>333555</code> is valid. A table query that passes such a name raw gets read as an integer, returns an empty result with a success code, and the caller then reports &ldquo;nothing found&rdquo; as a fact. This tool encodes the name first, so that silent wrong answer cannot happen.</p>
   </section>
 
-  <div class="section-sm">
-    <div class="disc"><span>&#8505;</span><div>Educational and evidence-based, not financial, legal or security advice. GUARD never says safe &mdash; GUARD gives clarity.</div></div>
-  </div>
+  <div class="div"></div>
+
+  <section class="section">
+    <h2 class="sec-title">Why a failed check says "failed"</h2>
+    <p class="lead">If every server refuses, this tool says so. It does not print a zero.</p>
+    <p class="lead mt2">"This account has no liquidity positions" and "we couldn't find out whether it has any" lead to opposite decisions. A tool that blurs those two is worse than no tool.</p>
+  </section>
 </div>
 
 </main>
