@@ -65,11 +65,17 @@ export class Guard {
     } else {
       let vx = 0;
       let vy = 0;
-      if (input.left) vx -= 1;
-      if (input.right) vx += 1;
-      if (input.up) vy -= 1;
-      if (input.down) vy += 1;
-      if (vx && vy) { vx *= Math.SQRT1_2; vy *= Math.SQRT1_2; }
+      if (input.vx || input.vy) {
+        // Analog (thumb stick / auto-walk), magnitude 0..1.
+        vx = input.vx;
+        vy = input.vy;
+      } else {
+        if (input.left) vx -= 1;
+        if (input.right) vx += 1;
+        if (input.up) vy -= 1;
+        if (input.down) vy += 1;
+        if (vx && vy) { vx *= Math.SQRT1_2; vy *= Math.SQRT1_2; }
+      }
       this.body.setVelocity(vx * MOVE_SPEED, vy * MOVE_SPEED);
       this.moving = !!(vx || vy);
       if (this.moving) {

@@ -26,7 +26,7 @@ export class HudScene extends Phaser.Scene {
 
     this.touch = isTouch();
     // Evidence tray (bottom left; shifted right on touch to clear the d-pad)
-    this.trayX = this.touch ? 190 : 8;
+    this.trayX = 8;
     this.trayBg = panel(this, this.trayX, VIEW_H - 50, 470, 42);
     this.trayLabel = txt(this, this.trayX + 10, VIEW_H - 38, 'EVIDENCE 0', 13, COLORS.gold, { bold: true });
     this.trayChips = [];
@@ -47,6 +47,10 @@ export class HudScene extends Phaser.Scene {
     this.prompt = txt(this, VIEW_W / 2, VIEW_H / 2 + 44, '', 15, COLORS.ink, { bold: true, align: 'center' })
       .setOrigin(0.5).setBackgroundColor('#141222').setPadding(8, 4, 8, 4).setVisible(false);
     this.progress = this.add.graphics();
+    if (this.touch) {
+      this.prompt.setInteractive({ useHandCursor: true });
+      this.prompt.on('pointerup', () => { if (this.pad) this.pad.tapPrompt = true; });
+    }
 
     // Toasts
     this.toasts = [];
@@ -66,8 +70,11 @@ export class HudScene extends Phaser.Scene {
     this.ready = true;
   }
 
-  // Name of the action control, for prompts: "E" on keyboard, "A" on touch.
-  get act() { return this.touch ? 'A' : 'E'; }
+  // Prompt text for an interaction: "E  Talk to Oren" or, on touch, "Tap: talk to Oren".
+  actLabel(verb, hold = false) {
+    if (this.touch) return `Tap: ${verb.charAt(0).toLowerCase()}${verb.slice(1)}`;
+    return `${hold ? 'Hold E' : 'E'}  ${verb}`;
+  }
 
   update() {
     if (this.pad) this.pad.layer.setVisible(!this.busy);

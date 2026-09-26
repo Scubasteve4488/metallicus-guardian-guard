@@ -139,11 +139,11 @@ export class MarketScene extends Phaser.Scene {
     const o = {
       investigate: [
         `Talk to market citizens (${run.talked.size}/3)`,
-        `Inspect clues, hold ${this.hud.act} (${run.clues.size}/3)`,
+        this.hud.touch ? `Inspect clues: tap the gold sparkles (${run.clues.size}/3)` : `Inspect clues, hold E (${run.clues.size}/3)`,
       ],
       board: [this.hud.touch ? 'Evidence gathered. Tap BOARD to open the Evidence Board.' : 'Evidence gathered. Press B to open the Evidence Board.'],
       authorize: ['Go to the gold authorization node and use the Proton Key.'],
-      relay: [`Follow the trail into East Alley and inspect the relay (hold ${this.hud.act}).`],
+      relay: [this.hud.touch ? 'Follow the trail into East Alley and tap the relay.' : 'Follow the trail into East Alley and inspect the relay (hold E).'],
       restored: ['Walk the restored market and talk to people.', this.hud.touch ? 'Tap FINISH to close the case.' : 'Press Enter to close the case.'],
       done: ['Case closed.'],
     }[run.phase] || [];
@@ -178,14 +178,14 @@ export class MarketScene extends Phaser.Scene {
   interactables() {
     const list = [];
     const inv = run.phase === 'investigate' || run.phase === 'board';
-    for (const n of this.npcs) list.push({ kind: 'npc', id: n.id, x: n.x, y: n.y, label: `${this.hud.act}  Talk to ${n.name}`, ref: n });
+    for (const n of this.npcs) list.push({ kind: 'npc', id: n.id, x: n.x, y: n.y, label: this.hud.actLabel(`Talk to ${n.name}`), ref: n });
     if (inv) {
       for (const c of this.caseData.clues) {
-        if (!run.clues.has(c.id)) list.push({ kind: 'clue', id: c.id, x: c.x, y: c.y, label: `Hold ${this.hud.act}  Inspect ${c.name}`, ref: c });
+        if (!run.clues.has(c.id)) list.push({ kind: 'clue', id: c.id, x: c.x, y: c.y, label: this.hud.actLabel(`Inspect ${c.name}`, true), ref: c });
       }
     }
-    if (run.phase === 'authorize') list.push({ kind: 'node', id: 'node', x: NODE.x, y: NODE.y + 4, label: `${this.hud.act}  Use the Proton Key` });
-    if (run.phase === 'relay') list.push({ kind: 'relay', id: 'relay', x: RELAY.inspectX, y: RELAY.inspectY, label: `Hold ${this.hud.act}  Inspect the relay` });
+    if (run.phase === 'authorize') list.push({ kind: 'node', id: 'node', x: NODE.x, y: NODE.y + 4, label: this.hud.actLabel('Use the Proton Key') });
+    if (run.phase === 'relay') list.push({ kind: 'relay', id: 'relay', x: RELAY.inspectX, y: RELAY.inspectY, label: this.hud.actLabel('Inspect the relay', true) });
     return list;
   }
 
@@ -197,6 +197,37 @@ export class MarketScene extends Phaser.Scene {
       if (d < bestD) { bestD = d; best = it; }
     }
     return best;
+  }
+
+  // A quick tap on the screen (HUD coords == screen coords).
+  onWorldTap(sx, sy) {
+    const wp = this.cameras.main.getWorldPoint(sx, sy);
+    let best = null;
+    let bestD = 16;
+    for (const it of this.interactables()) {
+      // People and props stand above their feet point; aim at their middle.
+      const d = Phaser.Math.Distance.Between(wp.x, wp.y, it.x, it.y - 8);
+      if (d < bestD) { bestD = d; best = it; }
+    }
+    this.auto = best ? { x: best.x, y: best.y, it: best } : { x: wp.x, y: wp.y };
+    this.autoLast = { x: this.guard.x, y: this.guard.y, t: this.time.now };
+  }
+
+  // Direction for auto-walk this frame, or null. Gives up if blocked.
+  stepAuto(time) {
+    const a = this.auto;
+    if (!a) return null;
+    const dx = a.x - this.guard.x;
+    const dy = a.y - this.guard.y;
+    const d = Math.hypot(dx, dy);
+    const near = a.it ? INTERACT_RANGE - 6 : 3;
+    if (d <= near) { if (!a.it) this.auto = null; return null; }
+    if (time - this.autoLast.t > 450) {
+      const moved = Phaser.Math.Distance.Between(this.guard.x, this.guard.y, this.autoLast.x, this.autoLast.y);
+      if (moved < 2) { this.auto = null; return null; }
+      this.autoLast = { x: this.guard.x, y: this.guard.y, t: time };
+    }
+    return { x: dx / d, y: dy / d };
   }
 
   async interact(it) {
@@ -275,8 +306,8 @@ export class MarketScene extends Phaser.Scene {
     run.metrics.hints += 1;
     const t = {
       investigate: run.talked.size < 3
-        ? 'Citizens with a violet marker have something to tell you. Walk up and press E.'
-        : `Gold markers show clues. Stand next to one and hold ${this.hud.act} until the bar fills.`,
+        ? (this.hud.touch ? 'People with a speech bubble have something to tell you. Tap them.' : 'Citizens with a speech bubble have something to tell you. Walk up and press E.')
+        : (this.hud.touch ? 'Gold sparkles mark clues. Tap one and Mini GUARD will go and inspect it.' : 'Gold markers show clues. Stand next to one and hold E until the bar fills.'),
       board: this.hud.touch ? 'Tap BOARD to lay out your evidence.' : 'Press B to lay out your evidence and reason it through.',
       authorize: 'The gold pedestal is east of the fountain. Pick the route your linked evidence points to.',
       relay: 'The violet dots lead through the open East Alley gate. The relay is at the end.',
@@ -293,15 +324,27 @@ export class MarketScene extends Phaser.Scene {
     const pad = hud.pad ? hud.pad.pad : {};
     const take = (name) => !!hud.pad && hud.pad.take(name);
 
+    const keysMove = k.A.isDown || k.LEFT.isDown || k.D.isDown || k.RIGHT.isDown
+      || k.W.isDown || k.UP.isDown || k.S.isDown || k.DOWN.isDown;
+    if (!locked && hud.pad) {
+      const t = hud.pad.takeTap();
+      if (t) this.onWorldTap(t.x, t.y);
+    }
+    if (keysMove || pad.vx || pad.vy) { this.auto = null; this.autoHold = false; }
+    const autoVec = locked ? null : this.stepAuto(time);
+
     this.guard.updateMovement(locked ? {} : {
-      left: k.A.isDown || k.LEFT.isDown || pad.left,
-      right: k.D.isDown || k.RIGHT.isDown || pad.right,
-      up: k.W.isDown || k.UP.isDown || pad.up,
-      down: k.S.isDown || k.DOWN.isDown || pad.down,
+      left: k.A.isDown || k.LEFT.isDown,
+      right: k.D.isDown || k.RIGHT.isDown,
+      up: k.W.isDown || k.UP.isDown,
+      down: k.S.isDown || k.DOWN.isDown,
+      vx: pad.vx || (autoVec ? autoVec.x : 0),
+      vy: pad.vy || (autoVec ? autoVec.y : 0),
     }, dt);
     if (locked) {
       hud.setPrompt(null); hud.setProgress(0); this.holdMs = 0; this.taps.clear();
-      if (hud.pad) hud.pad.clear();
+      this.autoHold = false;
+      if (hud.pad) { hud.pad.clear(); hud.pad.tapPrompt = false; }
       return;
     }
 
@@ -316,11 +359,19 @@ export class MarketScene extends Phaser.Scene {
       return;
     }
 
-    const tapped = this.taps.take('KeyE', 'Space') || take('action');
+    let tapped = this.taps.take('KeyE', 'Space');
+    if (hud.pad && hud.pad.tapPrompt) { hud.pad.tapPrompt = false; tapped = true; }
     const it = this.nearest();
     hud.setPrompt(it ? it.label : null);
-    const interactDown = k.E.isDown || k.SPACE.isDown || !!pad.action;
-    if (!it) { this.holdMs = 0; hud.setProgress(0); return; }
+    // Arrived at a tapped object: use it.
+    if (it && this.auto && this.auto.it && this.auto.it.id === it.id) {
+      this.auto = null;
+      tapped = true;
+    }
+    const needsHoldNow = it && (it.kind === 'clue' || it.kind === 'relay');
+    if (tapped && needsHoldNow) this.autoHold = true;
+    const interactDown = k.E.isDown || k.SPACE.isDown || this.autoHold;
+    if (!it) { this.holdMs = 0; this.autoHold = false; hud.setProgress(0); return; }
 
     const needsHold = it.kind === 'clue' || it.kind === 'relay';
     if (needsHold) {
@@ -328,6 +379,7 @@ export class MarketScene extends Phaser.Scene {
       hud.setProgress(this.holdMs / INSPECT_HOLD_MS);
       if (this.holdMs >= INSPECT_HOLD_MS) {
         this.holdMs = 0;
+        this.autoHold = false;
         hud.setProgress(0);
         this.interact(it);
       }
