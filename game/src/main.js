@@ -20,10 +20,12 @@ const game = new Phaser.Game({
   pixelArt: true,
   roundPixels: true,
   physics: { default: 'arcade', arcade: { debug: false } },
+  input: { activePointers: 3 },
   scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
   // Phaser's built-in placeholder textures are data: URIs, which the site's
   // Content-Security-Policy (img-src 'self') blocks. Serve the same images as files.
-  images: {
+  // (A single-file build sets SIGNALBREAK_EMBED and keeps Phaser's defaults.)
+  images: window.SIGNALBREAK_EMBED ? undefined : {
     default: new URL('../assets/phaser-default.png', import.meta.url).href,
     missing: new URL('../assets/phaser-missing.png', import.meta.url).href,
     white: new URL('../assets/phaser-white.png', import.meta.url).href,

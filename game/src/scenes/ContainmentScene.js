@@ -8,6 +8,7 @@ import { txt, panel, button } from '../ui/widgets.js';
 import { Guard } from '../entities/guard.js';
 import { run } from '../state.js';
 import { resolveImpact, containmentSummary } from '../logic/containment.js';
+import { isTouch } from '../ui/touch.js';
 
 const LANES = [380, 580];
 const GUARD_Y = 380;
@@ -104,7 +105,9 @@ export class ContainmentScene extends Phaser.Scene {
     c.add(panel(this, 170, 130, 620, 260));
     c.add(txt(this, 196, 150, 'SHIELD CONTAINMENT', 18, COLORS.gold, { bold: true }));
     c.add(txt(this, 196, 186, this.cfg.intro, 15, COLORS.ink, { wrap: 570 }));
-    c.add(txt(this, 196, 270, '←/→ or A/D: move between the two lanes\nHold SPACE: raise the Nebular Shield', 14, COLORS.violet));
+    c.add(txt(this, 196, 270, isTouch()
+      ? 'Touch a lane to step into it.\nKeep your finger down to hold the Nebular Shield up.'
+      : '←/→ or A/D: move between the two lanes\nHold SPACE: raise the Nebular Shield', 14, COLORS.violet));
     const go = () => {
       if (this.started) return;
       this.started = true;

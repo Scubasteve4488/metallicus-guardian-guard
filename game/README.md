@@ -21,6 +21,13 @@ A server is required: the game uses ES modules and loads `data/case01.json`, so 
 `index.html` straight from disk (`file://`) will not work. Any static server works
 (`npx http-server -p 8080` is another option).
 
+## Play on a phone
+
+Open the page and turn the phone sideways. An on-screen pad appears on touch
+screens: the arrows move, **A** talks (tap) or inspects (hold), **?** gives a hint,
+and a **BOARD** / **FINISH** button appears when it is needed. In the Shield event,
+touch a lane and keep your finger down to hold the Shield up.
+
 ## Controls
 
 | Where | Action | Input |
@@ -91,6 +98,7 @@ repainted. There is no Hub scene in Phase 1.
 cd game
 node --test tests/*.test.js            # 20 logic + canon tests, no dependencies
 node tests/e2e/playthrough.mjs [dir]   # needs Playwright + Chromium; optional screenshot dir
+node tests/e2e/touch.mjs [dir]         # same, emulated phone held sideways, on-screen pad
 ```
 
 The playthrough serves the repo with the production `Content-Security-Policy` from
@@ -114,7 +122,7 @@ any page error or CSP violation.
 - Art is gray-box placeholder only. There are no final sprites or animation sheets, and no sound.
 - `Mini_GUARD_GUARDIAN_Project_Handoff.md` was not available when this was built. The placeholders follow the canon locks restated in the concept packet (p.15) and must be re-checked against that handoff before any real art.
 - The canonical logo is not integrated (intentionally blank).
-- There is no touch or gamepad support for moving in the market or for the Shield event on phones. The board and report work with touch.
+- Touch controls are basic and there is no gamepad support. The Evidence Board and report text is small on phones held upright.
 - There is no save/resume. Refreshing restarts the case.
 - There is only a basic accessibility pass: no remapping, colour-blind check or screen-reader support.
 - The 5 to 8 minute length is an estimate. The automated run proves the loop completes but says nothing about human pace or fun. Playtest with 5 to 8 new players against the pass criteria in the concept packet.

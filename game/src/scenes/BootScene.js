@@ -6,11 +6,15 @@ import { paintMarket, paintProps } from '../art/market.js';
 import { txt, button } from '../ui/widgets.js';
 import { resetRun } from '../state.js';
 import { Guard } from '../entities/guard.js';
+import { isTouch } from '../ui/touch.js';
 
 export class BootScene extends Phaser.Scene {
   constructor() { super('Boot'); }
 
   preload() {
+    // A single-file build embeds the case data instead of fetching it.
+    const embedded = window.SIGNALBREAK_EMBED && window.SIGNALBREAK_EMBED.case01;
+    if (embedded) { if (!this.cache.json.exists('case01')) this.cache.json.add('case01', embedded); return; }
     this.load.json('case01', new URL('../../data/case01.json', import.meta.url).href);
   }
 
@@ -32,9 +36,11 @@ export class BootScene extends Phaser.Scene {
       'Investigate a counterfeit notice in the market. Protect citizens with the Shield.\n' +
       'Authorize the verified route with the Key. File an honest Clarity Report.',
       15, COLORS.ink, { align: 'center' }).setOrigin(0.5, 0);
-    txt(this, VIEW_W / 2, 350,
-      'Move WASD / Arrows   ·   Talk E   ·   Inspect: hold E   ·   Hint H\n' +
-      'Evidence Board & Report: mouse or touch   ·   Shield: Arrows/A-D + hold SPACE',
+    txt(this, VIEW_W / 2, 350, isTouch()
+      ? 'Turn your phone sideways.   Move with the arrow pad   ·   Tap A to talk   ·   Hold A to inspect\n' +
+        'Board & Report: drag or tap cards   ·   Shield: touch a lane and hold'
+      : 'Move WASD / Arrows   ·   Talk E   ·   Inspect: hold E   ·   Hint H\n' +
+        'Evidence Board & Report: mouse or touch   ·   Shield: Arrows/A-D + hold SPACE',
       13, COLORS.dim, { align: 'center' }).setOrigin(0.5, 0);
     txt(this, VIEW_W / 2, 400, data.fictionNotice, 12, COLORS.dim, { align: 'center', wrap: 760 }).setOrigin(0.5, 0);
 
