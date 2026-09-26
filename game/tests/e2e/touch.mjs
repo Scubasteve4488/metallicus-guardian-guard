@@ -49,7 +49,7 @@ async function touchDown(x, y) { const p = await pt(x, y); await cdp.send('Input
 async function touchUp() { await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); }
 async function tap(x, y) { await touchDown(x, y); await sleep(80); await touchUp(); await sleep(200); }
 async function hold(x, y, ms) { await touchDown(x, y); await sleep(ms); await touchUp(); await sleep(200); }
-const A = [960 - 110, 540 - 140];
+const A = [960 - 78, 540 - 86];
 const hud = () => window.__signalbreak.game.scene.getScene('HUD');
 const market = () => window.__signalbreak.game.scene.getScene('Market');
 
@@ -70,11 +70,11 @@ try {
   check(!(await G(() => window.__signalbreak.game.scene.getScene('HUD').busy)), 'tapping the screen advances dialogue');
   await shot('02-market');
   const x0 = await G(() => window.__signalbreak.game.scene.getScene('Market').guard.x);
-  await hold(118 + 58, 540 - 150, 600);
+  await hold(92 + 44, 540 - 92, 600);
   const x1 = await G(() => window.__signalbreak.game.scene.getScene('Market').guard.x);
   check(x1 > x0 + 10, `right arrow on the pad moves Mini GUARD (${x0.toFixed(0)} -> ${x1.toFixed(0)})`);
   const y0 = await G(() => window.__signalbreak.game.scene.getScene('Market').guard.y);
-  await hold(118, 540 - 150 - 58, 400);
+  await hold(92, 540 - 92 - 44, 400);
   check(await G(() => window.__signalbreak.game.scene.getScene('Market').guard.y) < y0 - 5, 'up arrow on the pad moves Mini GUARD');
 
   const data = await G(() => window.__signalbreak.game.cache.json.get('case01'));
@@ -95,7 +95,7 @@ try {
   check(await G(() => window.__signalbreak.run.phase) === 'board', 'all evidence gathered by touch');
   await sleep(300);
   await shot('03-board-button');
-  await tap(960 - 110, 540 - 268);
+  await tap(960 - 170, 540 - 150);
   await waitFor(() => window.__signalbreak.game.scene.isActive('EvidenceBoard'), 3000, 'BOARD button opens the board');
   check(true, 'BOARD button opens the Evidence Board');
   await tap(130, 165); await tap(385, 140);   // source + record
@@ -123,7 +123,7 @@ try {
   await G(() => { const r = window.__signalbreak.run; r.phase = 'restored'; window.__signalbreak.game.scene.getScene('Market').scene.restart(); });
   await sleep(4000);
   await shot('05-restored');
-  await tap(960 - 110, 540 - 268);
+  await tap(960 - 170, 540 - 150);
   await sleep(400);
   check(await G(() => window.__signalbreak.run.phase) === 'done', 'FINISH button closes the case');
   await shot('06-summary');

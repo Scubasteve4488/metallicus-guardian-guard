@@ -12,13 +12,13 @@ export function isTouch() {
 }
 
 // A round (or square) pad button. onDown/onUp fire per finger.
-function padButton(scene, x, y, r, label, onDown, onUp, { square = false, size = 22 } = {}) {
+function padButton(scene, x, y, r, label, onDown, onUp, { square = false, size = 16 } = {}) {
   const c = scene.add.container(x, y);
   const g = scene.add.graphics();
   const draw = (pressed) => {
     g.clear();
-    g.fillStyle(pressed ? 0x6b4fb0 : 0x141222, pressed ? 0.9 : 0.55);
-    g.lineStyle(3, 0xe0b64a, pressed ? 1 : 0.7);
+    g.fillStyle(pressed ? 0x6b4fb0 : 0x141222, pressed ? 0.8 : 0.35);
+    g.lineStyle(2, 0xe0b64a, pressed ? 0.9 : 0.45);
     if (square) { g.fillRect(-r, -r, r * 2, r * 2); g.strokeRect(-r, -r, r * 2, r * 2); }
     else { g.fillCircle(0, 0, r); g.strokeCircle(0, 0, r); }
   };
@@ -41,10 +41,11 @@ export function buildTouchPad(hud) {
   const tapped = new Set();
   const layer = hud.add.container(0, 0).setDepth(30);
 
-  const cx = 118;
-  const cy = VIEW_H - 150;
-  const s = 58;
-  const r = 34;
+  // Compact pad: ~40px buttons on a sideways phone, kept low in the corners.
+  const cx = 92;
+  const cy = VIEW_H - 92;
+  const s = 44;
+  const r = 21;
   const dir = (name, x, y, label) => layer.add(padButton(hud, x, y, r, label,
     () => { pad[name] = true; }, () => { pad[name] = false; }, { square: true }));
   dir('up', cx, cy - s, '▲');
@@ -52,11 +53,11 @@ export function buildTouchPad(hud) {
   dir('left', cx - s, cy, '◀');
   dir('right', cx + s, cy, '▶');
 
-  layer.add(padButton(hud, VIEW_W - 110, VIEW_H - 140, 58, 'A',
-    () => { pad.action = true; tapped.add('action'); }, () => { pad.action = false; }, { size: 34 }));
-  layer.add(padButton(hud, VIEW_W - 60, 110, 30, '?', () => tapped.add('hint'), null, { size: 22 }));
+  layer.add(padButton(hud, VIEW_W - 78, VIEW_H - 86, 38, 'A',
+    () => { pad.action = true; tapped.add('action'); }, () => { pad.action = false; }, { size: 24 }));
+  layer.add(padButton(hud, VIEW_W - 36, 84, 20, '?', () => tapped.add('hint'), null, { size: 16 }));
 
-  const ctx = padButton(hud, VIEW_W - 110, VIEW_H - 268, 48, '', () => tapped.add('ctx'), null, { size: 15 });
+  const ctx = padButton(hud, VIEW_W - 170, VIEW_H - 150, 34, '', () => tapped.add('ctx'), null, { size: 12 });
   ctx.setVisible(false);
   layer.add(ctx);
 

@@ -26,7 +26,7 @@ export class HudScene extends Phaser.Scene {
 
     this.touch = isTouch();
     // Evidence tray (bottom left; shifted right on touch to clear the d-pad)
-    this.trayX = this.touch ? 236 : 8;
+    this.trayX = this.touch ? 190 : 8;
     this.trayBg = panel(this, this.trayX, VIEW_H - 50, 470, 42);
     this.trayLabel = txt(this, this.trayX + 10, VIEW_H - 38, 'EVIDENCE 0', 13, COLORS.gold, { bold: true });
     this.trayChips = [];
