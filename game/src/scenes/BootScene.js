@@ -26,6 +26,8 @@ export class BootScene extends Phaser.Scene {
 
     const data = this.cache.json.get('case01');
     this.started = false;
+    // Single-file build: remove its "Loading" overlay.
+    if (window.SIGNALBREAK_READY) window.SIGNALBREAK_READY();
     this.cameras.main.setBackgroundColor('#0b0a12');
     txt(this, VIEW_W / 2, 70, 'GUARD.IAN: SIGNALBREAK', 34, COLORS.gold, { bold: true }).setOrigin(0.5);
     txt(this, VIEW_W / 2, 110, 'Phase 1 gray-box prototype  ·  ' + data.title, 16, COLORS.violet).setOrigin(0.5);
