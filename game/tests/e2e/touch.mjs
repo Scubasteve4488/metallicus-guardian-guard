@@ -48,8 +48,23 @@ async function pt(x, y) {
 async function touchDown(x, y) { const p = await pt(x, y); await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: p.x, y: p.y }] }); }
 async function touchUp() { await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); }
 async function tap(x, y) { await touchDown(x, y); await sleep(80); await touchUp(); await sleep(200); }
-async function hold(x, y, ms) { await touchDown(x, y); await sleep(ms); await touchUp(); await sleep(200); }
-const A = [960 - 78, 540 - 86];
+async function swipe(x, y, dx, dy, ms) {
+  const a = await pt(x, y);
+  const b = await pt(x + dx, y + dy);
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: a.x, y: a.y }] });
+  for (let i = 1; i <= 6; i++) {
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: a.x + ((b.x - a.x) * i) / 6, y: a.y + ((b.y - a.y) * i) / 6 }] });
+    await sleep(30);
+  }
+  await sleep(ms);
+  await touchUp();
+  await sleep(200);
+}
+// Screen position (game coords) of a world point in the market.
+const toScreen = (w) => G(([x, y]) => {
+  const c = window.__signalbreak.game.scene.getScene('Market').cameras.main;
+  return [(x - c.worldView.x) * c.zoom, (y - c.worldView.y) * c.zoom];
+}, w);
 const hud = () => window.__signalbreak.game.scene.getScene('HUD');
 const market = () => window.__signalbreak.game.scene.getScene('Market');
 
@@ -70,32 +85,42 @@ try {
   check(!(await G(() => window.__signalbreak.game.scene.getScene('HUD').busy)), 'tapping the screen advances dialogue');
   await shot('02-market');
   const x0 = await G(() => window.__signalbreak.game.scene.getScene('Market').guard.x);
-  await hold(92 + 44, 540 - 92, 600);
+  await swipe(300, 300, 60, 0, 500);
   const x1 = await G(() => window.__signalbreak.game.scene.getScene('Market').guard.x);
-  check(x1 > x0 + 10, `right arrow on the pad moves Mini GUARD (${x0.toFixed(0)} -> ${x1.toFixed(0)})`);
+  check(x1 > x0 + 10, `thumb drag to the right walks Mini GUARD (${x0.toFixed(0)} -> ${x1.toFixed(0)})`);
   const y0 = await G(() => window.__signalbreak.game.scene.getScene('Market').guard.y);
-  await hold(92, 540 - 92 - 44, 400);
-  check(await G(() => window.__signalbreak.game.scene.getScene('Market').guard.y) < y0 - 5, 'up arrow on the pad moves Mini GUARD');
+  await swipe(600, 300, 0, -60, 400);
+  check(await G(() => window.__signalbreak.game.scene.getScene('Market').guard.y) < y0 - 5, 'thumb drag up walks Mini GUARD');
+  // Tap open ground: walks there.
+  const g0 = await G(() => { const g = window.__signalbreak.game.scene.getScene('Market').guard; return [g.x, g.y]; });
+  const dest = await toScreen([g0[0] - 30, g0[1]]);
+  await tap(dest[0], dest[1]);
+  await sleep(900);
+  check(await G(() => window.__signalbreak.game.scene.getScene('Market').guard.x) < g0[0] - 15, 'tapping the ground walks there');
 
   const data = await G(() => window.__signalbreak.game.cache.json.get('case01'));
   for (const n of data.npcs) {
-    await G(([x, y]) => window.__signalbreak.game.scene.getScene('Market').guard.setPosition(x, y), [n.x, n.y + 10]);
-    await sleep(150);
-    await tap(...A);
-    check(await G(() => window.__signalbreak.game.scene.getScene('HUD').busy), `tap A talks to ${n.name}`);
+    await G(([x, y]) => window.__signalbreak.game.scene.getScene('Market').guard.setPosition(x, y), [n.x, n.y + 40]);
+    await sleep(250);
+    const sp = await toScreen([n.x, n.y - 8]);
+    await tap(sp[0], sp[1]);
+    await sleep(1200);
+    check(await G(() => window.__signalbreak.game.scene.getScene('HUD').busy), `tapping ${n.name} walks over and talks`);
     for (let i = 0; i < 6 && await G(() => window.__signalbreak.game.scene.getScene('HUD').busy); i++) await tap(480, 300);
   }
   for (const c of data.clues) {
-    await G(([x, y]) => window.__signalbreak.game.scene.getScene('Market').guard.setPosition(x, y), [c.x, c.y + 8]);
-    await sleep(150);
-    await hold(...A, 1000);
-    check(await G(() => window.__signalbreak.game.scene.getScene('HUD').busy), `hold A inspects ${c.name}`);
+    await G(([x, y]) => window.__signalbreak.game.scene.getScene('Market').guard.setPosition(x, y), [c.x, c.y + 30]);
+    await sleep(250);
+    const sp = await toScreen([c.x, c.y - 8]);
+    await tap(sp[0], sp[1]);
+    await sleep(2000);
+    check(await G(() => window.__signalbreak.game.scene.getScene('HUD').busy), `tapping ${c.name} walks over and inspects it`);
     for (let i = 0; i < 6 && await G(() => window.__signalbreak.game.scene.getScene('HUD').busy); i++) await tap(480, 300);
   }
   check(await G(() => window.__signalbreak.run.phase) === 'board', 'all evidence gathered by touch');
   await sleep(300);
   await shot('03-board-button');
-  await tap(960 - 170, 540 - 150);
+  await tap(960 - 70, 440);
   await waitFor(() => window.__signalbreak.game.scene.isActive('EvidenceBoard'), 3000, 'BOARD button opens the board');
   check(true, 'BOARD button opens the Evidence Board');
   await tap(130, 165); await tap(385, 140);   // source + record
@@ -123,7 +148,7 @@ try {
   await G(() => { const r = window.__signalbreak.run; r.phase = 'restored'; window.__signalbreak.game.scene.getScene('Market').scene.restart(); });
   await sleep(4000);
   await shot('05-restored');
-  await tap(960 - 170, 540 - 150);
+  await tap(960 - 70, 440);
   await sleep(400);
   check(await G(() => window.__signalbreak.run.phase) === 'done', 'FINISH button closes the case');
   await shot('06-summary');

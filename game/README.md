@@ -23,10 +23,11 @@ A server is required: the game uses ES modules and loads `data/case01.json`, so 
 
 ## Play on a phone
 
-Open the page and turn the phone sideways. An on-screen pad appears on touch
-screens: the arrows move, **A** talks (tap) or inspects (hold), **?** gives a hint,
-and a **BOARD** / **FINISH** button appears when it is needed. In the Shield event,
-touch a lane and keep your finger down to hold the Shield up.
+Turn the phone sideways. Drag your thumb anywhere to walk; a faint stick appears
+under it. Tap a person or object and Mini GUARD walks over and uses it (clues are
+inspected automatically). Tap open ground to walk there. Tap anywhere to move
+through dialogue. **?** gives a hint; **BOARD** / **FINISH** appear when needed.
+In the Shield event, touch a lane and keep your finger down to hold the Shield up.
 
 ## Controls
 
