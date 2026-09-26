@@ -4,6 +4,8 @@
 .game-root {
   width: 100%;
   max-width: 960px;
+  /* Never taller than the screen, so phones held sideways see the whole game. */
+  max-width: min(960px, calc((100svh - 12px) * 16 / 9));
   aspect-ratio: 16 / 9;
   margin: 0 auto;
   background: #0b0a12;
@@ -11,5 +13,11 @@
   box-sizing: border-box;
   overflow: hidden;
 }
-.game-root canvas { display: block; image-rendering: pixelated; }
+.game-root canvas { display: block; image-rendering: pixelated; touch-action: none; }
 .game-note { max-width: 960px; margin: 12px auto 0; font-size: 0.9rem; opacity: 0.8; }
+
+/* Phones held sideways: let the site menu scroll away so it doesn't cover the game. */
+@media (max-height: 500px) {
+  #nav { position: static; }
+  .game-wrap { padding-top: 6px; }
+}

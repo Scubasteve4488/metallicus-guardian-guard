@@ -5,6 +5,7 @@ import { VIEW_W, VIEW_H, COLORS } from '../config.js';
 import { txt, panel, button } from '../ui/widgets.js';
 import { run, evidenceQuality } from '../state.js';
 import { tapTracker } from '../ui/taps.js';
+import { isTouch, buildTouchPad } from '../ui/touch.js';
 
 const TYPE_COLORS = { SOURCE: '#8fc8ff', RECORD: '#8fe3b0', WITNESS: '#ffcf70', TRAIL: '#c79bff', CLAIM: '#ff9fb0' };
 
@@ -23,9 +24,11 @@ export class HudScene extends Phaser.Scene {
     this.objTitle = txt(this, 18, 14, 'CASE 01: COUNTERFEIT SIGNAL', 14, COLORS.violet, { bold: true });
     this.objText = txt(this, 18, 34, '', 14, COLORS.ink, { wrap: 310 });
 
-    // Evidence tray (bottom left)
-    this.trayBg = panel(this, 8, VIEW_H - 50, 470, 42);
-    this.trayLabel = txt(this, 18, VIEW_H - 38, 'EVIDENCE 0', 13, COLORS.gold, { bold: true });
+    this.touch = isTouch();
+    // Evidence tray (bottom left; shifted right on touch to clear the d-pad)
+    this.trayX = this.touch ? 236 : 8;
+    this.trayBg = panel(this, this.trayX, VIEW_H - 50, 470, 42);
+    this.trayLabel = txt(this, this.trayX + 10, VIEW_H - 38, 'EVIDENCE 0', 13, COLORS.gold, { bold: true });
     this.trayChips = [];
 
     // Trust meter (top right)
@@ -37,7 +40,8 @@ export class HudScene extends Phaser.Scene {
 
     // Controls reminder (bottom right)
     this.help = txt(this, VIEW_W - 12, VIEW_H - 12,
-      'Move: WASD/Arrows   Talk/Inspect: E (hold to inspect)   Hint: H', 12, COLORS.dim).setOrigin(1, 1);
+      'Move: WASD/Arrows   Talk/Inspect: E (hold to inspect)   Hint: H', 12, COLORS.dim).setOrigin(1, 1)
+      .setVisible(!this.touch);
 
     // Interaction prompt (above Mini GUARD, centre screen)
     this.prompt = txt(this, VIEW_W / 2, VIEW_H / 2 + 44, '', 15, COLORS.ink, { bold: true, align: 'center' })
@@ -52,16 +56,21 @@ export class HudScene extends Phaser.Scene {
     const dBg = panel(this, 120, VIEW_H - 170, VIEW_W - 240, 118);
     this.dlgName = txt(this, 140, VIEW_H - 160, '', 15, COLORS.gold, { bold: true });
     this.dlgText = txt(this, 140, VIEW_H - 136, '', 16, COLORS.ink, { wrap: VIEW_W - 290 });
-    this.dlgMore = txt(this, VIEW_W - 135, VIEW_H - 62, 'E ▸', 14, COLORS.dim).setOrigin(1, 1);
+    this.dlgMore = txt(this, VIEW_W - 135, VIEW_H - 62, this.touch ? 'tap ▸' : 'E ▸', 14, COLORS.dim).setOrigin(1, 1);
     this.dlg.add([dBg, this.dlgName, this.dlgText, this.dlgMore]);
 
     this.taps = tapTracker(this);
     this.input.on('pointerup', () => { if (this.dlgActive) this.advance(); });
+    this.pad = this.touch ? buildTouchPad(this) : null;
     this.refreshTray();
     this.ready = true;
   }
 
+  // Name of the action control, for prompts: "E" on keyboard, "A" on touch.
+  get act() { return this.touch ? 'A' : 'E'; }
+
   update() {
+    if (this.pad) this.pad.layer.setVisible(!this.busy);
     if (!this.dlgActive) { this.taps.clear(); return; }
     if (this.taps.take('KeyE', 'Space', 'Enter')) this.advance();
   }
@@ -79,7 +88,7 @@ export class HudScene extends Phaser.Scene {
     this.trayChips.forEach((c) => c.destroy());
     this.trayChips = [];
     this.trayLabel.setText(`EVIDENCE ${run.cards.length}`);
-    let x = 110;
+    let x = this.trayX + 102;
     for (const id of run.cards) {
       const card = this.caseData.cards[id];
       const chip = txt(this, x, VIEW_H - 38, card.type, 13, TYPE_COLORS[card.type], { bold: true })

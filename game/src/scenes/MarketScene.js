@@ -139,21 +139,22 @@ export class MarketScene extends Phaser.Scene {
     const o = {
       investigate: [
         `Talk to market citizens (${run.talked.size}/3)`,
-        `Inspect clues, hold E (${run.clues.size}/3)`,
+        `Inspect clues, hold ${this.hud.act} (${run.clues.size}/3)`,
       ],
-      board: ['Evidence gathered. Press B to open the Evidence Board.'],
+      board: [this.hud.touch ? 'Evidence gathered. Tap BOARD to open the Evidence Board.' : 'Evidence gathered. Press B to open the Evidence Board.'],
       authorize: ['Go to the gold authorization node and use the Proton Key.'],
-      relay: ['Follow the trail into East Alley and inspect the relay (hold E).'],
-      restored: ['Walk the restored market and talk to people.', 'Press Enter to close the case.'],
+      relay: [`Follow the trail into East Alley and inspect the relay (hold ${this.hud.act}).`],
+      restored: ['Walk the restored market and talk to people.', this.hud.touch ? 'Tap FINISH to close the case.' : 'Press Enter to close the case.'],
       done: ['Case closed.'],
     }[run.phase] || [];
     this.hud.setObjectives(o);
+    if (this.hud.pad) this.hud.pad.setContext({ board: 'BOARD', restored: 'FINISH' }[run.phase] || null);
   }
 
   checkGathered() {
     if (run.phase === 'investigate' && run.talked.size >= 3 && run.clues.size >= 3) {
       run.phase = 'board';
-      this.hud.toast('All evidence gathered. Press B for the Evidence Board.', COLORS.violet);
+      this.hud.toast(this.hud.touch ? 'All evidence gathered. Tap BOARD.' : 'All evidence gathered. Press B for the Evidence Board.', COLORS.violet);
     }
     this.refreshObjectives();
   }
@@ -177,14 +178,14 @@ export class MarketScene extends Phaser.Scene {
   interactables() {
     const list = [];
     const inv = run.phase === 'investigate' || run.phase === 'board';
-    for (const n of this.npcs) list.push({ kind: 'npc', id: n.id, x: n.x, y: n.y, label: `E  Talk to ${n.name}`, ref: n });
+    for (const n of this.npcs) list.push({ kind: 'npc', id: n.id, x: n.x, y: n.y, label: `${this.hud.act}  Talk to ${n.name}`, ref: n });
     if (inv) {
       for (const c of this.caseData.clues) {
-        if (!run.clues.has(c.id)) list.push({ kind: 'clue', id: c.id, x: c.x, y: c.y, label: `Hold E  Inspect ${c.name}`, ref: c });
+        if (!run.clues.has(c.id)) list.push({ kind: 'clue', id: c.id, x: c.x, y: c.y, label: `Hold ${this.hud.act}  Inspect ${c.name}`, ref: c });
       }
     }
-    if (run.phase === 'authorize') list.push({ kind: 'node', id: 'node', x: NODE.x, y: NODE.y + 4, label: 'E  Use the Proton Key' });
-    if (run.phase === 'relay') list.push({ kind: 'relay', id: 'relay', x: RELAY.inspectX, y: RELAY.inspectY, label: 'Hold E  Inspect the relay' });
+    if (run.phase === 'authorize') list.push({ kind: 'node', id: 'node', x: NODE.x, y: NODE.y + 4, label: `${this.hud.act}  Use the Proton Key` });
+    if (run.phase === 'relay') list.push({ kind: 'relay', id: 'relay', x: RELAY.inspectX, y: RELAY.inspectY, label: `Hold ${this.hud.act}  Inspect the relay` });
     return list;
   }
 
@@ -275,11 +276,11 @@ export class MarketScene extends Phaser.Scene {
     const t = {
       investigate: run.talked.size < 3
         ? 'Citizens with a violet marker have something to tell you. Walk up and press E.'
-        : 'Gold markers show clues. Stand next to one and hold E until the bar fills.',
-      board: 'Press B to lay out your evidence and reason it through.',
+        : `Gold markers show clues. Stand next to one and hold ${this.hud.act} until the bar fills.`,
+      board: this.hud.touch ? 'Tap BOARD to lay out your evidence.' : 'Press B to lay out your evidence and reason it through.',
       authorize: 'The gold pedestal is east of the fountain. Pick the route your linked evidence points to.',
       relay: 'The violet dots lead through the open East Alley gate. The relay is at the end.',
-      restored: 'Everything is back to normal. Press Enter when you are done looking around.',
+      restored: this.hud.touch ? 'Everything is back to normal. Tap FINISH when you are done.' : 'Everything is back to normal. Press Enter when you are done looking around.',
     }[run.phase];
     if (t) this.hud.dialogue([{ name: 'Hint', text: t }]);
   }
@@ -289,18 +290,25 @@ export class MarketScene extends Phaser.Scene {
     const hud = this.hud;
     if (!hud || !hud.ready) return;
     const locked = hud.busy || this.guard.frozen || time - hud.closedAt < 150;
+    const pad = hud.pad ? hud.pad.pad : {};
+    const take = (name) => !!hud.pad && hud.pad.take(name);
 
     this.guard.updateMovement(locked ? {} : {
-      left: k.A.isDown || k.LEFT.isDown,
-      right: k.D.isDown || k.RIGHT.isDown,
-      up: k.W.isDown || k.UP.isDown,
-      down: k.S.isDown || k.DOWN.isDown,
+      left: k.A.isDown || k.LEFT.isDown || pad.left,
+      right: k.D.isDown || k.RIGHT.isDown || pad.right,
+      up: k.W.isDown || k.UP.isDown || pad.up,
+      down: k.S.isDown || k.DOWN.isDown || pad.down,
     }, dt);
-    if (locked) { hud.setPrompt(null); hud.setProgress(0); this.holdMs = 0; this.taps.clear(); return; }
+    if (locked) {
+      hud.setPrompt(null); hud.setProgress(0); this.holdMs = 0; this.taps.clear();
+      if (hud.pad) hud.pad.clear();
+      return;
+    }
 
-    if (this.taps.take('KeyH')) { this.hint(); return; }
-    if (run.phase === 'board' && this.taps.take('KeyB')) { this.goTo('EvidenceBoard'); return; }
-    if (run.phase === 'restored' && this.taps.take('Enter')) {
+    if (this.taps.take('KeyH') || take('hint')) { this.hint(); return; }
+    const ctx = take('ctx');
+    if (run.phase === 'board' && (this.taps.take('KeyB') || ctx)) { this.goTo('EvidenceBoard'); return; }
+    if (run.phase === 'restored' && (this.taps.take('Enter') || ctx)) {
       run.phase = 'done';
       run.metrics.finishedAt = Date.now();
       this.refreshObjectives();
@@ -308,10 +316,10 @@ export class MarketScene extends Phaser.Scene {
       return;
     }
 
-    const tapped = this.taps.take('KeyE', 'Space');
+    const tapped = this.taps.take('KeyE', 'Space') || take('action');
     const it = this.nearest();
     hud.setPrompt(it ? it.label : null);
-    const interactDown = k.E.isDown || k.SPACE.isDown;
+    const interactDown = k.E.isDown || k.SPACE.isDown || !!pad.action;
     if (!it) { this.holdMs = 0; hud.setProgress(0); return; }
 
     const needsHold = it.kind === 'clue' || it.kind === 'relay';
