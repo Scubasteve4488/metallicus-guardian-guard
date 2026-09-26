@@ -1,0 +1,15 @@
+/* Game page only. Loaded after the shared site.css. */
+.game-wrap { padding-top: 24px; padding-bottom: 32px; }
+.game-label { font-size: 0.85rem; letter-spacing: 0.04em; opacity: 0.75; margin: 0 0 10px; }
+.game-root {
+  width: 100%;
+  max-width: 960px;
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  background: #0b0a12;
+  border: 2px solid #3d2c6e;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.game-root canvas { display: block; image-rendering: pixelated; }
+.game-note { max-width: 960px; margin: 12px auto 0; font-size: 0.9rem; opacity: 0.8; }

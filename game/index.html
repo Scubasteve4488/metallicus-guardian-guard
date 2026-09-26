@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GUARD.IAN: SIGNALBREAK — Phase 1 gray-box prototype</title>
+<meta name="description" content="Phase 1 gray-box prototype of a fictional browser investigation game. Local only, no wallet, no chain calls.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0e1220">
+<link rel="icon" href="/assets/img/img_coin.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Cinzel:wght@500;700&amp;family=Cinzel+Decorative:wght@700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="/game/css/game.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<nav id="nav" aria-label="Primary">
+  <a class="nav-brand" href="/">
+    <img src="/assets/img/img_coin.jpg" alt="" width="34" height="34">
+    <span>StandGuard</span>
+  </a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+    <span></span><span></span><span></span>
+    <span class="vh">Menu</span>
+  </button>
+  <div class="nav-links" id="nav-links">
+    <a class="nav-link" href="/">Home</a>
+    <a class="nav-link" href="/ian">Guard.IAN</a>
+    <a class="nav-link" href="/services">Services</a>
+    <a class="nav-link" href="/tools">Tools &amp; Evidence</a>
+    <a class="nav-link" href="/learn">Learn</a>
+    <a class="nav-link" href="/community">Community</a>
+    <a class="nav-link" href="/about">About</a>
+  </div>
+  <a class="nav-cta" href="/services">Join the service waitlist</a>
+</nav>
+<main id="main">
+<div class="container game-wrap">
+  <p class="game-label">Phase 1 gray-box prototype &middot; unlisted &middot; fictional case</p>
+  <div id="game-root" class="game-root" aria-label="GUARD.IAN: SIGNALBREAK game canvas"></div>
+  <p class="game-note">Keyboard: WASD or arrow keys to move, E to talk, hold E to inspect, H for a hint. The Evidence Board and Clarity Report use the mouse or touch. In the Shield event, arrow keys or A/D change lane and holding Space raises the Shield.</p>
+  <p class="game-note">Everything in this game is fictional training content. It connects to no wallet, reads no chain data, and does not check anything in the real world. Art is placeholder gray-box; the Key and Shield emblem areas are blank until the canonical logo file is supplied.</p>
+</div>
+</main>
+<footer id="site-footer">
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand"><img src="/assets/img/img_coin.jpg" alt="" width="30" height="30"><span>StandGuard</span></div>
+        <p class="foot-desc">The public home of Guard.IAN &mdash; an evidence-first XPR Network agent that explains public on-chain activity and leaves receipts.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="/ian">Guard.IAN</a>
+        <a href="/services">Services</a>
+        <a href="/tools">Tools</a>
+        <a href="/evidence#method">Evidence Method</a>
+        <a href="/learn">Learn</a>
+        <a href="/community">Community</a>
+        <a href="/guard">GUARD</a>
+        <a href="/status">Status</a>
+      </div>
+      <div class="foot-col">
+        <h4>Boundaries</h4>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/corrections">Corrections</a>
+        <a href="/contact">Contact</a>
+        <a href="https://xpragents.io/agent/safeguard5" rel="noopener">XPR Agents profile</a>
+        <a href="https://github.com/Scubasteve4488/metallicus-guardian-guard" rel="noopener">GitHub public repository</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p class="foot-disc">StandGuard and Guard.IAN are independent community-built projects. They are not official Metallicus, XPR Network, WebAuth, SimpleDEX, or XPR Agents products. Information is educational and evidence-based, not financial, legal, security, or investment advice.</p>
+      <p class="foot-meta">&copy; <span id="foot-year">2026</span> StandGuard &middot; built by <a href="https://x.com/scubasteve4488" rel="noopener">@Scubasteve4488</a> &middot; <a href="/status">what is live, testing, planned and parked</a></p>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js"></script>
+<script src="/game/vendor/phaser.min.js"></script>
+<script type="module" src="/game/src/main.js"></script>
+
+</body>
+</html>
