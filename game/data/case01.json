@@ -3,12 +3,23 @@
   "title": "Case 01: The Counterfeit Signal",
   "fictionNotice": "Fictional training case. No real token, wallet, contract, service, organisation or person is described. Nothing here checks anything in the real world.",
   "intro": [
-    { "name": "Market Terminal", "text": "VENDOR NOTICE from the Market Board: registration has moved. Re-register at Relay 7 before sundown or lose your stall." },
-    { "name": "Mini GUARD", "text": "That notice is repeating on a loop. It looks official, but something about it is off. Let's get the facts before anyone acts on it." }
+    {
+      "name": "Market Terminal",
+      "text": "VENDOR NOTICE from the Market Board: registration has moved. Re-register at Relay 7 before sundown or lose your stall."
+    },
+    {
+      "name": "Mini GUARD",
+      "text": "That notice is repeating on a loop. It looks official, but something about it is off. Let's get the facts before anyone acts on it."
+    }
   ],
   "npcs": [
     {
-      "id": "oren", "name": "Oren", "role": "Fruit vendor", "x": 70, "y": 112, "palette": "oren",
+      "id": "oren",
+      "name": "Oren",
+      "role": "Fruit vendor",
+      "x": 70,
+      "y": 112,
+      "palette": "oren",
       "lines": [
         "Mini GUARD! The terminal says I have to re-register at some 'Relay 7' before sundown.",
         "I've never heard of Relay 7. But it says it's from the Market Board, so... should I just go?",
@@ -20,7 +31,12 @@
       ]
     },
     {
-      "id": "juno", "name": "Juno", "role": "Shopper", "x": 224, "y": 206, "palette": "juno",
+      "id": "juno",
+      "name": "Juno",
+      "role": "Shopper",
+      "x": 224,
+      "y": 206,
+      "palette": "juno",
       "gives": "rumor",
       "lines": [
         "It looked real... but something felt off. The wording was so urgent.",
@@ -33,7 +49,12 @@
       ]
     },
     {
-      "id": "sela", "name": "Sela", "role": "Lamp keeper", "x": 330, "y": 148, "palette": "sela",
+      "id": "sela",
+      "name": "Sela",
+      "role": "Lamp keeper",
+      "x": 330,
+      "y": 148,
+      "palette": "sela",
       "gives": "witness",
       "lines": [
         "I saw someone tampering with the terminal last night... well, early this morning.",
@@ -48,7 +69,11 @@
   ],
   "clues": [
     {
-      "id": "terminal", "name": "Market Terminal", "gives": "source", "x": 372, "y": 118,
+      "id": "terminal",
+      "name": "Market Terminal",
+      "gives": "source",
+      "x": 372,
+      "y": 118,
       "inspectLines": [
         "Header: 'Market Board, issued at the 10:00 session.'",
         "Broadcast stamp: 08:40.",
@@ -56,7 +81,11 @@
       ]
     },
     {
-      "id": "records", "name": "Records Board", "gives": "record", "x": 118, "y": 58,
+      "id": "records",
+      "name": "Records Board",
+      "gives": "record",
+      "x": 118,
+      "y": 58,
       "inspectLines": [
         "Market Board log: today's session opened at 10:00.",
         "Notices posted today: 'Lamp repairs on the canal walk.' Nothing about registration.",
@@ -64,7 +93,11 @@
       ]
     },
     {
-      "id": "trail", "name": "Signal Trail", "gives": "trail", "x": 452, "y": 142,
+      "id": "trail",
+      "name": "Signal Trail",
+      "gives": "trail",
+      "x": 452,
+      "y": 142,
       "inspectLines": [
         "A violet signal trace runs along the stones from the terminal.",
         "It passes under the East Alley gate and keeps going."
@@ -72,22 +105,87 @@
     }
   ],
   "cards": {
-    "source":  { "type": "SOURCE",  "title": "Terminal notice", "body": "Claims to come from the Market Board's 10:00 session. Broadcast stamp: 08:40. Says: re-register at Relay 7 before sundown.", "x": 130, "y": 165 },
-    "record":  { "type": "RECORD",  "title": "Records Board",   "body": "Board session opened 10:00. No registration notice in its log. Relay register lists 1-6; no Relay 7.", "x": 385, "y": 140 },
-    "witness": { "type": "WITNESS", "title": "Sela's statement", "body": "Saw someone in a grey hood at the terminal around 08:30, then walking toward East Alley.", "x": 130, "y": 395 },
-    "trail":   { "type": "TRAIL",   "title": "Signal trail",    "body": "A violet trace runs from the terminal into East Alley.", "x": 385, "y": 405 },
-    "rumor":   { "type": "CLAIM",   "title": "Juno's rumor",    "body": "'I heard the Board changed its rules last week.' Juno can't say who said it.", "x": 595, "y": 275 }
+    "source": {
+      "type": "SOURCE",
+      "title": "Terminal notice",
+      "body": "Claims to come from the Market Board's 10:00 session. Broadcast stamp: 08:40. Says: re-register at Relay 7 before sundown.",
+      "x": 130,
+      "y": 165
+    },
+    "record": {
+      "type": "RECORD",
+      "title": "Records Board",
+      "body": "Board session opened 10:00. No registration notice in its log. Relay register lists 1-6; no Relay 7.",
+      "x": 385,
+      "y": 140
+    },
+    "witness": {
+      "type": "WITNESS",
+      "title": "Sela's statement",
+      "body": "Saw someone in a grey hood at the terminal around 08:30, then walking toward East Alley.",
+      "x": 130,
+      "y": 395
+    },
+    "trail": {
+      "type": "SOURCE",
+      "title": "Signal trail",
+      "body": "A violet trace runs from the terminal into East Alley.",
+      "x": 385,
+      "y": 405
+    },
+    "rumor": {
+      "type": "WITNESS",
+      "title": "Juno's rumor",
+      "body": "'I heard the Board changed its rules last week.' Juno can't say who said it.",
+      "x": 595,
+      "y": 275
+    }
   },
   "links": [
-    { "a": "source", "b": "record", "kind": "contradiction", "text": "Contradiction: the 08:40 broadcast is older than the 10:00 session it claims to come from." },
-    { "a": "witness", "b": "trail", "kind": "supports", "route": "east", "text": "Supports: the witness and the trail both point to East Alley." },
-    { "a": "source", "b": "trail", "kind": "supports", "route": "east", "text": "Supports: the trail starts at the terminal that sent the notice." },
-    { "a": "record", "b": "trail", "kind": "supports", "route": "east", "text": "Supports: the trail heads toward a relay the public register doesn't list." },
-    { "a": "source", "b": "witness", "kind": "supports", "text": "Supports: someone was at the terminal at 08:30, ten minutes before the 08:40 broadcast." }
+    {
+      "a": "source",
+      "b": "record",
+      "kind": "contradiction",
+      "text": "Contradiction: the 08:40 broadcast is older than the 10:00 session it claims to come from."
+    },
+    {
+      "a": "witness",
+      "b": "trail",
+      "kind": "supports",
+      "route": "east",
+      "text": "Supports: the witness and the trail both point to East Alley."
+    },
+    {
+      "a": "source",
+      "b": "trail",
+      "kind": "supports",
+      "route": "east",
+      "text": "Supports: the trail starts at the terminal that sent the notice."
+    },
+    {
+      "a": "record",
+      "b": "trail",
+      "kind": "supports",
+      "route": "east",
+      "text": "Supports: the trail heads toward a relay the public register doesn't list."
+    },
+    {
+      "a": "source",
+      "b": "witness",
+      "kind": "supports",
+      "text": "Supports: someone was at the terminal at 08:30, ten minutes before the 08:40 broadcast."
+    }
   ],
-  "unrelatedText": "No shared time, actor or place connects these two.",
-  "rumorLinkText": "Nothing on the board backs this claim. You can't link it to evidence. Mark it Uncertain instead.",
-  "uncertainCorrect": ["rumor"],
+  "unrelatedText": "Kept as UNCERTAIN: no shared time, actor or place connects these two.",
+  "rumorLinkText": "Kept as UNCERTAIN: nothing on the board backs this claim. Mark the card itself Uncertain too.",
+  "evidenceTypes": [
+    "SOURCE",
+    "RECORD",
+    "WITNESS"
+  ],
+  "uncertainCorrect": [
+    "rumor"
+  ],
   "uncertainWrongText": {
     "source": "You read this on the terminal yourself. The stamp and header are observed.",
     "record": "You read the Records Board yourself.",
@@ -95,9 +193,18 @@
     "witness": "Sela said this to you directly. Who she saw is unknown, but her statement is real."
   },
   "boardObjectives": [
-    { "id": "contradiction", "text": "Expose the contradiction in the notice" },
-    { "id": "route", "text": "Link evidence that points to one place" },
-    { "id": "uncertain", "text": "Mark what nobody can verify as Uncertain" }
+    {
+      "id": "contradiction",
+      "text": "Expose the contradiction in the notice"
+    },
+    {
+      "id": "route",
+      "text": "Link evidence that points to one place"
+    },
+    {
+      "id": "uncertain",
+      "text": "Mark what nobody can verify as Uncertain"
+    }
   ],
   "boardHints": [
     "Compare the times. When was the notice broadcast, and when did the session it names begin?",
@@ -113,15 +220,99 @@
     "intro": "Spoof signals are pouring out of East Alley. Citizens are heading for shelter. Hold the Shield in their lane. Raise it just as a signal arrives to reflect it.",
     "civilians": 6,
     "pattern": [
-      [1.6, 0], [3.2, 1], [4.8, 0], [6.2, 0], [7.8, 1], [9.2, 1],
-      [10.6, 0], [11.8, 1], [13.2, 0], [14.4, 1], [15.4, 0], [16.6, 1],
-      [18.0, 0], [18.9, 1], [20.2, 1], [21.4, 0], [22.6, 1], [23.8, 0]
+      [
+        1.6,
+        0
+      ],
+      [
+        3.2,
+        1
+      ],
+      [
+        4.8,
+        0
+      ],
+      [
+        6.2,
+        0
+      ],
+      [
+        7.8,
+        1
+      ],
+      [
+        9.2,
+        1
+      ],
+      [
+        10.6,
+        0
+      ],
+      [
+        11.8,
+        1
+      ],
+      [
+        13.2,
+        0
+      ],
+      [
+        14.4,
+        1
+      ],
+      [
+        15.4,
+        0
+      ],
+      [
+        16.6,
+        1
+      ],
+      [
+        18.0,
+        0
+      ],
+      [
+        18.9,
+        1
+      ],
+      [
+        20.2,
+        1
+      ],
+      [
+        21.4,
+        0
+      ],
+      [
+        22.6,
+        1
+      ],
+      [
+        23.8,
+        0
+      ]
     ]
   },
   "routes": [
-    { "id": "north", "name": "North Stairs", "evidence": [] },
-    { "id": "east",  "name": "East Alley",   "evidence": ["witness", "trail"] },
-    { "id": "canal", "name": "Canal Bridge", "evidence": [] }
+    {
+      "id": "north",
+      "name": "North Stairs",
+      "evidence": []
+    },
+    {
+      "id": "east",
+      "name": "East Alley",
+      "evidence": [
+        "witness",
+        "trail"
+      ]
+    },
+    {
+      "id": "canal",
+      "name": "Canal Bridge",
+      "evidence": []
+    }
   ],
   "authorize": {
     "prompt": "Authorization node. The Proton Key opens only the route your evidence supports. Which route?",
@@ -137,28 +328,91 @@
   },
   "report": {
     "categories": [
-      { "id": "verified",   "title": "Verified Facts",   "help": "You checked it yourself against a source or record." },
-      { "id": "attention",  "title": "Attention Items",  "help": "Real warning signs. Not proof on their own." },
-      { "id": "unverified", "title": "Could Not Verify", "help": "Claims or unknowns no evidence confirms." },
-      { "id": "confirm",    "title": "Confirm Next",     "help": "Checks a person should make before acting." }
+      {
+        "id": "verified",
+        "title": "Verified Facts",
+        "help": "You checked it yourself against a source or record."
+      },
+      {
+        "id": "attention",
+        "title": "Attention Items",
+        "help": "Real warning signs. Not proof on their own."
+      },
+      {
+        "id": "unverified",
+        "title": "Could Not Verify",
+        "help": "Claims or unknowns no evidence confirms."
+      },
+      {
+        "id": "confirm",
+        "title": "Confirm Next",
+        "help": "Checks a person should make before acting."
+      }
     ],
     "findings": [
-      { "id": "f1", "text": "The 08:40 broadcast stamp is earlier than the 10:00 session it cites.", "answer": "verified", "why": "You compared the terminal stamp with the Records Board log." },
-      { "id": "f2", "text": "'Relay 7' is not in the public relay register.", "answer": "verified", "why": "You read the register yourself." },
-      { "id": "f3", "text": "A signal trail runs from the terminal into East Alley.", "answer": "verified", "why": "You followed and inspected the trail." },
-      { "id": "f4", "text": "The notice pushes vendors with a sundown deadline.", "answer": "attention", "why": "Urgent deadlines are a warning sign, but not proof on their own." },
-      { "id": "f5", "text": "The notice sends vendors to a place no record lists.", "answer": "attention", "why": "An unlisted destination deserves caution before anyone goes there." },
-      { "id": "f6", "text": "Who the grey-hooded person at the terminal was.", "answer": "unverified", "why": "One witness saw them. Nobody identified them." },
-      { "id": "f7", "text": "The rumor that the Board changed its rules last week.", "answer": "unverified", "why": "No record or source backs it up." },
-      { "id": "f8", "text": "Ask the Market Board office directly whether it sent any notice today.", "answer": "confirm", "why": "Going to the claimed source directly is the next check.", "nextStep": true },
-      { "id": "f9", "text": "Compare any terminal notice with the Records Board before acting.", "answer": "confirm", "why": "A habit every vendor can repeat.", "nextStep": true }
+      {
+        "id": "f1",
+        "text": "The 08:40 broadcast stamp is earlier than the 10:00 session it cites.",
+        "answer": "verified",
+        "why": "You compared the terminal stamp with the Records Board log."
+      },
+      {
+        "id": "f2",
+        "text": "'Relay 7' is not in the public relay register.",
+        "answer": "verified",
+        "why": "You read the register yourself."
+      },
+      {
+        "id": "f3",
+        "text": "A signal trail runs from the terminal into East Alley.",
+        "answer": "verified",
+        "why": "You followed and inspected the trail."
+      },
+      {
+        "id": "f4",
+        "text": "The notice pushes vendors with a sundown deadline.",
+        "answer": "attention",
+        "why": "Urgent deadlines are a warning sign, but not proof on their own."
+      },
+      {
+        "id": "f5",
+        "text": "The notice sends vendors to a place no record lists.",
+        "answer": "attention",
+        "why": "An unlisted destination deserves caution before anyone goes there."
+      },
+      {
+        "id": "f6",
+        "text": "Who the grey-hooded person at the terminal was.",
+        "answer": "unverified",
+        "why": "One witness saw them. Nobody identified them."
+      },
+      {
+        "id": "f7",
+        "text": "The rumor that the Board changed its rules last week.",
+        "answer": "unverified",
+        "why": "No record or source backs it up."
+      },
+      {
+        "id": "f8",
+        "text": "Ask the Market Board office directly whether it sent any notice today.",
+        "answer": "confirm",
+        "why": "Going to the claimed source directly is the next check.",
+        "nextStep": true
+      },
+      {
+        "id": "f9",
+        "text": "Compare any terminal notice with the Records Board before acting.",
+        "answer": "confirm",
+        "why": "A habit every vendor can repeat.",
+        "nextStep": true
+      }
     ],
     "disclaimer": "This report gives clarity, not approval. It doesn't vouch for anything, and it makes no decision for you.",
     "nextStepPrompt": "You decide. Pick the next step to take:"
   },
   "restore": {
     "toast": "Case File 01 added to the Casebook",
-    "shortcut": "Shortcut opened: East Alley to the canal walk",
+    "shortcut": "Shortcut opened: the canal-side door now leads straight into East Alley",
     "trustBefore": 20,
     "trustAfter": 60
   }

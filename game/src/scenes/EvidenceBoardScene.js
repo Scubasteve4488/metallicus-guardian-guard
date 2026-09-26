@@ -5,12 +5,13 @@
 import { VIEW_W, VIEW_H, COLORS } from '../config.js';
 import { txt, panel, button } from '../ui/widgets.js';
 import { run } from '../state.js';
-import { evaluateLink, boardObjectives, boardComplete, pairKey } from '../logic/board.js';
+import { linkRecord, boardObjectives, boardComplete, pairKey } from '../logic/board.js';
 
 const CARD_W = 214;
 const CARD_H = 132;
-const TYPE_COLORS = { SOURCE: 0x8fc8ff, RECORD: 0x8fe3b0, WITNESS: 0xffcf70, TRAIL: 0xc79bff, CLAIM: 0xff9fb0 };
-const LINK_COLORS = { contradiction: 0xff8f5a, supports: 0x8fe3b0 };
+const TYPE_COLORS = { SOURCE: 0x8fc8ff, RECORD: 0x8fe3b0, WITNESS: 0xffcf70 };
+const LINK_COLORS = { contradiction: 0xff8f5a, supports: 0x8fe3b0, uncertain: 0x9a96aa };
+const LINK_LABELS = { contradiction: ['CONTRADICTION', '#ff9f6a'], supports: ['SUPPORTS', '#8fe3b0'], uncertain: ['UNCERTAIN', '#c9c5d6'] };
 
 export class EvidenceBoardScene extends Phaser.Scene {
   constructor() { super('EvidenceBoard'); }
@@ -142,17 +143,14 @@ export class EvidenceBoardScene extends Phaser.Scene {
       this.showFeedback('Those two are already linked.', COLORS.dim);
       return;
     }
-    const r = evaluateLink(this.caseData, a, b);
-    if (r.kind === 'contradiction' || r.kind === 'supports') {
-      const link = { a, b, kind: r.kind, route: r.route, text: r.text };
-      run.board.links.push(link);
-      this.drawLink(link);
-      this.showFeedback(r.text, r.kind === 'contradiction' ? '#ffb38a' : COLORS.good);
-    } else {
-      if (r.kind === 'unrelated') run.metrics.unrelatedLinks += 1;
-      this.flashBadLink(a, b);
-      this.showFeedback(r.text, COLORS.bad);
-    }
+    // Every link the player draws stays on the board. Links the evidence doesn't
+    // support are kept but marked UNCERTAIN; they never count toward a goal.
+    const link = linkRecord(this.caseData, a, b);
+    run.board.links.push(link);
+    this.drawLink(link);
+    if (link.reason === 'unrelated') run.metrics.unrelatedLinks += 1;
+    const color = link.kind === 'contradiction' ? '#ffb38a' : link.kind === 'supports' ? COLORS.good : COLORS.warn;
+    this.showFeedback(link.text, color);
     this.refreshObjectives();
   }
 
@@ -160,20 +158,25 @@ export class EvidenceBoardScene extends Phaser.Scene {
     const A = this.cards[l.a];
     const B = this.cards[l.b];
     if (!A || !B) return;
-    this.linkLayer.lineStyle(4, LINK_COLORS[l.kind], 1).lineBetween(A.x, A.y, B.x, B.y);
-    const label = txt(this, (A.x + B.x) / 2, (A.y + B.y) / 2, l.kind === 'contradiction' ? 'CONTRADICTION' : 'SUPPORTS',
-      11, '#15131d', { bold: true }).setOrigin(0.5).setDepth(8)
-      .setBackgroundColor(l.kind === 'contradiction' ? '#ff9f6a' : '#8fe3b0').setPadding(4, 2, 4, 2);
+    if (l.kind === 'uncertain') {
+      // Dashed: drawn by the player, not backed by evidence.
+      const len = Phaser.Math.Distance.Between(A.x, A.y, B.x, B.y);
+      const n = Math.floor(len / 12);
+      this.linkLayer.lineStyle(3, LINK_COLORS.uncertain, 0.9);
+      for (let i = 0; i < n; i += 2) {
+        const t0 = i / n;
+        const t1 = Math.min(1, (i + 1) / n);
+        this.linkLayer.lineBetween(A.x + (B.x - A.x) * t0, A.y + (B.y - A.y) * t0, A.x + (B.x - A.x) * t1, A.y + (B.y - A.y) * t1);
+      }
+    } else {
+      this.linkLayer.lineStyle(4, LINK_COLORS[l.kind], 1).lineBetween(A.x, A.y, B.x, B.y);
+    }
+    const [word, bg] = LINK_LABELS[l.kind];
+    const label = txt(this, (A.x + B.x) / 2, (A.y + B.y) / 2, word, 11, '#15131d', { bold: true })
+      .setOrigin(0.5).setDepth(8).setBackgroundColor(bg).setPadding(4, 2, 4, 2);
     this.linkLabels.push(label);
   }
 
-  flashBadLink(a, b) {
-    const A = this.cards[a];
-    const B = this.cards[b];
-    const g = this.add.graphics().setDepth(2);
-    g.lineStyle(3, 0xff6f6f, 1).lineBetween(A.x, A.y, B.x, B.y);
-    this.tweens.add({ targets: g, alpha: 0, duration: 900, onComplete: () => g.destroy() });
-  }
 
   toggleUncertain(id) {
     if (this.finished) return;

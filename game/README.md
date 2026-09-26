@@ -53,12 +53,12 @@ In the Shield event, touch a lane and keep your finger down to hold the Shield u
 ## The loop, beat by beat
 
 1. **Alert**: the market terminal repeats a notice that looks official.
-2. **Gather**: talk to Oren, Juno and Sela, and inspect the Market Terminal, the Records Board and the Signal Trail. You collect five evidence cards: SOURCE, RECORD, TRAIL, WITNESS and CLAIM.
-3. **Link**: on the Evidence Board, expose the contradiction (the 08:40 broadcast predates the 10:00 session it claims as its source), link evidence that points to East Alley, and mark the unbacked rumor Uncertain.
-4. **Contain**: a Spoof Swarm rises along two lanes while six citizens walk to shelter. The Shield blocks, or reflects when timed. Signals that get past only delay citizens; nothing is hurt, destroyed or attacked.
+2. **Gather**: talk to Oren, Juno and Sela, and inspect the Market Terminal, the Records Board and the Signal Trail. You collect five cards across exactly three evidence types: SOURCE (terminal notice, signal trail), RECORD (Records Board) and WITNESS (Sela's statement, Juno's rumor).
+3. **Link**: on the Evidence Board, expose the contradiction (the 08:40 broadcast predates the 10:00 session it claims as its source), link evidence that points to East Alley, and mark the unbacked rumor Uncertain. Any link the evidence doesn't support is still allowed: it stays on the board as a dashed UNCERTAIN link and never counts toward a goal.
+4. **Contain**: a Spoof Swarm rises along two lanes while six citizens walk to shelter. The Shield blocks, or reflects when timed. Each signal that gets past stops the citizens for 2 seconds; nobody is hurt, killed or scored. In testing, citizens shelter in about 22 s with the Shield and about 47 s without it.
 5. **Authorize**: at the gold node, pick a route. The Proton Key activates only for the route the evidence supports. The same Key grows from the hip, is held upright, opens the East Alley gate, and returns to the hip. A wrong route leaves it compact.
 6. **Report**: sort nine findings into Verified Facts, Attention Items, Could Not Verify and Confirm Next. Misplaced cards move to the right column with the reason shown. The player then picks the next step.
-7. **Restore**: the market fades from its violet, shuttered state to a lit and open one. The shortcut opens, a Case File is added, district trust rises, and citizens have new lines. A summary shows the playtest numbers.
+7. **Restore**: the market fades from its violet, shuttered state to a lit and open one. The boarded canal-side door opens into a passage to East Alley (a real, walkable shortcut), a Case File is added, district trust rises, and citizens have new lines. A summary shows the playtest numbers.
 
 ## Files
 
@@ -99,7 +99,9 @@ repainted. There is no Hub scene in Phase 1.
 cd game
 node --test tests/*.test.js            # 20 logic + canon tests, no dependencies
 node tests/e2e/playthrough.mjs [dir]   # needs Playwright + Chromium; optional screenshot dir
-node tests/e2e/touch.mjs [dir]         # same, emulated phone held sideways, on-screen pad
+node tests/e2e/touch.mjs [dir]         # same, emulated phone held sideways, drag + tap controls
+node tests/e2e/record.mjs <dir>        # records one full phone playthrough to <dir>/playthrough.webm
+node tools/build-single-file.mjs out.html   # phone-friendly single-file page (needs esbuild)
 ```
 
 The playthrough serves the repo with the production `Content-Security-Policy` from
@@ -121,7 +123,9 @@ any page error or CSP violation.
 ## Known gaps (Phase 1)
 
 - Art is gray-box placeholder only. There are no final sprites or animation sheets, and no sound.
-- `Mini_GUARD_GUARDIAN_Project_Handoff.md` was not available when this was built. The placeholders follow the canon locks restated in the concept packet (p.15) and must be re-checked against that handoff before any real art.
+- `Mini_GUARD_GUARDIAN_Project_Handoff.md` has been read. Placeholders still lack its purple energy accents on the armor; final art waits for the production-asset pipeline.
+- Tap-to-walk has no pathfinding: Mini GUARD walks straight and stops at obstacles. Drag to walk around them.
+- Held upright, a phone makes the text very small. Play sideways.
 - The canonical logo is not integrated (intentionally blank).
 - Touch controls are basic and there is no gamepad support. The Evidence Board and report text is small on phones held upright.
 - There is no save/resume. Refreshing restarts the case.

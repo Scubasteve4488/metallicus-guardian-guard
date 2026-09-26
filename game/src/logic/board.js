@@ -5,7 +5,8 @@ export function pairKey(a, b) {
 }
 
 // Returns { kind, text, route? } where kind is 'contradiction' | 'supports' |
-// 'unsupported' (a claim nothing backs) | 'unrelated'.
+// 'unsupported' (a claim nothing backs) | 'unrelated'. The board keeps the last
+// two on screen as UNCERTAIN links (see linkRecord); they never count as proof.
 export function evaluateLink(caseData, a, b) {
   if (a === b) return { kind: 'unrelated', text: caseData.unrelatedText };
   if (caseData.uncertainCorrect.includes(a) || caseData.uncertainCorrect.includes(b)) {
@@ -15,6 +16,20 @@ export function evaluateLink(caseData, a, b) {
   const link = caseData.links.find((l) => pairKey(l.a, l.b) === key);
   if (!link) return { kind: 'unrelated', text: caseData.unrelatedText };
   return { kind: link.kind, text: link.text, route: link.route };
+}
+
+// The link the board stores for a player's attempt. Incorrect links are allowed
+// and kept, but marked 'uncertain' so they can't satisfy a goal or open a route.
+export function linkRecord(caseData, a, b) {
+  const r = evaluateLink(caseData, a, b);
+  const kind = r.kind === 'contradiction' || r.kind === 'supports' ? r.kind : 'uncertain';
+  return { a, b, kind, route: kind === 'supports' ? r.route : undefined, text: r.text, reason: r.kind };
+}
+
+// Which of the case's evidence types the player holds.
+export function typesCollected(caseData, cardIds) {
+  const have = new Set(cardIds.map((id) => caseData.cards[id].type));
+  return caseData.evidenceTypes.map((t) => ({ type: t, have: have.has(t) }));
 }
 
 // board = { links: [{a, b, kind, route}], uncertain: Set|Array }

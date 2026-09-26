@@ -33,9 +33,7 @@ export const SOLIDS = [
   [0, 0, 480, 44],       // north wall (North Stairs gate is set into it)
   [0, 44, 8, 218],       // west wall
   [468, 44, 12, 80],     // east wall above the alley gate
-  [468, 164, 12, 98],    // east wall below the alley gate
   [480, 0, 80, 116],     // alley north block
-  [480, 172, 80, 128],   // alley south block
   [552, 116, 8, 56],     // alley end wall
   [0, 262, 480, 38],     // canal
   [24, 72, 64, 28],      // stall A
@@ -44,6 +42,21 @@ export const SOLIDS = [
   [218, 124, 44, 28],    // fountain
   [360, 98, 26, 16],     // market terminal
   [100, 44, 36, 6],      // records board
+];
+
+// The canal-side shortcut. Boarded up while the signal is active; after the case
+// a door in the east wall and a passage connect the canal walk to East Alley.
+export const SHORTCUT = { door: [468, 226, 12, 30], passage: [[492, 172, 36, 84], [480, 226, 48, 30]] };
+export const SOLIDS_SHORTCUT_CLOSED = [
+  [468, 164, 12, 98],    // east wall below the alley gate (door boarded)
+  [480, 172, 80, 128],   // alley south block
+];
+export const SOLIDS_SHORTCUT_OPEN = [
+  [468, 164, 12, 62],    // east wall above the door
+  [468, 256, 12, 6],     // east wall below the door
+  [480, 172, 12, 54],    // block left of the passage
+  [480, 256, 48, 44],    // block under the passage
+  [528, 172, 32, 128],   // block right of the passage
 ];
 
 export const GATES = {

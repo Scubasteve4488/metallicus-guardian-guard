@@ -43,7 +43,7 @@ page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
 const sleep = (ms) => page.waitForTimeout(ms);
 const G = (fn, arg) => page.evaluate(fn, arg);
 const phase = () => G(() => window.__signalbreak.run.phase);
-const shot = async (name) => { if (SHOTS) await page.locator('canvas').screenshot({ path: join(SHOTS, `${name}.png`) }); };
+const shot = async (name) => { await scanText(); if (SHOTS) await page.locator('canvas').screenshot({ path: join(SHOTS, `${name}.png`) }); };
 function check(cond, msg) { if (!cond) throw new Error(`CHECK FAILED: ${msg}`); console.log(`  ok  ${msg}`); }
 async function waitFor(fn, arg, ms = 8000, label = 'condition') {
   const t0 = Date.now();
@@ -56,6 +56,15 @@ async function canvasPoint(x, y) {
 }
 async function click(x, y) { const p = await canvasPoint(x, y); await page.mouse.click(p.x, p.y); await sleep(120); }
 async function key(k, n = 1) { for (let i = 0; i < n; i++) { await page.keyboard.press(k); await sleep(160); } }
+// Every text object currently in any running scene (containers included).
+const allText = () => G(() => {
+  const out = [];
+  const walk = (list) => { for (const o of list) { if (o.type === 'Text') out.push(o.text); if (o.list) walk(o.list); } };
+  for (const s of window.__signalbreak.game.scene.getScenes(true)) walk(s.children.list);
+  return out;
+});
+const seenText = new Set();
+async function scanText() { for (const t of await allText()) seenText.add(t); }
 const hudBusy = () => G(() => window.__signalbreak.game.scene.getScene('HUD').busy);
 async function closeDialogue() { for (let i = 0; i < 12 && await hudBusy(); i++) await key('e'); }
 async function teleport(x, y) {
@@ -100,7 +109,9 @@ try {
     check(await hudBusy(), `holding E inspects ${c.name}`);
     await closeDialogue();
   }
-  check(await G(() => window.__signalbreak.run.cards.length) === 5, '5 evidence cards collected (3 clues + witness + rumor)');
+  check(await G(() => window.__signalbreak.run.cards.length) === 5, '5 evidence cards collected');
+  const types = await G(() => [...new Set(window.__signalbreak.run.cards.map((id) => window.__signalbreak.game.cache.json.get('case01').cards[id].type))].sort());
+  check(types.join(',') === 'RECORD,SOURCE,WITNESS', `exactly three evidence types gathered: ${types.join(', ')}`);
   check(await phase() === 'board', 'phase advances to board after 3 NPCs + 3 clues');
   await shot('05-market-gathered');
 
@@ -110,7 +121,10 @@ try {
   // Unrelated link (record -> witness) is rejected and counted.
   let a = await canvasPoint(385, 140), b = await canvasPoint(130, 395);
   await page.mouse.move(a.x, a.y); await page.mouse.down(); await page.mouse.move(b.x, b.y, { steps: 8 }); await page.mouse.up(); await sleep(200);
-  check(await G(() => window.__signalbreak.run.metrics.unrelatedLinks) === 1, 'unsupported link is rejected and counted');
+  const kept = await G(() => window.__signalbreak.run.board.links.map((l) => l.kind));
+  check(kept.length === 1 && kept[0] === 'uncertain', 'incorrect link is allowed, kept on the board and marked UNCERTAIN');
+  check(await G(() => window.__signalbreak.run.metrics.unrelatedLinks) === 1, 'incorrect link lowers evidence quality');
+  check((await allText()).includes('UNCERTAIN'), 'board shows the UNCERTAIN label on that link');
   // Drag-link: source -> record (contradiction)
   a = await canvasPoint(130, 165); b = await canvasPoint(385, 140);
   await page.mouse.move(a.x, a.y); await page.mouse.down(); await page.mouse.move(b.x, b.y, { steps: 8 }); await page.mouse.up(); await sleep(200);
@@ -120,6 +134,9 @@ try {
   await click(595 + 107 - 40, 275 + 66 - 14);
   const links = await G(() => window.__signalbreak.run.board.links.map((l) => l.kind));
   check(links.includes('contradiction') && links.includes('supports'), `board links made: ${links.join(', ')}`);
+  const contra = await G(() => window.__signalbreak.run.board.links.find((l) => l.kind === 'contradiction'));
+  check([contra.a, contra.b].sort().join('+') === 'record+source' && /08:40/.test(contra.text) && /10:00/.test(contra.text),
+    'the contradiction found is the 08:40 broadcast predating its claimed 10:00 source');
   check(await G(() => window.__signalbreak.run.board.uncertain.has('rumor')), 'rumor marked Uncertain');
   await sleep(900);
   await shot('06-board-complete');
@@ -138,20 +155,24 @@ try {
   // Bot: move to each incoming signal's lane and raise the shield just before impact.
   await G(() => {
     const s = window.__signalbreak.game.scene.getScene('Containment');
-    s.events.on('update', (time) => {
+    window.__bot = (time) => {
       const next = s.signals.filter((x) => x.state === 'rising').sort((p, q) => p.s.y - q.s.y)[0];
       if (!next) { s.raise(false); return; }
       s.setLane(next.lane);
       const d = next.s.y - 350;
       if (d < 30 && !s.shieldUp) s.raise(true);
       if (d > 60 && s.shieldUp) s.raise(false);
-    });
+    };
+    s.events.on('update', window.__bot);
   });
   await sleep(9000);
   await shot('08-containment-play');
   await waitFor(() => window.__signalbreak.run.phase === 'authorize', null, 45000, 'containment finished');
+  await G(() => window.__signalbreak.game.scene.getScene('Containment').events.off('update', window.__bot));
   const cs = await G(() => window.__signalbreak.run.metrics.containment);
   check(cs.total === data.containment.pattern.length, `every signal resolved (reflected ${cs.reflected}, blocked ${cs.blocked}, passed ${cs.passed})`);
+  check(cs.delaySeconds === 0, `with the Shield, citizens lost no time and sheltered in ${cs.shelterSeconds}s`);
+  const shieldShelter = cs.shelterSeconds;
   await sleep(300);
   await shot('09-containment-done');
   await key('Enter');
@@ -222,10 +243,21 @@ try {
   await sleep(2600);
   await shot('17-restored');
   check(await G(() => window.__signalbreak.game.scene.getScene('Market').bg.texture.key) === 'market-restored', 'market shows the restored art');
+  check(await G(() => window.__signalbreak.game.scene.getScene('Market').terminal.texture.key) === 'terminal-ok', 'terminal shows its calm screen');
+  check(await G(() => window.__signalbreak.game.scene.getScene('Market').lampGlows.every((l) => l.alpha > 0.5)), 'market lamps are lit');
+  // Walk through the new shortcut: from the canal walk east through the door into the passage, then up into the alley.
+  await teleport(455, 241);
+  await page.keyboard.down('ArrowRight'); await sleep(900); await page.keyboard.up('ArrowRight');
+  check(await G(() => window.__signalbreak.game.scene.getScene('Market').guard.x) > 495, 'shortcut door is open: Mini GUARD walks through it');
+  await page.keyboard.down('ArrowUp'); await sleep(1600); await page.keyboard.up('ArrowUp');
+  check(await G(() => window.__signalbreak.game.scene.getScene('Market').guard.y) < 172, 'the passage leads into East Alley');
+  await shot('17b-shortcut');
   await sleep(200);
   await key('Enter');
   await sleep(400);
   check(await phase() === 'done', 'case closes');
+  const safeHits = [...seenText].filter((t) => /\bsafe/i.test(t));
+  check(safeHits.length === 0, `no on-screen text contains "safe" (${seenText.size} distinct strings scanned across every screen)`);
   await shot('18-summary');
   await click(480, 440);
   await waitFor(() => window.__signalbreak.game.scene.isActive('Boot'), null, 4000, 'title after Play again');
@@ -233,6 +265,27 @@ try {
   await key('Enter');
   await waitFor(() => window.__signalbreak.game.scene.isActive('Market') && window.__signalbreak.run.phase === 'investigate' && window.__signalbreak.run.cards.length === 0, null, 4000, 'fresh run');
   check(true, 'Play again starts a fresh case');
+
+  // Missed shield: jump straight to the containment event and never raise the Shield.
+  await G(() => {
+    const sb = window.__signalbreak;
+    sb.run.phase = 'contain';
+    sb.game.scene.getScenes(true).forEach((s) => s.scene.stop());
+    sb.game.scene.start('Containment');
+  });
+  await waitFor(() => window.__signalbreak.game.scene.isActive('Containment'), null, 3000, 'containment (miss run)');
+  await sleep(300);
+  await key('Enter');
+  const tStart = Date.now();
+  await waitFor(() => window.__signalbreak.run.phase === 'authorize', null, 90000, 'containment ends with no shield');
+  const miss = await G(() => window.__signalbreak.run.metrics.containment);
+  const civ = await G(() => { const c = window.__signalbreak.game.scene.getScene('Containment'); return { sheltered: c.sheltered, total: c.civs.length }; });
+  check(miss.passed > 0 && miss.reflected === 0 && miss.blocked === 0, `with no shield, ${miss.passed} signals got past`);
+  check(civ.sheltered === civ.total, `all ${civ.total} citizens still reach shelter; nobody is lost`);
+  check(miss.shelterSeconds >= shieldShelter + 10 && miss.delaySeconds >= 10, `without the Shield they lose ${miss.delaySeconds}s and shelter in ${miss.shelterSeconds}s (vs ${shieldShelter}s with it)`);
+  const missText = (await allText()).join(' ');
+  check(!/kill|killed|dead|death|died|damage|score/i.test(missText), 'no death, kill, damage or score wording on screen');
+  await shot('19-no-shield-summary');
   console.log(`  playthrough wall time (bot, with teleports): ${((Date.now() - t0) / 1000).toFixed(1)}s`);
 } catch (e) {
   errors.push(e.message);

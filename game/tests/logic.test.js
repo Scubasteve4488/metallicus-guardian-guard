@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { evaluateLink, boardObjectives, boardComplete, supportedRoute } from '../src/logic/board.js';
+import { evaluateLink, linkRecord, typesCollected, boardObjectives, boardComplete, supportedRoute } from '../src/logic/board.js';
 import { resolveImpact, containmentSummary, REFLECT_WINDOW_MS } from '../src/logic/containment.js';
 import { gradeReport, nextStepOptions, CATEGORY_IDS } from '../src/logic/report.js';
 
@@ -27,6 +27,35 @@ test('the rumor cannot be linked to anything', () => {
 test('unconnected evidence is rejected', () => {
   assert.equal(evaluateLink(caseData, 'witness', 'record').kind, 'unrelated');
   assert.equal(evaluateLink(caseData, 'source', 'source').kind, 'unrelated');
+});
+
+test('exactly three evidence types, all reachable from the 3 NPCs + 3 clues', () => {
+  assert.deepEqual(caseData.evidenceTypes, ['SOURCE', 'RECORD', 'WITNESS']);
+  const types = new Set(Object.values(caseData.cards).map((c) => c.type));
+  assert.deepEqual([...types].sort(), ['RECORD', 'SOURCE', 'WITNESS']);
+  assert.equal(caseData.npcs.length, 3);
+  assert.equal(caseData.clues.length, 3);
+  const gathered = [...caseData.clues.map((c) => c.gives), ...caseData.npcs.filter((n) => n.gives).map((n) => n.gives)];
+  assert.ok(typesCollected(caseData, gathered).every((t) => t.have));
+});
+
+test('the real contradiction is the 08:40 broadcast predating its claimed 10:00 source', () => {
+  const r = evaluateLink(caseData, 'source', 'record');
+  assert.equal(r.kind, 'contradiction');
+  assert.match(caseData.cards.source.body, /08:40/);
+  assert.match(caseData.cards.source.body, /10:00/);
+  assert.match(caseData.cards.record.body, /opened 10:00/);
+  assert.equal(caseData.links.filter((l) => l.kind === 'contradiction').length, 1);
+});
+
+test('incorrect links are allowed, kept, and marked uncertain; they never count', () => {
+  const bad = linkRecord(caseData, 'witness', 'record');
+  assert.equal(bad.kind, 'uncertain');
+  const rumor = linkRecord(caseData, 'rumor', 'source');
+  assert.equal(rumor.kind, 'uncertain');
+  const board = { links: [bad, rumor], uncertain: new Set(['rumor']) };
+  assert.deepEqual(boardObjectives(caseData, board), { contradiction: false, route: false, uncertain: true });
+  assert.equal(supportedRoute(board), null);
 });
 
 test('board completes only with contradiction + route + rumor marked uncertain', () => {

@@ -1,7 +1,7 @@
 // The market: exploration, NPCs, clues, the Key authorization node, the relay,
 // and (phase 'restored') the visibly restored district.
 
-import { WORLD_W, WORLD_H, ZOOM, SOLIDS, GATES, NODE, RELAY, LAMPS, TRAIL, COLORS } from '../config.js';
+import { WORLD_W, WORLD_H, ZOOM, SOLIDS, SOLIDS_SHORTCUT_OPEN, SOLIDS_SHORTCUT_CLOSED, GATES, NODE, RELAY, LAMPS, TRAIL, COLORS } from '../config.js';
 import { Guard } from '../entities/guard.js';
 import { run, addCard, resetRun } from '../state.js';
 import { supportedRoute } from '../logic/board.js';
@@ -23,6 +23,7 @@ export class MarketScene extends Phaser.Scene {
     // Solids
     this.solids = this.physics.add.staticGroup();
     for (const [x, y, w, h] of SOLIDS) this.addSolid(x, y, w, h);
+    for (const [x, y, w, h] of restored ? SOLIDS_SHORTCUT_OPEN : SOLIDS_SHORTCUT_CLOSED) this.addSolid(x, y, w, h);
 
     // Gates. East opens once the Key authorizes it and stays open as the shortcut.
     this.gates = {};
