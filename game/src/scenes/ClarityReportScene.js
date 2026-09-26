@@ -40,7 +40,8 @@ export class ClarityReportScene extends Phaser.Scene {
       g.fillStyle(0x1b1928, 1).fillRect(x, COL_Y, COL_W, COL_H);
       g.fillStyle(CAT_COLORS[cat.id], 1).fillRect(x, COL_Y, COL_W, 4);
       g.lineStyle(2, 0x3b3552, 1).strokeRect(x, COL_Y, COL_W, COL_H);
-      txt(this, x + 8, COL_Y + 10, `${i + 1}  ${cat.title}`, 15, COLORS.ink, { bold: true });
+      txt(this, x + 8, COL_Y + 10, cat.title, 15, COLORS.ink, { bold: true });
+      txt(this, x + COL_W - 8, COL_Y + 12, `key ${i + 1}`, 11, COLORS.dim).setOrigin(1, 0);
       txt(this, x + 8, COL_Y + 32, cat.help, 11, COLORS.dim, { wrap: COL_W - 16 });
       const zone = this.add.zone(x, COL_Y, COL_W, COL_H).setOrigin(0).setRectangleDropZone(COL_W, COL_H);
       zone.setData('cat', cat.id);

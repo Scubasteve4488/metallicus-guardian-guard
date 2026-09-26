@@ -4,10 +4,11 @@
 import { VIEW_W, VIEW_H, COLORS } from '../config.js';
 import { txt, panel, button } from '../ui/widgets.js';
 import { run, evidenceQuality } from '../state.js';
+import { typesCollected } from '../logic/board.js';
 import { tapTracker } from '../ui/taps.js';
 import { isTouch, buildTouchPad } from '../ui/touch.js';
 
-const TYPE_COLORS = { SOURCE: '#8fc8ff', RECORD: '#8fe3b0', WITNESS: '#ffcf70', TRAIL: '#c79bff', CLAIM: '#ff9fb0' };
+const TYPE_COLORS = { SOURCE: '#8fc8ff', RECORD: '#8fe3b0', WITNESS: '#ffcf70' };
 
 export class HudScene extends Phaser.Scene {
   constructor() { super('HUD'); }
@@ -94,11 +95,14 @@ export class HudScene extends Phaser.Scene {
   refreshTray() {
     this.trayChips.forEach((c) => c.destroy());
     this.trayChips = [];
-    this.trayLabel.setText(`EVIDENCE ${run.cards.length}`);
-    let x = this.trayX + 102;
-    for (const id of run.cards) {
-      const card = this.caseData.cards[id];
-      const chip = txt(this, x, VIEW_H - 38, card.type, 13, TYPE_COLORS[card.type], { bold: true })
+    const types = typesCollected(this.caseData, run.cards);
+    const n = types.filter((t) => t.have).length;
+    this.trayLabel.setText(`EVIDENCE ${n}/${types.length}`);
+    let x = this.trayX + 112;
+    for (const t of types) {
+      const count = run.cards.filter((id) => this.caseData.cards[id].type === t.type).length;
+      const chip = txt(this, x, VIEW_H - 38, `${t.have ? '☑' : '☐'} ${t.type}${count > 1 ? ' ×' + count : ''}`, 13,
+        t.have ? TYPE_COLORS[t.type] : COLORS.dim, { bold: true })
         .setBackgroundColor('#221f33').setPadding(6, 3, 6, 3);
       this.trayChips.push(chip);
       x += chip.width + 8;
@@ -220,7 +224,7 @@ export class HudScene extends Phaser.Scene {
       `Evidence quality: ${evidenceQuality()} / 100`,
       `Unsupported links tried: ${m.unrelatedLinks}`,
       `Wrong routes tried: ${m.wrongRoutes}`,
-      `Shield: reflected ${cs.reflected}, blocked ${cs.blocked}, got past ${cs.passed}`,
+      `Shield: reflected ${cs.reflected}, blocked ${cs.blocked}, got past ${cs.passed} (citizens lost ${cs.delaySeconds || 0}s)`,
       `Report, first attempt: ${m.reportFirstPct}% placed as evidence supports`,
       `Hints used: ${m.hints}`,
       `Your chosen next step: ${m.nextStep || '-'}`,

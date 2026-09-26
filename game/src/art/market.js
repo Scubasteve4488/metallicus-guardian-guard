@@ -2,7 +2,7 @@
 // Two moods: 'dim' (compromised by the counterfeit signal) and 'restored'.
 // No emblems, logos or letters are painted anywhere in the scene.
 
-import { WORLD_W, WORLD_H, SOLIDS, GATES, LAMPS } from '../config.js';
+import { WORLD_W, WORLD_H, SOLIDS, GATES, LAMPS, SHORTCUT } from '../config.js';
 
 function rng(seed) {
   let s = seed >>> 0;
@@ -103,6 +103,23 @@ export function paintMarket(scene, key, mood) {
   wall(480, 96, 80, 20);
   wall(480, 172, 80, 20);
   wall(552, 116, 8, 56);
+  // canal-side shortcut: boarded while compromised, open passage once restored
+  const [dx, dy, dw, dh] = SHORTCUT.door;
+  if (mood === 'dim') {
+    ctx.fillStyle = '#15131d';
+    ctx.fillRect(dx - 1, dy - 1, dw + 2, dh + 2);
+    ctx.fillStyle = '#4a3a2c';
+    for (let y = dy + 2; y < dy + dh - 2; y += 7) ctx.fillRect(dx, y, dw, 4);
+    ctx.fillStyle = '#6b5438';
+    ctx.fillRect(dx, dy + 4, dw, 2);
+    ctx.fillRect(dx, dy + dh - 8, dw, 2);
+  } else {
+    for (const [px, py, pw, ph] of [...SHORTCUT.passage, SHORTCUT.door]) {
+      floor(ctx, { ...m, floor: [m.alleyFloor, m.alleyFloor, m.floor[0]] }, r, px, py, pw, ph);
+    }
+    ctx.fillStyle = '#e0b64a';
+    ctx.fillRect(dx - 1, dy - 2, dw + 2, 2); // lit lintel
+  }
   // windows on the north facade
   for (let x = 24; x < 470; x += 44) {
     if (x > 180 && x < 250) continue;

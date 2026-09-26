@@ -17,8 +17,9 @@ const SPAWN_Y = VIEW_H + 20;
 const SIGNAL_SPEED = 160; // px/s
 const TELEGRAPH_S = 0.9;
 const SHELTER = { x: 480, y: 92 };
-const CIV_SPEED = 46;
-const DELAY_MS = 1500;
+const CIV_SPEED = 36;
+// Each signal that gets past stops the citizens for this long (it stacks).
+const DELAY_MS = 2000;
 const SCALE = 3;
 
 export class ContainmentScene extends Phaser.Scene {
@@ -36,6 +37,8 @@ export class ContainmentScene extends Phaser.Scene {
     this.spawnIdx = 0;
     this.t = 0;
     this.delayUntil = 0;
+    this.delayMs = 0;
+    this.shelterT = 0;
     this.lane = 0;
     this.shieldUp = false;
     this.raisedAt = -9999;
@@ -47,7 +50,7 @@ export class ContainmentScene extends Phaser.Scene {
     const starts = [[250, 250], [720, 240], [300, 190], [660, 200], [220, 150], [740, 160]];
     this.civs = ids.slice(0, this.cfg.civilians).map((id, i) => ({
       s: this.add.image(starts[i][0], starts[i][1], `citizen-${id}`).setScale(2.5).setOrigin(0.5, 1).setDepth(starts[i][1]),
-      startAt: i * 2.6,
+      startAt: i * 3.0,
       done: false,
     }));
     this.sheltered = 0;
@@ -182,7 +185,10 @@ export class ContainmentScene extends Phaser.Scene {
 
     // Citizens walk to shelter unless delayed.
     const delayed = time < this.delayUntil;
+    const walking = this.civs.some((c) => !c.done && this.t >= c.startAt);
+    if (delayed && walking) this.delayMs += dt;
     for (const c of this.civs) {
+      if (!c.done) c.s.setTint(delayed && this.t >= c.startAt ? 0xffcf70 : 0xffffff);
       if (c.done || this.t < c.startAt || delayed) continue;
       const dx = SHELTER.x - c.s.x;
       const dy = SHELTER.y + 8 - c.s.y;
@@ -191,6 +197,7 @@ export class ContainmentScene extends Phaser.Scene {
       if (d <= mv) {
         c.done = true;
         this.sheltered += 1;
+        if (this.sheltered === this.civs.length) this.shelterT = this.t;
         this.tweens.add({ targets: c.s, alpha: 0, duration: 250 });
         this.updateStat();
       } else {
@@ -225,7 +232,7 @@ export class ContainmentScene extends Phaser.Scene {
       this.tweens.add({ targets: burst, alpha: 0, scale: 3, duration: 300, onComplete: () => burst.destroy() });
     } else {
       sig.state = 'passing';
-      this.delayUntil = time + DELAY_MS;
+      this.delayUntil = Math.max(this.delayUntil, time) + DELAY_MS;
       this.popup(x, IMPACT_Y - 60, 'Citizens delayed', COLORS.warn);
     }
     this.updateStat();
@@ -235,14 +242,17 @@ export class ContainmentScene extends Phaser.Scene {
     this.ended = true;
     this.raise(false);
     const s = containmentSummary(this.results);
+    s.shelterSeconds = Math.round(this.shelterT);
+    s.delaySeconds = Math.round(this.delayMs / 1000);
     run.metrics.containment = s;
     run.phase = 'authorize';
     const c = this.add.container(0, 0).setDepth(100);
     c.add(this.add.rectangle(0, 0, VIEW_W, VIEW_H, 0x07060c, 0.65).setOrigin(0));
-    c.add(panel(this, 220, 150, 520, 230));
+    c.add(panel(this, 220, 140, 520, 250));
     c.add(txt(this, 246, 170, 'SWARM CONTAINED', 18, COLORS.gold, { bold: true }));
     c.add(txt(this, 246, 206,
-      `All ${this.civs.length} citizens reached shelter.\n` +
+      `All ${this.civs.length} citizens reached shelter in ${s.shelterSeconds}s.\n` +
+      `Time they lost to signals that got past: ${s.delaySeconds}s.\n` +
       `Reflected ${s.reflected}  ·  Blocked ${s.blocked}  ·  Got past ${s.passed}\n\n` +
       'The relay in East Alley is still transmitting. Authorize the verified route.',
       15, COLORS.ink, { wrap: 470 }));
