@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Status — what's working, what isn't, what's parked</title>
-<meta name="description" content="What works today, what's built but unproven, what's planned, and what's been put on the shelf. Including everything parked from the old site.">
+<title>Status — what's live, what isn't, what's parked</title>
+<meta name="description" content="Where each part of StandGuard and Guard.IAN stands: what's live, what's built but not proven, what's off, and what's parked.">
 <link rel="canonical" href="https://standguard.net/status">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="StandGuard">
-<meta property="og:title" content="Status — what's working, what isn't, what's parked">
-<meta property="og:description" content="What works today, what's built but unproven, what's planned, and what's been put on the shelf. Including everything parked from the old site.">
+<meta property="og:title" content="Status — what's live, what isn't, what's parked">
+<meta property="og:description" content="Where each part of StandGuard and Guard.IAN stands: what's live, what's built but not proven, what's off, and what's parked.">
 <meta property="og:url" content="https://standguard.net/status">
 <meta property="og:image" content="https://standguard.net/assets/img/guard-card-v6.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -33,12 +33,50 @@
   </button>
   <div class="nav-links" id="nav-links">
     <a class="nav-link" href="/">Home</a>
-    <a class="nav-link" href="/ian">Guard.IAN</a>
-    <a class="nav-link" href="/services">Services</a>
-    <a class="nav-link" href="/tools">Tools &amp; Evidence</a>
-    <a class="nav-link" href="/learn">Learn</a>
-    <a class="nav-link" href="/community">Community</a>
-    <a class="nav-link" href="/about">About</a>
+    <details class="nav-group"><summary>Guard.IAN</summary><div class="nav-menu">
+      <a class="nav-link" href="/ian">Meet Guard.IAN</a>
+      <a class="nav-link" href="/reports/ian">IAN launch report</a>
+      <a class="nav-link" href="/status">What's live</a>
+      <a class="nav-link" href="/guard">The GUARD token</a>
+      <a class="nav-link" href="https://agent.standguard.net" rel="noopener">His agent address</a>
+    </div></details>
+    <details class="nav-group"><summary>Services</summary><div class="nav-menu">
+      <a class="nav-link" href="/services">All services</a>
+      <a class="nav-link" href="/services/utility-forge">Utility Forge</a>
+      <a class="nav-link" href="/services/utility-watch">Utility Watch</a>
+      <a class="nav-link" href="/services/project-shield">Chain Answer</a>
+      <a class="nav-link" href="/services/launch-readiness">Launch Readiness Check</a>
+      <a class="nav-link" href="/services/launch-rehearsal">Launch Rehearsal</a>
+      <a class="nav-link" href="/services/agent-diagnostic">Agent Diagnostic</a>
+      <a class="nav-link" href="/services/agent-build">Get an agent built</a>
+      <a class="nav-link" href="https://xpragents.com/services/13" rel="noopener">Buy on XPR Agents</a>
+    </div></details>
+    <details class="nav-group"><summary>Tools</summary><div class="nav-menu">
+      <a class="nav-link" href="/tools">All tools</a>
+      <a class="nav-link" href="/tools/account-check">Account Check</a>
+      <a class="nav-link" href="/evidence">How reports are built</a>
+      <a class="nav-link" href="/corrections">Corrections</a>
+    </div></details>
+    <details class="nav-group"><summary>Learn</summary><div class="nav-menu">
+      <a class="nav-link" href="/learn">Start here</a>
+      <a class="nav-link" href="/learn/ecosystem">The ecosystem</a>
+      <a class="nav-link" href="/learn/academy">Academy</a>
+      <a class="nav-link" href="/learn/defi-forge">DeFi Forge</a>
+      <a class="nav-link" href="/learn/stablecoins-payments">Stablecoins &amp; payments</a>
+    </div></details>
+    <details class="nav-group"><summary>Community</summary><div class="nav-menu">
+      <a class="nav-link" href="/community">All communities</a>
+      <a class="nav-link" href="/community/ksto">KSTO</a>
+      <a class="nav-link" href="/community/snippy">Snippy</a>
+      <a class="nav-link" href="/community/snipverse">Snipverse</a>
+      <a class="nav-link" href="/community/cyphergang">CypherGang</a>
+    </div></details>
+    <details class="nav-group"><summary>About</summary><div class="nav-menu">
+      <a class="nav-link" href="/about">About</a>
+      <a class="nav-link" href="/contact">Contact</a>
+      <a class="nav-link" href="/privacy">Privacy</a>
+      <a class="nav-link" href="/terms">Terms</a>
+    </div></details>
   </div>
   <a class="nav-cta" href="https://xpragents.com/agent/safeguard5" rel="noopener">Guard.IAN on XPR Agents</a>
 </nav>
@@ -47,23 +85,23 @@
 
   <section class="section">
     <p class="sec-label">Status</p>
-    <h1 class="page-title">What's working, and what isn't</h1>
-    <p class="lead mt2">One page that tells you the truth about this project, so nothing else on the site has to oversell.</p>
-    <div class="attn mt3">
-      <span>&#9888;</span>
-      <div>Written by hand on 21 September 2026. Not a live health check.</div>
-    </div>
+    <h1 class="page-title">What's live, what isn't</h1>
+    <p class="lead mt2">Where each part of the project actually stands. Updated by hand on 27 September 2026. It is not a live feed.</p>
   </section>
 
   <div class="div-g"></div>
 
   <section class="section" id="live">
-    <h2 class="sec-title"><span class="state-pill state-live">Working</span></h2>
+    <h2 class="sec-title"><span class="state-pill state-live">Live</span></h2>
     <div class="grid grid-2 mt3">
-      <div class="card"><h3>Account Check</h3><p>Reads public accounts from four public servers. Failed reads are reported as failed.</p></div>
-      <div class="card"><h3>DeFi Forge</h3><p>Five calculators. Pure arithmetic on numbers you type. Reads nothing, signs nothing.</p></div>
-      <div class="card"><h3>The pages themselves</h3><p>Every page published, with a date on anything that could go stale.</p></div>
-      <div class="card"><h3>Agent registration</h3><p>Registered and active. <em>Checked 21 September, not since.</em></p></div>
+      <div class="card"><h3>Launch wallets</h3><p>Seven wallets buy every new SimpleDEX launch with a small amount, 0.01 XPR each, then hold, claim and add liquidity when the token graduates. The newest first-block timing went live on 27 September and hasn't been through a launch yet.</p></div>
+      <div class="card"><h3>Utility Forge on the job board</h3><p>For sale on <a href="https://xpragents.com/services/13" rel="noopener">XPR Agents</a> since 27 September: 2,500 XPR launch price, delivered within 2 days. A person reads each report before it goes out. No paid job has run end to end yet.</p></div>
+      <div class="card"><h3>Report downloads</h3><p>Buyers open their files by signing in with the WebAuth wallet that paid. Tested on 27 September.</p></div>
+      <div class="card"><h3>Agent registration</h3><p>Registered and active on the XPR Agents registry as safeguard5.</p></div>
+      <div class="card"><h3>Agent address</h3><p><a href="https://agent.standguard.net" rel="noopener">agent.standguard.net</a> serves his agent card, and <a href="https://agent.standguard.net/agent/health" rel="noopener">/agent/health</a> returns his status as data.</p></div>
+      <div class="card"><h3>Account Check</h3><p>Reads public accounts from public XPR servers. A failed read shows as failed, not as zero.</p></div>
+      <div class="card"><h3>DeFi Forge</h3><p>Five calculators. Arithmetic on numbers you type. Reads nothing, signs nothing.</p></div>
+      <div class="card"><h3>X</h3><p>@AgentGuard458 exists. No posts yet.</p></div>
     </div>
   </section>
 
@@ -72,25 +110,19 @@
   <section class="section" id="testing">
     <h2 class="sec-title"><span class="state-pill state-testing">Built, not proven</span></h2>
     <div class="grid grid-2 mt3">
-      <div class="card"><h3>Chat</h3><p>Switched off since 25 September. Other agents reach Guard.IAN through the XPR Agents network (its agent card and A2A); public chat comes back only with rate limiting in place.</p></div>
-      <div class="card"><h3>What the agent advertises</h3><p>We haven't tested its published capabilities against what it can really do.</p></div>
-      <div class="card"><h3>Launch checks</h3><p>We know how to do one. We haven't done three and timed them.</p></div>
+      <div class="card"><h3>What the agent advertises</h3><p>His agent card lists capabilities. They haven't all been tested against what he can really do.</p></div>
+      <div class="card"><h3>Launch checks</h3><p>The method exists. Not yet done three times and timed.</p></div>
       <div class="card"><h3>Agent diagnostics</h3><p>Same. Method exists, no finished examples.</p></div>
-      <div class="card"><h3>Utility Forge</h3><p>Built and tested on real projects, with a person reviewing every report. On the XPR Agents job board since 27 September: 2,500 XPR launch price, delivered within 2 days.</p></div>
-      <div class="card"><h3>Utility Watch</h3><p>Comes after the Forge, as a follow-up to a Forge report. It has never run a real thirty days on a real project, so it is not for sale.</p></div>
+      <div class="card"><h3>Utility Watch</h3><p>A follow-up to a Forge report. It has never run thirty days on a real project, so it isn't for sale.</p></div>
     </div>
   </section>
 
   <div class="div"></div>
 
-  <section class="section" id="planned">
-    <h2 class="sec-title"><span class="state-pill state-planned">Planned</span></h2>
+  <section class="section" id="off">
+    <h2 class="sec-title"><span class="state-pill state-planned">Off for now</span></h2>
     <div class="grid grid-2 mt3">
-      <div class="card"><h3>A machine-readable health check</h3><p>Done 25 September: <a href="https://agent.standguard.net/agent/health" rel="noopener">agent.standguard.net/agent/health</a> now returns data, not a web page.</p></div>
-      <div class="card"><h3>Live status on this site</h3><p>Doesn't exist. Until it does, the home page shows a dated note and says so.</p></div>
-      <div class="card"><h3>Three example reports</h3><p>From real jobs, published with their mistakes.</p></div>
       <div class="card"><h3>Launch Rehearsal</h3><p>Direction agreed. Nothing built.</p></div>
-      <div class="card"><h3>Services you can actually buy</h3><p>Blocked until we've timed the work, set prices and had a legal review.</p></div>
     </div>
   </section>
 
@@ -100,13 +132,13 @@
     <h2 class="sec-title"><span class="state-pill state-parked">Parked</span></h2>
     <div class="disc mb3">
       <span>&#8505;</span>
-      <div><strong>Parked is not deleted.</strong> Every one of these is kept in full in the code, exactly as it was. Bringing any of it back is a fresh decision, not a quiet switch.</div>
+      <div><strong>Parked is not deleted.</strong> Each of these is kept in the code as it was. Bringing one back is a fresh decision.</div>
     </div>
     <div class="grid grid-auto">
       <div class="card"><h3>Guardian Arena</h3><p>The games hub.</p></div>
       <div class="card"><h3>Siege Guard</h3><p>The wave defence game.</p></div>
       <div class="card"><h3>GUARD Trials</h3><p>The tap-to-fly game.</p></div>
-      <div class="card"><h3>Shield ranks</h3><p>Cryptide through Aegis. May come back one day as a new design. That needs its own decision.</p></div>
+      <div class="card"><h3>Shield ranks</h3><p>Cryptide through Aegis. May come back one day as a new design.</p></div>
       <div class="card"><h3>Shield score</h3><p>The points behind the ranks.</p></div>
       <div class="card"><h3>Shards and forging</h3><p>Collecting pieces to make shields.</p></div>
       <div class="card"><h3>Daily plays</h3><p>Three free goes a day.</p></div>
@@ -116,10 +148,10 @@
       <div class="card"><h3>SignGuard</h3><p>The sign language learning demo.</p></div>
       <div class="card"><h3>On-chain ranks and badges</h3><p>The smart contract plans behind all of the above.</p></div>
       <div class="card"><h3>Token-gated access</h3><p>Locking anything behind holding a token.</p></div>
-      <div class="card"><h3>Holder discounts</h3><p>Parked until a service has paying customers, and not automatic even then.</p></div>
-      <div class="card"><h3>Revenue sharing</h3><p>Any hint that holding a token shares in income.</p></div>
-      <div class="card"><h3>Wallet connection</h3><p>Gone from this site completely. There is no way to sign anything here.</p></div>
-      <div class="card"><h3>The Vision page</h3><p>Its promises are now rows on this page instead.</p></div>
+      <div class="card"><h3>Holder discounts</h3><p>Not automatic, and not before a service has regular paying customers.</p></div>
+      <div class="card"><h3>Revenue sharing</h3><p>Holding a token shares in nothing.</p></div>
+      <div class="card"><h3>Wallet connection</h3><p>Gone from this site. There is no way to sign anything here.</p></div>
+      <div class="card"><h3>The Vision page</h3><p>Its promises became rows on this page.</p></div>
     </div>
   </section>
 
@@ -128,11 +160,8 @@
   <section class="section" id="known-gaps">
     <h2 class="sec-title">Known gaps</h2>
     <ul class="ac-list" style="max-width:660px;">
-      <li>The agent's numbers are from 21 September and were not re-checked.</li>
-      <li>Learn and Community facts date from 12 August. We haven't confirmed each one with each project.</li>
-      <li>Old web addresses redirect temporarily, not permanently, until we've checked each one lands right.</li>
+      <li>Old web addresses redirect temporarily until each one is checked.</li>
       <li>Fonts still load from Google.</li>
-      <li>No tracking or analytics of any kind runs here.</li>
     </ul>
     <p class="mt3">Spotted something wrong? <a href="/corrections">Tell us</a>.</p>
   </section>
@@ -145,14 +174,14 @@
     <div class="foot-top">
       <div>
         <div class="foot-brand"><img src="/assets/img/img_coin.jpg" alt="" width="30" height="30"><span>StandGuard</span></div>
-        <p class="foot-desc">The public home of Guard.IAN &mdash; an evidence-first XPR Network agent that explains public on-chain activity and leaves receipts.</p>
+        <p class="foot-desc">The home of Guard.IAN, an AI agent on XPR Network. He buys into SimpleDEX launches with his own wallets, and writes Utility Forge reports on the XPR Agents job board.</p>
       </div>
       <div class="foot-col">
         <h4>Product</h4>
         <a href="/ian">Guard.IAN</a>
         <a href="/services">Services</a>
         <a href="/tools">Tools</a>
-        <a href="/evidence#method">Evidence Method</a>
+        <a href="/evidence#method">How reports are built</a>
         <a href="/learn">Learn</a>
         <a href="/community">Community</a>
         <a href="/guard">GUARD</a>
@@ -169,7 +198,7 @@
       </div>
     </div>
     <div class="foot-bottom">
-      <p class="foot-disc">StandGuard and Guard.IAN are independent community-built projects. They are not official Metallicus, XPR Network, WebAuth, SimpleDEX, or XPR Agents products. Information is educational and evidence-based, not financial, legal, security, or investment advice.</p>
+      <p class="foot-disc">StandGuard and Guard.IAN are independent community-built projects. They are not official Metallicus, XPR Network, WebAuth, SimpleDEX, or XPR Agents products. Information here is for learning. It is not financial, legal, security, or investment advice.</p>
       <p class="foot-meta">&copy; <span id="foot-year">2026</span> StandGuard &middot; built by <a href="https://x.com/scubasteve4488" rel="noopener">@Scubasteve4488</a> &middot; <a href="/status">what is live, testing, planned and parked</a></p>
     </div>
   </div>
