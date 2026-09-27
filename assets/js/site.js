@@ -28,6 +28,19 @@
   }
   if (best) best.setAttribute('aria-current', 'page');
 
+  /* Drop-down menu groups: one open at a time; Escape or a click elsewhere closes them. */
+  var groups = document.querySelectorAll('#nav .nav-group');
+  function closeGroups(except) {
+    for (var g = 0; g < groups.length; g++) if (groups[g] !== except) groups[g].removeAttribute('open');
+  }
+  for (var k = 0; k < groups.length; k++) {
+    groups[k].addEventListener('toggle', function (ev) { if (ev.target.open) closeGroups(ev.target); });
+  }
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest || !e.target.closest('#nav .nav-group')) closeGroups(null);
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeGroups(null); });
+
   /* FAQ / question accordions. Buttons carry .acc-q inside an .acc-item. */
   document.addEventListener('click', function (e) {
     var q = e.target.closest ? e.target.closest('.acc-q') : null;
