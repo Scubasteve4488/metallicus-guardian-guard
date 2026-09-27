@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tools & Evidence — see what was checked</title>
-<meta name="description" content="Two free read-only tools, plus how we label evidence and how to tell us we got something wrong. No wallet connection anywhere on this site.">
+<title>Tools — free account check, and how reports are built</title>
+<meta name="description" content="Two free read-only tools, how Guard.IAN's reports are built, and how to report a mistake. No wallet connection anywhere on this site.">
 <link rel="canonical" href="https://standguard.net/tools">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="StandGuard">
-<meta property="og:title" content="Tools & Evidence — see what was checked">
-<meta property="og:description" content="Two free read-only tools, plus how we label evidence and how to tell us we got something wrong. No wallet connection anywhere on this site.">
+<meta property="og:title" content="Tools — free account check, and how reports are built">
+<meta property="og:description" content="Two free read-only tools, how Guard.IAN's reports are built, and how to report a mistake. No wallet connection anywhere on this site.">
 <meta property="og:url" content="https://standguard.net/tools">
 <meta property="og:image" content="https://standguard.net/assets/img/guard-card-v6.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -33,12 +33,50 @@
   </button>
   <div class="nav-links" id="nav-links">
     <a class="nav-link" href="/">Home</a>
-    <a class="nav-link" href="/ian">Guard.IAN</a>
-    <a class="nav-link" href="/services">Services</a>
-    <a class="nav-link" href="/tools">Tools &amp; Evidence</a>
-    <a class="nav-link" href="/learn">Learn</a>
-    <a class="nav-link" href="/community">Community</a>
-    <a class="nav-link" href="/about">About</a>
+    <details class="nav-group"><summary>Guard.IAN</summary><div class="nav-menu">
+      <a class="nav-link" href="/ian">Meet Guard.IAN</a>
+      <a class="nav-link" href="/reports/ian">IAN launch report</a>
+      <a class="nav-link" href="/status">What's live</a>
+      <a class="nav-link" href="/guard">The GUARD token</a>
+      <a class="nav-link" href="https://agent.standguard.net" rel="noopener">His agent address</a>
+    </div></details>
+    <details class="nav-group"><summary>Services</summary><div class="nav-menu">
+      <a class="nav-link" href="/services">All services</a>
+      <a class="nav-link" href="/services/utility-forge">Utility Forge</a>
+      <a class="nav-link" href="/services/utility-watch">Utility Watch</a>
+      <a class="nav-link" href="/services/project-shield">Chain Answer</a>
+      <a class="nav-link" href="/services/launch-readiness">Launch Readiness Check</a>
+      <a class="nav-link" href="/services/launch-rehearsal">Launch Rehearsal</a>
+      <a class="nav-link" href="/services/agent-diagnostic">Agent Diagnostic</a>
+      <a class="nav-link" href="/services/agent-build">Get an agent built</a>
+      <a class="nav-link" href="https://xpragents.com/services/13" rel="noopener">Buy on XPR Agents</a>
+    </div></details>
+    <details class="nav-group"><summary>Tools</summary><div class="nav-menu">
+      <a class="nav-link" href="/tools">All tools</a>
+      <a class="nav-link" href="/tools/account-check">Account Check</a>
+      <a class="nav-link" href="/evidence">How reports are built</a>
+      <a class="nav-link" href="/corrections">Corrections</a>
+    </div></details>
+    <details class="nav-group"><summary>Learn</summary><div class="nav-menu">
+      <a class="nav-link" href="/learn">Start here</a>
+      <a class="nav-link" href="/learn/ecosystem">The ecosystem</a>
+      <a class="nav-link" href="/learn/academy">Academy</a>
+      <a class="nav-link" href="/learn/defi-forge">DeFi Forge</a>
+      <a class="nav-link" href="/learn/stablecoins-payments">Stablecoins &amp; payments</a>
+    </div></details>
+    <details class="nav-group"><summary>Community</summary><div class="nav-menu">
+      <a class="nav-link" href="/community">All communities</a>
+      <a class="nav-link" href="/community/ksto">KSTO</a>
+      <a class="nav-link" href="/community/snippy">Snippy</a>
+      <a class="nav-link" href="/community/snipverse">Snipverse</a>
+      <a class="nav-link" href="/community/cyphergang">CypherGang</a>
+    </div></details>
+    <details class="nav-group"><summary>About</summary><div class="nav-menu">
+      <a class="nav-link" href="/about">About</a>
+      <a class="nav-link" href="/contact">Contact</a>
+      <a class="nav-link" href="/privacy">Privacy</a>
+      <a class="nav-link" href="/terms">Terms</a>
+    </div></details>
   </div>
   <a class="nav-cta" href="https://xpragents.com/agent/safeguard5" rel="noopener">Guard.IAN on XPR Agents</a>
 </nav>
@@ -46,10 +84,9 @@
 <div class="container">
 
   <section class="section">
-    <p class="sec-label">Tools &amp; Evidence</p>
-    <h1 class="page-title">See what was checked.</h1>
-    <p class="lead mt2">An answer you can't check is just an opinion with a date on it.</p>
-    <p class="lead">Everything here exists so someone else can repeat the work and argue with it.</p>
+    <p class="sec-label">Tools</p>
+    <h1 class="page-title">Free tools, and how the work is done.</h1>
+    <p class="lead mt2">Two tools you can use right now, no wallet needed. Below them: how Guard.IAN's reports are put together, and how to tell us something's wrong.</p>
   </section>
 
   <div class="div-g"></div>
@@ -61,7 +98,7 @@
         <div class="card-icon ci-blue">&#128269;</div>
         <h3>Account Check <span class="state-pill state-live">Working</span></h3>
         <p>Type any XPR account name. See when it was made, what it holds, who can act for it, and what it's tied into.</p>
-        <p class="mt1">Each line says whether we checked it, found nothing, or couldn't reach it.</p>
+        <p class="mt1">If a server doesn't answer, the page says so instead of showing a zero.</p>
         <a class="card-link" href="/tools/account-check">Check an account</a>
       </div>
       <div class="card">
@@ -75,53 +112,47 @@
 
     <div class="disc mt3">
       <span>&#128274;</span>
-      <div><strong>This site never connects a wallet.</strong> There's no seed phrase box, no signing, no way to spend anything. The account check sends a public name to public servers, like a block explorer does. We have no server and no database, so nothing you type is stored.</div>
+      <div><strong>This site never connects a wallet.</strong> No seed phrase box, no signing, nothing to spend. The account check sends a public account name to public XPR servers, the same way a block explorer does. This site has no server or database of its own, so what you type isn't stored here.</div>
     </div>
   </section>
 
   <div class="div"></div>
 
   <section class="section" id="samples">
-    <h2 class="sec-title">Example reports</h2>
-    <p class="lead">Three are planned. None are written yet.</p>
-    <p class="lead mt2">They'll come from real jobs, published with whatever they got wrong left in. Writing them as marketing first would defeat the point.</p>
+    <h2 class="sec-title">Reports you can read</h2>
+    <div class="grid grid-2 mt3">
+      <div class="card">
+        <h3>IAN launch report</h3>
+        <p>Guard.IAN's first real SimpleDEX launch, 15 September 2026, read from the chain. What went right and what didn't.</p>
+        <a class="card-link" href="/reports/ian">Read it</a>
+      </div>
+      <div class="card">
+        <h3>Utility Forge sample</h3>
+        <p>The cover of a real Utility Forge report, for the GONDOR project, shared with the project's permission.</p>
+        <a class="card-link" href="/services/utility-forge#sample">See the sample</a>
+      </div>
+    </div>
   </section>
 
   <div class="div"></div>
 
   <section class="section" id="method">
-    <h2 class="sec-title">How we label things</h2>
-    <div class="tbl-wrap">
-      <table class="tbl">
-        <thead><tr><th>Label</th><th>What it means</th></tr></thead>
-        <tbody>
-          <tr><td><strong>Checked</strong></td><td>We read it from the source and wrote down when.</td></tr>
-          <tr><td><strong>Worth a look</strong></td><td>Something a sensible person would want to see. Not an accusation.</td></tr>
-          <tr><td><strong>Couldn't check</strong></td><td>We tried and got nothing back. This never means "it isn't there".</td></tr>
-          <tr><td><strong>Contradicted</strong></td><td>A public claim doesn't match the evidence. Could just be out of date.</td></tr>
-          <tr><td><strong>Unknown</strong></td><td>No source could answer it at all.</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h3 class="sec-title mt4" style="font-size:1rem;">Rules we hold ourselves to</h3>
+    <h2 class="sec-title">How reports are built</h2>
     <ul class="ac-list" style="max-width:620px;">
-      <li>A failed check is never shown as a zero.</li>
-      <li>Missing data never means nothing happened.</li>
-      <li>If a source only gave us part of the picture, we say so.</li>
-      <li>If two sources disagree, you see both.</li>
-      <li>A trust score or a KYC badge is never treated as proof anyone is honest.</li>
-      <li>We never publish a verdict about a named person.</li>
-      <li>We never call an account a bad actor without pointing at what it did.</li>
+      <li>Chain facts come from public XPR Network servers and SimpleDEX's own data, with the date they were read.</li>
+      <li>Anything from the web is linked, so you can open it yourself.</li>
+      <li>If a server doesn't answer, that's written down. It isn't turned into a zero.</li>
+      <li>A trust score or KYC badge isn't treated as proof that anyone is honest.</li>
+      <li>No verdict about a named person. No account called a bad actor without pointing at what it did.</li>
     </ul>
-    <p class="mt3"><a class="card-link" href="/evidence">The longer version</a></p>
+    <p class="mt3"><a class="card-link" href="/evidence">More on how reports are built</a></p>
   </section>
 
   <div class="div"></div>
 
   <section class="section" id="corrections">
     <h2 class="sec-title">Something here wrong?</h2>
-    <p class="lead">Point at the exact sentence. We recheck it and mark the result, rather than quietly editing it.</p>
+    <p class="lead">Point at the exact sentence. It gets rechecked at the source, and the result is marked on the page, not quietly edited.</p>
     <p class="mt3"><a class="btn btn-o" href="/corrections">How corrections work</a></p>
   </section>
 
@@ -133,14 +164,14 @@
     <div class="foot-top">
       <div>
         <div class="foot-brand"><img src="/assets/img/img_coin.jpg" alt="" width="30" height="30"><span>StandGuard</span></div>
-        <p class="foot-desc">The public home of Guard.IAN &mdash; an evidence-first XPR Network agent that explains public on-chain activity and leaves receipts.</p>
+        <p class="foot-desc">The home of Guard.IAN, an AI agent on XPR Network. He buys into SimpleDEX launches with his own wallets, and writes Utility Forge reports on the XPR Agents job board.</p>
       </div>
       <div class="foot-col">
         <h4>Product</h4>
         <a href="/ian">Guard.IAN</a>
         <a href="/services">Services</a>
         <a href="/tools">Tools</a>
-        <a href="/evidence#method">Evidence Method</a>
+        <a href="/evidence#method">How reports are built</a>
         <a href="/learn">Learn</a>
         <a href="/community">Community</a>
         <a href="/guard">GUARD</a>
@@ -157,7 +188,7 @@
       </div>
     </div>
     <div class="foot-bottom">
-      <p class="foot-disc">StandGuard and Guard.IAN are independent community-built projects. They are not official Metallicus, XPR Network, WebAuth, SimpleDEX, or XPR Agents products. Information is educational and evidence-based, not financial, legal, security, or investment advice.</p>
+      <p class="foot-disc">StandGuard and Guard.IAN are independent community-built projects. They are not official Metallicus, XPR Network, WebAuth, SimpleDEX, or XPR Agents products. Information here is for learning. It is not financial, legal, security, or investment advice.</p>
       <p class="foot-meta">&copy; <span id="foot-year">2026</span> StandGuard &middot; built by <a href="https://x.com/scubasteve4488" rel="noopener">@Scubasteve4488</a> &middot; <a href="/status">what is live, testing, planned and parked</a></p>
     </div>
   </div>

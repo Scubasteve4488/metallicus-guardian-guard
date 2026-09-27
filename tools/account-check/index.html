@@ -33,18 +33,56 @@
   </button>
   <div class="nav-links" id="nav-links">
     <a class="nav-link" href="/">Home</a>
-    <a class="nav-link" href="/ian">Guard.IAN</a>
-    <a class="nav-link" href="/services">Services</a>
-    <a class="nav-link" href="/tools">Tools &amp; Evidence</a>
-    <a class="nav-link" href="/learn">Learn</a>
-    <a class="nav-link" href="/community">Community</a>
-    <a class="nav-link" href="/about">About</a>
+    <details class="nav-group"><summary>Guard.IAN</summary><div class="nav-menu">
+      <a class="nav-link" href="/ian">Meet Guard.IAN</a>
+      <a class="nav-link" href="/reports/ian">IAN launch report</a>
+      <a class="nav-link" href="/status">What's live</a>
+      <a class="nav-link" href="/guard">The GUARD token</a>
+      <a class="nav-link" href="https://agent.standguard.net" rel="noopener">His agent address</a>
+    </div></details>
+    <details class="nav-group"><summary>Services</summary><div class="nav-menu">
+      <a class="nav-link" href="/services">All services</a>
+      <a class="nav-link" href="/services/utility-forge">Utility Forge</a>
+      <a class="nav-link" href="/services/utility-watch">Utility Watch</a>
+      <a class="nav-link" href="/services/project-shield">Chain Answer</a>
+      <a class="nav-link" href="/services/launch-readiness">Launch Readiness Check</a>
+      <a class="nav-link" href="/services/launch-rehearsal">Launch Rehearsal</a>
+      <a class="nav-link" href="/services/agent-diagnostic">Agent Diagnostic</a>
+      <a class="nav-link" href="/services/agent-build">Get an agent built</a>
+      <a class="nav-link" href="https://xpragents.com/services/13" rel="noopener">Buy on XPR Agents</a>
+    </div></details>
+    <details class="nav-group"><summary>Tools</summary><div class="nav-menu">
+      <a class="nav-link" href="/tools">All tools</a>
+      <a class="nav-link" href="/tools/account-check">Account Check</a>
+      <a class="nav-link" href="/evidence">How reports are built</a>
+      <a class="nav-link" href="/corrections">Corrections</a>
+    </div></details>
+    <details class="nav-group"><summary>Learn</summary><div class="nav-menu">
+      <a class="nav-link" href="/learn">Start here</a>
+      <a class="nav-link" href="/learn/ecosystem">The ecosystem</a>
+      <a class="nav-link" href="/learn/academy">Academy</a>
+      <a class="nav-link" href="/learn/defi-forge">DeFi Forge</a>
+      <a class="nav-link" href="/learn/stablecoins-payments">Stablecoins &amp; payments</a>
+    </div></details>
+    <details class="nav-group"><summary>Community</summary><div class="nav-menu">
+      <a class="nav-link" href="/community">All communities</a>
+      <a class="nav-link" href="/community/ksto">KSTO</a>
+      <a class="nav-link" href="/community/snippy">Snippy</a>
+      <a class="nav-link" href="/community/snipverse">Snipverse</a>
+      <a class="nav-link" href="/community/cyphergang">CypherGang</a>
+    </div></details>
+    <details class="nav-group"><summary>About</summary><div class="nav-menu">
+      <a class="nav-link" href="/about">About</a>
+      <a class="nav-link" href="/contact">Contact</a>
+      <a class="nav-link" href="/privacy">Privacy</a>
+      <a class="nav-link" href="/terms">Terms</a>
+    </div></details>
   </div>
   <a class="nav-cta" href="https://xpragents.com/agent/safeguard5" rel="noopener">Guard.IAN on XPR Agents</a>
 </nav>
 <main id="main">
 <div class="container">
-  <p class="breadcrumb"><a href="/tools">Tools &amp; Evidence</a> &rsaquo; Account Check</p>
+  <p class="breadcrumb"><a href="/tools">Tools</a> &rsaquo; Account Check</p>
 
   <section class="section">
     <h1 class="page-title">Account Check</h1>
@@ -52,7 +90,7 @@
 
     <div class="disc mt3">
       <span>&#128274;</span>
-      <div><strong>Nothing connects, nothing is saved.</strong> No wallet, no signing, no seed phrase box. Your browser asks public XPR servers directly, the same way a block explorer does. This site has no server, so nothing reaches us.</div>
+      <div><strong>No wallet needed.</strong> No signing, no seed phrase box. Your browser asks public XPR servers directly, the same way a block explorer does. This site has no server of its own, so the lookup never passes through us.</div>
     </div>
 
     <form class="ac-form mt4" id="ac-form">
@@ -74,21 +112,21 @@
   <div class="div"></div>
 
   <section class="section">
-    <h2 class="sec-title">What this won't tell you</h2>
+    <h2 class="sec-title">What it shows, and what it doesn't</h2>
     <ul class="ac-list" style="max-width:620px;">
-      <li><strong>Whether an account is safe.</strong> Nothing can. The chain shows what an account did, never who's behind it or what they intend.</li>
-      <li><strong>Whether a token it holds is any good.</strong> Anyone can send any token to anyone. Seeing it listed means nothing.</li>
-      <li><strong>Its full history.</strong> This shows what's true right now.</li>
-      <li><strong>Anything off this chain.</strong> Other blockchains and exchange accounts are invisible here.</li>
+      <li><strong>Who's behind an account.</strong> The chain shows what an account did. It doesn't show who runs it or what they intend.</li>
+      <li><strong>Whether a token it holds is worth anything.</strong> Anyone can send any token to anyone, so a token showing up here proves nothing.</li>
+      <li><strong>Its full history.</strong> This shows the account as it is right now.</li>
+      <li><strong>Anything off this chain.</strong> Other blockchains and exchange accounts don't show up here.</li>
     </ul>
   </section>
 
   <div class="div"></div>
 
   <section class="section">
-    <h2 class="sec-title">Why a failed check says "failed"</h2>
-    <p class="lead">If every server refuses, this tool says so. It does not print a zero.</p>
-    <p class="lead mt2">"This account has no liquidity positions" and "we couldn't find out whether it has any" lead to opposite decisions. A tool that blurs those two is worse than no tool.</p>
+    <h2 class="sec-title">When a server doesn't answer</h2>
+    <p class="lead">If every server refuses, the page says the lookup failed. It won't show a zero.</p>
+    <p class="lead mt2">"This account has no liquidity positions" and "the servers didn't answer" mean very different things, so they're never shown the same way.</p>
   </section>
 </div>
 
@@ -98,14 +136,14 @@
     <div class="foot-top">
       <div>
         <div class="foot-brand"><img src="/assets/img/img_coin.jpg" alt="" width="30" height="30"><span>StandGuard</span></div>
-        <p class="foot-desc">The public home of Guard.IAN &mdash; an evidence-first XPR Network agent that explains public on-chain activity and leaves receipts.</p>
+        <p class="foot-desc">The home of Guard.IAN, an AI agent on XPR Network. He buys into SimpleDEX launches with his own wallets, and writes Utility Forge reports on the XPR Agents job board.</p>
       </div>
       <div class="foot-col">
         <h4>Product</h4>
         <a href="/ian">Guard.IAN</a>
         <a href="/services">Services</a>
         <a href="/tools">Tools</a>
-        <a href="/evidence#method">Evidence Method</a>
+        <a href="/evidence#method">How reports are built</a>
         <a href="/learn">Learn</a>
         <a href="/community">Community</a>
         <a href="/guard">GUARD</a>
@@ -122,7 +160,7 @@
       </div>
     </div>
     <div class="foot-bottom">
-      <p class="foot-disc">StandGuard and Guard.IAN are independent community-built projects. They are not official Metallicus, XPR Network, WebAuth, SimpleDEX, or XPR Agents products. Information is educational and evidence-based, not financial, legal, security, or investment advice.</p>
+      <p class="foot-disc">StandGuard and Guard.IAN are independent community-built projects. They are not official Metallicus, XPR Network, WebAuth, SimpleDEX, or XPR Agents products. Information here is for learning. It is not financial, legal, security, or investment advice.</p>
       <p class="foot-meta">&copy; <span id="foot-year">2026</span> StandGuard &middot; built by <a href="https://x.com/scubasteve4488" rel="noopener">@Scubasteve4488</a> &middot; <a href="/status">what is live, testing, planned and parked</a></p>
     </div>
   </div>
