@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IAN launch report — what happened, from the chain</title>
+<meta name="description" content="Guard.IAN's first real SimpleDEX launch, 15 September 2026: first block, graduation, liquidity, and what went wrong. Read from the chain.">
+<link rel="canonical" href="https://standguard.net/reports/ian">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="StandGuard">
+<meta property="og:title" content="IAN launch report — what happened, from the chain">
+<meta property="og:description" content="Guard.IAN's first real SimpleDEX launch, 15 September 2026, read from the chain.">
+<meta property="og:url" content="https://standguard.net/reports/ian">
+<meta property="og:image" content="https://standguard.net/assets/img/guard-card-v6.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0e1220">
+<link rel="icon" href="/assets/img/img_coin.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Cinzel:wght@500;700&amp;family=Cinzel+Decorative:wght@700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<nav id="nav" aria-label="Primary">
+  <a class="nav-brand" href="/">
+    <img src="/assets/img/img_coin.jpg" alt="" width="34" height="34">
+    <span>StandGuard</span>
+  </a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+    <span></span><span></span><span></span>
+    <span class="vh">Menu</span>
+  </button>
+  <div class="nav-links" id="nav-links">
+    <a class="nav-link" href="/">Home</a>
+    <a class="nav-link" href="/ian">Guard.IAN</a>
+    <a class="nav-link" href="/services">Services</a>
+    <a class="nav-link" href="/tools">Tools &amp; Evidence</a>
+    <a class="nav-link" href="/learn">Learn</a>
+    <a class="nav-link" href="/community">Community</a>
+    <a class="nav-link" href="/about">About</a>
+  </div>
+  <a class="nav-cta" href="https://xpragents.com/agent/safeguard5" rel="noopener">Guard.IAN on XPR Agents</a>
+</nav>
+<main id="main">
+<div class="container">
+  <p class="breadcrumb"><a href="/evidence">Evidence</a> &rsaquo; IAN launch report</p>
+
+  <section class="section">
+    <p class="sec-label">Launch report &middot; 15 September 2026</p>
+    <h1 class="page-title">We launched IAN. Here's exactly what happened.</h1>
+    <p class="lead mt2">The first real test of Guard.IAN buying, graduating and adding liquidity on SimpleDEX with real XPR. What worked, what didn't, and what we changed because of it.</p>
+    <div class="attn mt3">
+      <span>&#8505;</span>
+      <div><strong>Written 16 September 2026.</strong> Since then the agent has been rebuilt on the official XPR agent framework (25 September) and now runs seven wallets. The fixes described below are history; the next launches are where the current version is measured.</div>
+    </div>
+  </section>
+
+  <div class="div-g"></div>
+
+  <section class="section">
+    <h2 class="sec-title">The numbers</h2>
+    <div class="grid grid-auto">
+      <div class="card"><h3>5 of 5</h3><p>Guard.IAN wallets bought, claimed and paired.</p></div>
+      <div class="card"><h3>1 of 5 in the first block</h3><p>One wallet landed in the first legal block (t+60). Four were 32 seconds late.</p></div>
+      <div class="card"><h3>11 seconds</h3><p>From the end of the graduation cooldown to Guard.IAN graduating the token.</p></div>
+      <div class="card"><h3>52 seconds</h3><p>Graduate, claim, add liquidity and move the leftovers, all five wallets, nobody at a keyboard.</p></div>
+      <div class="card"><h3>0 sold</h3><p>Guard.IAN has no sell function. It bought, paired, and holds.</p></div>
+    </div>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section">
+    <h2 class="sec-title">What we were doing</h2>
+    <p class="lead">We needed to see Guard.IAN do the whole job for real: spot a new SimpleDEX token the second it is created, buy in the first block after the 60-second creator window, wait out the graduation cooldown, graduate the token the moment that is allowed, then claim and put the tokens straight into the liquidity pool. So the operator (scubasteve44) created a token called IAN and let the agent loose with five wallets at 1,000 XPR each.</p>
+    <p class="lead">Real contract, real rules, real competition. That was the point.</p>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section">
+    <h2 class="sec-title">Timeline <span class="state-pill state-live">all times UTC, from the chain</span></h2>
+    <ul class="ac-list" style="max-width:720px;">
+      <li><strong>23:03:09 &mdash; Token created.</strong> The 60-second creator-only window opens. The five wallets saw it within a second and decided to buy.</li>
+      <li><strong>23:04:05 &mdash; The creator's own buy, at t+56.</strong> Only four seconds of a sixty-second head start were left. Lesson: the creator buys early in the window, not at the end.</li>
+      <li><strong>23:04:09 &mdash; First legal block.</strong> Seven buys landed in it: six from accounts clearly waiting for it, and one Guard.IAN wallet, seventh. Right block, back of it.</li>
+      <li><strong>23:04:41 &mdash; The other four wallets landed, 32 seconds late.</strong> Cause found the same night: they re-ran a 44-second background check at the moment they woke up.</li>
+      <li><strong>23:09:48 &mdash; The curve reached 50,000 XPR.</strong> The contract's 5-minute graduation cooldown started.</li>
+      <li><strong>23:10&ndash;23:23 &mdash; The reset loop.</strong> Accounts that bought in the first block sold into every crossing. Each sale pushed the curve back under 50,000, which restarts the cooldown. It reset twice, and ended when their bags ran out.</li>
+      <li><strong>23:26:28 &mdash; Crossed again, and it held.</strong></li>
+      <li><strong>23:31:39 &mdash; Guard.IAN graduated IAN,</strong> 11 seconds after the cooldown ended. All five wallets tried; one landed, the other four were told "already graduated" and moved on, as designed.</li>
+      <li><strong>23:31:49 &mdash; All five claimed</strong> their tokens.</li>
+      <li><strong>23:32:06 &mdash; All five added liquidity</strong> to pool 1883, one transaction per wallet.</li>
+      <li><strong>23:32:20 &mdash; Leftovers moved out</strong> to the holding wallet. Every Guard.IAN wallet ended at 0 IAN.</li>
+    </ul>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section">
+    <div class="grid grid-auto">
+      <div class="card">
+        <h3>What worked</h3>
+        <ul class="ac-list">
+          <li>Detection in under a second, locked to one token.</li>
+          <li>Every wallet bought. No double buys, no wrong token.</li>
+          <li>Graduate &rarr; claim &rarr; liquidity &rarr; leftovers in 52 seconds, unattended.</li>
+          <li>Nothing sold, no liquidity removed. Those actions don't exist in the agent.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>What didn't</h3>
+        <ul class="ac-list">
+          <li><strong>Four wallets 32 seconds late</strong> &mdash; the background check at wake-up. Removed for an approved launch.</li>
+          <li><strong>Seventh in the first block.</strong> Faster accounts push earlier and closer to the block producer.</li>
+          <li><strong>The reset loop.</strong> Sells under the line restart the cooldown; the agent now waits rather than feed it.</li>
+          <li><strong>11 seconds to graduate.</strong> The call is now prepared before the cooldown ends.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section">
+    <h2 class="sec-title">Check it yourself</h2>
+    <p class="lead">Everything above is read off the chain: token 463, pool 1883, first legal block 403646618. Look it up on the <a href="https://explorer.xprnetwork.org/" rel="noopener">XPR Network explorer</a>.</p>
+    <div class="disc"><span>&#8505;</span><div>A record of what happened, not advice. Guard.IAN never says a token is safe.</div></div>
+  </section>
+</div>
+
+</main>
+<footer id="site-footer">
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand"><img src="/assets/img/img_coin.jpg" alt="" width="30" height="30"><span>StandGuard</span></div>
+        <p class="foot-desc">The public home of Guard.IAN &mdash; an evidence-first XPR Network agent that explains public on-chain activity and leaves receipts.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="/ian">Guard.IAN</a>
+        <a href="/services">Services</a>
+        <a href="/tools">Tools</a>
+        <a href="/evidence#method">Evidence Method</a>
+        <a href="/learn">Learn</a>
+        <a href="/community">Community</a>
+        <a href="/guard">GUARD</a>
+        <a href="/status">Status</a>
+      </div>
+      <div class="foot-col">
+        <h4>Boundaries</h4>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/corrections">Corrections</a>
+        <a href="/contact">Contact</a>
+        <a href="https://xpragents.com/agent/safeguard5" rel="noopener">XPR Agents profile</a>
+        <a href="https://github.com/Scubasteve4488/metallicus-guardian-guard" rel="noopener">GitHub public repository</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p class="foot-disc">StandGuard and Guard.IAN are independent community-built projects. They are not official Metallicus, XPR Network, WebAuth, SimpleDEX, or XPR Agents products. Information is educational and evidence-based, not financial, legal, security, or investment advice.</p>
+      <p class="foot-meta">&copy; <span id="foot-year">2026</span> StandGuard &middot; built by <a href="https://x.com/scubasteve4488" rel="noopener">@Scubasteve4488</a> &middot; <a href="/status">what is live, testing, planned and parked</a></p>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js"></script>
+
+</body>
+</html>
