@@ -3,14 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SignGuard — paused</title>
-<meta name="description" content="SignGuard is paused. The video source we shipped was a 3D render, not a human signer, so it has been taken down until a recording of a real person is in place.">
+<title>SignGuard — look up a sign in ASL</title>
+<meta name="description" content="Type a word and watch a real signer produce it in American Sign Language. Free, no account, nothing generated.">
 <link rel="canonical" href="https://standguard.net/learn/signguard">
-<meta name="robots" content="noindex">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="StandGuard">
-<meta property="og:title" content="SignGuard — paused">
-<meta property="og:description" content="SignGuard is paused. The video source we shipped was a 3D render, not a human signer, so it has been taken down.">
+<meta property="og:title" content="SignGuard — look up a sign in ASL">
+<meta property="og:description" content="Type a word and watch a real signer produce it in American Sign Language. Free, no account, nothing generated.">
 <meta property="og:url" content="https://standguard.net/learn/signguard">
 <meta property="og:image" content="https://standguard.net/assets/img/guard-card-v6.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -20,6 +19,42 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Cinzel:wght@500;700&amp;family=Cinzel+Decorative:wght@700&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/site.css">
+<style>
+  .sg-crumb{font-size:.9rem;opacity:.7;margin-bottom:.5rem}
+  .sg-crumb a{color:inherit}
+  .sg-crumb span{opacity:.5;margin:0 .4rem}
+
+  .sg-tabs{display:flex;flex-wrap:wrap;gap:.25rem;border-bottom:1px solid rgba(255,255,255,.14);margin-top:1.5rem}
+  .sg-tab{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;letter-spacing:.02em;
+    background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;
+    padding:.75rem 1.1rem;color:inherit;opacity:.6;cursor:pointer}
+  .sg-tab:hover{opacity:.9}
+  .sg-tab[aria-selected="true"]{opacity:1;border-bottom-color:#d4af37}
+  .sg-tab:focus-visible{outline:2px solid #d4af37;outline-offset:-4px}
+
+  .sg-search{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+  .sg-search input{flex:1 1 220px;min-height:52px;padding:0 1rem;font-size:1.05rem;
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.18);
+    border-radius:10px;color:inherit}
+  .sg-search input:focus-visible{outline:2px solid #d4af37;outline-offset:2px}
+  .sg-search button{min-height:52px;padding:0 1.5rem;font-family:'Cinzel',serif;font-weight:700;
+    background:rgba(212,175,55,.16);border:1px solid rgba(212,175,55,.6);
+    border-radius:10px;color:inherit;cursor:pointer}
+  .sg-search button:hover{background:rgba(212,175,55,.26)}
+
+  .sg-samples{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
+  .sg-sample{padding:.4rem .8rem;font-size:.9rem;background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.14);border-radius:999px;color:inherit;cursor:pointer}
+  .sg-sample:hover{background:rgba(255,255,255,.1)}
+  .sg-sample:focus-visible{outline:2px solid #d4af37;outline-offset:2px}
+
+  .sg-stage{margin-top:1.5rem;background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:1rem;text-align:center}
+  .sg-stage video{width:100%;max-width:420px;border-radius:10px;background:#000;display:block;margin:0 auto}
+  .sg-now{font-family:'Cinzel Decorative',serif;font-size:2rem;line-height:1;margin:.25rem 0 .75rem}
+  .sg-status{margin-top:1rem;font-size:.95rem;opacity:.85}
+  .sg-hint{font-size:.9rem;opacity:.7;margin-top:.75rem}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -86,52 +121,83 @@
 <div class="container">
 
   <section class="section">
+    <p class="sg-crumb"><a href="/">Home</a><span>&rsaquo;</span><a href="/learn">Learn</a><span>&rsaquo;</span>SignGuard</p>
     <h1 class="page-title">SignGuard</h1>
-    <p class="lead mt2">Paused. The alphabet is not here yet.</p>
+    <p class="lead mt2">American Sign Language, signed by real people. Free, no account, nothing generated.</p>
+
+    <div class="sg-tabs" role="tablist" aria-label="SignGuard sections">
+      <button class="sg-tab" type="button" role="tab" data-tab="dictionary" aria-selected="true" aria-controls="panel-dictionary" id="tab-dictionary">Dictionary</button>
+      <button class="sg-tab" type="button" role="tab" data-tab="alphabet" aria-selected="false" aria-controls="panel-alphabet" id="tab-alphabet" tabindex="-1">Alphabet</button>
+      <button class="sg-tab" type="button" role="tab" data-tab="made" aria-selected="false" aria-controls="panel-made" id="tab-made" tabindex="-1">How it&rsquo;s made</button>
+    </div>
   </section>
 
-  <div class="div-g"></div>
+  <!-- ===================== DICTIONARY ===================== -->
+  <section class="section sg-panel" data-panel="dictionary" id="panel-dictionary" role="tabpanel" aria-labelledby="tab-dictionary">
+    <h2 class="sec-title">Look up a sign</h2>
+    <p>Type a word. If it is in the dictionary, you will watch a real signer produce it.</p>
 
-  <section class="section">
-    <h2 class="sec-title">What happened</h2>
+    <form class="sg-search" id="sg-form">
+      <input type="text" id="sg-word" name="word" placeholder="a word, e.g. museum" autocomplete="off" aria-label="Word to look up">
+      <button type="submit">Show me</button>
+    </form>
 
-    <p>On 5 October 2026 this page went live showing the ASL alphabet, and said the signs were made by a real person. That was wrong.</p>
+    <div class="sg-samples" id="sg-samples" aria-label="Words to try"></div>
 
-    <p class="mt2">The clips came from a public-domain motion-capture archive. The motion in them was captured from a human signer, but what you actually watched was a 3D character rendered in Blender from that data. A 3D model is not a person, and the page should never have claimed otherwise.</p>
+    <p class="sg-status" id="sg-status" hidden></p>
 
-    <p class="mt2">It was taken down the same day, within the hour, as soon as it was seen.</p>
+    <div class="sg-stage" id="sg-stage" hidden>
+      <div class="sg-now" id="sg-now"></div>
+      <video id="sg-video" controls loop muted playsinline preload="metadata"></video>
+      <p class="sg-hint">Loops automatically. Use the controls to slow it down or step through it.</p>
+      <p class="sg-hint"><a id="sg-credit" href="https://archive.org/details/asl-dictionary" rel="noopener">See this clip on the Internet Archive</a></p>
+    </div>
 
-    <div class="disc mt3"><span>&#8505;</span><div>No one was harmed by this and nothing was collected from anyone &mdash; the page had no camera, no account and no tracking. The problem was the claim, and the claim is the thing StandGuard cannot be loose about.</div></div>
+    <div class="disc mt3"><span>&#8505;</span><div>This is a dictionary, not a course, and not a substitute for a Deaf teacher. ASL has regional variation and signs change over time. Learn from Deaf people wherever you can.</div></div>
+
+    <p class="muted mt3">Videos are streamed from <a href="https://archive.org/details/asl-dictionary" rel="noopener">The ASL Dictionary</a> on the Internet Archive, by the Center for Accessible Technology in Sign. Every item there is marked public domain. StandGuard does not host, alter or re-publish them, and is not affiliated with CATS or the Internet Archive.</p>
   </section>
 
-  <div class="div-g"></div>
+  <!-- ===================== ALPHABET ===================== -->
+  <section class="section sg-panel" data-panel="alphabet" id="panel-alphabet" role="tabpanel" aria-labelledby="tab-alphabet" hidden>
+    <h2 class="sec-title">The alphabet</h2>
 
-  <section class="section">
-    <h2 class="sec-title">Why it is not simply being fixed</h2>
+    <p class="lead">Not here yet, on purpose.</p>
 
-    <p>Rewording the page to say &ldquo;3D character&rdquo; would have made it accurate and would still have been the wrong page to publish.</p>
+    <p class="mt2">On 5 October 2026 this tab briefly showed the A&ndash;Z fingerspelling alphabet and said the signs were made by a real person. That was wrong. The clips came from a public-domain motion-capture archive, and what you actually watched was a 3D character rendered from that data. It was taken down within the hour.</p>
 
-    <p class="mt2">Fingerspelling is read off a real hand &mdash; its shape, the way it moves between letters, the small differences between one signer and the next. A rendered model smooths those away. Someone learning from it learns a version of the alphabet that no Deaf person actually produces, and will not know that until they try to use it with a human being.</p>
+    <p class="mt2">Rewording it to &ldquo;3D character&rdquo; would have been accurate and still the wrong thing to publish. Fingerspelling is read off a real hand &mdash; the exact shape, and the way it moves between letters. A rendered model smooths out the detail a learner needs, and they would not find out until they tried it with a Deaf person.</p>
 
-    <p class="mt2">So the rule stands, and it is the same rule Guard.IAN works under everywhere else: show captured footage of a real person, or show nothing. Nothing is better.</p>
+    <p class="mt2">So the alphabet comes back when there is footage of a real signer, and not before. The dictionary tab works today because that footage already exists and is public domain.</p>
+
+    <p class="muted mt3">Logged on the <a href="/corrections">corrections page</a>, where everything StandGuard has got wrong is kept.</p>
   </section>
 
-  <div class="div-g"></div>
-
-  <section class="section">
-    <h2 class="sec-title">What comes back</h2>
-
-    <p>The same three rules this was always meant to ship under:</p>
-
-    <ol class="mt2">
-      <li class="mt1"><strong>Never generated.</strong> Guard.IAN does not invent a sign, and does not render one. He plays recorded footage of a human signer or he says nothing.</li>
-      <li class="mt1"><strong>Nothing leaves your device.</strong> If practice with a camera is ever added, the video stays in your own browser.</li>
-      <li class="mt1"><strong>Corrections are written by people.</strong> Any feedback the agent gives is a rule a person wrote and approved, not a model&rsquo;s guess.</li>
-    </ol>
-
-    <p class="mt3">It returns when there is footage of a real signer, correctly licensed, and not before.</p>
-
-    <p class="muted mt3">This page is also logged on the <a href="/corrections">corrections page</a>, where everything StandGuard has got wrong is kept.</p>
+  <!-- ===================== HOW IT'S MADE ===================== -->
+  <section class="section sg-panel" data-panel="made" id="panel-made" role="tabpanel" aria-labelledby="tab-made" hidden>
+    <h2 class="sec-title">How this is made</h2>
+    <div class="grid grid-2 mt3">
+      <div class="card">
+        <h3>Never generated</h3>
+        <p>Guard.IAN does not invent a sign and does not render one.</p>
+        <p class="mt1">He plays recorded footage of a human signer, or he says nothing. An AI guessing at a sign teaches somebody something wrong, and a wrong sign is worse than no sign. A 3D model replaying captured motion is not a person either &mdash; that rule was learned the hard way and is written on the alphabet tab.</p>
+      </div>
+      <div class="card">
+        <h3>Nothing is watching you</h3>
+        <p>No camera, no account, no record of what you look up.</p>
+        <p class="mt1">If practice with a camera is added later, the video stays inside your own browser and never leaves your device.</p>
+      </div>
+      <div class="card">
+        <h3>Public domain, not borrowed</h3>
+        <p>The dictionary clips are marked public domain by the people who recorded them.</p>
+        <p class="mt1">Most ASL video collections are research-only, because Deaf signers consented to research and not to somebody&rsquo;s product. Those are not used here, licence terms are not stretched, and no clip is re-hosted.</p>
+      </div>
+      <div class="card">
+        <h3>Corrections are written by people</h3>
+        <p>Any feedback the agent gives is a rule a person wrote and approved.</p>
+        <p class="mt1">Not a model&rsquo;s guess about your hand.</p>
+      </div>
+    </div>
   </section>
 
 </div>
@@ -172,6 +238,7 @@
   </div>
 </footer>
 <script src="/assets/js/site.js"></script>
+<script src="/assets/js/signguard.js"></script>
 
 </body>
 </html>
