@@ -32,6 +32,12 @@
   .sg-tab[aria-selected="true"]{opacity:1;border-bottom-color:#d4af37}
   .sg-tab:focus-visible{outline:2px solid #d4af37;outline-offset:-4px}
 
+  /* The browser's own rule for [hidden] is weak enough that any author rule
+     setting display would beat it. site.css gives .section padding only, so
+     hidden works - but stating it here means a future display rule on
+     .section cannot silently reveal all three tabs at once. */
+  .sg-panel[hidden]{display:none}
+
   .sg-search{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
   .sg-search input{flex:1 1 220px;min-height:52px;padding:0 1rem;font-size:1.05rem;
     background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.18);
@@ -238,7 +244,14 @@
   </div>
 </footer>
 <script src="/assets/js/site.js"></script>
-<script src="/assets/js/signguard.js"></script>
+<!-- The ?v= is a cache-buster, not a filename. _headers tells browsers to keep
+     /assets/js/* for an hour without rechecking, so a visitor who loaded this
+     page earlier today was still being served the previous signguard.js - the
+     fingerspelling one, which looks for A-Z containers, does not find them on
+     this page, and stops without a word. Changing the query string makes it a
+     different URL to the cache, so the new file is fetched. Bump the date
+     whenever signguard.js changes. -->
+<script src="/assets/js/signguard.js?v=20261005b"></script>
 
 </body>
 </html>
