@@ -15,33 +15,38 @@
 #                                   dropping both Google origins) is also on
 #                                   the planned list.
 #   img-src     + img.youtube.com — Academy video thumbnails.
-#   media-src   + cdn.jsdelivr.net — SignGuard's ASL clips (/learn/signguard).
-#                                   ADDED 2026-10-05. This is a deliberate
-#                                   widening and the only third-party origin
-#                                   allowed to serve media. The clips are the
-#                                   CC0 Sign Language Mocap Archive, ~7 MB of
-#                                   MP4 in total, served from GitHub through
-#                                   jsDelivr. Committing those 36 files into
-#                                   /assets/signguard/ would let this line be
-#                                   removed and media-src return to 'self'
-#                                   alone; that is the preferred end state
-#                                   and is tracked on /status.
-#   connect-src                   — exactly the four public XPR Network RPC
-#                                   hosts the read-only account check reads,
-#                                   and nothing else.
+#   media-src   + archive.org     — SignGuard's ASL dictionary clips
+#               + *.archive.org     (/learn/signguard). ADDED 2026-10-05.
+#                                   Both entries are needed: a request to
+#                                   archive.org/download/... is answered with
+#                                   a redirect to a storage node such as
+#                                   ia801504.us.archive.org, and CSP is
+#                                   checked against the redirect target too,
+#                                   so naming only the parent would still
+#                                   refuse the clip.
+#   connect-src + archive.org     — the one fetch SignGuard makes, asking
+#                                   archive.org/metadata/<item> which files
+#                                   an item holds. No other site is read.
+#                                   The four XPR Network RPC hosts below are
+#                                   for the read-only account check and are
+#                                   unrelated.
 #
-# Permissions-Policy autoplay was () — disabled everywhere. SignGuard loops a
-# muted clip the moment a letter is pressed, so it is now (self): this site
-# may autoplay, embedded third parties still may not. Nothing else on the
-# site autoplays, and the clip is muted, so this does not make any page start
-# making noise on its own.
+# The jsDelivr entry that briefly sat in media-src is gone. It was there for
+# a motion-capture archive whose clips turned out to be renders of a 3D model
+# rather than a person; that page was pulled the same day, so the origin is
+# no longer loaded and no longer allowed.
+#
+# Permissions-Policy autoplay was () — disabled everywhere. SignGuard starts a
+# muted clip the moment a word is chosen, so it is now (self): this site may
+# autoplay, embedded third parties still may not. Nothing else on the site
+# autoplays, and the clip is muted, so no page starts making noise on its own.
 #
 # No HSTS yet. It is deliberately absent: it must not be enabled until every
 # subdomain that needs to serve HTTPS has been verified, because it is hard
 # to withdraw once browsers have cached it.
 
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://img.youtube.com; media-src 'self' https://cdn.jsdelivr.net; connect-src 'self' https://proton.eosusa.io https://api.protonnz.com https://proton.cryptolions.io https://api-xprnetwork-main.saltant.io; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; manifest-src 'self'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://img.youtube.com; media-src 'self' https://archive.org https://*.archive.org; connect-src 'self' https://archive.org https://proton.eosusa.io https://api.protonnz.com https://proton.cryptolions.io https://api-xprnetwork-main.saltant.io; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; manifest-src 'self'; upgrade-insecure-requests
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: accelerometer=(), ambient-light-sensor=(), autoplay=(self), camera=(), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), usb=(), xr-spatial-tracking=()
