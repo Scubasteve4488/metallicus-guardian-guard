@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SignGuard — learn the ASL alphabet</title>
+<meta name="description" content="Watch every letter and number of the American Sign Language alphabet, signed by a real person. Free, no account, nothing generated.">
+<link rel="canonical" href="https://standguard.net/learn/signguard">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="StandGuard">
+<meta property="og:title" content="SignGuard — learn the ASL alphabet">
+<meta property="og:description" content="Watch every letter and number of the American Sign Language alphabet, signed by a real person. Free, no account, nothing generated.">
+<meta property="og:url" content="https://standguard.net/learn/signguard">
+<meta property="og:image" content="https://standguard.net/assets/img/guard-card-v6.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0e1220">
+<link rel="icon" href="/assets/img/img_coin.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Cinzel:wght@500;700&amp;family=Cinzel+Decorative:wght@700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+<style>
+  .sg-wrap{display:grid;grid-template-columns:1fr;gap:1.5rem;margin-top:1.5rem}
+  @media(min-width:860px){.sg-wrap{grid-template-columns:minmax(0,1fr) minmax(0,420px)}}
+  .sg-keys{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:.5rem}
+  .sg-key{min-height:56px;font-family:'Cinzel',serif;font-size:1.25rem;font-weight:700;
+    background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);border-radius:10px;
+    color:inherit;cursor:pointer;transition:background .15s,border-color .15s,transform .1s}
+  .sg-key:hover{background:rgba(255,255,255,.09)}
+  .sg-key:active{transform:translateY(1px)}
+  .sg-key[aria-pressed="true"]{background:rgba(212,175,55,.16);border-color:rgba(212,175,55,.6)}
+  .sg-key:focus-visible{outline:2px solid #d4af37;outline-offset:2px}
+  .sg-stage{position:sticky;top:1rem;background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:1rem;text-align:center}
+  .sg-stage video{width:100%;max-width:380px;border-radius:10px;background:#000;display:block;margin:0 auto}
+  .sg-now{font-family:'Cinzel Decorative',serif;font-size:3rem;line-height:1;margin:.25rem 0 .75rem}
+  .sg-hint{font-size:.9rem;opacity:.75;margin-top:.75rem}
+  .sg-err{display:none;font-size:.9rem;color:#ffb4b4;margin-top:.75rem}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<nav id="nav" aria-label="Primary">
+  <a class="nav-brand" href="/">
+    <img src="/assets/img/img_coin.jpg" alt="" width="34" height="34">
+    <span>StandGuard</span>
+  </a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+    <span></span><span></span><span></span>
+    <span class="vh">Menu</span>
+  </button>
+  <div class="nav-links" id="nav-links">
+    <a class="nav-link" href="/">Home</a>
+    <details class="nav-group"><summary>Guard.IAN</summary><div class="nav-menu">
+      <a class="nav-link" href="/ian">Meet Guard.IAN</a>
+      <a class="nav-link" href="/reports/ian">IAN launch report</a>
+      <a class="nav-link" href="/status">What's live</a>
+      <a class="nav-link" href="/guard">The GUARD token</a>
+      <a class="nav-link" href="https://agent.standguard.net" rel="noopener">His agent address</a>
+    </div></details>
+    <details class="nav-group"><summary>Services</summary><div class="nav-menu">
+      <a class="nav-link" href="/services">All services</a>
+      <a class="nav-link" href="/services/utility-forge">Utility Forge</a>
+      <a class="nav-link" href="/services/utility-watch">Utility Watch</a>
+      <a class="nav-link" href="/services/project-shield">Chain Answer</a>
+      <a class="nav-link" href="/services/launch-readiness">Launch Readiness Check</a>
+      <a class="nav-link" href="/services/launch-rehearsal">Launch Rehearsal</a>
+      <a class="nav-link" href="/services/agent-diagnostic">Agent Diagnostic</a>
+      <a class="nav-link" href="/services/agent-build">Get an agent built</a>
+      <a class="nav-link" href="https://xpragents.com/services/13" rel="noopener">Buy on XPR Agents</a>
+    </div></details>
+    <details class="nav-group"><summary>Tools</summary><div class="nav-menu">
+      <a class="nav-link" href="/tools">All tools</a>
+      <a class="nav-link" href="/tools/account-check">Account Check</a>
+      <a class="nav-link" href="/evidence">How reports are built</a>
+      <a class="nav-link" href="/corrections">Corrections</a>
+    </div></details>
+    <details class="nav-group"><summary>Learn</summary><div class="nav-menu">
+      <a class="nav-link" href="/learn">Start here</a>
+      <a class="nav-link" href="/learn/signguard">SignGuard &mdash; ASL</a>
+      <a class="nav-link" href="/learn/ecosystem">The ecosystem</a>
+      <a class="nav-link" href="/learn/academy">Academy</a>
+      <a class="nav-link" href="/learn/defi-forge">DeFi Forge</a>
+      <a class="nav-link" href="/learn/stablecoins-payments">Stablecoins &amp; payments</a>
+    </div></details>
+    <details class="nav-group"><summary>Community</summary><div class="nav-menu">
+      <a class="nav-link" href="/community">All communities</a>
+      <a class="nav-link" href="/community/ksto">KSTO</a>
+      <a class="nav-link" href="/community/snippy">Snippy</a>
+      <a class="nav-link" href="/community/snipverse">Snipverse</a>
+      <a class="nav-link" href="/community/cyphergang">CypherGang</a>
+    </div></details>
+    <details class="nav-group"><summary>About</summary><div class="nav-menu">
+      <a class="nav-link" href="/about">About</a>
+      <a class="nav-link" href="/contact">Contact</a>
+      <a class="nav-link" href="/privacy">Privacy</a>
+      <a class="nav-link" href="/terms">Terms</a>
+    </div></details>
+  </div>
+  <a class="nav-cta" href="https://xpragents.com/agent/safeguard5" rel="noopener">Guard.IAN on XPR Agents</a>
+</nav>
+<main id="main">
+<div class="container">
+
+  <section class="section">
+    <h1 class="page-title">SignGuard</h1>
+    <p class="lead mt2">The American Sign Language alphabet, signed by a real person.</p>
+    <p class="lead">Pick a letter or a number and watch it. Free, no account, nothing to install.</p>
+  </section>
+
+  <div class="div-g"></div>
+
+  <section class="section">
+    <h2 class="sec-title">The alphabet</h2>
+
+    <div class="sg-wrap">
+      <div>
+        <h3 class="mt2">Letters</h3>
+        <div class="sg-keys mt2" id="sg-letters"></div>
+        <h3 class="mt4">Numbers</h3>
+        <div class="sg-keys mt2" id="sg-numbers"></div>
+      </div>
+
+      <aside class="sg-stage">
+        <div class="sg-now" id="sg-now">A</div>
+        <video id="sg-video" controls loop muted playsinline preload="metadata"></video>
+        <p class="sg-hint">Loops automatically. Use the controls to slow down or step through.</p>
+        <p class="sg-err" id="sg-err">That clip didn&rsquo;t load. Try another, or let us know on the contact page.</p>
+      </aside>
+    </div>
+  </section>
+
+  <div class="div-g"></div>
+
+  <section class="section">
+    <h2 class="sec-title">How this is made</h2>
+    <div class="grid grid-2 mt3">
+      <div class="card">
+        <h3>Real motion, never generated</h3>
+        <p>Every clip is motion capture of a real signer.</p>
+        <p class="mt1">Guard.IAN does not generate sign language. He plays captured motion or he says nothing. An AI guessing at a sign teaches people something wrong, and a wrong sign is worse than no sign.</p>
+      </div>
+      <div class="card">
+        <h3>Nothing is watching you</h3>
+        <p>This page has no camera, no account and no tracking of your practice.</p>
+        <p class="mt1">If hand-tracking practice is added later, it will run inside your own browser and no video will ever leave your device.</p>
+      </div>
+    </div>
+
+    <div class="disc mt3"><span>&#8505;</span><div>This is a learning aid, not a course, and not a substitute for a Deaf teacher. ASL has regional variation, and signs change over time. Learn from Deaf people wherever you can.</div></div>
+
+    <p class="muted mt3">Sign video from the <a href="https://github.com/StudioGalt/Sign-Language-Mocap-Archive" rel="noopener">Sign Language Mocap Archive</a> by StudioGalt, released under <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener">CC0 1.0</a> (public domain). Delivered through the jsDelivr CDN. StandGuard is not affiliated with StudioGalt.</p>
+  </section>
+
+</div>
+
+</main>
+<footer id="site-footer">
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand"><img src="/assets/img/img_coin.jpg" alt="" width="30" height="30"><span>StandGuard</span></div>
+        <p class="foot-desc">The home of Guard.IAN, an AI agent on XPR Network. He buys into SimpleDEX launches with his own wallets, and writes Utility Forge reports on the XPR Agents job board.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="/ian">Guard.IAN</a>
+        <a href="/services">Services</a>
+        <a href="/tools">Tools</a>
+        <a href="/evidence#method">How reports are built</a>
+        <a href="/learn">Learn</a>
+        <a href="/community">Community</a>
+        <a href="/guard">GUARD</a>
+        <a href="/status">Status</a>
+      </div>
+      <div class="foot-col">
+        <h4>Boundaries</h4>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/corrections">Corrections</a>
+        <a href="/contact">Contact</a>
+        <a href="https://xpragents.com/agent/safeguard5" rel="noopener">XPR Agents profile</a>
+        <a href="https://github.com/Scubasteve4488/metallicus-guardian-guard" rel="noopener">GitHub public repository</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p class="foot-disc">StandGuard and Guard.IAN are independent community-built projects. They are not official Metallicus, XPR Network, WebAuth, SimpleDEX, or XPR Agents products. Information here is for learning. It is not financial, legal, security, or investment advice.</p>
+      <p class="foot-meta">&copy; <span id="foot-year">2026</span> StandGuard &middot; built by <a href="https://x.com/scubasteve4488" rel="noopener">@Scubasteve4488</a> &middot; <a href="/status">what is live, testing, planned and parked</a></p>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  // Source: StudioGalt/Sign-Language-Mocap-Archive, CC0 1.0 (public domain).
+  // Folder names in that archive are inconsistent, so each stem below was read
+  // from the repository listing on 2026-10-05 rather than constructed.
+  // Full path pattern, verified against three samples (A, C, 9):
+  //   SG ASL Fingerspelling/<Group>/<stem> Upload/Documentation/<stem> CC.mp4
+  var CDN = "https://cdn.jsdelivr.net/gh/StudioGalt/Sign-Language-Mocap-Archive@main/SG ASL Fingerspelling/";
+
+  var LETTERS = {
+    "A":"SG ASL A 2024-6-16",   "B":"SG ASL B 2024-6-16",   "C":"SG ASL C 1 2024-6-16",
+    "D":"SG ASL D 2 2024-6-16", "E":"SG ASL E 2 2024-6-16", "F":"SG ASL F 2024-6-16",
+    "G":"SG ASL G 2024-6-16",   "H":"SG ASL H 2024-6-16",   "I":"SG ASL I 2 2024-6-16",
+    "J":"SG ASL J 2 2024-6-16", "K":"SG ASL K 1 2024-6-16", "L":"SG ASL L 2024-6-16",
+    "M":"SG ASL M 2 2024-6-16", "N":"SG ASL N 2 2024-6-16", "O":"SG ASL O 2024-6-16",
+    "P":"SG ASL P2 2024-6-17",  "Q":"SG ASL Q 2 2024-6-17", "R":"SG ASL R 3 2024-6-17",
+    "S":"SG ASL S 2 2024-6-17", "T":"SG ASL T 2 2024-6-17", "U":"SG ASL U 2 2024-6-17",
+    "V":"SG ASL V 2 2024-6-17", "W":"SG ASL W 2 2024-6-17", "X":"SG ASL X 1 2024-6-17",
+    "Y":"SG ASL Y 2024-6-17",   "Z":"SG ASL Z 2 2024-6-17"
+  };
+
+  var NUMBERS = {
+    "0":"SG ASL 0 2024-6-17", "1":"SG ASL 1 2024-6-15", "2":"SG ASL 2 2024-6-15",
+    "3":"SG ASL 3 2024-6-15", "4":"SG ASL 4 2024-6-15", "5":"SG ASL 5 2024-6-15",
+    "6":"SG ASL 6 2024-6-15", "7":"SG ASL 7 2024-6-16", "8":"SG ASL 8 2024-6-16",
+    "9":"SG ASL 9 2024-6-16", "10":"SG ASL 10 2024-6-15"
+  };
+
+  function url(group, stem){
+    var path = group + "/" + stem + " Upload/Documentation/" + stem + " CC.mp4";
+    return CDN + path.split("/").map(encodeURIComponent).join("/");
+  }
+
+  var video = document.getElementById("sg-video");
+  var now   = document.getElementById("sg-now");
+  var err   = document.getElementById("sg-err");
+  var keys  = [];
+
+  function show(label, group, stem){
+    err.style.display = "none";
+    now.textContent = label;
+    video.src = url(group, stem);
+    video.load();
+    var p = video.play();
+    if (p && p.catch) { p.catch(function(){}); }
+    keys.forEach(function(b){
+      b.setAttribute("aria-pressed", b.dataset.label === label ? "true" : "false");
+    });
+  }
+
+  video.addEventListener("error", function(){ err.style.display = "block"; });
+
+  function build(containerId, map, group){
+    var box = document.getElementById(containerId);
+    Object.keys(map).forEach(function(label){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "sg-key";
+      b.textContent = label;
+      b.dataset.label = label;
+      b.setAttribute("aria-pressed", "false");
+      b.setAttribute("aria-label", "Show the sign for " + label);
+      b.addEventListener("click", function(){ show(label, group, map[label]); });
+      box.appendChild(b);
+      keys.push(b);
+    });
+  }
+
+  build("sg-letters", LETTERS, "Letters");
+  build("sg-numbers", NUMBERS, "Numbers");
+
+  show("A", "Letters", LETTERS["A"]);
+})();
+</script>
+
+</body>
+</html>
