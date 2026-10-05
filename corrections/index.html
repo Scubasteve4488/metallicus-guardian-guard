@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Corrections — how a wrong claim gets fixed</title>
-<meta name="description" content="Point at the exact claim. It gets rechecked at the source and the result is marked on the page. Never a silent edit.">
+<meta name="description" content="Point at the exact claim. It gets rechecked at the source and the result is marked on the page. Never a silent edit. Includes the log of what has been corrected.">
 <link rel="canonical" href="https://standguard.net/corrections">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="StandGuard">
 <meta property="og:title" content="Corrections — how a wrong claim gets fixed">
-<meta property="og:description" content="Point at the exact claim. It gets rechecked at the source and the result is marked on the page. Never a silent edit.">
+<meta property="og:description" content="Point at the exact claim. It gets rechecked at the source and the result is marked on the page. Never a silent edit. Includes the log of what has been corrected.">
 <meta property="og:url" content="https://standguard.net/corrections">
 <meta property="og:image" content="https://standguard.net/assets/img/guard-card-v6.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -19,6 +19,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Cinzel:wght@500;700&amp;family=Cinzel+Decorative:wght@700&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/site.css">
+<style>
+  .cor-entry{border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:1.25rem;margin-top:1rem;background:rgba(255,255,255,.03)}
+  .cor-head{display:flex;flex-wrap:wrap;gap:.5rem;align-items:baseline;justify-content:space-between}
+  .cor-date{font-size:.9rem;opacity:.65;font-variant-numeric:tabular-nums}
+  .cor-tag{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;
+    padding:.2rem .6rem;border-radius:999px;border:1px solid rgba(212,175,55,.6);
+    background:rgba(212,175,55,.14);white-space:nowrap}
+  .cor-entry h3{margin:.35rem 0 .5rem}
+  .cor-entry dt{font-weight:700;margin-top:.9rem;font-size:.95rem}
+  .cor-entry dd{margin:.2rem 0 0}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -59,6 +70,7 @@
     </div></details>
     <details class="nav-group"><summary>Learn</summary><div class="nav-menu">
       <a class="nav-link" href="/learn">Start here</a>
+      <a class="nav-link" href="/learn/signguard">SignGuard &mdash; ASL</a>
       <a class="nav-link" href="/learn/ecosystem">The ecosystem</a>
       <a class="nav-link" href="/learn/academy">Academy</a>
       <a class="nav-link" href="/learn/defi-forge">DeFi Forge</a>
@@ -85,6 +97,7 @@
   <section class="section">
     <h1 class="page-title">If something here is wrong</h1>
     <p class="lead mt2">Point it out. A wrong fact on this site, or in something Guard.IAN published, gets fixed in the open.</p>
+    <p class="lead">What has already been fixed is <a href="#log">kept below</a>, including the things nobody reported.</p>
   </section>
 
   <div class="div-g"></div>
@@ -115,6 +128,43 @@
         <p class="mt1">You'll still get an answer. It goes back to the facts, not to whoever argued hardest.</p>
       </div>
     </div>
+  </section>
+
+  <div class="div-g"></div>
+
+  <section class="section" id="log">
+    <h2 class="sec-title">The log</h2>
+    <p class="lead">Everything corrected so far, newest first. Things found in-house are logged the same as things somebody reported, because a mistake nobody caught is still a mistake.</p>
+
+    <div class="cor-entry">
+      <div class="cor-head">
+        <span class="cor-tag">Corrected</span>
+        <span class="cor-date">5 October 2026</span>
+      </div>
+      <h3>SignGuard said the ASL alphabet was &ldquo;signed by a real person&rdquo;. It was a 3D model.</h3>
+
+      <dl>
+        <dt>The claim</dt>
+        <dd>A fingerspelling page published that morning at <a href="/learn/signguard">/learn/signguard</a> showed A&ndash;Z and 0&ndash;10 and described the clips as &ldquo;signed by a real person&rdquo;. The Learn index carried the same wording on its card.</dd>
+
+        <dt>What was actually true</dt>
+        <dd>The clips came from a public-domain motion-capture archive. The motion had been captured from a human signer, but the video was a 3D character rendered from that data in Blender. Each clip's own documentation file states the Blender version and the model name. There is no human footage in that archive at all.</dd>
+
+        <dt>How it was found</dt>
+        <dd>Nobody reported it. The site operator opened the page, watched one clip and saw a model. The licence had been checked before publishing; the video itself had not been watched.</dd>
+
+        <dt>What was done</dt>
+        <dd>The player was pulled the same day, within the hour. The page was replaced with a plain account of what had been published and why it was wrong. The Learn index card was corrected. The page was marked so search engines would not keep the old version.</dd>
+
+        <dt>Why it was not simply reworded</dt>
+        <dd>Changing the page to say &ldquo;3D character&rdquo; would have been accurate and still wrong to publish. Fingerspelling is read off a real hand &mdash; the exact shape, and the way it moves between letters. A rendered model smooths out the detail a learner needs, and they would not find out until they tried it with a Deaf person.</dd>
+
+        <dt>What changed because of it</dt>
+        <dd>A standing rule, now written on the page itself: captured motion means footage of a person. A 3D model replaying captured motion is not a person and is not shown to a learner. The alphabet stays empty until there is real footage. The dictionary that replaced it streams public-domain video of real signers recorded by the Center for Accessible Technology in Sign.</dd>
+      </dl>
+    </div>
+
+    <p class="muted mt3">Nothing before this date is listed because nothing before this date had been logged &mdash; not because nothing was wrong. This page described how corrections work for some time before it carried a single one.</p>
   </section>
 
   <div class="div"></div>
