@@ -1,120 +1,174 @@
-/* SignGuard — ASL fingerspelling player.
+/* SignGuard — one page, three tabs, no wandering.
  *
  * External rather than inline because the site's Content-Security-Policy sets
- * script-src 'self'. An inline <script> is blocked outright, which is what
- * happened on first deploy: the page rendered with no buttons at all.
+ * script-src 'self'. An inline script is refused outright.
  *
- * Source of every clip: StudioGalt/Sign-Language-Mocap-Archive, CC0 1.0
- * (public domain, commercial use permitted, attribution not required).
- * Licence verified 2026-10-05. The page credits them regardless.
+ * TAB 1 — Dictionary. Live lookup against the Internet Archive collection
+ * "The ASL Dictionary" by the Center for Accessible Technology in Sign
+ * (contributor Harley Hamilton, contact smartsigndictionary@gmail.com). Every
+ * item checked on 2026-10-05 is marked "Rights: Public Domain" on archive.org,
+ * and the operator confirmed by eye that the signer is a real person.
  *
- * Nothing here is generated. The archive also ships FBX rigs, Poses and
- * ShapeKeys; all of it is deliberately unused. Guard.IAN plays captured
- * motion of a real signer, or he shows nothing.
+ * Identifier pattern, verified against eight items (achieve, squatter,
+ * basically, museum, crucify, tower, journalist, prefix): <word>ASL.
+ * Nothing is downloaded or stored here - the page asks archive.org for one
+ * item's file list, then plays one file.
+ *
+ * TAB 2 — Alphabet. Deliberately empty. The clips that shipped on 2026-10-05
+ * were Blender renders of a 3D model, not a person, and were pulled the same
+ * day. Nothing goes back in this tab until there is footage of a real signer.
+ * Showing nothing is correct; showing a model and calling it a person is not.
+ *
+ * TAB 3 — How it's made. Static text in the HTML.
  */
 (function () {
   "use strict";
 
-  /* Pinned to a commit, not to @main.
-   *
-   * @main means "whatever that repository looks like today". If StudioGalt
-   * renames a folder, every clip on this page breaks at once and we would
-   * find out from a user rather than from a test. A commit SHA is frozen:
-   * the files behind it cannot change under us, and jsDelivr caches a pinned
-   * path permanently instead of rechecking every 12 hours.
-   *
-   * eb90465 = archive HEAD on 2026-10-05, the commit every path below was
-   * verified against. To take a newer version of the archive, change this
-   * string and re-verify the stems — not the other way round.
-   */
-  var REF = "eb9046596fffcc6e92ee91d021372961f3d4fcaa";
-  var CDN = "https://cdn.jsdelivr.net/gh/StudioGalt/Sign-Language-Mocap-Archive@" +
-            REF + "/SG ASL Fingerspelling/";
+  var IA_META = "https://archive.org/metadata/";
+  var IA_FILE = "https://archive.org/download/";
+  var IA_ITEM = "https://archive.org/details/";
 
-  /* Every stem below was READ from the repository listing at that commit on
-   * 2026-10-05 and checked one by one against it — not constructed from a
-   * pattern. The archive's naming is genuinely inconsistent and the odd ones
-   * are real, not transcription slips:
-   *   - most doubled takes are "X 2" with a space ("D 2", "Q 2")
-   *   - P is "P2" with no space, and that is what the folder is actually called
-   *   - some letters have no take number at all ("A", "F", "L", "O", "Y")
-   * Path pattern, confirmed against A, C, 9 and P:
-   *   SG ASL Fingerspelling/<Group>/<stem> Upload/Documentation/<stem> CC.mp4
-   * Clips are small — P is 141 KB — so none approaches jsDelivr's file limit.
-   */
-  var LETTERS = {
-    "A": "SG ASL A 2024-6-16",   "B": "SG ASL B 2024-6-16",   "C": "SG ASL C 1 2024-6-16",
-    "D": "SG ASL D 2 2024-6-16", "E": "SG ASL E 2 2024-6-16", "F": "SG ASL F 2024-6-16",
-    "G": "SG ASL G 2024-6-16",   "H": "SG ASL H 2024-6-16",   "I": "SG ASL I 2 2024-6-16",
-    "J": "SG ASL J 2 2024-6-16", "K": "SG ASL K 1 2024-6-16", "L": "SG ASL L 2024-6-16",
-    "M": "SG ASL M 2 2024-6-16", "N": "SG ASL N 2 2024-6-16", "O": "SG ASL O 2024-6-16",
-    "P": "SG ASL P2 2024-6-17",  "Q": "SG ASL Q 2 2024-6-17", "R": "SG ASL R 3 2024-6-17",
-    "S": "SG ASL S 2 2024-6-17", "T": "SG ASL T 2 2024-6-17", "U": "SG ASL U 2 2024-6-17",
-    "V": "SG ASL V 2 2024-6-17", "W": "SG ASL W 2 2024-6-17", "X": "SG ASL X 1 2024-6-17",
-    "Y": "SG ASL Y 2024-6-17",   "Z": "SG ASL Z 2 2024-6-17"
-  };
+  /* Words confirmed present in the collection on 2026-10-05. These exist as
+   * starting points so the page does something the moment it loads, rather
+   * than showing an empty box and daring the visitor to guess a word. */
+  var SAMPLES = ["achieve", "basically", "crucify", "journalist",
+                 "museum", "prefix", "squatter", "target", "tower"];
 
-  var NUMBERS = {
-    "0": "SG ASL 0 2024-6-17", "1": "SG ASL 1 2024-6-15", "2": "SG ASL 2 2024-6-15",
-    "3": "SG ASL 3 2024-6-15", "4": "SG ASL 4 2024-6-15", "5": "SG ASL 5 2024-6-15",
-    "6": "SG ASL 6 2024-6-15", "7": "SG ASL 7 2024-6-16", "8": "SG ASL 8 2024-6-16",
-    "9": "SG ASL 9 2024-6-16", "10": "SG ASL 10 2024-6-15"
-  };
+  /* archive.org identifiers have no spaces or punctuation: "creative commons"
+   * is stored as "creativecommonsASL2". Lowercase, strip everything that is
+   * not a letter or digit, then append ASL. */
+  function identifierFor(word) {
+    return word.toLowerCase().replace(/[^a-z0-9]/g, "") + "ASL";
+  }
+
+  /* Prefer the ".ia.mp4" derivative: archive.org generates it as H.264, which
+   * every browser plays. An original upload may be in a codec that some do not. */
+  function pickVideo(files) {
+    var best = null;
+    for (var i = 0; i < files.length; i++) {
+      var name = files[i].name || "";
+      if (!/\.mp4$/i.test(name)) { continue; }
+      if (/\.ia\.mp4$/i.test(name)) { return name; }
+      if (!best) { best = name; }
+    }
+    return best;
+  }
 
   function start() {
-    var video = document.getElementById("sg-video");
-    var now = document.getElementById("sg-now");
-    var err = document.getElementById("sg-err");
-    var lettersBox = document.getElementById("sg-letters");
-    var numbersBox = document.getElementById("sg-numbers");
+    var tabs = Array.prototype.slice.call(document.querySelectorAll(".sg-tab"));
+    var panels = Array.prototype.slice.call(document.querySelectorAll(".sg-panel"));
 
-    if (!video || !now || !lettersBox || !numbersBox) { return; }
-
-    var keys = [];
-
-    function url(group, stem) {
-      var path = group + "/" + stem + " Upload/Documentation/" + stem + " CC.mp4";
-      return CDN + path.split("/").map(encodeURIComponent).join("/");
-    }
-
-    function show(label, group, stem) {
-      if (err) { err.style.display = "none"; }
-      now.textContent = label;
-      video.src = url(group, stem);
-      video.load();
-      // Autoplay may still be refused by the browser's own policy. The clip
-      // loads and the controls work either way, so a refusal here is not an
-      // error and must not surface as one.
-      var p = video.play();
-      if (p && typeof p.catch === "function") { p.catch(function () {}); }
-      keys.forEach(function (b) {
-        b.setAttribute("aria-pressed", b.getAttribute("data-label") === label ? "true" : "false");
+    /* ---- tabs ------------------------------------------------------ */
+    function openTab(name) {
+      tabs.forEach(function (t) {
+        var on = t.getAttribute("data-tab") === name;
+        t.setAttribute("aria-selected", on ? "true" : "false");
+        t.setAttribute("tabindex", on ? "0" : "-1");
       });
+      panels.forEach(function (p) {
+        p.hidden = p.getAttribute("data-panel") !== name;
+      });
+      /* Keep the tab in the URL so a visitor can send someone a link to the
+       * dictionary rather than to the page and a sentence of instructions.
+       * replaceState, not pushState - switching tabs should not fill up the
+       * Back button. */
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, "", "#" + name);
+      }
     }
 
-    video.addEventListener("error", function () {
-      if (err) { err.style.display = "block"; }
+    tabs.forEach(function (t) {
+      t.addEventListener("click", function () { openTab(t.getAttribute("data-tab")); });
+      t.addEventListener("keydown", function (e) {
+        var i = tabs.indexOf(t);
+        var next = null;
+        if (e.key === "ArrowRight") { next = tabs[(i + 1) % tabs.length]; }
+        if (e.key === "ArrowLeft") { next = tabs[(i - 1 + tabs.length) % tabs.length]; }
+        if (next) { e.preventDefault(); next.focus(); openTab(next.getAttribute("data-tab")); }
+      });
     });
 
-    function build(box, map, group) {
-      Object.keys(map).forEach(function (label) {
-        var b = document.createElement("button");
-        b.type = "button";
-        b.className = "sg-key";
-        b.textContent = label;
-        b.setAttribute("data-label", label);
-        b.setAttribute("aria-pressed", "false");
-        b.setAttribute("aria-label", "Show the sign for " + label);
-        b.addEventListener("click", function () { show(label, group, map[label]); });
-        box.appendChild(b);
-        keys.push(b);
-      });
+    var fromUrl = (window.location.hash || "").replace("#", "");
+    openTab(fromUrl === "alphabet" || fromUrl === "made" ? fromUrl : "dictionary");
+
+    /* ---- dictionary ------------------------------------------------ */
+    var form = document.getElementById("sg-form");
+    var input = document.getElementById("sg-word");
+    var stage = document.getElementById("sg-stage");
+    var now = document.getElementById("sg-now");
+    var video = document.getElementById("sg-video");
+    var credit = document.getElementById("sg-credit");
+    var status = document.getElementById("sg-status");
+    var samples = document.getElementById("sg-samples");
+
+    if (!form || !input || !video || !status) { return; }
+
+    function say(message) {
+      status.textContent = message;
+      status.hidden = !message;
     }
 
-    build(lettersBox, LETTERS, "Letters");
-    build(numbersBox, NUMBERS, "Numbers");
+    function look(word) {
+      word = (word || "").trim();
+      if (!word) { return; }
 
-    show("A", "Letters", LETTERS["A"]);
+      var id = identifierFor(word);
+      stage.hidden = true;
+      say("Looking for \u201c" + word + "\u201d\u2026");
+
+      /* archive.org answers with the item's full file list. If the item does
+       * not exist it answers 200 with an empty object, not a 404 - so an
+       * empty "files" is the real "no such word", not an error. */
+      fetch(IA_META + encodeURIComponent(id))
+        .then(function (r) {
+          if (!r.ok) { throw new Error("archive.org returned " + r.status); }
+          return r.json();
+        })
+        .then(function (data) {
+          var files = (data && data.files) || [];
+          if (!files.length) {
+            say("No video for \u201c" + word + "\u201d in this collection. " +
+                "It holds single words, so try a plain one \u2014 \u201crun\u201d rather than \u201crunning quickly\u201d.");
+            return;
+          }
+          var file = pickVideo(files);
+          if (!file) {
+            say("That word exists in the collection but has no playable video file.");
+            return;
+          }
+          now.textContent = word;
+          video.src = IA_FILE + encodeURIComponent(id) + "/" + encodeURIComponent(file);
+          video.load();
+          var p = video.play();
+          if (p && typeof p.catch === "function") { p.catch(function () {}); }
+          credit.href = IA_ITEM + id;
+          stage.hidden = false;
+          say("");
+        })
+        .catch(function (err) {
+          say("Could not reach the Internet Archive just now. " +
+              "The video lives there, not here, so this is their end or the network. (" + err.message + ")");
+        });
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      look(input.value);
+    });
+
+    video.addEventListener("error", function () {
+      stage.hidden = true;
+      say("That clip would not play. Try another word.");
+    });
+
+    SAMPLES.forEach(function (word) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "sg-sample";
+      b.textContent = word;
+      b.addEventListener("click", function () { input.value = word; look(word); });
+      samples.appendChild(b);
+    });
   }
 
   if (document.readyState === "loading") {
