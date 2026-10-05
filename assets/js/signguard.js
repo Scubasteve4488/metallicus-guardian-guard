@@ -5,7 +5,8 @@
  * happened on first deploy: the page rendered with no buttons at all.
  *
  * Source of every clip: StudioGalt/Sign-Language-Mocap-Archive, CC0 1.0
- * (public domain, commercial use permitted). Licence verified 2026-10-05.
+ * (public domain, commercial use permitted, attribution not required).
+ * Licence verified 2026-10-05. The page credits them regardless.
  *
  * Nothing here is generated. The archive also ships FBX rigs, Poses and
  * ShapeKeys; all of it is deliberately unused. Guard.IAN plays captured
@@ -14,13 +15,33 @@
 (function () {
   "use strict";
 
-  // The archive's folder naming is inconsistent — "SG ASL A 2024-6-16" but
-  // "SG ASL C 1 2024-6-16" and "SG ASL P2 2024-6-17". Every stem below was
-  // READ from the repository listing on 2026-10-05, not constructed from a
-  // pattern. Full path, verified against three real samples (A, C, 9):
-  //   SG ASL Fingerspelling/<Group>/<stem> Upload/Documentation/<stem> CC.mp4
-  var CDN = "https://cdn.jsdelivr.net/gh/StudioGalt/Sign-Language-Mocap-Archive@main/SG ASL Fingerspelling/";
+  /* Pinned to a commit, not to @main.
+   *
+   * @main means "whatever that repository looks like today". If StudioGalt
+   * renames a folder, every clip on this page breaks at once and we would
+   * find out from a user rather than from a test. A commit SHA is frozen:
+   * the files behind it cannot change under us, and jsDelivr caches a pinned
+   * path permanently instead of rechecking every 12 hours.
+   *
+   * eb90465 = archive HEAD on 2026-10-05, the commit every path below was
+   * verified against. To take a newer version of the archive, change this
+   * string and re-verify the stems — not the other way round.
+   */
+  var REF = "eb9046596fffcc6e92ee91d021372961f3d4fcaa";
+  var CDN = "https://cdn.jsdelivr.net/gh/StudioGalt/Sign-Language-Mocap-Archive@" +
+            REF + "/SG ASL Fingerspelling/";
 
+  /* Every stem below was READ from the repository listing at that commit on
+   * 2026-10-05 and checked one by one against it — not constructed from a
+   * pattern. The archive's naming is genuinely inconsistent and the odd ones
+   * are real, not transcription slips:
+   *   - most doubled takes are "X 2" with a space ("D 2", "Q 2")
+   *   - P is "P2" with no space, and that is what the folder is actually called
+   *   - some letters have no take number at all ("A", "F", "L", "O", "Y")
+   * Path pattern, confirmed against A, C, 9 and P:
+   *   SG ASL Fingerspelling/<Group>/<stem> Upload/Documentation/<stem> CC.mp4
+   * Clips are small — P is 141 KB — so none approaches jsDelivr's file limit.
+   */
   var LETTERS = {
     "A": "SG ASL A 2024-6-16",   "B": "SG ASL B 2024-6-16",   "C": "SG ASL C 1 2024-6-16",
     "D": "SG ASL D 2 2024-6-16", "E": "SG ASL E 2 2024-6-16", "F": "SG ASL F 2024-6-16",
@@ -61,9 +82,9 @@
       now.textContent = label;
       video.src = url(group, stem);
       video.load();
-      // Autoplay may be refused by the browser or by Permissions-Policy.
-      // The clip still loads and the controls still work, so a refusal here
-      // is not an error and must not surface as one.
+      // Autoplay may still be refused by the browser's own policy. The clip
+      // loads and the controls work either way, so a refusal here is not an
+      // error and must not surface as one.
       var p = video.play();
       if (p && typeof p.catch === "function") { p.catch(function () {}); }
       keys.forEach(function (b) {
