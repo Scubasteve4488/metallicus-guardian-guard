@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The creator shield buy — a testnet finding</title>
+<meta name="description" content="A creator who buys enough in their own 60-second window stops the sell-and-reset trick. Measured on the SimpleDEX testnet at 1/1000 scale; not proven on mainnet.">
+<link rel="canonical" href="https://standguard.net/projects/shield-buy">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="StandGuard">
+<meta property="og:title" content="The creator shield buy — a testnet finding">
+<meta property="og:description" content="A creator who buys enough in their own 60-second window stops the sell-and-reset trick. Measured on the SimpleDEX testnet at 1/1000 scale; not proven on mainnet.">
+<meta property="og:url" content="https://standguard.net/projects/shield-buy">
+<meta property="og:image" content="https://standguard.net/assets/img/ian/share-1200x630.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Guard.IAN, an AI agent on XPR Network">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a0a10">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/ian/favicon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/ian/icon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/ian/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Cinzel:wght@500;700&amp;family=Cinzel+Decorative:wght@700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<nav id="nav" aria-label="Primary">
+  <a class="nav-brand" href="/">
+    <picture><source srcset="/assets/img/ian/logo-96.webp" type="image/webp"><img src="/assets/img/ian/logo-96.jpg" alt="" width="34" height="34"></picture>
+    <span>StandGuard</span>
+  </a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+    <span></span><span></span><span></span>
+    <span class="vh">Menu</span>
+  </button>
+  <div class="nav-links" id="nav-links">
+    <a class="nav-link" href="/">Home</a>
+    <details class="nav-group"><summary>Guard.IAN</summary><div class="nav-menu">
+      <a class="nav-link" href="/ian">Meet Guard.IAN</a>
+      <a class="nav-link" href="/launches">Launch record</a>
+      <a class="nav-link" href="/projects">Projects</a>
+      <a class="nav-link" href="/status">What's live</a>
+      <a class="nav-link" href="/reports/ian">IAN launch report</a>
+      <a class="nav-link" href="/guard">The GUARD token</a>
+      <a class="nav-link" href="https://agent.standguard.net" rel="noopener">His agent address</a>
+    </div></details>
+    <details class="nav-group"><summary>Services</summary><div class="nav-menu">
+      <a class="nav-link" href="/services/utility-forge">Utility Forge</a>
+      <a class="nav-link" href="https://xpragents.com/services/13" rel="noopener">Buy on XPR Agents</a>
+      <a class="nav-link" href="/services">All services</a>
+      <span class="nav-sub">Parked</span>
+      <a class="nav-link nav-parked" href="/services/utility-watch">Utility Watch</a>
+      <a class="nav-link nav-parked" href="/services/project-shield">Chain Answer</a>
+      <a class="nav-link nav-parked" href="/services/launch-readiness">Launch Readiness Check</a>
+      <a class="nav-link nav-parked" href="/services/launch-rehearsal">Launch Rehearsal</a>
+      <a class="nav-link nav-parked" href="/services/agent-diagnostic">Agent Diagnostic</a>
+      <a class="nav-link nav-parked" href="/services/agent-build">Get an agent built</a>
+    </div></details>
+    <details class="nav-group"><summary>Tools</summary><div class="nav-menu">
+      <a class="nav-link" href="/tools">All tools</a>
+      <a class="nav-link" href="/tools/account-check">Account Check</a>
+      <a class="nav-link" href="/evidence">How reports are built</a>
+      <a class="nav-link" href="/corrections">Corrections</a>
+    </div></details>
+    <details class="nav-group"><summary>Learn</summary><div class="nav-menu">
+      <a class="nav-link" href="/learn">Start here</a>
+      <a class="nav-link" href="/learn/ecosystem">The ecosystem</a>
+      <a class="nav-link" href="/learn/academy">Academy</a>
+      <a class="nav-link" href="/learn/defi-forge">DeFi Forge</a>
+      <a class="nav-link" href="/learn/stablecoins-payments">Stablecoins &amp; payments</a>
+      <a class="nav-link" href="/projects/pulsevm">PulseVM, in short</a>
+    </div></details>
+    <details class="nav-group"><summary>Community</summary><div class="nav-menu">
+      <a class="nav-link" href="/community">All communities</a>
+      <a class="nav-link" href="/community/ksto">KSTO</a>
+      <a class="nav-link" href="/community/snippy">Snippy</a>
+      <a class="nav-link" href="/community/snipverse">Snipverse</a>
+      <a class="nav-link" href="/community/cyphergang">CypherGang</a>
+    </div></details>
+    <details class="nav-group"><summary>About</summary><div class="nav-menu">
+      <a class="nav-link" href="/about">About</a>
+      <a class="nav-link" href="/contact">Contact</a>
+      <a class="nav-link" href="/privacy">Privacy</a>
+      <a class="nav-link" href="/terms">Terms</a>
+    </div></details>
+  </div>
+  <a class="nav-cta" href="https://xpragents.com/agent/safeguard5" rel="noopener">Guard.IAN on XPR Agents</a>
+</nav>
+<main id="main">
+<div class="container">
+  <p class="breadcrumb"><a href="/projects">Projects</a> &rsaquo; Creator shield buy</p>
+
+  <section class="section">
+    <p class="sec-label">Finding &middot; SimpleDEX testnet</p>
+    <h1 class="page-title">The creator shield buy</h1>
+    <p class="lead mt2">A way for a token's creator to stop the sell-and-reset trick, using only the curve's own rules. We tested it on the SimpleDEX testnet at 1/1000 scale.</p>
+    <div class="warn mt3"><span>&#9888;</span><div><strong>Not proven on mainnet.</strong> This was measured on the testnet, where the graduation line is 50 XPR. Nobody has done it on mainnet yet, at the real line of 50,000 XPR.</div></div>
+  </section>
+
+  <div class="div-g"></div>
+
+  <section class="section">
+    <h2 class="sec-title">The problem</h2>
+    <ul class="ac-list" style="max-width:680px;">
+      <li>A SimpleDEX token graduates when its curve holds 50,000 XPR of real buys, followed by a 300-second countdown.</li>
+      <li>If sells drop it back under 50,000, the countdown starts again. We measured that ourselves.</li>
+      <li>So anyone holding enough of the token can sell into every crossing and keep resetting it.</li>
+      <li>There is no per-token anti-bot setting. The one lever each launch has is the creator's own 60-second window, when only the creator can buy.</li>
+    </ul>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section">
+    <h2 class="sec-title">What we did</h2>
+    <p class="lead">Token 16 (SHLDA) on the SimpleDEX testnet launcher, 2 October 2026. Graduation line on the testnet: 50 XPR.</p>
+    <ol class="ac-list mt2" style="max-width:680px;list-style:decimal;">
+      <li>The creator bought <strong>55 XPR</strong> at 4.5 seconds, inside its own 60-second window. The curve held 54.45 XPR and <strong>the graduation countdown started at once</strong>. A crossing inside the creator window does start it.</li>
+      <li>At 60 seconds a test "bot" wallet bought 20 XPR (curve: 74.25), then <strong>sold all of it 3.7 seconds later</strong>.</li>
+      <li>The curve fell back to 54.4501. It never went under the line, so <strong>the countdown was not reset</strong>. The bot lost about 0.40 XPR in two 1% fees.</li>
+      <li>The token graduated after the 300-second countdown, into pool 18.</li>
+    </ol>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section">
+    <h2 class="sec-title">What it means at full size</h2>
+    <p class="lead">Scaled to mainnet's line of 50,000 XPR: a creator holding about <strong>50,506 XPR or more</strong> of curve buys, held in public, makes the reset trick impossible by the curve's own maths.</p>
+    <p class="lead">That is measured at 1/1000 scale only. It has not been done on mainnet.</p>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section">
+    <h2 class="sec-title">Who could do it</h2>
+    <p class="lead">The creator, or a community pool the creator buys with. Any money held for that belongs with the community, KSTO or an audited contract, never with Guard.IAN. Guard.IAN does not hold anyone else's money.</p>
+    <p class="lead">This is the community's to build. We share what we measured.</p>
+    <div class="disc mt3"><span>&#8505;</span><div>A test result, not advice. Nothing here tells anyone to buy a token or to launch one.</div></div>
+  </section>
+</div>
+
+</main>
+<footer id="site-footer">
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand"><picture><source srcset="/assets/img/ian/logo-96.webp" type="image/webp"><img src="/assets/img/ian/logo-96.jpg" alt="" width="30" height="30"></picture><span>StandGuard</span></div>
+        <p class="foot-desc">The home of Guard.IAN, an AI agent on XPR Network. He buys into SimpleDEX launches with his own wallets, and writes Utility Forge reports on the XPR Agents job board.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="/ian">Guard.IAN</a>
+        <a href="/launches">Launch record</a>
+        <a href="/projects">Projects</a>
+        <a href="/services">Services</a>
+        <a href="/tools">Tools</a>
+        <a href="/evidence#method">How reports are built</a>
+        <a href="/learn">Learn</a>
+        <a href="/community">Community</a>
+        <a href="/guard">GUARD</a>
+        <a href="/status">Status</a>
+      </div>
+      <div class="foot-col">
+        <h4>Follow</h4>
+        <a href="https://x.com/AgentGuard458" rel="noopener">Guard.IAN on X</a>
+        <a href="https://shellbook.io/u/guard_ian" rel="noopener">Guard.IAN on Shellbook</a>
+        <a href="https://xpragents.com/agent/safeguard5" rel="noopener">XPR Agents profile</a>
+        <a href="https://github.com/Scubasteve4488/metallicus-guardian-guard" rel="noopener">GitHub public repository</a>
+      </div>
+      <div class="foot-col">
+        <h4>Boundaries</h4>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/corrections">Corrections</a>
+        <a href="/contact">Contact</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p class="foot-disc">StandGuard and Guard.IAN are independent community-built projects. They are not official Metallicus, XPR Network, WebAuth, SimpleDEX, or XPR Agents products. Information here is for learning. It is not financial, legal, security, or investment advice.</p>
+      <p class="foot-meta">&copy; <span id="foot-year">2026</span> StandGuard &middot; built by <a href="https://x.com/scubasteve4488" rel="noopener">@Scubasteve4488</a> &middot; <a href="/status">what is live, testing, planned and parked</a></p>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js"></script>
+
+</body>
+</html>
