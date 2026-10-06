@@ -3,70 +3,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SignGuard — look up a sign in ASL</title>
-<meta name="description" content="Type a word and watch a real signer produce it in American Sign Language. Free, no account, nothing generated.">
+<title>SignGuard — learn American Sign Language basics</title>
+<meta name="description" content="Look up a word and watch a real signer, practise the ASL alphabet, and learn the basics of ASL and Deaf culture. Free, no account, nothing generated.">
 <link rel="canonical" href="https://standguard.net/learn/signguard">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="StandGuard">
-<meta property="og:title" content="SignGuard — look up a sign in ASL">
-<meta property="og:description" content="Type a word and watch a real signer produce it in American Sign Language. Free, no account, nothing generated.">
+<meta property="og:title" content="SignGuard — learn American Sign Language basics">
+<meta property="og:description" content="Look up a word and watch a real signer, practise the ASL alphabet, and learn the basics of ASL and Deaf culture. Free, no account, nothing generated.">
 <meta property="og:url" content="https://standguard.net/learn/signguard">
-<meta property="og:image" content="https://standguard.net/assets/img/guard-card-v6.jpg">
+<meta property="og:image" content="https://standguard.net/assets/img/ian/share-1200x630.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Guard.IAN, an AI agent on XPR Network">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#0e1220">
-<link rel="icon" href="/assets/img/img_coin.jpg">
+<meta name="theme-color" content="#0a0a10">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/ian/favicon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/ian/icon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/ian/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Cinzel:wght@500;700&amp;family=Cinzel+Decorative:wght@700&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/site.css">
 <style>
-  .sg-crumb{font-size:.9rem;opacity:.7;margin-bottom:.5rem}
-  .sg-crumb a{color:inherit}
-  .sg-crumb span{opacity:.5;margin:0 .4rem}
-
-  .sg-tabs{display:flex;flex-wrap:wrap;gap:.25rem;border-bottom:1px solid rgba(255,255,255,.14);margin-top:1.5rem}
-  .sg-tab{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;letter-spacing:.02em;
+  .sg-tabs{display:flex;flex-wrap:wrap;gap:.25rem;border-bottom:1px solid var(--border);margin-top:1.5rem}
+  .sg-tab{font-family:'Cinzel',serif;font-size:.95rem;font-weight:700;letter-spacing:.02em;
     background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;
-    padding:.75rem 1.1rem;color:inherit;opacity:.6;cursor:pointer}
-  .sg-tab:hover{opacity:.9}
-  .sg-tab[aria-selected="true"]{opacity:1;border-bottom-color:#d4af37}
-  .sg-tab:focus-visible{outline:2px solid #d4af37;outline-offset:-4px}
+    padding:.7rem .9rem;color:var(--text2);cursor:pointer}
+  .sg-tab:hover{color:var(--text)}
+  .sg-tab[aria-selected="true"]{color:var(--gold-l);border-bottom-color:var(--gold)}
+  .sg-tab:focus-visible{outline:2px solid var(--pur-g);outline-offset:-4px}
+  @media(max-width:520px){.sg-tab{font-size:.85rem;padding:.6rem .6rem}}
 
-  /* The browser's own rule for [hidden] is weak enough that any author rule
-     setting display would beat it. site.css gives .section padding only, so
-     hidden works - but stating it here means a future display rule on
-     .section cannot silently reveal all three tabs at once. */
+  /* hidden must win over any display rule on .section */
   .sg-panel[hidden]{display:none}
+  /* anchors inside a tab land below the sticky nav */
+  .sg-panel [id]{scroll-margin-top:calc(var(--nav-h) + 1rem)}
 
   .sg-search{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
-  .sg-search input{flex:1 1 220px;min-height:52px;padding:0 1rem;font-size:1.05rem;
-    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.18);
-    border-radius:10px;color:inherit}
-  .sg-search input:focus-visible{outline:2px solid #d4af37;outline-offset:2px}
-  .sg-search button{min-height:52px;padding:0 1.5rem;font-family:'Cinzel',serif;font-weight:700;
-    background:rgba(212,175,55,.16);border:1px solid rgba(212,175,55,.6);
-    border-radius:10px;color:inherit;cursor:pointer}
-  .sg-search button:hover{background:rgba(212,175,55,.26)}
+  .sg-search input{flex:1 1 200px;min-width:0;min-height:52px;padding:0 1rem;font-size:1.05rem;
+    background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text)}
+  .sg-search input:focus-visible{outline:2px solid var(--pur-g);outline-offset:2px}
+  .sg-search button{min-height:52px}
 
   .sg-samples{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
-  .sg-sample{padding:.4rem .8rem;font-size:.9rem;background:rgba(255,255,255,.04);
-    border:1px solid rgba(255,255,255,.14);border-radius:999px;color:inherit;cursor:pointer}
-  .sg-sample:hover{background:rgba(255,255,255,.1)}
-  .sg-sample:focus-visible{outline:2px solid #d4af37;outline-offset:2px}
+  .sg-sample{padding:.45rem .85rem;font-size:.9rem;background:var(--bg2);
+    border:1px solid var(--border);border-radius:999px;color:var(--text2);cursor:pointer}
+  .sg-sample:hover{border-color:var(--border-acc);color:var(--text)}
 
-  .sg-stage{margin-top:1.5rem;background:rgba(255,255,255,.03);
-    border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:1rem;text-align:center}
+  .sg-stage{margin-top:1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem;text-align:center}
   .sg-stage video{width:100%;max-width:420px;border-radius:10px;background:#000;display:block;margin:0 auto}
-  .sg-now{font-family:'Cinzel Decorative',serif;font-size:2rem;line-height:1;margin:.25rem 0 .75rem}
-  .sg-status{margin-top:1rem;font-size:.95rem;opacity:.85}
-  .sg-hint{font-size:.9rem;opacity:.7;margin-top:.75rem}
+  .sg-now{font-family:'Cinzel Decorative',serif;font-size:2rem;line-height:1;margin:.25rem 0 .75rem;color:var(--gold-l)}
+  .sg-status{margin-top:1rem;font-size:.95rem;color:var(--text2)}
+  .sg-hint{font-size:.9rem;color:var(--text3);margin-top:.75rem}
+
+  /* Alphabet */
+  .sg-letters{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr));gap:.75rem;margin-top:1.25rem;list-style:none}
+  .sg-letter{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.1rem;min-width:0}
+  .sg-letter h3{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.35rem}
+  .sg-glyph{font-family:'Cinzel Decorative',serif;font-size:1.9rem;line-height:1;color:var(--gold-l)}
+  .sg-letter p{font-size:.92rem;color:var(--text2);line-height:1.6}
+  .sg-letter .sg-noclip{font-size:.78rem;color:var(--text3);margin-top:.5rem}
+
+  .sg-drill{background:var(--bg2);border:1px solid var(--border-acc);border-radius:var(--radius-lg);padding:1.25rem;margin-top:1.25rem;text-align:center}
+  .sg-drill-letter{font-family:'Cinzel Decorative',serif;font-size:clamp(4rem,18vw,7rem);line-height:1;color:var(--gold-l);margin:.5rem 0}
+  .sg-drill-desc{max-width:52ch;margin:.75rem auto 0;color:var(--text2);font-size:.98rem;line-height:1.7;text-align:left}
+  .sg-drill-row{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:1rem}
+  .sg-drill-count{font-size:.85rem;color:var(--text3);margin-top:.85rem}
+
+  .sg-pairs{list-style:none;display:flex;flex-direction:column;gap:.5rem;max-width:62ch}
+  .sg-pairs li{font-size:.95rem;color:var(--text2);line-height:1.65}
+  .sg-pairs strong{color:var(--text);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em}
+
+  .sg-cite{font-size:.8rem;color:var(--text3);margin-top:.6rem;line-height:1.6}
+  .sg-cite a{color:var(--pur-g)}
 </style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <nav id="nav" aria-label="Primary">
   <a class="nav-brand" href="/">
-    <img src="/assets/img/img_coin.jpg" alt="" width="34" height="34">
+    <picture><source srcset="/assets/img/ian/logo-96.webp" type="image/webp"><img src="/assets/img/ian/logo-96.jpg" alt="" width="34" height="34"></picture>
     <span>StandGuard</span>
   </a>
   <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
@@ -77,21 +93,24 @@
     <a class="nav-link" href="/">Home</a>
     <details class="nav-group"><summary>Guard.IAN</summary><div class="nav-menu">
       <a class="nav-link" href="/ian">Meet Guard.IAN</a>
-      <a class="nav-link" href="/reports/ian">IAN launch report</a>
+      <a class="nav-link" href="/launches">Launch record</a>
+      <a class="nav-link" href="/projects">Projects</a>
       <a class="nav-link" href="/status">What's live</a>
+      <a class="nav-link" href="/reports/ian">IAN launch report</a>
       <a class="nav-link" href="/guard">The GUARD token</a>
       <a class="nav-link" href="https://agent.standguard.net" rel="noopener">His agent address</a>
     </div></details>
     <details class="nav-group"><summary>Services</summary><div class="nav-menu">
-      <a class="nav-link" href="/services">All services</a>
       <a class="nav-link" href="/services/utility-forge">Utility Forge</a>
-      <a class="nav-link" href="/services/utility-watch">Utility Watch</a>
-      <a class="nav-link" href="/services/project-shield">Chain Answer</a>
-      <a class="nav-link" href="/services/launch-readiness">Launch Readiness Check</a>
-      <a class="nav-link" href="/services/launch-rehearsal">Launch Rehearsal</a>
-      <a class="nav-link" href="/services/agent-diagnostic">Agent Diagnostic</a>
-      <a class="nav-link" href="/services/agent-build">Get an agent built</a>
       <a class="nav-link" href="https://xpragents.com/services/13" rel="noopener">Buy on XPR Agents</a>
+      <a class="nav-link" href="/services">All services</a>
+      <span class="nav-sub">Parked</span>
+      <a class="nav-link nav-parked" href="/services/utility-watch">Utility Watch</a>
+      <a class="nav-link nav-parked" href="/services/project-shield">Chain Answer</a>
+      <a class="nav-link nav-parked" href="/services/launch-readiness">Launch Readiness Check</a>
+      <a class="nav-link nav-parked" href="/services/launch-rehearsal">Launch Rehearsal</a>
+      <a class="nav-link nav-parked" href="/services/agent-diagnostic">Agent Diagnostic</a>
+      <a class="nav-link nav-parked" href="/services/agent-build">Get an agent built</a>
     </div></details>
     <details class="nav-group"><summary>Tools</summary><div class="nav-menu">
       <a class="nav-link" href="/tools">All tools</a>
@@ -106,6 +125,7 @@
       <a class="nav-link" href="/learn/academy">Academy</a>
       <a class="nav-link" href="/learn/defi-forge">DeFi Forge</a>
       <a class="nav-link" href="/learn/stablecoins-payments">Stablecoins &amp; payments</a>
+      <a class="nav-link" href="/projects/pulsevm">PulseVM, in short</a>
     </div></details>
     <details class="nav-group"><summary>Community</summary><div class="nav-menu">
       <a class="nav-link" href="/community">All communities</a>
@@ -127,13 +147,15 @@
 <div class="container">
 
   <section class="section">
-    <p class="sg-crumb"><a href="/">Home</a><span>&rsaquo;</span><a href="/learn">Learn</a><span>&rsaquo;</span>SignGuard</p>
+    <p class="breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/learn">Learn</a> &rsaquo; SignGuard</p>
     <h1 class="page-title">SignGuard</h1>
-    <p class="lead mt2">American Sign Language, signed by real people. Free, no account, nothing generated.</p>
+    <p class="lead mt2">American Sign Language for beginners. Real signers or nothing. Free, no account, nothing generated.</p>
 
     <div class="sg-tabs" role="tablist" aria-label="SignGuard sections">
       <button class="sg-tab" type="button" role="tab" data-tab="dictionary" aria-selected="true" aria-controls="panel-dictionary" id="tab-dictionary">Dictionary</button>
       <button class="sg-tab" type="button" role="tab" data-tab="alphabet" aria-selected="false" aria-controls="panel-alphabet" id="tab-alphabet" tabindex="-1">Alphabet</button>
+      <button class="sg-tab" type="button" role="tab" data-tab="basics" aria-selected="false" aria-controls="panel-basics" id="tab-basics" tabindex="-1">ASL basics</button>
+      <button class="sg-tab" type="button" role="tab" data-tab="next" aria-selected="false" aria-controls="panel-next" id="tab-next" tabindex="-1">Coming next</button>
       <button class="sg-tab" type="button" role="tab" data-tab="made" aria-selected="false" aria-controls="panel-made" id="tab-made" tabindex="-1">How it&rsquo;s made</button>
     </div>
   </section>
@@ -141,42 +163,296 @@
   <!-- ===================== DICTIONARY ===================== -->
   <section class="section sg-panel" data-panel="dictionary" id="panel-dictionary" role="tabpanel" aria-labelledby="tab-dictionary">
     <h2 class="sec-title">Look up a sign</h2>
-    <p>Type a word. If it is in the dictionary, you will watch a real signer produce it.</p>
+    <p class="lead">Type a word. If it is in the dictionary, you will watch a real signer produce it.</p>
 
     <form class="sg-search" id="sg-form">
-      <input type="text" id="sg-word" name="word" placeholder="a word, e.g. museum" autocomplete="off" aria-label="Word to look up">
-      <button type="submit">Show me</button>
+      <label class="vh" for="sg-word">Word to look up</label>
+      <input type="text" id="sg-word" name="word" placeholder="a word, e.g. museum" autocomplete="off">
+      <button class="btn btn-g" type="submit">Show me</button>
     </form>
 
-    <div class="sg-samples" id="sg-samples" aria-label="Words to try"></div>
+    <div class="sg-samples" id="sg-samples" role="group" aria-label="Words to try"></div>
 
-    <p class="sg-status" id="sg-status" hidden></p>
+    <p class="sg-status" id="sg-status" role="status" aria-live="polite" hidden></p>
 
     <div class="sg-stage" id="sg-stage" hidden>
       <div class="sg-now" id="sg-now"></div>
-      <video id="sg-video" controls loop muted playsinline preload="metadata"></video>
-      <p class="sg-hint">Loops automatically. Use the controls to slow it down or step through it.</p>
+      <video id="sg-video" controls loop muted playsinline preload="metadata" aria-describedby="sg-video-note"></video>
+      <p class="sg-hint" id="sg-video-note">A silent clip of a person signing the word above. It loops; use the controls to pause or step through it.</p>
       <p class="sg-hint"><a id="sg-credit" href="https://archive.org/details/asl-dictionary" rel="noopener">See this clip on the Internet Archive</a></p>
     </div>
 
-    <div class="disc mt3"><span>&#8505;</span><div>This is a dictionary, not a course, and not a substitute for a Deaf teacher. ASL has regional variation and signs change over time. Learn from Deaf people wherever you can.</div></div>
+    <div class="disc mt3"><span aria-hidden="true">&#8505;</span><div>This is a dictionary, not a course, and not a substitute for a Deaf teacher. ASL has regional variation and signs change over time. Learn from Deaf people wherever you can.</div></div>
 
-    <p class="muted mt3">Videos are streamed from <a href="https://archive.org/details/asl-dictionary" rel="noopener">The ASL Dictionary</a> on the Internet Archive, by the Center for Accessible Technology in Sign. Every item there is marked public domain. StandGuard does not host, alter or re-publish them, and is not affiliated with CATS or the Internet Archive.</p>
+    <p class="muted mt3">Videos are streamed from <a href="https://archive.org/details/asl-dictionary" rel="noopener">The ASL Dictionary</a> on the Internet Archive, by the Center for Accessible Technology in Sign (contributor Harley Hamilton). Each item there is marked <strong>Rights: Public Domain</strong>. That is what the uploader declared; it is not a signed licence we hold. StandGuard does not host, alter or re-publish the clips, and is not affiliated with CATS or the Internet Archive.</p>
   </section>
 
   <!-- ===================== ALPHABET ===================== -->
   <section class="section sg-panel" data-panel="alphabet" id="panel-alphabet" role="tabpanel" aria-labelledby="tab-alphabet" hidden>
-    <h2 class="sec-title">The alphabet</h2>
+    <h2 class="sec-title">The fingerspelling alphabet</h2>
+    <p class="lead">Fingerspelling is how ASL spells out an English word, one handshape per letter. It is used for names, places, and words that have no sign of their own.</p>
 
-    <p class="lead">Not here yet, on purpose.</p>
+    <div class="attn mt3"><span aria-hidden="true">&#9888;</span><div><strong>No video of the letters yet, on purpose.</strong> We only show footage of a real person signing. We checked the letter entries in the Internet Archive dictionary on 6 October 2026: they are computer-drawn hands, not a person, so they are not shown here. Until a real signer is filmed, each letter is described in words. A friend or teacher who signs is the best check.</div></div>
 
-    <p class="mt2">On 5 October 2026 this tab briefly showed the A&ndash;Z fingerspelling alphabet and said the signs were made by a real person. That was wrong. The clips came from a public-domain motion-capture archive, and what you actually watched was a 3D character rendered from that data. It was taken down within the hour.</p>
+    <h3 class="sec-title mt4" id="practise">Practise with yourself</h3>
+    <p class="lead">Pick a letter from the list below or let the page choose. Make the handshape, check it against the description, ideally in a mirror, and be honest with yourself.</p>
+    <p class="lead">This is a practice aid, not a teacher. Nothing here watches you: there is no camera, and nothing you do is recorded or sent anywhere.</p>
 
-    <p class="mt2">Rewording it to &ldquo;3D character&rdquo; would have been accurate and still the wrong thing to publish. Fingerspelling is read off a real hand &mdash; the exact shape, and the way it moves between letters. A rendered model smooths out the detail a learner needs, and they would not find out until they tried it with a Deaf person.</p>
+    <div class="sg-drill" id="sg-drill" hidden>
+      <p class="sec-label">Make this letter</p>
+      <div class="sg-drill-letter" id="sg-drill-letter" aria-live="polite"></div>
+      <div class="sg-drill-row">
+        <button class="btn btn-o" type="button" id="sg-drill-show" aria-expanded="false" aria-controls="sg-drill-desc">Show the description</button>
+      </div>
+      <div class="sg-drill-desc" id="sg-drill-desc" hidden></div>
+      <div class="sg-drill-row">
+        <button class="btn btn-g" type="button" id="sg-drill-got">I made it &mdash; next</button>
+        <button class="btn btn-o" type="button" id="sg-drill-again">Not yet &mdash; ask me again later</button>
+      </div>
+      <p class="sg-drill-count" id="sg-drill-count" aria-live="polite"></p>
+    </div>
+    <noscript><p class="muted mt2">The practice drill needs JavaScript. The full list of letters below works without it.</p></noscript>
 
-    <p class="mt2">So the alphabet comes back when there is footage of a real signer, and not before. The dictionary tab works today because that footage already exists and is public domain.</p>
+    <h3 class="sec-title mt4">Two letters move: J and Z</h3>
+    <p class="lead">Every letter except J and Z is a handshape you hold still. <strong>J</strong> is the I handshape drawing a J in the air with the little finger. <strong>Z</strong> is the index finger drawing a Z. A held picture or a word description cannot show a movement properly, so these two are listed but left out of the drill until there is a real clip of them.</p>
 
-    <p class="muted mt3">Logged on the <a href="/corrections">corrections page</a>, where everything StandGuard has got wrong is kept.</p>
+    <h3 class="sec-title mt4">Letters that look alike</h3>
+    <p class="lead">These are the ones beginners mix up. The difference is usually small: where the thumb sits, or which way the hand points.</p>
+    <ul class="sg-pairs mt2">
+      <li><strong>A S T M N E</strong> &mdash; all closed hands. The thumb tells them apart: beside the fist (A), across the front (S), tucked under one finger (T), under two (N), under three (M), or under bent fingertips (E).</li>
+      <li><strong>U V R</strong> &mdash; two fingers up: together (U), apart (V), crossed (R).</li>
+      <li><strong>K V</strong> &mdash; K has the thumb tip touching the middle finger between the two raised fingers; V does not.</li>
+      <li><strong>K P</strong> &mdash; the same shape; P points down.</li>
+      <li><strong>G Q</strong> &mdash; the same shape; Q points down.</li>
+      <li><strong>G H</strong> &mdash; both point sideways; G with one finger, H with two.</li>
+      <li><strong>C O</strong> &mdash; C is open; O closes so the fingertips meet the thumb.</li>
+      <li><strong>I J</strong> &mdash; J is I plus a movement.</li>
+    </ul>
+
+    <h3 class="sec-title mt4" id="letters">All 26 letters</h3>
+    <p class="muted">Described as the person watching you sees it, for a right-handed signer with the palm facing out unless the letter says otherwise. Left-handed signers mirror everything.</p>
+    <!-- REVIEW (Tim): every handshape description below was written by IAN-CODE on 2026-10-06 and has NOT
+         been checked by a signer. Confirm or correct each one before merging. -->
+    <ul class="sg-letters" id="sg-letters">
+      <li class="sg-letter" data-letter="A">
+        <h3><span class="sg-glyph" aria-hidden="true">A</span><span class="vh">Letter A</span></h3>
+        <p class="sg-desc">Closed fist, thumb straight up against the side of the index finger.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="B">
+        <h3><span class="sg-glyph" aria-hidden="true">B</span><span class="vh">Letter B</span></h3>
+        <p class="sg-desc">Four fingers straight up and together; thumb folded across the palm.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="C">
+        <h3><span class="sg-glyph" aria-hidden="true">C</span><span class="vh">Letter C</span></h3>
+        <p class="sg-desc">Fingers and thumb curved into the shape of a C, as if holding a cup. Seen from the side.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="D">
+        <h3><span class="sg-glyph" aria-hidden="true">D</span><span class="vh">Letter D</span></h3>
+        <p class="sg-desc">Index finger straight up; the middle, ring and little fingers curve down to touch the thumb tip, making a round loop.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="E">
+        <h3><span class="sg-glyph" aria-hidden="true">E</span><span class="vh">Letter E</span></h3>
+        <p class="sg-desc">Fingertips bent down over the palm, resting just above the thumb, which is folded across underneath them.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="F">
+        <h3><span class="sg-glyph" aria-hidden="true">F</span><span class="vh">Letter F</span></h3>
+        <p class="sg-desc">Thumb tip and index fingertip touch in a circle; middle, ring and little fingers up and slightly spread.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="G">
+        <h3><span class="sg-glyph" aria-hidden="true">G</span><span class="vh">Letter G</span></h3>
+        <p class="sg-desc">Hand turned sideways: index finger and thumb point to the side, parallel, with a small gap between them; other fingers closed.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="H">
+        <h3><span class="sg-glyph" aria-hidden="true">H</span><span class="vh">Letter H</span></h3>
+        <p class="sg-desc">Hand turned sideways: index and middle fingers together, pointing to the side; thumb holds the other two fingers down.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="I">
+        <h3><span class="sg-glyph" aria-hidden="true">I</span><span class="vh">Letter I</span></h3>
+        <p class="sg-desc">Little finger straight up; the other fingers in a fist with the thumb across them.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="J" data-moves="1">
+        <h3><span class="sg-glyph" aria-hidden="true">J</span><span class="vh">Letter J</span><span class="badge bam">moves</span></h3>
+        <p class="sg-desc">Moves. Start in the I handshape and draw a J in the air with the little finger: down, then curving round.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="K">
+        <h3><span class="sg-glyph" aria-hidden="true">K</span><span class="vh">Letter K</span></h3>
+        <p class="sg-desc">Index finger up and middle finger angled out, in a V; the thumb tip touches the middle finger between them.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="L">
+        <h3><span class="sg-glyph" aria-hidden="true">L</span><span class="vh">Letter L</span></h3>
+        <p class="sg-desc">Index finger up and thumb out to the side, making an L; other fingers closed.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="M">
+        <h3><span class="sg-glyph" aria-hidden="true">M</span><span class="vh">Letter M</span></h3>
+        <p class="sg-desc">Index, middle and ring fingers folded down over the thumb; the thumb tip shows between the ring and little fingers.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="N">
+        <h3><span class="sg-glyph" aria-hidden="true">N</span><span class="vh">Letter N</span></h3>
+        <p class="sg-desc">Index and middle fingers folded down over the thumb; the thumb tip shows between the middle and ring fingers.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="O">
+        <h3><span class="sg-glyph" aria-hidden="true">O</span><span class="vh">Letter O</span></h3>
+        <p class="sg-desc">All fingertips curved round to meet the thumb tip, making an O.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="P">
+        <h3><span class="sg-glyph" aria-hidden="true">P</span><span class="vh">Letter P</span></h3>
+        <p class="sg-desc">The K handshape turned so the middle finger points down.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="Q">
+        <h3><span class="sg-glyph" aria-hidden="true">Q</span><span class="vh">Letter Q</span></h3>
+        <p class="sg-desc">The G handshape turned so the index finger and thumb point down.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="R">
+        <h3><span class="sg-glyph" aria-hidden="true">R</span><span class="vh">Letter R</span></h3>
+        <p class="sg-desc">Index and middle fingers up and crossed, as in &ldquo;fingers crossed&rdquo;.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="S">
+        <h3><span class="sg-glyph" aria-hidden="true">S</span><span class="vh">Letter S</span></h3>
+        <p class="sg-desc">Fist with the thumb wrapped across the front of the fingers.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="T">
+        <h3><span class="sg-glyph" aria-hidden="true">T</span><span class="vh">Letter T</span></h3>
+        <p class="sg-desc">Fist with the thumb tucked up between the index and middle fingers, under the index finger.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="U">
+        <h3><span class="sg-glyph" aria-hidden="true">U</span><span class="vh">Letter U</span></h3>
+        <p class="sg-desc">Index and middle fingers straight up and together; thumb holds the other two fingers down.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="V">
+        <h3><span class="sg-glyph" aria-hidden="true">V</span><span class="vh">Letter V</span></h3>
+        <p class="sg-desc">Index and middle fingers up and spread apart.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="W">
+        <h3><span class="sg-glyph" aria-hidden="true">W</span><span class="vh">Letter W</span></h3>
+        <p class="sg-desc">Index, middle and ring fingers up and spread; thumb holds the little finger down.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="X">
+        <h3><span class="sg-glyph" aria-hidden="true">X</span><span class="vh">Letter X</span></h3>
+        <p class="sg-desc">Index finger raised and bent into a hook; the other fingers in a fist.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="Y">
+        <h3><span class="sg-glyph" aria-hidden="true">Y</span><span class="vh">Letter Y</span></h3>
+        <p class="sg-desc">Thumb and little finger stretched out; the three middle fingers folded down.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+      <li class="sg-letter" data-letter="Z" data-moves="1">
+        <h3><span class="sg-glyph" aria-hidden="true">Z</span><span class="vh">Letter Z</span><span class="badge bam">moves</span></h3>
+        <p class="sg-desc">Moves. Point the index finger and draw a Z in the air.</p>
+        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+      </li>
+    </ul>
+
+    <h3 class="sec-title mt4">Good habits from the start</h3>
+    <ul class="ac-list mt2">
+      <li>Think of the word, not the letters. As you spell, say the word to yourself the way it sounds, rather than naming each letter.</li>
+      <li>Between two spelled words, leave a tiny pause and move the hand very slightly to the side.</li>
+      <li>When you meet the Deaf community, spell your name. Do not make up your own name sign &mdash; name signs are usually given to you by Deaf people.</li>
+    </ul>
+    <p class="sg-cite">Fingerspelling technique and the name-sign custom: Dr. Bill Vicars, <a href="https://www.lifeprint.com/asl101/fingerspelling/fingerspelling.htm" rel="noopener">Lifeprint &mdash; Fingerspelling</a>. Read his lessons there; they are not copied here.</p>
+
+    <div class="panel panel-gold mt4" id="film">
+      <h3 class="sec-title">Help us film the alphabet</h3>
+      <p>We want a real signer &mdash; ideally a Deaf ASL user &mdash; to film the 26 letters and the numbers 0 to 10, one short silent clip each, and we want to pay and credit the person who does. If you sign and would like to be part of it, or know a Deaf creator who might, contact Guard.IAN on X at <a href="https://x.com/AgentGuard458" rel="noopener">@AgentGuard458</a>.</p>
+      <p>Every clip is checked by a Deaf ASL user before it goes on this page. The footage is a camera recording of a real person and is never used to train or drive a generated signer.</p>
+    </div>
+  </section>
+
+  <!-- ===================== ASL BASICS ===================== -->
+  <section class="section sg-panel" data-panel="basics" id="panel-basics" role="tabpanel" aria-labelledby="tab-basics" hidden>
+    <h2 class="sec-title">ASL and Deaf culture: the basics</h2>
+    <!-- REVIEW (Tim): this whole section was drafted by IAN-CODE from the cited sources on 2026-10-06.
+         Mark "Reviewed by Tim" here only after you have read and corrected it. Not yet reviewed. -->
+    <p class="lead">Written with input from a hearing signer. For anything here, the best teachers are Deaf people. Most of the sources below are Deaf-led &mdash; the National Association of the Deaf, Gallaudet University, and Dr. Bill Vicars, a Deaf ASL instructor &mdash; and we recommend going to them directly.</p>
+
+    <div class="grid grid-2 mt3">
+      <div class="card">
+        <h3>ASL is its own language</h3>
+        <p>American Sign Language is not English on the hands. It is a complete, natural language with its own grammar and word order, separate from English.</p>
+        <p>It is not universal either. Different countries have different sign languages, and ASL has regional accents of its own.</p>
+        <p class="sg-cite">Source: <a href="https://www.nidcd.nih.gov/health/american-sign-language" rel="noopener">NIDCD &mdash; American Sign Language</a> (US National Institutes of Health).</p>
+      </div>
+      <div class="card">
+        <h3>Fingerspelling vs signs</h3>
+        <p>Most of ASL is signs: one sign carries a whole idea. Fingerspelling is a smaller part of the language, used to spell English words &mdash; names, places, and words without a sign.</p>
+        <p>A beginner who only fingerspells is spelling English slowly, not speaking ASL. Learn signs early.</p>
+        <p class="sg-cite">Source: <a href="https://www.nidcd.nih.gov/health/american-sign-language" rel="noopener">NIDCD</a>; <a href="https://www.lifeprint.com/asl101/fingerspelling/fingerspelling.htm" rel="noopener">Lifeprint &mdash; Fingerspelling</a>.</p>
+      </div>
+      <div class="card">
+        <h3>The face is grammar</h3>
+        <p>ASL is expressed with the face as well as the hands. Facial expression and head movement &mdash; called non-manual markers &mdash; change what a sentence means.</p>
+        <p>Raised eyebrows mark a yes/no question. Lowered, drawn-together eyebrows mark a question with who, what, where, when, why or how. A head shake makes a sentence negative. Mouth shapes can add size or manner. Signing with a blank face is like speaking in a flat monotone, and can say something different from what you meant.</p>
+        <p class="sg-cite">Sources: <a href="https://www.nidcd.nih.gov/health/american-sign-language" rel="noopener">NIDCD</a>; Dr. Bill Vicars, <a href="https://www.lifeprint.com/asl101/pages-layout/nonmanualmarkers.htm" rel="noopener">Lifeprint &mdash; Non-manual markers</a>.</p>
+      </div>
+      <div class="card">
+        <h3>Deaf with a capital D</h3>
+        <p>Many people write <strong>Deaf</strong>, with a capital D, for the cultural community that shares ASL, history and values, and <strong>deaf</strong>, lower case, for not hearing. Not every deaf person is part of Deaf culture, and people choose how they identify.</p>
+        <p>ASL is the backbone of American Deaf culture. Avoid &ldquo;hearing impaired&rdquo; and &ldquo;deaf-mute&rdquo;: the National Association of the Deaf explains why most of the community rejects both.</p>
+        <p class="sg-cite">Sources: <a href="https://www.nad.org/resources/american-sign-language/" rel="noopener">NAD &mdash; American Sign Language</a>; <a href="https://nad.org/knowledge-hub/american-sign-language/community-and-culture-frequently-asked-questions/" rel="noopener">NAD &mdash; Community and Culture FAQ</a>; the capital-D convention is usually credited to linguist James Woodward (1972), see <a href="https://en.wikipedia.org/wiki/Deaf_culture" rel="noopener">Deaf culture</a>.</p>
+      </div>
+      <div class="card">
+        <h3>Everyday etiquette</h3>
+        <p><strong>Getting attention:</strong> wave if the person can see you; a light tap on the shoulder if they can&rsquo;t; flicking the lights a few times for a room.</p>
+        <p><strong>Eye contact:</strong> keep it. Everything in a signed conversation comes through the eyes, so looking away is like walking off mid-sentence.</p>
+        <p><strong>Turns:</strong> the signer has the floor until they show they have finished, with a pause or a look.</p>
+        <p class="sg-cite">Source: Gallaudet University, Laurent Clerc National Deaf Education Center &mdash; <a href="https://www3.gallaudet.edu/clerc-center/info-to-go/deaf-culture/american-deaf-culture.html" rel="noopener">American Deaf Culture</a>.</p>
+      </div>
+      <div class="card">
+        <h3>How to learn well</h3>
+        <p>Take a class, ideally taught by a Deaf teacher. Gallaudet University, the university for Deaf and hard of hearing students, runs <a href="https://gallaudet.edu/asl-connect/" rel="noopener">ASL Connect</a> online.</p>
+        <p>Find your local Deaf community &mdash; Deaf clubs, events, ASL socials &mdash; and go, mostly to watch and be patient. A state association of the Deaf (listed by the <a href="https://www.nad.org/" rel="noopener">NAD</a>) is a good place to ask.</p>
+        <p>Free lessons from a Deaf instructor: Dr. Bill Vicars&rsquo; <a href="https://www.lifeprint.com/" rel="noopener">Lifeprint (ASL University)</a>.</p>
+      </div>
+    </div>
+
+    <div class="disc mt3"><span aria-hidden="true">&#8505;</span><div>A web page cannot teach you a language. These are pointers so you start out respectfully and in the right direction. If something here is wrong, tell us and it goes on the <a href="/corrections">corrections page</a>.</div></div>
+  </section>
+
+  <!-- ===================== COMING NEXT ===================== -->
+  <section class="section sg-panel" data-panel="next" id="panel-next" role="tabpanel" aria-labelledby="tab-next" hidden>
+    <h2 class="sec-title">Coming next</h2>
+    <div class="grid grid-2 mt3">
+      <div class="card">
+        <span class="state-pill state-planned">Planned</span>
+        <h3 class="mt2">English &rarr; ASL gloss</h3>
+        <p>Paste a short English sentence and get it back as ASL <em>gloss</em>: the signs written in English capitals, in ASL word order, with notes on facial grammar &mdash; for example a question that needs raised eyebrows.</p>
+        <p>Gloss is a study aid, not signing. It is text only: no video, no generated signer.</p>
+        <p>Not live yet. This site is static and cannot run a language model, so it will come through Guard.IAN, and the gloss rules he follows are written and checked by a person who signs before anything ships.</p>
+      </div>
+      <div class="card">
+        <span class="state-pill state-planned">Planned</span>
+        <h3 class="mt2">The alphabet, on video</h3>
+        <p>A real signer filming A&ndash;Z and 0&ndash;10, paid and credited, checked by a Deaf ASL user. <a href="#film" data-goto="alphabet">Help us film it</a>.</p>
+      </div>
+      <div class="card">
+        <span class="state-pill state-parked">Not decided</span>
+        <h3 class="mt2">Camera practice</h3>
+        <p>Checking your handshape with your webcam, on your own device, would only be added with an existing open-source recogniser whose code, model and training data are all licensed for this use. We have not found one that meets that bar. We will not invent our own scoring and pretend it is a teacher.</p>
+      </div>
+    </div>
   </section>
 
   <!-- ===================== HOW IT'S MADE ===================== -->
@@ -184,41 +460,42 @@
     <h2 class="sec-title">How this is made</h2>
     <div class="grid grid-2 mt3">
       <div class="card">
-        <h3>Never generated</h3>
-        <p>Guard.IAN does not invent a sign and does not render one.</p>
-        <p class="mt1">He plays recorded footage of a human signer, or he says nothing. An AI guessing at a sign teaches somebody something wrong, and a wrong sign is worse than no sign. A 3D model replaying captured motion is not a person either &mdash; that rule was learned the hard way and is written on the alphabet tab.</p>
+        <h3>Real people, or nothing</h3>
+        <p>Guard.IAN does not invent a sign and does not render one. He plays recorded footage of a human signer, or he shows nothing.</p>
+        <p>No 3D models, no avatars, no characters driven by motion capture, no AI-generated people. An AI guessing at a sign teaches somebody something wrong, and a wrong sign is worse than no sign.</p>
+      </div>
+      <div class="card">
+        <h3>Checked before shown</h3>
+        <p>On 5 October 2026 this page briefly showed an alphabet made from a 3D model and called it a person. It was taken down within the hour and logged on the <a href="/corrections">corrections page</a>.</p>
+        <p>On 6 October we checked the Internet Archive&rsquo;s letter entries frame by frame before using them. They are computer-drawn hands, so they are not shown. The word clips in the dictionary are a real signer.</p>
       </div>
       <div class="card">
         <h3>Nothing is watching you</h3>
-        <p>No camera, no account, no record of what you look up.</p>
-        <p class="mt1">If practice with a camera is added later, the video stays inside your own browser and never leaves your device.</p>
+        <p>No camera, no account, no record of what you look up or practise.</p>
+        <p>The dictionary asks the Internet Archive for one clip at a time. Nothing else leaves your browser.</p>
       </div>
       <div class="card">
-        <h3>Public domain, not borrowed</h3>
-        <p>The dictionary clips are marked public domain by the people who recorded them.</p>
-        <p class="mt1">Most ASL video collections are research-only, because Deaf signers consented to research and not to somebody&rsquo;s product. Those are not used here, licence terms are not stretched, and no clip is re-hosted.</p>
-      </div>
-      <div class="card">
-        <h3>Corrections are written by people</h3>
-        <p>Any feedback the agent gives is a rule a person wrote and approved.</p>
-        <p class="mt1">Not a model&rsquo;s guess about your hand.</p>
+        <h3>Licences respected</h3>
+        <p>Most ASL video collections are for research only, because Deaf signers agreed to research and not to somebody&rsquo;s product. Those are not used here, and licence terms are not stretched.</p>
+        <p>The dictionary clips are marked public domain by the organisation that recorded them.</p>
       </div>
     </div>
   </section>
 
 </div>
-
 </main>
 <footer id="site-footer">
   <div class="foot-inner">
     <div class="foot-top">
       <div>
-        <div class="foot-brand"><img src="/assets/img/img_coin.jpg" alt="" width="30" height="30"><span>StandGuard</span></div>
+        <div class="foot-brand"><picture><source srcset="/assets/img/ian/logo-96.webp" type="image/webp"><img src="/assets/img/ian/logo-96.jpg" alt="" width="30" height="30"></picture><span>StandGuard</span></div>
         <p class="foot-desc">The home of Guard.IAN, an AI agent on XPR Network. He buys into SimpleDEX launches with his own wallets, and writes Utility Forge reports on the XPR Agents job board.</p>
       </div>
       <div class="foot-col">
         <h4>Product</h4>
         <a href="/ian">Guard.IAN</a>
+        <a href="/launches">Launch record</a>
+        <a href="/projects">Projects</a>
         <a href="/services">Services</a>
         <a href="/tools">Tools</a>
         <a href="/evidence#method">How reports are built</a>
@@ -228,13 +505,18 @@
         <a href="/status">Status</a>
       </div>
       <div class="foot-col">
+        <h4>Follow</h4>
+        <a href="https://x.com/AgentGuard458" rel="noopener">Guard.IAN on X</a>
+        <a href="https://shellbook.io/u/guard_ian" rel="noopener">Guard.IAN on Shellbook</a>
+        <a href="https://xpragents.com/agent/safeguard5" rel="noopener">XPR Agents profile</a>
+        <a href="https://github.com/Scubasteve4488/metallicus-guardian-guard" rel="noopener">GitHub public repository</a>
+      </div>
+      <div class="foot-col">
         <h4>Boundaries</h4>
         <a href="/privacy">Privacy</a>
         <a href="/terms">Terms</a>
         <a href="/corrections">Corrections</a>
         <a href="/contact">Contact</a>
-        <a href="https://xpragents.com/agent/safeguard5" rel="noopener">XPR Agents profile</a>
-        <a href="https://github.com/Scubasteve4488/metallicus-guardian-guard" rel="noopener">GitHub public repository</a>
       </div>
     </div>
     <div class="foot-bottom">
@@ -244,14 +526,8 @@
   </div>
 </footer>
 <script src="/assets/js/site.js"></script>
-<!-- The ?v= is a cache-buster, not a filename. _headers tells browsers to keep
-     /assets/js/* for an hour without rechecking, so a visitor who loaded this
-     page earlier today was still being served the previous signguard.js - the
-     fingerspelling one, which looks for A-Z containers, does not find them on
-     this page, and stops without a word. Changing the query string makes it a
-     different URL to the cache, so the new file is fetched. Bump the date
-     whenever signguard.js changes. -->
-<script src="/assets/js/signguard.js?v=20261005b"></script>
-
+<!-- signguard-2.js, not signguard.js: _headers caches /assets/js/* for an hour, so a new file name is how a
+     visitor who loaded the old page today gets the new code. signguard.js is left in place, unchanged. -->
+<script src="/assets/js/signguard-2.js"></script>
 </body>
 </html>
