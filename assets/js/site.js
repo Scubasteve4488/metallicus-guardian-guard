@@ -51,6 +51,18 @@
     q.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
 
+  /* Home intro video: muted autoplay, except for people who asked for less motion
+     or less data. They get the poster and the play button. */
+  var vid = document.getElementById('intro-video');
+  if (vid) {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var saveData = navigator.connection && navigator.connection.saveData;
+    if (reduce || saveData) {
+      vid.removeAttribute('autoplay');
+      vid.pause();
+    }
+  }
+
   /* Footer year */
   var y = document.getElementById('foot-year');
   if (y) y.textContent = String(new Date().getUTCFullYear());

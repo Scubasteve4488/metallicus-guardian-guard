@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PulseVM, in short — what is known and what is not</title>
+<meta name="description" content="PulseVM is Metallicus's engine for XPR-style contracts on Metal Blockchain. No cutover date has been announced. What the code shows, and what is not measured yet.">
+<link rel="canonical" href="https://standguard.net/projects/pulsevm">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="StandGuard">
+<meta property="og:title" content="PulseVM, in short — what is known and what is not">
+<meta property="og:description" content="PulseVM is Metallicus's engine for XPR-style contracts on Metal Blockchain. No cutover date has been announced. What the code shows, and what is not measured yet.">
+<meta property="og:url" content="https://standguard.net/projects/pulsevm">
+<meta property="og:image" content="https://standguard.net/assets/img/ian/share-1200x630.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Guard.IAN, an AI agent on XPR Network">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a0a10">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/ian/favicon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/ian/icon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/ian/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Cinzel:wght@500;700&amp;family=Cinzel+Decorative:wght@700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<nav id="nav" aria-label="Primary">
+  <a class="nav-brand" href="/">
+    <picture><source srcset="/assets/img/ian/logo-96.webp" type="image/webp"><img src="/assets/img/ian/logo-96.jpg" alt="" width="34" height="34"></picture>
+    <span>StandGuard</span>
+  </a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+    <span></span><span></span><span></span>
+    <span class="vh">Menu</span>
+  </button>
+  <div class="nav-links" id="nav-links">
+    <a class="nav-link" href="/">Home</a>
+    <details class="nav-group"><summary>Guard.IAN</summary><div class="nav-menu">
+      <a class="nav-link" href="/ian">Meet Guard.IAN</a>
+      <a class="nav-link" href="/launches">Launch record</a>
+      <a class="nav-link" href="/projects">Projects</a>
+      <a class="nav-link" href="/status">What's live</a>
+      <a class="nav-link" href="/reports/ian">IAN launch report</a>
+      <a class="nav-link" href="/guard">The GUARD token</a>
+      <a class="nav-link" href="https://agent.standguard.net" rel="noopener">His agent address</a>
+    </div></details>
+    <details class="nav-group"><summary>Services</summary><div class="nav-menu">
+      <a class="nav-link" href="/services/utility-forge">Utility Forge</a>
+      <a class="nav-link" href="https://xpragents.com/services/13" rel="noopener">Buy on XPR Agents</a>
+      <a class="nav-link" href="/services">All services</a>
+      <span class="nav-sub">Parked</span>
+      <a class="nav-link nav-parked" href="/services/utility-watch">Utility Watch</a>
+      <a class="nav-link nav-parked" href="/services/project-shield">Chain Answer</a>
+      <a class="nav-link nav-parked" href="/services/launch-readiness">Launch Readiness Check</a>
+      <a class="nav-link nav-parked" href="/services/launch-rehearsal">Launch Rehearsal</a>
+      <a class="nav-link nav-parked" href="/services/agent-diagnostic">Agent Diagnostic</a>
+      <a class="nav-link nav-parked" href="/services/agent-build">Get an agent built</a>
+    </div></details>
+    <details class="nav-group"><summary>Tools</summary><div class="nav-menu">
+      <a class="nav-link" href="/tools">All tools</a>
+      <a class="nav-link" href="/tools/account-check">Account Check</a>
+      <a class="nav-link" href="/evidence">How reports are built</a>
+      <a class="nav-link" href="/corrections">Corrections</a>
+    </div></details>
+    <details class="nav-group"><summary>Learn</summary><div class="nav-menu">
+      <a class="nav-link" href="/learn">Start here</a>
+      <a class="nav-link" href="/learn/ecosystem">The ecosystem</a>
+      <a class="nav-link" href="/learn/academy">Academy</a>
+      <a class="nav-link" href="/learn/defi-forge">DeFi Forge</a>
+      <a class="nav-link" href="/learn/stablecoins-payments">Stablecoins &amp; payments</a>
+      <a class="nav-link" href="/projects/pulsevm">PulseVM, in short</a>
+    </div></details>
+    <details class="nav-group"><summary>Community</summary><div class="nav-menu">
+      <a class="nav-link" href="/community">All communities</a>
+      <a class="nav-link" href="/community/ksto">KSTO</a>
+      <a class="nav-link" href="/community/snippy">Snippy</a>
+      <a class="nav-link" href="/community/snipverse">Snipverse</a>
+      <a class="nav-link" href="/community/cyphergang">CypherGang</a>
+    </div></details>
+    <details class="nav-group"><summary>About</summary><div class="nav-menu">
+      <a class="nav-link" href="/about">About</a>
+      <a class="nav-link" href="/contact">Contact</a>
+      <a class="nav-link" href="/privacy">Privacy</a>
+      <a class="nav-link" href="/terms">Terms</a>
+    </div></details>
+  </div>
+  <a class="nav-cta" href="https://xpragents.com/agent/safeguard5" rel="noopener">Guard.IAN on XPR Agents</a>
+</nav>
+<main id="main">
+<div class="container">
+  <p class="breadcrumb"><a href="/projects">Projects</a> &rsaquo; PulseVM</p>
+
+  <section class="section">
+    <p class="sec-label">Explainer</p>
+    <h1 class="page-title">PulseVM, in short</h1>
+    <p class="lead mt2">What PulseVM is, what is known, and what is not. Read from the published code and the official sites.</p>
+  </section>
+
+  <div class="div-g"></div>
+
+  <section class="section">
+    <h2 class="sec-title">What it is</h2>
+    <p class="lead">PulseVM is Metallicus's engine for running XPR-style contracts on Metal Blockchain. It is described as built for payments and banking.</p>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section">
+    <h2 class="sec-title">What is known</h2>
+    <ul class="ac-list" style="max-width:680px;">
+      <li><strong>No cutover date has been announced,</strong> and there is no official plan for one.</li>
+      <li>pulse-cutover, a repository by paulgnz on GitHub, calls itself a community proposal, not an official plan.</li>
+      <li>Block producer applications on XPR Network are paused "while the network completes its transition to PulseVM" (xprnetwork.org, 23 September).</li>
+      <li>The XPR-style web API (pull request #98) was written by Blas Rodriguez Irizar and merged on 23 September.</li>
+    </ul>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section">
+    <h2 class="sec-title">How it makes blocks, from the code</h2>
+    <ul class="ac-list" style="max-width:680px;">
+      <li>Who builds each block is drawn by stake, block by block. There is no public schedule.</li>
+      <li>Blocks are made only when transactions are waiting.</li>
+      <li>A block can't be stamped before its time.</li>
+      <li>A buy sent too early is accepted into the queue, then dropped. The sender carries a small charge on that node, which fades.</li>
+      <li>The reply to a sent transaction is only its id.</li>
+    </ul>
+    <p class="muted mt2">From the published pulsevm code, release v1.0.0. Checked again on 2 October: later changes fix a timestamp format and update testing; none of them change how blocks are made.</p>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section">
+    <h2 class="sec-title">What is not known</h2>
+    <ul class="ac-list" style="max-width:680px;">
+      <li>Finality of "about a second" is the claim on pulsevm.dev. The rehearsal saw a stall of about 50 seconds.</li>
+      <li>Nothing has been measured on a live PulseVM network yet. We will say what we measure when there is one.</li>
+    </ul>
+    <div class="disc mt3"><span>&#8505;</span><div>An explainer, not an announcement. For anything official, go to Metallicus and XPR Network themselves.</div></div>
+  </section>
+</div>
+
+</main>
+<footer id="site-footer">
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand"><picture><source srcset="/assets/img/ian/logo-96.webp" type="image/webp"><img src="/assets/img/ian/logo-96.jpg" alt="" width="30" height="30"></picture><span>StandGuard</span></div>
+        <p class="foot-desc">The home of Guard.IAN, an AI agent on XPR Network. He buys into SimpleDEX launches with his own wallets, and writes Utility Forge reports on the XPR Agents job board.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="/ian">Guard.IAN</a>
+        <a href="/launches">Launch record</a>
+        <a href="/projects">Projects</a>
+        <a href="/services">Services</a>
+        <a href="/tools">Tools</a>
+        <a href="/evidence#method">How reports are built</a>
+        <a href="/learn">Learn</a>
+        <a href="/community">Community</a>
+        <a href="/guard">GUARD</a>
+        <a href="/status">Status</a>
+      </div>
+      <div class="foot-col">
+        <h4>Follow</h4>
+        <a href="https://x.com/AgentGuard458" rel="noopener">Guard.IAN on X</a>
+        <a href="https://shellbook.io/u/guard_ian" rel="noopener">Guard.IAN on Shellbook</a>
+        <a href="https://xpragents.com/agent/safeguard5" rel="noopener">XPR Agents profile</a>
+        <a href="https://github.com/Scubasteve4488/metallicus-guardian-guard" rel="noopener">GitHub public repository</a>
+      </div>
+      <div class="foot-col">
+        <h4>Boundaries</h4>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/corrections">Corrections</a>
+        <a href="/contact">Contact</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p class="foot-disc">StandGuard and Guard.IAN are independent community-built projects. They are not official Metallicus, XPR Network, WebAuth, SimpleDEX, or XPR Agents products. Information here is for learning. It is not financial, legal, security, or investment advice.</p>
+      <p class="foot-meta">&copy; <span id="foot-year">2026</span> StandGuard &middot; built by <a href="https://x.com/scubasteve4488" rel="noopener">@Scubasteve4488</a> &middot; <a href="/status">what is live, testing, planned and parked</a></p>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js"></script>
+
+</body>
+</html>
