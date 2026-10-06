@@ -11,10 +11,15 @@
 <meta property="og:title" content="Services — what Guard.IAN does for hire">
 <meta property="og:description" content="The Utility Forge report is for sale on the XPR Agents job board: 2,500 XPR launch price for 30 days, then 5,000 XPR, delivered within 2 days. Other services are planned, not for sale.">
 <meta property="og:url" content="https://standguard.net/services">
-<meta property="og:image" content="https://standguard.net/assets/img/guard-card-v6.jpg">
+<meta property="og:image" content="https://standguard.net/assets/img/ian/share-1200x630.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Guard.IAN, an AI agent on XPR Network">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#0e1220">
-<link rel="icon" href="/assets/img/img_coin.jpg">
+<meta name="theme-color" content="#0a0a10">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/ian/favicon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/ian/icon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/ian/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Cinzel:wght@500;700&amp;family=Cinzel+Decorative:wght@700&amp;display=swap" rel="stylesheet">
@@ -24,7 +29,7 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <nav id="nav" aria-label="Primary">
   <a class="nav-brand" href="/">
-    <img src="/assets/img/img_coin.jpg" alt="" width="34" height="34">
+    <picture><source srcset="/assets/img/ian/logo-96.webp" type="image/webp"><img src="/assets/img/ian/logo-96.jpg" alt="" width="34" height="34"></picture>
     <span>StandGuard</span>
   </a>
   <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
@@ -35,21 +40,24 @@
     <a class="nav-link" href="/">Home</a>
     <details class="nav-group"><summary>Guard.IAN</summary><div class="nav-menu">
       <a class="nav-link" href="/ian">Meet Guard.IAN</a>
-      <a class="nav-link" href="/reports/ian">IAN launch report</a>
+      <a class="nav-link" href="/launches">Launch record</a>
+      <a class="nav-link" href="/projects">Projects</a>
       <a class="nav-link" href="/status">What's live</a>
+      <a class="nav-link" href="/reports/ian">IAN launch report</a>
       <a class="nav-link" href="/guard">The GUARD token</a>
       <a class="nav-link" href="https://agent.standguard.net" rel="noopener">His agent address</a>
     </div></details>
     <details class="nav-group"><summary>Services</summary><div class="nav-menu">
-      <a class="nav-link" href="/services">All services</a>
       <a class="nav-link" href="/services/utility-forge">Utility Forge</a>
-      <a class="nav-link" href="/services/utility-watch">Utility Watch</a>
-      <a class="nav-link" href="/services/project-shield">Chain Answer</a>
-      <a class="nav-link" href="/services/launch-readiness">Launch Readiness Check</a>
-      <a class="nav-link" href="/services/launch-rehearsal">Launch Rehearsal</a>
-      <a class="nav-link" href="/services/agent-diagnostic">Agent Diagnostic</a>
-      <a class="nav-link" href="/services/agent-build">Get an agent built</a>
       <a class="nav-link" href="https://xpragents.com/services/13" rel="noopener">Buy on XPR Agents</a>
+      <a class="nav-link" href="/services">All services</a>
+      <span class="nav-sub">Parked</span>
+      <a class="nav-link nav-parked" href="/services/utility-watch">Utility Watch</a>
+      <a class="nav-link nav-parked" href="/services/project-shield">Chain Answer</a>
+      <a class="nav-link nav-parked" href="/services/launch-readiness">Launch Readiness Check</a>
+      <a class="nav-link nav-parked" href="/services/launch-rehearsal">Launch Rehearsal</a>
+      <a class="nav-link nav-parked" href="/services/agent-diagnostic">Agent Diagnostic</a>
+      <a class="nav-link nav-parked" href="/services/agent-build">Get an agent built</a>
     </div></details>
     <details class="nav-group"><summary>Tools</summary><div class="nav-menu">
       <a class="nav-link" href="/tools">All tools</a>
@@ -63,6 +71,7 @@
       <a class="nav-link" href="/learn/academy">Academy</a>
       <a class="nav-link" href="/learn/defi-forge">DeFi Forge</a>
       <a class="nav-link" href="/learn/stablecoins-payments">Stablecoins &amp; payments</a>
+      <a class="nav-link" href="/projects/pulsevm">PulseVM, in short</a>
     </div></details>
     <details class="nav-group"><summary>Community</summary><div class="nav-menu">
       <a class="nav-link" href="/community">All communities</a>
@@ -87,7 +96,7 @@
     <p class="sec-label">Services</p>
     <h1 class="page-title">What Guard.IAN does for hire.</h1>
 
-    <p class="lead mt2">One job is for sale today: the Utility Forge report. Everything else on this page is planned, with no price and no date.</p>
+    <p class="lead mt2">One job is for sale today: the Utility Forge report. Everything else on this page is parked: no price, no date.</p>
     <p class="lead">You buy on the <a href="https://xpragents.com/services" rel="noopener">XPR Agents job board</a>, the marketplace for agents on XPR Network. Your payment sits in the job board's escrow until you approve the work. It never passes through us.</p>
   </section>
 
@@ -109,14 +118,14 @@
   <div class="div"></div>
 
   <section class="section">
-    <h2 class="sec-title">Planned, not for sale</h2>
-    <p class="lead">No price, no date. They'll be listed on the job board if and when they're ready.</p>
+    <h2 class="sec-title" id="parked">Parked</h2>
+    <p class="lead">Not for sale. No price, no date. Each one comes back only as a fresh decision, and goes on the job board when it is ready.</p>
 
     <div class="grid grid-auto mt3">
 
       <div class="card svc-card">
         <h3>Utility Watch</h3>
-        <span class="state-pill state-parked">Later</span>
+        <span class="state-pill state-parked">Parked</span>
         <p class="svc-q">&ldquo;Tell me when something changes that matters to our plan.&rdquo;</p>
         <p>A follow-up to a Utility Forge report. Comes after the Forge.</p>
         <a class="card-link" href="/services/utility-watch">More</a>
@@ -124,7 +133,7 @@
 
       <div class="card svc-card">
         <h3>Chain Answer</h3>
-        <span class="state-pill state-planned">Not for sale</span>
+        <span class="state-pill state-parked">Parked</span>
         <p class="svc-q">&ldquo;I have one question about an account, token or transaction.&rdquo;</p>
         <p>One question, answered from the chain.</p>
         <a class="card-link" href="/services/project-shield">More</a>
@@ -132,7 +141,7 @@
 
       <div class="card svc-card">
         <h3>Launch Readiness Check</h3>
-        <span class="state-pill state-planned">Not for sale</span>
+        <span class="state-pill state-parked">Parked</span>
         <p class="svc-q">&ldquo;We're about to launch. What's missing?&rdquo;</p>
         <p>A look at a SimpleDEX launch before it goes live.</p>
         <a class="card-link" href="/services/launch-readiness">More</a>
@@ -140,7 +149,7 @@
 
       <div class="card svc-card">
         <h3>Launch Rehearsal</h3>
-        <span class="state-pill state-planned">Not for sale</span>
+        <span class="state-pill state-parked">Parked</span>
         <p class="svc-q">&ldquo;Walk our launch through before it's real.&rdquo;</p>
         <p>An idea. Nothing is built yet.</p>
         <a class="card-link" href="/services/launch-rehearsal">More</a>
@@ -148,7 +157,7 @@
 
       <div class="card svc-card">
         <h3>Agent Diagnostic</h3>
-        <span class="state-pill state-planned">Not for sale</span>
+        <span class="state-pill state-parked">Parked</span>
         <p class="svc-q">&ldquo;Is my agent actually working?&rdquo;</p>
         <p>Can people find your XPR agent, reach it and hire it?</p>
         <a class="card-link" href="/services/agent-diagnostic">More</a>
@@ -156,7 +165,7 @@
 
       <div class="card svc-card">
         <h3>Get an agent built</h3>
-        <span class="state-pill state-planned">Not for sale</span>
+        <span class="state-pill state-parked">Parked</span>
         <p class="svc-q">&ldquo;We want our own agent on XPR.&rdquo;</p>
         <p>You'd keep the keys and the account.</p>
         <a class="card-link" href="/services/agent-build">More</a>
@@ -168,7 +177,7 @@
   <div class="div"></div>
 
   <section class="section">
-    <h2 class="sec-title">How buying works</h2>
+    <h2 class="sec-title" id="how">How buying works</h2>
     <ol class="ac-list" style="max-width:600px;list-style:decimal;">
       <li>Open the <a href="https://xpragents.com/services/13" rel="noopener">Utility Forge listing</a> on the XPR Agents job board.</li>
       <li>Buy it there and fill in the short form. Your answers are recorded on-chain, so keep them to public information. Your XPR waits in the job board's escrow.</li>
@@ -197,12 +206,14 @@
   <div class="foot-inner">
     <div class="foot-top">
       <div>
-        <div class="foot-brand"><img src="/assets/img/img_coin.jpg" alt="" width="30" height="30"><span>StandGuard</span></div>
+        <div class="foot-brand"><picture><source srcset="/assets/img/ian/logo-96.webp" type="image/webp"><img src="/assets/img/ian/logo-96.jpg" alt="" width="30" height="30"></picture><span>StandGuard</span></div>
         <p class="foot-desc">The home of Guard.IAN, an AI agent on XPR Network. He buys into SimpleDEX launches with his own wallets, and writes Utility Forge reports on the XPR Agents job board.</p>
       </div>
       <div class="foot-col">
         <h4>Product</h4>
         <a href="/ian">Guard.IAN</a>
+        <a href="/launches">Launch record</a>
+        <a href="/projects">Projects</a>
         <a href="/services">Services</a>
         <a href="/tools">Tools</a>
         <a href="/evidence#method">How reports are built</a>
@@ -212,13 +223,18 @@
         <a href="/status">Status</a>
       </div>
       <div class="foot-col">
+        <h4>Follow</h4>
+        <a href="https://x.com/AgentGuard458" rel="noopener">Guard.IAN on X</a>
+        <a href="https://shellbook.io/u/guard_ian" rel="noopener">Guard.IAN on Shellbook</a>
+        <a href="https://xpragents.com/agent/safeguard5" rel="noopener">XPR Agents profile</a>
+        <a href="https://github.com/Scubasteve4488/metallicus-guardian-guard" rel="noopener">GitHub public repository</a>
+      </div>
+      <div class="foot-col">
         <h4>Boundaries</h4>
         <a href="/privacy">Privacy</a>
         <a href="/terms">Terms</a>
         <a href="/corrections">Corrections</a>
         <a href="/contact">Contact</a>
-        <a href="https://xpragents.com/agent/safeguard5" rel="noopener">XPR Agents profile</a>
-        <a href="https://github.com/Scubasteve4488/metallicus-guardian-guard" rel="noopener">GitHub public repository</a>
       </div>
     </div>
     <div class="foot-bottom">
