@@ -101,12 +101,12 @@
     <div class="srcbox mt3" style="max-width:620px;">
       <dl class="kv">
         <dt>First legal block</dt><dd><a href="https://explorer.xprnetwork.org/block/405160063" rel="noopener">405160063</a></dd>
-        <dt>Stamped</dt><dd>24 September 2026, 17:16:32 chain time (UTC) &mdash; creation + 60 s</dd>
+        <dt>Stamped</dt><dd>24 September 2026 &mdash; creation + 60 s</dd>
         <dt>Built by</dt><dd><a href="https://explorer.xprnetwork.org/account/brotonbp" rel="noopener">brotonbp</a> (block producer)</dd>
         <dt>Buys in the block</dt><dd>7</dd>
-        <dt>Our wallets in it</dt><dd>0 of 7</dd>
-        <dt>Top-10 test</dt><dd><span class="pf pf-fail">FAIL</span></dd>
-        <dt>Graduated</dt><dd>24 September 2026, 17:26:05 chain time (UTC) &middot; block <a href="https://explorer.xprnetwork.org/block/405161209" rel="noopener">405161209</a> &middot; signed by <a href="https://explorer.xprnetwork.org/account/stackhash" rel="noopener">stackhash</a> &middot; pool 1887</dd>
+        <dt>Our wallets in it</dt><dd>none &mdash; we did not take part</dd>
+        <dt>Top-10 test</dt><dd><span class="badge bp">Did not take part</span> (not counted)</dd>
+        <dt>Graduated</dt><dd>24 September 2026 &middot; block <a href="https://explorer.xprnetwork.org/block/405161209" rel="noopener">405161209</a> &middot; authorised by stackhash@active &middot; pool 1887</dd>
       </dl>
     </div>
   </section>
@@ -116,13 +116,12 @@
   <section class="section">
     <h2 class="sec-title">What happened</h2>
     <ul class="ac-list" style="max-width:680px;">
-      <li>The creator-only window ended 60 seconds after the token was created. The first block anyone else could buy in was block 405160063, stamped 17:16:32 (chain time, UTC) and built by the producer brotonbp.</li>
+      <li>The creator-only window ended 60 seconds after the token was created. The first block anyone else could buy in was block 405160063, on 24 September 2026, built by the producer brotonbp.</li>
       <li>7 buys landed in that block.</li>
-      <li>None of our 7 wallets were in it.</li>
-      <li>Not all 7 were in the fastest 10, so this launch does not pass our test.</li>
-      <li>The other 7 buys came from 7 accounts, 35,000 XPR in total.</li>
-      <li>The token graduated to a SimpleDEX pool (pool 1887), 9 min 33 s after the first legal block. The graduate transaction was signed by stackhash.</li>
-      <li>Our fleet was not running: the old code was retired on 24 September and the rebuilt watcher started after this launch.</li>
+      <li>None of our wallets bought this token, so this launch is not counted in our score.</li>
+      <li>The other 7 buys in the first legal block came from 7 accounts, 35,000 XPR in total.</li>
+      <li>The token graduated to a SimpleDEX pool (pool 1887), 9 min 33 s after the first legal block. The graduate transaction was authorised by stackhash@active.</li>
+      <li>Our fleet was not running: the old code was retired on 24 September and the rebuilt watcher started after this launch. This launch is not counted in our score.</li>
     </ul>
   </section>
 
@@ -163,7 +162,7 @@
     <h2 class="sec-title">Check it yourself</h2>
     <p class="lead">Open block <a href="https://explorer.xprnetwork.org/block/405160063" rel="noopener">405160063</a> on the <a href="https://explorer.xprnetwork.org/" rel="noopener">XPR Network explorer</a>. Each buy is a transfer of XPR to <code>simplelaunch</code> with the memo <code>buy:467</code>. The token's own row is in the <code>curves</code> table of the <a href="https://explorer.xprnetwork.org/account/simplelaunch" rel="noopener">simplelaunch</a> contract. If you find a mistake, <a href="/corrections">tell us</a>.</p>
     <p class="muted mt2">Rule changes: we read SimpleDEX's public rule-change queue every 3 hours. <a href="/launches#rule-watch">How that works</a>.</p>
-    <p class="verified-line">Read from the chain at block 407486174 (8 October 2026).</p>
+    <p class="verified-line">Read from the chain at block 407490110 (8 October 2026).</p>
     <div class="disc mt2"><span>&#8505;</span><div>A record of what happened. Not financial advice, and not a reason to buy or sell any token.</div></div>
   </section>
 </div>

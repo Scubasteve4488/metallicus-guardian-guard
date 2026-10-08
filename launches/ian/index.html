@@ -101,12 +101,13 @@
     <div class="srcbox mt3" style="max-width:620px;">
       <dl class="kv">
         <dt>First legal block</dt><dd><a href="https://explorer.xprnetwork.org/block/403646618" rel="noopener">403646618</a></dd>
-        <dt>Stamped</dt><dd>15 September 2026, 23:04:09 chain time (UTC) &mdash; creation + 60 s</dd>
+        <dt>Stamped</dt><dd>15 September 2026 &mdash; creation + 60 s</dd>
         <dt>Built by</dt><dd><a href="https://explorer.xprnetwork.org/account/catsvote" rel="noopener">catsvote</a> (block producer)</dd>
         <dt>Buys in the block</dt><dd>5</dd>
         <dt>Our wallets in it</dt><dd>1 of 5</dd>
+        <dt>Our later buys</dt><dd>9 (9,000 XPR), after the first legal block</dd>
         <dt>Top-10 test</dt><dd><span class="pf pf-fail">FAIL</span></dd>
-        <dt>Graduated</dt><dd>15 September 2026, 23:31:40 chain time (UTC) &middot; block <a href="https://explorer.xprnetwork.org/block/403649920" rel="noopener">403649920</a> &middot; signed by <a href="https://explorer.xprnetwork.org/account/safeguard5" rel="noopener">safeguard5</a> &middot; pool 1883</dd>
+        <dt>Graduated</dt><dd>15 September 2026 &middot; block <a href="https://explorer.xprnetwork.org/block/403649920" rel="noopener">403649920</a> &middot; authorised by safeguard5@active and guardops@active (our wallets) &middot; pool 1883</dd>
       </dl>
     </div>
   </section>
@@ -116,13 +117,14 @@
   <section class="section">
     <h2 class="sec-title">What happened</h2>
     <ul class="ac-list" style="max-width:680px;">
-      <li>The creator-only window ended 60 seconds after the token was created. The first block anyone else could buy in was block 403646618, stamped 23:04:09 (chain time, UTC) and built by the producer catsvote.</li>
+      <li>The creator-only window ended 60 seconds after the token was created. The first block anyone else could buy in was block 403646618, on 15 September 2026, built by the producer catsvote.</li>
       <li>5 buys landed in that block.</li>
       <li>1 of our 5 wallets was in it, at place 5 of 5.</li>
-      <li>Not all 5 were in the fastest 10, so this launch does not pass our test.</li>
-      <li>The other 4 buys came from 4 accounts, 20,000 XPR in total.</li>
-      <li>The token graduated to a SimpleDEX pool (pool 1883), 27 min 31 s after the first legal block. The graduate transaction was signed by safeguard5, one of our wallets.</li>
-      <li>IAN was the first launch, and the only one with real money: the one wallet that made the first legal block (guardgrowth) bought 1,000 XPR.</li>
+      <li>Our wallets also bought later: 5 wallets made 9 buys, 9,000 XPR in total, 33 s to 5 min 3 s after the first legal block (blocks 403646683 to 403647224).</li>
+      <li>Not all 5 were in the fastest 10 of the first legal block, so this launch does not pass our test.</li>
+      <li>The other 4 buys in the first legal block came from 4 accounts, 20,000 XPR in total.</li>
+      <li>The token graduated to a SimpleDEX pool (pool 1883), 27 min 31 s after the first legal block. The graduate transaction was authorised by safeguard5@active and guardops@active (our wallets).</li>
+      <li>IAN was the first launch, and real money: the one wallet that made the first legal block (guardgrowth) bought 1,000 XPR.</li>
     </ul>
   </section>
 
@@ -161,7 +163,7 @@
     <h2 class="sec-title">Check it yourself</h2>
     <p class="lead">Open block <a href="https://explorer.xprnetwork.org/block/403646618" rel="noopener">403646618</a> on the <a href="https://explorer.xprnetwork.org/" rel="noopener">XPR Network explorer</a>. Each buy is a transfer of XPR to <code>simplelaunch</code> with the memo <code>buy:463</code>. The token's own row is in the <code>curves</code> table of the <a href="https://explorer.xprnetwork.org/account/simplelaunch" rel="noopener">simplelaunch</a> contract. If you find a mistake, <a href="/corrections">tell us</a>.</p>
     <p class="muted mt2">Rule changes: we read SimpleDEX's public rule-change queue every 3 hours. <a href="/launches#rule-watch">How that works</a>.</p>
-    <p class="verified-line">Read from the chain at block 407486146 (8 October 2026).</p>
+    <p class="verified-line">Read from the chain at block 407490065 (8 October 2026).</p>
     <div class="disc mt2"><span>&#8505;</span><div>A record of what happened. Not financial advice, and not a reason to buy or sell any token.</div></div>
   </section>
 </div>

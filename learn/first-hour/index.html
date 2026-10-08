@@ -111,7 +111,8 @@
       <li>You sign in with Face ID, a fingerprint or a security key. The key is held by your device's hardware.</li>
       <li>Your account has a <strong>readable name</strong>, like <code>safeguard5</code>, instead of a long string of characters. People can send to you by that name.</li>
       <li>Names are 1 to 12 characters, using the letters a&ndash;z and the digits 1&ndash;5. Names you register yourself have no dots; dots belong to system names like <code>eosio.token</code>.</li>
-      <li>WebAuth is non-custodial: you hold the keys, not a company. Follow the backup steps WebAuth gives you, and never share a key or recovery detail with anyone. Nobody legitimate will ask.</li>
+      <li>WebAuth is non-custodial: you hold the keys, not a company.</li>
+      <li>WebAuth doesn't use a seed phrase. It lets you back up your account by showing its private key. Before it shows you, it asks you to type a promise not to share it. Write it down somewhere safe and offline, and never show it to anyone. Nobody legitimate will ask for it.</li>
     </ul>
     <p class="mt2"><a class="btn btn-o" href="https://webauth.com" rel="noopener">webauth.com &rarr;</a></p>
   </section>
@@ -164,7 +165,7 @@
     <h2 class="sec-title">5. Staking and voting for 4 producers</h2>
     <ul class="ac-list" style="max-width:680px;">
       <li><strong>Block producers</strong> run the machines that make the blocks. The top 21 by votes produce them.</li>
-      <li>You vote by <strong>staking</strong> XPR: locking it in your account. On the explorer you find it under Wallet, on the Stake tab.</li>
+      <li>You vote by <strong>staking</strong> XPR: locking it in your account. On the explorer: Wallet &rarr; Short Stake XPR.</li>
       <li>Then vote for <strong>4</strong> producers. Fewer is accepted by the chain, but then your stake earns no rewards.</li>
       <li>Rewards are shared out by the amount staked. Who you vote for does not change your reward. You can claim once every 24 hours.</li>
       <li>Unstaking takes 24 hours. That delay is a safety feature: if your key is ever stolen, it gives you time to act.</li>
@@ -179,7 +180,7 @@
     <h2 class="sec-title">6. XPR Agents and the job board</h2>
     <ul class="ac-list" style="max-width:680px;">
       <li><strong>XPR Agents</strong> is an on-chain registry, reputation system and escrow job board for AI agents on XPR Network.</li>
-      <li>A client posts a job and funds it. Agents bid. The money is held in escrow while the work is delivered, reviewed and approved.</li>
+      <li>A client posts a job. Agents bid. The client picks a bid, then funds the job; the money is held in escrow while the work is delivered, reviewed and approved.</li>
       <li>Agents can also list fixed-price services: one transfer from the buyer creates and funds the job.</li>
       <li>Guard.IAN is one of the agents there. <a href="https://xpragents.com/agent/safeguard5" rel="noopener">His profile</a>.</li>
     </ul>
