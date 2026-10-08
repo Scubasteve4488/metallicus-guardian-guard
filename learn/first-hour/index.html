@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your first hour on XPR Network</title>
+<meta name="description" content="Your first hour on XPR Network: a WebAuth account and readable names, CPU/NET/RAM in plain words, how a SimpleDEX launch works, reading the explorer, staking and voting, and XPR Agents.">
+<link rel="canonical" href="https://standguard.net/learn/first-hour">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="StandGuard">
+<meta property="og:title" content="Your first hour on XPR Network">
+<meta property="og:description" content="Your first hour on XPR Network: a WebAuth account and readable names, CPU/NET/RAM in plain words, how a SimpleDEX launch works, reading the explorer, staking and voting, and XPR Agents.">
+<meta property="og:url" content="https://standguard.net/learn/first-hour">
+<meta property="og:image" content="https://standguard.net/assets/img/ian/share-1200x630.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Guard.IAN, an AI agent on XPR Network">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a0a10">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/ian/favicon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/ian/icon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/ian/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Cinzel:wght@500;700&amp;family=Cinzel+Decorative:wght@700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<nav id="nav" aria-label="Primary">
+  <a class="nav-brand" href="/">
+    <picture><source srcset="/assets/img/ian/logo-96.webp" type="image/webp"><img src="/assets/img/ian/logo-96.jpg" alt="" width="34" height="34"></picture>
+    <span>StandGuard</span>
+  </a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+    <span></span><span></span><span></span>
+    <span class="vh">Menu</span>
+  </button>
+  <div class="nav-links" id="nav-links">
+    <a class="nav-link" href="/">Home</a>
+    <details class="nav-group"><summary>Guard.IAN</summary><div class="nav-menu">
+      <a class="nav-link" href="/ian">Meet Guard.IAN</a>
+      <a class="nav-link" href="/launches">Launch record</a>
+      <a class="nav-link" href="/projects">Projects</a>
+      <a class="nav-link" href="/status">What's live</a>
+      <a class="nav-link" href="/reports/ian">IAN launch report</a>
+      <a class="nav-link" href="/guard">The GUARD token</a>
+      <a class="nav-link" href="https://agent.standguard.net" rel="noopener">His agent address</a>
+    </div></details>
+    <details class="nav-group"><summary>Services</summary><div class="nav-menu">
+      <a class="nav-link" href="/services/utility-forge">Utility Forge</a>
+      <a class="nav-link" href="https://xpragents.com/services/13" rel="noopener">Buy on XPR Agents</a>
+      <a class="nav-link" href="/services">All services</a>
+      <span class="nav-sub">Parked</span>
+      <a class="nav-link nav-parked" href="/services/utility-watch">Utility Watch</a>
+      <a class="nav-link nav-parked" href="/services/project-shield">Chain Answer</a>
+      <a class="nav-link nav-parked" href="/services/launch-readiness">Launch Readiness Check</a>
+      <a class="nav-link nav-parked" href="/services/launch-rehearsal">Launch Rehearsal</a>
+      <a class="nav-link nav-parked" href="/services/agent-diagnostic">Agent Diagnostic</a>
+      <a class="nav-link nav-parked" href="/services/agent-build">Get an agent built</a>
+    </div></details>
+    <details class="nav-group"><summary>Tools</summary><div class="nav-menu">
+      <a class="nav-link" href="/tools">All tools</a>
+      <a class="nav-link" href="/tools/account-check">Account Check</a>
+      <a class="nav-link" href="/evidence">How reports are built</a>
+      <a class="nav-link" href="/corrections">Corrections</a>
+    </div></details>
+    <details class="nav-group"><summary>Learn</summary><div class="nav-menu">
+      <a class="nav-link" href="/learn">Start here</a>
+      <a class="nav-link" href="/learn/first-hour">Your first hour on XPR</a>
+      <a class="nav-link" href="/learn/signguard">SignGuard &mdash; ASL</a>
+      <a class="nav-link" href="/learn/ecosystem">The ecosystem</a>
+      <a class="nav-link" href="/learn/academy">Academy</a>
+      <a class="nav-link" href="/learn/defi-forge">DeFi Forge</a>
+      <a class="nav-link" href="/learn/stablecoins-payments">Stablecoins &amp; payments</a>
+      <a class="nav-link" href="/projects/pulsevm">PulseVM, in short</a>
+    </div></details>
+    <details class="nav-group"><summary>Community</summary><div class="nav-menu">
+      <a class="nav-link" href="/community">All communities</a>
+      <a class="nav-link" href="/community/ksto">KSTO</a>
+      <a class="nav-link" href="/community/snippy">Snippy</a>
+      <a class="nav-link" href="/community/snipverse">Snipverse</a>
+      <a class="nav-link" href="/community/cyphergang">CypherGang</a>
+    </div></details>
+    <details class="nav-group"><summary>About</summary><div class="nav-menu">
+      <a class="nav-link" href="/about">About</a>
+      <a class="nav-link" href="/contact">Contact</a>
+      <a class="nav-link" href="/privacy">Privacy</a>
+      <a class="nav-link" href="/terms">Terms</a>
+    </div></details>
+  </div>
+  <a class="nav-cta" href="https://xpragents.com/agent/safeguard5" rel="noopener">Guard.IAN on XPR Agents</a>
+</nav>
+<main id="main">
+<div class="container">
+
+  <section class="section">
+    <p class="breadcrumb"><a href="/learn">Learn</a> &rsaquo; Your first hour</p>
+    <p class="sec-label">Learn</p>
+    <h1 class="page-title">Your first hour on XPR Network</h1>
+    <p class="lead mt2">Six short stops: your account, what the network asks of you, how a SimpleDEX launch runs, how to read the blocks, staking and voting, and XPR Agents.</p>
+    <p class="lead">This is a map, not advice. Each stop ends with the official page, so you can check it yourself.</p>
+  </section>
+
+  <div class="div-g"></div>
+
+  <section class="section" id="account">
+    <h2 class="sec-title">1. Your wallet and your name</h2>
+    <ul class="ac-list" style="max-width:680px;">
+      <li><strong>WebAuth</strong> is XPR Network's own wallet. There is a phone app for iPhone and Android, and a web wallet at webauth.com that needs no install.</li>
+      <li>You sign in with Face ID, a fingerprint or a security key. The key is held by your device's hardware.</li>
+      <li>Your account has a <strong>readable name</strong>, like <code>safeguard5</code>, instead of a long string of characters. People can send to you by that name.</li>
+      <li>Names are 1 to 12 characters, using the letters a&ndash;z and the digits 1&ndash;5. Names you register yourself have no dots; dots belong to system names like <code>eosio.token</code>.</li>
+      <li>WebAuth is non-custodial: you hold the keys, not a company. Follow the backup steps WebAuth gives you, and never share a key or recovery detail with anyone. Nobody legitimate will ask.</li>
+    </ul>
+    <p class="mt2"><a class="btn btn-o" href="https://webauth.com" rel="noopener">webauth.com &rarr;</a></p>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section" id="resources">
+    <h2 class="sec-title">2. CPU, NET and RAM, in plain words</h2>
+    <p class="lead">Every blockchain has to limit how much work and storage each account uses. On XPR Network those limits are called resources.</p>
+    <ul class="ac-list" style="max-width:680px;">
+      <li><strong>CPU</strong> is processing time: how much work the network does to run your transaction.</li>
+      <li><strong>NET</strong> is bandwidth: how many bytes your transaction takes to send.</li>
+      <li><strong>RAM</strong> is storage on the chain: your token balances, NFTs and app data live there.</li>
+      <li>For ordinary users, transactions are free. There is no gas fee to send a token. Apps that send a lot buy monthly CPU/NET plans instead.</li>
+      <li>A WebAuth account comes with 12,000 bytes of RAM. More can be bought with XPR, and RAM you bought can be sold back.</li>
+    </ul>
+    <p class="mt2"><a class="btn btn-o" href="https://resources.xprnetwork.org" rel="noopener">The official resources portal &rarr;</a></p>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section" id="launches">
+    <h2 class="sec-title">3. How a SimpleDEX launch works</h2>
+    <p class="lead">SimpleDEX, built by Proton NZ, lets anyone launch a token on a bonding curve. When enough XPR has gone in, the token graduates into a normal trading pool.</p>
+    <p class="lead">SimpleDEX explains its own rules best, so we send you there rather than repeat them. Two things worth knowing first:</p>
+    <ul class="ac-list" style="max-width:680px;">
+      <li>For the first 60 seconds after a token is created, only its creator can buy. The next block is the first one anyone else can buy in.</li>
+      <li>That first block is crowded. Our <a href="/launches">launch record</a> shows, launch by launch, who bought in it and in what order.</li>
+    </ul>
+    <p class="mt2"><a class="btn btn-o" href="https://simpledex.fun/how-it-works" rel="noopener">How it works, on SimpleDEX &rarr;</a></p>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section" id="explorer">
+    <h2 class="sec-title">4. Reading the blocks yourself</h2>
+    <ul class="ac-list" style="max-width:680px;">
+      <li>The <strong>XPR Network Explorer</strong> is the official window onto the chain. Everything that happens on it is public.</li>
+      <li>A new block is made every half second. Each block lists the transactions inside it, in order.</li>
+      <li>Look up an account: <code>explorer.xprnetwork.org/account/</code> followed by the name. You see its balances and what it has done.</li>
+      <li>Look up a transaction by its id, or a block by its number. If someone tells you something happened on chain, this is where you check.</li>
+      <li>The explorer is also a wallet: you can log in with WebAuth to send, stake and vote.</li>
+    </ul>
+    <p class="mt2"><a class="btn btn-o" href="https://explorer.xprnetwork.org" rel="noopener">explorer.xprnetwork.org &rarr;</a></p>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section" id="staking">
+    <h2 class="sec-title">5. Staking and voting for 4 producers</h2>
+    <ul class="ac-list" style="max-width:680px;">
+      <li><strong>Block producers</strong> run the machines that make the blocks. The top 21 by votes produce them.</li>
+      <li>You vote by <strong>staking</strong> XPR: locking it in your account. On the explorer you find it under Wallet, on the Stake tab.</li>
+      <li>Then vote for <strong>4</strong> producers. Fewer is accepted by the chain, but then your stake earns no rewards.</li>
+      <li>Rewards are shared out by the amount staked. Who you vote for does not change your reward. You can claim once every 24 hours.</li>
+      <li>Unstaking takes 24 hours. That delay is a safety feature: if your key is ever stolen, it gives you time to act.</li>
+      <li>Choose producers who run reliable machines and give back to the network. That choice is yours.</li>
+    </ul>
+    <p class="mt2"><a class="btn btn-o" href="https://explorer.xprnetwork.org" rel="noopener">Stake and vote on the explorer &rarr;</a></p>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section" id="agents">
+    <h2 class="sec-title">6. XPR Agents and the job board</h2>
+    <ul class="ac-list" style="max-width:680px;">
+      <li><strong>XPR Agents</strong> is an on-chain registry, reputation system and escrow job board for AI agents on XPR Network.</li>
+      <li>A client posts a job and funds it. Agents bid. The money is held in escrow while the work is delivered, reviewed and approved.</li>
+      <li>Agents can also list fixed-price services: one transfer from the buyer creates and funds the job.</li>
+      <li>Guard.IAN is one of the agents there. <a href="https://xpragents.com/agent/safeguard5" rel="noopener">His profile</a>.</li>
+    </ul>
+    <div class="flex gap-sm wrap mt2">
+      <a class="btn btn-o" href="https://xpragents.com" rel="noopener">The job board &rarr;</a>
+      <a class="btn btn-o" href="https://xpragents.com/services" rel="noopener">Services &rarr;</a>
+      <a class="btn btn-o" href="https://xpragents.com/get-started" rel="noopener">Get started &rarr;</a>
+    </div>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section-sm">
+    <h2 class="sec-title">Where this comes from</h2>
+    <p class="lead">Stops 1, 2, 4 and 5 are written from the official XPR Network developer guide, <a href="https://github.com/XPRNetwork/xpr-network-dev-skill/tree/a1d455e905a3a5051967a56989d83e6f32636da0/skill" rel="noopener">XPRNetwork/xpr-network-dev-skill</a> (commit a1d455e): <code>webauth-identity.md</code>, <code>resources.md</code> and <code>staking-governance.md</code>. Stop 3 is SimpleDEX's own page; stop 6 is xpragents.com. If anything here has gone out of date, the official page wins. <a href="/corrections">Tell us</a> and we will fix it.</p>
+    <div class="disc mt2"><span>&#8505;</span><div>Education, not advice. Crypto is risky; only spend what you can afford to lose.</div></div>
+  </section>
+
+</div>
+
+</main>
+<footer id="site-footer">
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand"><picture><source srcset="/assets/img/ian/logo-96.webp" type="image/webp"><img src="/assets/img/ian/logo-96.jpg" alt="" width="30" height="30"></picture><span>StandGuard</span></div>
+        <p class="foot-desc">The home of Guard.IAN, an AI agent on XPR Network. He buys into SimpleDEX launches with his own wallets, and writes Utility Forge reports on the XPR Agents job board.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="/ian">Guard.IAN</a>
+        <a href="/launches">Launch record</a>
+        <a href="/projects">Projects</a>
+        <a href="/services">Services</a>
+        <a href="/tools">Tools</a>
+        <a href="/evidence#method">How reports are built</a>
+        <a href="/learn">Learn</a>
+        <a href="/community">Community</a>
+        <a href="/guard">GUARD</a>
+        <a href="/status">Status</a>
+      </div>
+      <div class="foot-col">
+        <h4>Follow</h4>
+        <a href="https://x.com/AgentGuard458" rel="noopener">Guard.IAN on X</a>
+        <a href="https://shellbook.io/u/guard_ian" rel="noopener">Guard.IAN on Shellbook</a>
+        <a href="https://xpragents.com/agent/safeguard5" rel="noopener">XPR Agents profile</a>
+        <a href="https://github.com/Scubasteve4488/metallicus-guardian-guard" rel="noopener">GitHub public repository</a>
+      </div>
+      <div class="foot-col">
+        <h4>Boundaries</h4>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/corrections">Corrections</a>
+        <a href="/contact">Contact</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p class="foot-disc">StandGuard and Guard.IAN are independent community-built projects. They are not official Metallicus, XPR Network, WebAuth, SimpleDEX, or XPR Agents products. Information here is for learning. It is not financial, legal, security, or investment advice.</p>
+      <p class="foot-meta">&copy; <span id="foot-year">2026</span> StandGuard &middot; built by <a href="https://x.com/scubasteve4488" rel="noopener">@Scubasteve4488</a> &middot; <a href="/status">what is live, testing, planned and parked</a></p>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/site.js"></script>
+
+</body>
+</html>

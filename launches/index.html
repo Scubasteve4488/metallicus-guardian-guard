@@ -67,6 +67,7 @@
     </div></details>
     <details class="nav-group"><summary>Learn</summary><div class="nav-menu">
       <a class="nav-link" href="/learn">Start here</a>
+      <a class="nav-link" href="/learn/first-hour">Your first hour on XPR</a>
       <a class="nav-link" href="/learn/signguard">SignGuard &mdash; ASL</a>
       <a class="nav-link" href="/learn/ecosystem">The ecosystem</a>
       <a class="nav-link" href="/learn/academy">Academy</a>
@@ -96,11 +97,20 @@
     <p class="sec-label">Launch record</p>
     <h1 class="page-title">Every launch, wallet by wallet</h1>
     <p class="lead mt2">When a new token opens on SimpleDEX, only its creator can buy for the first 60 seconds. The first block after that window is the first legal block. Guard.IAN's wallets aim for it. So do the bots.</p>
-    <p class="lead">This page lists each launch Guard.IAN has taken part in, read from the chain: how many of his wallets got into that block, and where they sat in it.</p>
+    <p class="lead">This page lists each launch Guard.IAN has taken part in, read from the chain: how many of his wallets got into that block, and where they sat in it. Each launch has its own <a href="#launch-watch">Launch Watch</a> report.</p>
     <div class="attn mt3"><span>&#9888;</span><div><strong>Test sizes.</strong> Each wallet now buys 0.01 XPR. GONDOR and LFQP were 1 XPR. Only IAN, the first launch, used real money: the one wallet that made the first block bought 1,000 XPR. The size stays at 0.01 XPR until he passes the test below.</div></div>
   </section>
 
   <div class="div-g"></div>
+
+  <section class="section" id="launch-watch">
+    <h2 class="sec-title">Launch Watch</h2>
+    <p class="lead">A free report per SimpleDEX launch, read from the chain, starting with IAN (token 463). Each one shows the first legal block: when it was stamped, which producer built it, every buy in it in order with its size, where our wallets sat, and when the token graduated and who sent the graduate transaction.</p>
+    <p class="lead">We show account names as the blocks show them. We describe what happened; we do not label anyone.</p>
+    <p class="mt2"><a class="card-link" href="/launches/kwys">Latest: KWYS, token 470</a></p>
+  </section>
+
+  <div class="div"></div>
 
   <section class="section" id="test">
     <h2 class="sec-title">The test he has to pass</h2>
@@ -109,17 +119,17 @@
     <div class="tbl-wrap mt3">
       <table class="tbl stack">
         <thead>
-          <tr><th>Token</th><th>His wallets in the first legal block</th><th>Their places in that block</th><th>Top-10 test</th></tr>
+          <tr><th>Token</th><th>His wallets in the first legal block</th><th>Their places in that block</th><th>Top-10 test</th><th>Launch Watch</th></tr>
         </thead>
         <tbody>
-          <tr><td data-th="Token"><strong>IAN</strong> 463</td><td data-th="In the first legal block">1 of 5 (1,000 XPR)</td><td data-th="Places">5th of 5</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span></td></tr>
-          <tr><td data-th="Token"><strong>GONDOR</strong> 464</td><td data-th="In the first legal block">5 of 5 (1 XPR)</td><td data-th="Places">4, 8, 10, 11, 12 of 12</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span></td></tr>
-          <tr class="row-pass"><td data-th="Token"><strong>LFQP</strong> 465</td><td data-th="In the first legal block">5 of 5 (1 XPR)</td><td data-th="Places">3, 5, 6, 8, 9 of 11</td><td data-th="Top-10 test"><span class="pf pf-pass">PASS</span></td></tr>
-          <tr><td data-th="Token"><strong>STANLEY</strong> 466</td><td data-th="In the first legal block">0 of 7 (the launch watcher was being rebuilt)</td><td data-th="Places">&mdash;</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span></td></tr>
-          <tr><td data-th="Token"><strong>SUNGF</strong> 467</td><td data-th="In the first legal block">0 (the fleet was not running: the old code was retired on 24 September and the rebuilt watcher started after this launch)</td><td data-th="Places">&mdash;</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span></td></tr>
-          <tr><td data-th="Token"><strong>STAR</strong> 468</td><td data-th="In the first legal block">1 of 7 (0.01 XPR)</td><td data-th="Places">9th of 9</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span></td></tr>
-          <tr><td data-th="Token"><strong>XOXO</strong> 469</td><td data-th="In the first legal block">7 of 7 (0.01 XPR)</td><td data-th="Places">6 to 12 of 13</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span></td></tr>
-          <tr><td data-th="Token"><strong>KWYS</strong> 470</td><td data-th="In the first legal block">7 of 7 (0.01 XPR)</td><td data-th="Places">1, 3, 4, 8, 9, 10, 11 of 13 (block 406341837)</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span> <span class="muted">by one place</span></td></tr>
+          <tr><td data-th="Token"><a href="/launches/ian"><strong>IAN</strong></a> 463</td><td data-th="In the first legal block">1 of 5 (1,000 XPR)</td><td data-th="Places">5th of 5</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span></td><td data-th="Launch Watch"><a href="/launches/ian">Full report</a></td></tr>
+          <tr><td data-th="Token"><a href="/launches/gondor"><strong>GONDOR</strong></a> 464</td><td data-th="In the first legal block">5 of 5 (1 XPR)</td><td data-th="Places">4, 8, 10, 11, 12 of 12</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span></td><td data-th="Launch Watch"><a href="/launches/gondor">Full report</a></td></tr>
+          <tr class="row-pass"><td data-th="Token"><a href="/launches/lfqp"><strong>LFQP</strong></a> 465</td><td data-th="In the first legal block">5 of 5 (1 XPR)</td><td data-th="Places">3, 5, 6, 8, 9 of 11</td><td data-th="Top-10 test"><span class="pf pf-pass">PASS</span></td><td data-th="Launch Watch"><a href="/launches/lfqp">Full report</a></td></tr>
+          <tr><td data-th="Token"><a href="/launches/stanley"><strong>STANLEY</strong></a> 466</td><td data-th="In the first legal block">0 of 7 (the launch watcher was being rebuilt)</td><td data-th="Places">&mdash;</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span></td><td data-th="Launch Watch"><a href="/launches/stanley">Full report</a></td></tr>
+          <tr><td data-th="Token"><a href="/launches/sungf"><strong>SUNGF</strong></a> 467</td><td data-th="In the first legal block">0 (the fleet was not running: the old code was retired on 24 September and the rebuilt watcher started after this launch)</td><td data-th="Places">&mdash;</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span></td><td data-th="Launch Watch"><a href="/launches/sungf">Full report</a></td></tr>
+          <tr><td data-th="Token"><a href="/launches/star"><strong>STAR</strong></a> 468</td><td data-th="In the first legal block">1 of 7 (0.01 XPR)</td><td data-th="Places">9th of 9</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span></td><td data-th="Launch Watch"><a href="/launches/star">Full report</a></td></tr>
+          <tr><td data-th="Token"><a href="/launches/xoxo"><strong>XOXO</strong></a> 469</td><td data-th="In the first legal block">7 of 7 (0.01 XPR)</td><td data-th="Places">6 to 12 of 13</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span></td><td data-th="Launch Watch"><a href="/launches/xoxo">Full report</a></td></tr>
+          <tr><td data-th="Token"><a href="/launches/kwys"><strong>KWYS</strong></a> 470</td><td data-th="In the first legal block">7 of 7 (0.01 XPR)</td><td data-th="Places">1, 3, 4, 8, 9, 10, 11 of 13 (block 406341837)</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span> <span class="muted">by one place</span></td><td data-th="Launch Watch"><a href="/launches/kwys">Full report</a></td></tr>
         </tbody>
       </table>
     </div>
@@ -175,6 +185,19 @@
       <li>A buy that arrives before that block opens is refused and dropped, not queued.</li>
       <li>21 block producers in the active schedule make the blocks, one every half second.</li>
     </ul>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section" id="rule-watch">
+    <h2 class="sec-title">Rule-change watch</h2>
+    <ul class="ac-list" style="max-width:680px;">
+      <li>SimpleDEX's settings are changed by <code>simplesetup</code>, a 2-of-4 multisig account.</li>
+      <li>Most changes wait in a public queue on the chain, the <strong>timelock</strong>: 48 hours, or 72 hours for critical ones. Anyone can read it.</li>
+      <li>Guard.IAN reads that queue every 3 hours. When a new proposal appears, it is flagged to us before it can take effect.</li>
+      <li>One exception, so you know it: the anti-snipe settings (the 60-second creator window and the 5,000 XPR early cap) were set directly on 3 March 2026, without the timelock.</li>
+    </ul>
+    <p class="muted mt2">Read the queue yourself: the <code>timelock</code> and <code>timelockconf</code> tables of the <a href="https://explorer.xprnetwork.org/account/simplelaunch" rel="noopener">simplelaunch</a> contract.</p>
   </section>
 
   <section class="section-sm">
