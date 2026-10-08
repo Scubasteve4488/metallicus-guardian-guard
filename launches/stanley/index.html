@@ -101,12 +101,13 @@
     <div class="srcbox mt3" style="max-width:620px;">
       <dl class="kv">
         <dt>First legal block</dt><dd><a href="https://explorer.xprnetwork.org/block/405043565" rel="noopener">405043565</a></dd>
-        <dt>Stamped</dt><dd>24 September 2026, 01:05:31 chain time (UTC) &mdash; creation + 60 s</dd>
+        <dt>Stamped</dt><dd>24 September 2026 &mdash; creation + 60 s</dd>
         <dt>Built by</dt><dd><a href="https://explorer.xprnetwork.org/account/saltant" rel="noopener">saltant</a> (block producer)</dd>
         <dt>Buys in the block</dt><dd>7</dd>
         <dt>Our wallets in it</dt><dd>0 of 7</dd>
+        <dt>Our later buys</dt><dd>11 (55,000 XPR), after the first legal block</dd>
         <dt>Top-10 test</dt><dd><span class="pf pf-fail">FAIL</span></dd>
-        <dt>Graduated</dt><dd>24 September 2026, 01:11:13 chain time (UTC) &middot; block <a href="https://explorer.xprnetwork.org/block/405044249" rel="noopener">405044249</a> &middot; signed by <a href="https://explorer.xprnetwork.org/account/scubasteve44" rel="noopener">scubasteve44</a> &middot; pool 1886</dd>
+        <dt>Graduated</dt><dd>24 September 2026 &middot; block <a href="https://explorer.xprnetwork.org/block/405044249" rel="noopener">405044249</a> &middot; authorised by scubasteve44@active &middot; pool 1886</dd>
       </dl>
     </div>
   </section>
@@ -116,13 +117,14 @@
   <section class="section">
     <h2 class="sec-title">What happened</h2>
     <ul class="ac-list" style="max-width:680px;">
-      <li>The creator-only window ended 60 seconds after the token was created. The first block anyone else could buy in was block 405043565, stamped 01:05:31 (chain time, UTC) and built by the producer saltant.</li>
+      <li>The creator-only window ended 60 seconds after the token was created. The first block anyone else could buy in was block 405043565, on 24 September 2026, built by the producer saltant.</li>
       <li>7 buys landed in that block.</li>
       <li>None of our 7 wallets were in it.</li>
-      <li>Not all 7 were in the fastest 10, so this launch does not pass our test.</li>
-      <li>The other 7 buys came from 7 accounts, 35,000 XPR in total.</li>
-      <li>The token graduated to a SimpleDEX pool (pool 1886), 5 min 42 s after the first legal block. The graduate transaction was signed by scubasteve44.</li>
-      <li>Our launch watcher was being rebuilt during this launch, so none of our seven wallets bought.</li>
+      <li>Our wallets did buy, but late: 7 wallets made 11 buys, 55,000 XPR in total, 2 min 15 s to 4 min 19 s after the first legal block (blocks 405043835 to 405044083).</li>
+      <li>Not all 7 were in the fastest 10 of the first legal block, so this launch does not pass our test.</li>
+      <li>The other 7 buys in the first legal block came from 7 accounts, 35,000 XPR in total.</li>
+      <li>The token graduated to a SimpleDEX pool (pool 1886), 5 min 42 s after the first legal block. The graduate transaction was authorised by scubasteve44@active.</li>
+      <li>Real money: our wallets bought 5,000 XPR at a time, but late, after the first legal block.</li>
     </ul>
   </section>
 
@@ -163,7 +165,7 @@
     <h2 class="sec-title">Check it yourself</h2>
     <p class="lead">Open block <a href="https://explorer.xprnetwork.org/block/405043565" rel="noopener">405043565</a> on the <a href="https://explorer.xprnetwork.org/" rel="noopener">XPR Network explorer</a>. Each buy is a transfer of XPR to <code>simplelaunch</code> with the memo <code>buy:466</code>. The token's own row is in the <code>curves</code> table of the <a href="https://explorer.xprnetwork.org/account/simplelaunch" rel="noopener">simplelaunch</a> contract. If you find a mistake, <a href="/corrections">tell us</a>.</p>
     <p class="muted mt2">Rule changes: we read SimpleDEX's public rule-change queue every 3 hours. <a href="/launches#rule-watch">How that works</a>.</p>
-    <p class="verified-line">Read from the chain at block 407486168 (8 October 2026).</p>
+    <p class="verified-line">Read from the chain at block 407490100 (8 October 2026).</p>
     <div class="disc mt2"><span>&#8505;</span><div>A record of what happened. Not financial advice, and not a reason to buy or sell any token.</div></div>
   </section>
 </div>
