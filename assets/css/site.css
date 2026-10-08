@@ -313,6 +313,9 @@ table.tbl td{color:var(--text2);}
 .story h3{font-size:.86rem;font-weight:600;color:var(--gold-l);margin-bottom:.25rem;line-height:1.35;}
 .story p{font-size:.84rem;color:var(--text2);line-height:1.55;}
 .figure{margin:0;}
+.scene{margin-inline:0;max-width:640px;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--bg2);}
+.scene img{display:block;width:100%;height:auto;max-width:100%;aspect-ratio:1/1;object-fit:cover;}
+.scene figcaption{padding:.6rem .85rem;font-size:.84rem;color:var(--text2);}
 .figure img{display:block;width:100%;height:auto;border-radius:var(--radius-lg);border:1px solid var(--border-acc);}
 .figure figcaption{font-size:.78rem;color:var(--text3);margin-top:.5rem;line-height:1.55;}
 
