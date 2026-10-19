@@ -150,6 +150,22 @@
     <div class="cor-entry">
       <div class="cor-head">
         <span class="cor-tag">Corrected</span>
+        <span class="cor-date">18 October 2026</span>
+      </div>
+      <h3>SimpleDEX creator-only window was still described as 60 seconds after it changed to 120.</h3>
+      <dl>
+        <dt>Old information</dt>
+        <dd>The current-rule explanations on <a href="/launches">/launches</a>, <a href="/learn/first-hour">/learn/first-hour</a> and <a href="/projects/shield-buy">/projects/shield-buy</a> described a 60-second creator-only period. The launch page also presented the former 59.5-second timing example as current.</dd>
+        <dt>Verified setting</dt>
+        <dd>The live XPR mainnet <code>simplelaunch::antisnipe</code> table now has <code>creatorOnlyPeriodSec = 120</code>, checked 18 October 2026 via <a href="https://explorer.xprnetwork.org/account/simplelaunch" rel="noopener">the SimpleDEX contract</a>. The prior period was 60 seconds; the change occurred in October 2026. The period can change again.</dd>
+        <dt>What changed</dt>
+        <dd>Updated current-rule explanations to 120 seconds and removed the obsolete send-time recommendation. Kept the 2 October testnet experiment's genuine 60-second results, now explicitly marked historical. No historical launch block data was rewritten.</dd>
+      </dl>
+    </div>
+
+    <div class="cor-entry">
+      <div class="cor-head">
+        <span class="cor-tag">Corrected</span>
         <span class="cor-date">5 October 2026</span>
       </div>
       <h3>SignGuard said the ASL alphabet was &ldquo;signed by a real person&rdquo;. It was a 3D model.</h3>
