@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The creator shield buy — a testnet finding</title>
-<meta name="description" content="A creator who buys enough in their own 60-second window stops the sell-and-reset trick. Measured on the SimpleDEX testnet at 1/1000 scale; not proven on mainnet.">
+<meta name="description" content="Creator-only buys tested against the sell-and-reset trick on SimpleDEX testnet at 1/1000 scale. The window was 60 seconds in the October 2 test; mainnet now uses 120 seconds. Not proven on mainnet.">
 <link rel="canonical" href="https://standguard.net/projects/shield-buy">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="StandGuard">
 <meta property="og:title" content="The creator shield buy — a testnet finding">
-<meta property="og:description" content="A creator who buys enough in their own 60-second window stops the sell-and-reset trick. Measured on the SimpleDEX testnet at 1/1000 scale; not proven on mainnet.">
+<meta property="og:description" content="Creator-only buys tested against the sell-and-reset trick on SimpleDEX testnet at 1/1000 scale. The window was 60 seconds in the October 2 test; mainnet now uses 120 seconds. Not proven on mainnet.">
 <meta property="og:url" content="https://standguard.net/projects/shield-buy">
 <meta property="og:image" content="https://standguard.net/assets/img/ian/share-1200x630.jpg">
 <meta property="og:image:width" content="1200">
@@ -111,7 +111,7 @@
       <li>A SimpleDEX token graduates when its curve holds 50,000 XPR of real buys, followed by a 300-second countdown.</li>
       <li>If sells drop it back under 50,000, the countdown starts again. We measured that ourselves.</li>
       <li>So anyone holding enough of the token can sell into every crossing and keep resetting it.</li>
-      <li>There is no per-token anti-bot setting. The one lever each launch has is the creator's own 60-second window, when only the creator can buy.</li>
+      <li>There is no per-token anti-bot setting. The creator-only window is currently 120 seconds on mainnet; it was 60 seconds when the test below ran on 2 October 2026.</li>
     </ul>
   </section>
 
@@ -121,8 +121,8 @@
     <h2 class="sec-title">What we did</h2>
     <p class="lead">Token 16 (SHLDA) on the SimpleDEX testnet launcher, 2 October 2026. Graduation line on the testnet: 50 XPR.</p>
     <ol class="ac-list mt2" style="max-width:680px;list-style:decimal;">
-      <li>The creator bought <strong>55 XPR</strong> at 4.5 seconds, inside its own 60-second window. The curve held 54.45 XPR and <strong>the graduation countdown started at once</strong>. A crossing inside the creator window does start it.</li>
-      <li>At 60 seconds a test "bot" wallet bought 20 XPR (curve: 74.25), then <strong>sold all of it 3.7 seconds later</strong>.</li>
+      <li>The creator bought <strong>55 XPR</strong> at 4.5 seconds, inside that test's 60-second creator-only window. The curve held 54.45 XPR and <strong>the graduation countdown started at once</strong>. A crossing inside the creator window does start it.</li>
+      <li>At 60 seconds in that historical test, a test "bot" wallet bought 20 XPR (curve: 74.25), then <strong>sold all of it 3.7 seconds later</strong>.</li>
       <li>The curve fell back to 54.4501. It never went under the line, so <strong>the countdown was not reset</strong>. The bot lost about 0.40 XPR in two 1% fees.</li>
       <li>The token graduated after the 300-second countdown, into pool 18.</li>
     </ol>
