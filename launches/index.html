@@ -99,7 +99,7 @@
     <h1 class="page-title">Every launch, wallet by wallet</h1>
     <p class="lead mt2">As checked on 18 October 2026, SimpleDEX reserves the first <strong>120 seconds</strong> after token creation for the creator (previously 60 seconds, until October 2026). The first block with a timestamp at or after that window ends is the first legal block for other buyers. The setting can change on chain; the older launch reports below reflect the rules in force at their dates.</p>
     <p class="lead">This page lists each launch Guard.IAN has taken part in, read from the chain: how many of his wallets got into that block, and where they sat in it. Each launch has its own <a href="#launch-watch">Launch Watch</a> report.</p>
-    <div class="attn mt3"><span>&#9888;</span><div><strong>Sizes.</strong> Two launches used real money: IAN (the one wallet that made the first block bought 1,000 XPR) and STANLEY (all seven wallets bought 55,000 XPR in total, but 2 to 4 minutes late). The rest were test sizes: 1 XPR per wallet at GONDOR and LFQP, 0.01 XPR at STAR, XOXO and KWYS. The size stays at 0.01 XPR until he passes the test below.</div></div>
+    <div class="attn mt3"><span>&#9888;</span><div><strong>Sizes.</strong> Two launches used real money: IAN (the one wallet that made the first block bought 1,000 XPR) and STANLEY (all seven wallets bought 55,000 XPR in total, but 2 to 4 minutes late). The rest were test sizes: 1 XPR per wallet at GONDOR and LFQP, 0.01 XPR at STAR, XOXO and KWYS. The size remains 0.01 XPR by the operator's 16 October decision, even after STARS passed the speed test below.</div></div>
   </section>
 
   <div class="div-g"></div>
@@ -108,14 +108,14 @@
     <h2 class="sec-title">Launch Watch</h2>
     <p class="lead">A free report per SimpleDEX launch, read from the chain, starting with IAN (token 463). Each one shows the first legal block: when it was stamped, which producer built it, every buy in it in order with its size, where our wallets sat, and when the token graduated and who sent the graduate transaction.</p>
     <p class="lead">We show account names as the blocks show them. We describe what happened; we do not label anyone.</p>
-    <p class="mt2"><a class="card-link" href="/launches/kwys">Latest: KWYS, token 470</a></p>
+    <p class="mt2"><a class="card-link" href="/launches/kwys">Latest full Launch Watch: KWYS, token 470</a> &nbsp; <a class="card-link" href="https://explorer.xprnetwork.org/block/408086182" rel="noopener">Newest recorded result: STARS, token 471 (block)</a></p>
   </section>
 
   <div class="div"></div>
 
   <section class="section" id="test">
-    <h2 class="sec-title">The test he has to pass</h2>
-    <p class="lead"><strong>All of his wallets in the top 10 of the first legal block.</strong> So far: 1 pass of 7 launches taken part in (LFQP). SUNGF is not counted: the fleet was not running.</p>
+    <h2 class="sec-title">The first-block top-10 test</h2>
+    <p class="lead"><strong>All of his wallets in the top 10 of the first legal block.</strong> So far: 2 passes of 8 launches taken part in (LFQP and STARS). SUNGF is not counted: the fleet was not running. GUARD kept the 0.01 XPR test buy size after the second pass.</p>
 
     <div class="tbl-wrap mt3">
       <table class="tbl stack">
@@ -131,6 +131,7 @@
           <tr><td data-th="Token"><a href="/launches/star"><strong>STAR</strong></a> 468</td><td data-th="In the first legal block">1 of 7 (0.01 XPR)</td><td data-th="Places">9th of 9</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span></td><td data-th="Launch Watch"><a href="/launches/star">Full report</a></td></tr>
           <tr><td data-th="Token"><a href="/launches/xoxo"><strong>XOXO</strong></a> 469</td><td data-th="In the first legal block">7 of 7 (0.01 XPR)</td><td data-th="Places">6 to 12 of 13</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span></td><td data-th="Launch Watch"><a href="/launches/xoxo">Full report</a></td></tr>
           <tr><td data-th="Token"><a href="/launches/kwys"><strong>KWYS</strong></a> 470</td><td data-th="In the first legal block">7 of 7 (0.01 XPR)</td><td data-th="Places">1, 3, 4, 8, 9, 10, 11 of 13 (block 406341837)</td><td data-th="Top-10 test"><span class="pf pf-fail">FAIL</span> <span class="muted">by one place</span></td><td data-th="Launch Watch"><a href="/launches/kwys">Full report</a></td></tr>
+          <tr class="row-pass"><td data-th="Token"><strong>STARS</strong> 471</td><td data-th="In the first legal block">7 of 7 (0.01 XPR, per GUARD's locked record)</td><td data-th="Places">1 to 7 of 10 (block 408086182, 11 October)</td><td data-th="Top-10 test"><span class="pf pf-pass">PASS</span></td><td data-th="Launch Watch">Full report not published. <a href="https://explorer.xprnetwork.org/block/408086182" rel="noopener">Read the block</a></td></tr>
         </tbody>
       </table>
     </div>
@@ -143,7 +144,7 @@
     <h2 class="sec-title">What changed along the way</h2>
     <ul class="ac-list" style="max-width:680px;">
       <li><strong>XOXO and KWYS</strong> ran on the new sender timing. Both times all seven wallets got into the first legal block. At KWYS one of them was first in the block.</li>
-      <li><strong>2 October:</strong> a further fix to how the buys are sent went live. On the SimpleDEX testnet it put 5 of 5 test wallets in the first legal block (token 15, block 408825337). The next mainnet launch is its test.</li>
+      <li><strong>2 October:</strong> a further fix to how the buys are sent went live. On the SimpleDEX testnet it put 5 of 5 test wallets in the first legal block (token 15, block 408825337). <strong>11 October:</strong> STARS 471 was the subsequent mainnet test. GUARD records 7 of 7 wallets in the first seven buys; mainnet block 408086182 shows seven 0.01 XPR buys first. The creator-only window then changed to 120 seconds on 15 October.</li>
     </ul>
     <p class="mt3"><a class="card-link" href="/reports/ian">The IAN launch report, the first one, in full</a></p>
   </section>
