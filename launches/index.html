@@ -97,7 +97,7 @@
   <section class="section">
     <p class="sec-label">Launch record</p>
     <h1 class="page-title">Every launch, wallet by wallet</h1>
-    <p class="lead mt2">When a new token opens on SimpleDEX, only its creator can buy for the first 60 seconds. The first block after that window is the first legal block. Guard.IAN's wallets aim for it, and so do the other wallets that buy in the first block.</p>
+    <p class="lead mt2">As checked on 18 October 2026, SimpleDEX reserves the first <strong>120 seconds</strong> after token creation for the creator (previously 60 seconds, until October 2026). The first block with a timestamp at or after that window ends is the first legal block for other buyers. The setting can change on chain; the older launch reports below reflect the rules in force at their dates.</p>
     <p class="lead">This page lists each launch Guard.IAN has taken part in, read from the chain: how many of his wallets got into that block, and where they sat in it. Each launch has its own <a href="#launch-watch">Launch Watch</a> report.</p>
     <div class="attn mt3"><span>&#9888;</span><div><strong>Sizes.</strong> Two launches used real money: IAN (the one wallet that made the first block bought 1,000 XPR) and STANLEY (all seven wallets bought 55,000 XPR in total, but 2 to 4 minutes late). The rest were test sizes: 1 XPR per wallet at GONDOR and LFQP, 0.01 XPR at STAR, XOXO and KWYS. The size stays at 0.01 XPR until he passes the test below.</div></div>
   </section>
@@ -182,7 +182,7 @@
     <h2 class="sec-title">How the timing works</h2>
     <ul class="ac-list" style="max-width:680px;">
       <li>The contract checks the <strong>block's timestamp</strong>, not the clock.</li>
-      <li>The block stamped 60 seconds after creation starts being built about half a second early. That is why buys sent at about 59.5 seconds are legal.</li>
+      <li>Under the currently verified 120-second rule, a non-creator buy can execute only in a block timestamped at or after creation plus 120 seconds. A broadcast sent earlier is not automatically queued, and no fixed send time guarantees inclusion or rank in the first eligible block.</li>
       <li>A buy that arrives before that block opens is refused and dropped, not queued.</li>
       <li>21 block producers in the active schedule make the blocks, one every half second.</li>
     </ul>
@@ -196,7 +196,7 @@
       <li>SimpleDEX's settings are changed by <code>simplesetup</code>, a 2-of-4 multisig account.</li>
       <li>Parameter changes can be queued on the chain, in a public <strong>timelock</strong>: 48 hours for standard changes, 72 hours for critical ones. Anyone can read the queue.</li>
       <li>Guard.IAN reads that queue every 3 hours. When a new proposal appears, it is flagged to us before it can take effect.</li>
-      <li>Some changes were made directly, without the queue &mdash; including the anti-snipe settings (the 60-second creator window and the 5,000 XPR early cap, 3 March), the treasury setting (1 March) and blacklist entries (2 and 11 March).</li>
+      <li>Some earlier changes were made directly, without the queue &mdash; including the original anti-snipe settings (60-second creator window and 5,000 XPR early cap, 3 March), the treasury setting (1 March) and blacklist entries (2 and 11 March). The March 60-second value is historical; the on-chain creator-only window is now 120 seconds.</li>
     </ul>
     <p class="muted mt2">Read the queue yourself: the <code>timelock</code> and <code>timelockconf</code> tables of the <a href="https://explorer.xprnetwork.org/account/simplelaunch" rel="noopener">simplelaunch</a> contract.</p>
   </section>
