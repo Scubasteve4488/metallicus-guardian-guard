@@ -330,3 +330,15 @@
     start();
   }
 })();
+
+/* 2026-10-23: click-to-load YouTube (privacy-enhanced) for the alphabet and number videos; nothing loads before Play. */
+document.addEventListener('click', function (e) {
+  var btn = e.target.closest && e.target.closest('.sg-load');
+  if (!btn) { return; }
+  var iframe = document.createElement('iframe');
+  iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(btn.getAttribute('data-yt')) + '?autoplay=1&rel=0';
+  iframe.title = btn.getAttribute('data-title');
+  iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+  iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+  btn.parentNode.replaceChild(iframe, btn);
+});

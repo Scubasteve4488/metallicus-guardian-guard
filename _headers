@@ -72,7 +72,7 @@
 # no other site needs to read these pages.
 
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://img.youtube.com; media-src 'self' https://archive.org https://*.archive.org; connect-src 'self' https://archive.org https://proton.eosusa.io https://api.protonnz.com https://proton.cryptolions.io https://api-xprnetwork-main.saltant.io; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; manifest-src 'self'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://img.youtube.com; media-src 'self' https://archive.org https://*.archive.org; connect-src 'self' https://archive.org https://proton.eosusa.io https://api.protonnz.com https://proton.cryptolions.io https://api-xprnetwork-main.saltant.io; form-action 'self'; frame-ancestors 'none'; frame-src https://www.youtube-nocookie.com; object-src 'none'; base-uri 'none'; manifest-src 'self'; upgrade-insecure-requests
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: accelerometer=(), autoplay=(self), camera=(), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), usb=(), xr-spatial-tracking=()
