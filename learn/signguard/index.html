@@ -63,6 +63,10 @@
   .sg-glyph{font-family:'Cinzel Decorative',serif;font-size:1.9rem;line-height:1;color:var(--gold-l)}
   .sg-letter p{font-size:.92rem;color:var(--text2);line-height:1.6}
   .sg-video{margin:1rem 0 1.5rem}
+  .sg-clips{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.75rem;margin:1rem 0}
+  .sg-clip{margin:0;text-align:center}
+  .sg-clip video{width:100%;height:auto;border-radius:10px;background:#000;display:block}
+  .sg-clip figcaption{font-size:.9rem;margin-top:.3rem}
   .sg-frame{position:relative;aspect-ratio:16/9;width:100%;max-width:720px;border-radius:12px;overflow:hidden;background:#111}
   .sg-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
   .sg-load{position:absolute;inset:0;width:100%;height:100%;border:0;cursor:pointer;background:#1b1b1f;color:#fff;font:inherit;display:grid;place-content:center;gap:.4rem;text-align:center;padding:1rem}
@@ -389,8 +393,22 @@
     </div>
 
     <h3 class="sec-title mt4" id="more-signs">More everyday signs, from Deaf signers</h3>
-    <p><span class="sg-label">Deaf signers &middot; open licence</span><br>PopSign ASL is a collection of everyday signs recorded on phones by 47 Deaf adults whose main language is ASL, who agreed to share them publicly. Clips from it are coming to this page.</p>
-    <p class="sg-credit">Source: <a href="https://signdata.cc.gatech.edu/view/datasets/popsign_v1_0/" rel="noopener">PopSign ASL</a> (Thad Starner et al., Georgia Institute of Technology), licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener license">CC BY 4.0</a>. Paper: Starner et al., &ldquo;PopSign ASL v1.0: An Isolated American Sign Language Dataset Collected via Smartphones&rdquo;, NeurIPS 2023. StandGuard is not affiliated with Georgia Tech or PopSign.</p>
+    <p><span class="sg-label">Deaf signers &middot; open licence</span><br>PopSign ASL is a collection of everyday signs recorded on phones by 47 Deaf adults whose main language is ASL, who agreed to share them publicly. Twelve everyday signs to start with; press play on any of them.</p>
+    <div class="sg-clips">
+      <figure class="sg-clip"><video controls preload="none" playsinline muted loop width="180" height="320" src="/assets/signguard/popsign/hello.mp4" aria-label="A Deaf signer signs hello in ASL"></video><figcaption>hello</figcaption></figure>
+      <figure class="sg-clip"><video controls preload="none" playsinline muted loop width="180" height="320" src="/assets/signguard/popsign/thankyou.mp4" aria-label="A Deaf signer signs thank you in ASL"></video><figcaption>thank you</figcaption></figure>
+      <figure class="sg-clip"><video controls preload="none" playsinline muted loop width="180" height="320" src="/assets/signguard/popsign/please.mp4" aria-label="A Deaf signer signs please in ASL"></video><figcaption>please</figcaption></figure>
+      <figure class="sg-clip"><video controls preload="none" playsinline muted loop width="180" height="320" src="/assets/signguard/popsign/yes.mp4" aria-label="A Deaf signer signs yes in ASL"></video><figcaption>yes</figcaption></figure>
+      <figure class="sg-clip"><video controls preload="none" playsinline muted loop width="180" height="320" src="/assets/signguard/popsign/no.mp4" aria-label="A Deaf signer signs no in ASL"></video><figcaption>no</figcaption></figure>
+      <figure class="sg-clip"><video controls preload="none" playsinline muted loop width="180" height="320" src="/assets/signguard/popsign/mom.mp4" aria-label="A Deaf signer signs mom in ASL"></video><figcaption>mom</figcaption></figure>
+      <figure class="sg-clip"><video controls preload="none" playsinline muted loop width="180" height="320" src="/assets/signguard/popsign/dad.mp4" aria-label="A Deaf signer signs dad in ASL"></video><figcaption>dad</figcaption></figure>
+      <figure class="sg-clip"><video controls preload="none" playsinline muted loop width="180" height="320" src="/assets/signguard/popsign/water.mp4" aria-label="A Deaf signer signs water in ASL"></video><figcaption>water</figcaption></figure>
+      <figure class="sg-clip"><video controls preload="none" playsinline muted loop width="180" height="320" src="/assets/signguard/popsign/food.mp4" aria-label="A Deaf signer signs food / eat in ASL"></video><figcaption>food / eat</figcaption></figure>
+      <figure class="sg-clip"><video controls preload="none" playsinline muted loop width="180" height="320" src="/assets/signguard/popsign/happy.mp4" aria-label="A Deaf signer signs happy in ASL"></video><figcaption>happy</figcaption></figure>
+      <figure class="sg-clip"><video controls preload="none" playsinline muted loop width="180" height="320" src="/assets/signguard/popsign/sad.mp4" aria-label="A Deaf signer signs sad in ASL"></video><figcaption>sad</figcaption></figure>
+      <figure class="sg-clip"><video controls preload="none" playsinline muted loop width="180" height="320" src="/assets/signguard/popsign/sleep.mp4" aria-label="A Deaf signer signs sleep in ASL"></video><figcaption>sleep</figcaption></figure>
+    </div>
+    <p class="sg-credit">Source: <a href="https://signdata.cc.gatech.edu/view/datasets/popsign_v1_0/" rel="noopener">PopSign ASL</a> (Thad Starner et al., Georgia Institute of Technology), licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener license">CC BY 4.0</a>. Paper: Starner et al., &ldquo;PopSign ASL v1.0: An Isolated American Sign Language Dataset Collected via Smartphones&rdquo;, NeurIPS 2023. StandGuard is not affiliated with Georgia Tech or PopSign. The clips are served from this site, resized for the web with sound removed, otherwise unaltered.</p>
 
     <h3 class="sec-title mt4">Good habits from the start</h3>
     <ul class="ac-list mt2">
@@ -504,7 +522,7 @@
         <h3>Licences respected</h3>
         <p>Most ASL video collections are for research only, because Deaf signers agreed to research and not to somebody&rsquo;s product. Those are not used here, and licence terms are not stretched.</p>
         <p>The dictionary clips are marked public domain by the organisation that recorded them.</p>
-        <p>Every video on this page is a real person. Alphabet and numbers: YouTube videos their creators released under Creative Commons Attribution (CC BY), shown unaltered in YouTube&rsquo;s own player, credited under each video. None of it has been checked by a Deaf reviewer for this page yet. If you sign and spot a mistake, tell us on the <a href="/corrections">corrections page</a>.</p>
+        <p>Every video on this page is a real person. Everyday signs: PopSign ASL (CC BY 4.0), recorded by Deaf signers who consented to public use, served from this site resized, otherwise unaltered. Alphabet and numbers: YouTube videos their creators released under Creative Commons Attribution (CC BY), shown unaltered in YouTube&rsquo;s own player, credited under each video. None of it has been checked by a Deaf reviewer for this page yet. If you sign and spot a mistake, tell us on the <a href="/corrections">corrections page</a>.</p>
       </div>
     </div>
   </section>
