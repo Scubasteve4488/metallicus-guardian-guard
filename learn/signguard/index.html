@@ -62,6 +62,14 @@
   .sg-letter h3{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.35rem}
   .sg-glyph{font-family:'Cinzel Decorative',serif;font-size:1.9rem;line-height:1;color:var(--gold-l)}
   .sg-letter p{font-size:.92rem;color:var(--text2);line-height:1.6}
+  .sg-video{margin:1rem 0 1.5rem}
+  .sg-frame{position:relative;aspect-ratio:16/9;width:100%;max-width:720px;border-radius:12px;overflow:hidden;background:#111}
+  .sg-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .sg-load{position:absolute;inset:0;width:100%;height:100%;border:0;cursor:pointer;background:#1b1b1f;color:#fff;font:inherit;display:grid;place-content:center;gap:.4rem;text-align:center;padding:1rem}
+  .sg-load strong{font-size:1.1rem}
+  .sg-load span{font-size:.85rem;opacity:.8}
+  .sg-credit{font-size:.85rem;opacity:.85;margin-top:.4rem}
+  .sg-label{display:inline-block;font-size:.8rem;padding:.15rem .55rem;border-radius:99px;border:1px solid currentColor;margin-bottom:.5rem}
   .sg-letter .sg-noclip{font-size:.78rem;color:var(--text3);margin-top:.5rem}
 
   .sg-drill{background:var(--bg2);border:1px solid var(--border-acc);border-radius:var(--radius-lg);padding:1.25rem;margin-top:1.25rem;text-align:center}
@@ -194,7 +202,12 @@
     <h2 class="sec-title">The fingerspelling alphabet</h2>
     <p class="lead">Fingerspelling is how ASL spells out an English word, one handshape per letter. It is used for names, places, and words that have no sign of their own.</p>
 
-    <div class="attn mt3"><span aria-hidden="true">&#9888;</span><div><strong>No video of the letters yet, on purpose.</strong> We only show footage of a real person signing. We checked the letter entries in the Internet Archive dictionary on 6 October 2026: they are computer-drawn hands, not a person, so they are not shown here. Until a real signer is filmed, each letter is described in words. A friend or teacher who signs is the best check.</div></div>
+    <p class="mt3"><span class="sg-label">Real signer &middot; not checked by a Deaf reviewer yet</span><br>The whole alphabet, signed by a real person, slowly and letter by letter. We checked the Internet Archive&rsquo;s letter entries on 6 October 2026: they are computer-drawn hands, so we don&rsquo;t use them. This video is a person.</p>
+    <div class="sg-video">
+      <div class="sg-frame"><button class="sg-load" type="button" data-yt="SejtedO_MJk" data-title="ASL Alphabet for Dummies (i.e., hearing people), by Deirdre Wade"><strong>&#9654; Play: the ASL alphabet</strong><span>Loads from YouTube when you press play. Nothing is loaded before that.</span></button></div>
+      <p class="sg-credit">&ldquo;<a href="https://www.youtube.com/watch?v=SejtedO_MJk" rel="noopener">ASL Alphabet for Dummies (i.e., hearing people)</a>&rdquo; by Deirdre Wade, licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener license">CC BY 4.0</a> (YouTube &ldquo;Creative Commons Attribution&rdquo;). Shown unaltered. The signer says she is hearing and learned from Deaf teachers. StandGuard is not affiliated with her.</p>
+      <p class="sg-credit">Another real signer, faster: &ldquo;<a href="https://www.youtube.com/watch?v=Pjms9f9EebY" rel="noopener">The Alphabet in ASL</a>&rdquo; by Lexie Moore (CC BY, on YouTube).</p>
+    </div>
 
     <h3 class="sec-title mt4" id="practise">Practise with yourself</h3>
     <p class="lead">Pick a letter from the list below or let the page choose. Make the handshape, check it against the description, ideally in a mirror, and be honest with yourself.</p>
@@ -239,47 +252,47 @@
       <li class="sg-letter" data-letter="A">
         <h3><span class="sg-glyph" aria-hidden="true">A</span><span class="vh">Letter A</span></h3>
         <p class="sg-desc">Closed fist, thumb straight up against the side of the index finger.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="B">
         <h3><span class="sg-glyph" aria-hidden="true">B</span><span class="vh">Letter B</span></h3>
         <p class="sg-desc">Four fingers straight up and together; thumb folded across the palm.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="C">
         <h3><span class="sg-glyph" aria-hidden="true">C</span><span class="vh">Letter C</span></h3>
         <p class="sg-desc">Fingers and thumb curved into the shape of a C, as if holding a cup. Seen from the side.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="D">
         <h3><span class="sg-glyph" aria-hidden="true">D</span><span class="vh">Letter D</span></h3>
         <p class="sg-desc">Index finger straight up; the middle, ring and little fingers curve down to touch the thumb tip, making a round loop.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="E">
         <h3><span class="sg-glyph" aria-hidden="true">E</span><span class="vh">Letter E</span></h3>
         <p class="sg-desc">Fingertips bent down over the palm, resting just above the thumb, which is folded across underneath them.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="F">
         <h3><span class="sg-glyph" aria-hidden="true">F</span><span class="vh">Letter F</span></h3>
         <p class="sg-desc">Thumb tip and index fingertip touch in a circle; middle, ring and little fingers up and slightly spread.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="G">
         <h3><span class="sg-glyph" aria-hidden="true">G</span><span class="vh">Letter G</span></h3>
         <p class="sg-desc">Hand turned sideways: index finger and thumb point to the side, parallel, with a small gap between them; other fingers closed.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="H">
         <h3><span class="sg-glyph" aria-hidden="true">H</span><span class="vh">Letter H</span></h3>
         <p class="sg-desc">Hand turned sideways: index and middle fingers together, pointing to the side; thumb holds the other two fingers down.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="I">
         <h3><span class="sg-glyph" aria-hidden="true">I</span><span class="vh">Letter I</span></h3>
         <p class="sg-desc">Little finger straight up; the other fingers in a fist with the thumb across them.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="J" data-moves="1">
         <h3><span class="sg-glyph" aria-hidden="true">J</span><span class="vh">Letter J</span><span class="badge bam">moves</span></h3>
@@ -289,77 +302,77 @@
       <li class="sg-letter" data-letter="K">
         <h3><span class="sg-glyph" aria-hidden="true">K</span><span class="vh">Letter K</span></h3>
         <p class="sg-desc">Index finger up and middle finger angled out, in a V; the thumb tip touches the middle finger between them.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="L">
         <h3><span class="sg-glyph" aria-hidden="true">L</span><span class="vh">Letter L</span></h3>
         <p class="sg-desc">Index finger up and thumb out to the side, making an L; other fingers closed.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="M">
         <h3><span class="sg-glyph" aria-hidden="true">M</span><span class="vh">Letter M</span></h3>
         <p class="sg-desc">Index, middle and ring fingers folded down over the thumb; the thumb tip shows between the ring and little fingers.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="N">
         <h3><span class="sg-glyph" aria-hidden="true">N</span><span class="vh">Letter N</span></h3>
         <p class="sg-desc">Index and middle fingers folded down over the thumb; the thumb tip shows between the middle and ring fingers.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="O">
         <h3><span class="sg-glyph" aria-hidden="true">O</span><span class="vh">Letter O</span></h3>
         <p class="sg-desc">All fingertips curved round to meet the thumb tip, making an O.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="P">
         <h3><span class="sg-glyph" aria-hidden="true">P</span><span class="vh">Letter P</span></h3>
         <p class="sg-desc">The K handshape turned so the middle finger points down.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="Q">
         <h3><span class="sg-glyph" aria-hidden="true">Q</span><span class="vh">Letter Q</span></h3>
         <p class="sg-desc">The G handshape turned so the index finger and thumb point down.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="R">
         <h3><span class="sg-glyph" aria-hidden="true">R</span><span class="vh">Letter R</span></h3>
         <p class="sg-desc">Index and middle fingers up and crossed, as in &ldquo;fingers crossed&rdquo;.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="S">
         <h3><span class="sg-glyph" aria-hidden="true">S</span><span class="vh">Letter S</span></h3>
         <p class="sg-desc">Fist with the thumb wrapped across the front of the fingers.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="T">
         <h3><span class="sg-glyph" aria-hidden="true">T</span><span class="vh">Letter T</span></h3>
         <p class="sg-desc">Fist with the thumb tucked up between the index and middle fingers, under the index finger.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="U">
         <h3><span class="sg-glyph" aria-hidden="true">U</span><span class="vh">Letter U</span></h3>
         <p class="sg-desc">Index and middle fingers straight up and together; thumb holds the other two fingers down.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="V">
         <h3><span class="sg-glyph" aria-hidden="true">V</span><span class="vh">Letter V</span></h3>
         <p class="sg-desc">Index and middle fingers up and spread apart.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="W">
         <h3><span class="sg-glyph" aria-hidden="true">W</span><span class="vh">Letter W</span></h3>
         <p class="sg-desc">Index, middle and ring fingers up and spread; thumb holds the little finger down.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="X">
         <h3><span class="sg-glyph" aria-hidden="true">X</span><span class="vh">Letter X</span></h3>
         <p class="sg-desc">Index finger raised and bent into a hook; the other fingers in a fist.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="Y">
         <h3><span class="sg-glyph" aria-hidden="true">Y</span><span class="vh">Letter Y</span></h3>
         <p class="sg-desc">Thumb and little finger stretched out; the three middle fingers folded down.</p>
-        <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
+        <p class="sg-noclip">Watch it in the alphabet video above.</p>
       </li>
       <li class="sg-letter" data-letter="Z" data-moves="1">
         <h3><span class="sg-glyph" aria-hidden="true">Z</span><span class="vh">Letter Z</span><span class="badge bam">moves</span></h3>
@@ -367,6 +380,17 @@
         <p class="sg-noclip">Real-person clip coming &mdash; being filmed.</p>
       </li>
     </ul>
+
+    <h3 class="sec-title mt4" id="numbers">Numbers 0 to 10</h3>
+    <p><span class="sg-label">Real signer &middot; not checked by a Deaf reviewer yet</span><br>Counting from zero to ten, signed by a real person. In the Internet Archive dictionary only &ldquo;ten&rdquo; is a real signer; its zero to nine are computer-drawn hands, so we don&rsquo;t use them.</p>
+    <div class="sg-video">
+      <div class="sg-frame"><button class="sg-load" type="button" data-yt="HU6zA8AOFls" data-title="Learn With Me - How to count in sign language - Numbers 0-10, by Learn With Mr. Tyrine"><strong>&#9654; Play: numbers 0 to 10</strong><span>Loads from YouTube when you press play. Nothing is loaded before that.</span></button></div>
+      <p class="sg-credit">&ldquo;<a href="https://www.youtube.com/watch?v=HU6zA8AOFls" rel="noopener">Learn With Me - How to count in sign language - Numbers 0-10</a>&rdquo; by Learn With Mr. Tyrine, licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener license">CC BY 4.0</a> (YouTube &ldquo;Creative Commons Attribution&rdquo;). Shown unaltered. StandGuard is not affiliated with the creator.</p>
+    </div>
+
+    <h3 class="sec-title mt4" id="more-signs">More everyday signs, from Deaf signers</h3>
+    <p><span class="sg-label">Deaf signers &middot; open licence</span><br>PopSign ASL is a collection of everyday signs recorded on phones by 47 Deaf adults whose main language is ASL, who agreed to share them publicly. Clips from it are coming to this page.</p>
+    <p class="sg-credit">Source: <a href="https://signdata.cc.gatech.edu/view/datasets/popsign_v1_0/" rel="noopener">PopSign ASL</a> (Thad Starner et al., Georgia Institute of Technology), licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener license">CC BY 4.0</a>. Paper: Starner et al., &ldquo;PopSign ASL v1.0: An Isolated American Sign Language Dataset Collected via Smartphones&rdquo;, NeurIPS 2023. StandGuard is not affiliated with Georgia Tech or PopSign.</p>
 
     <h3 class="sec-title mt4">Good habits from the start</h3>
     <ul class="ac-list mt2">
@@ -378,7 +402,7 @@
 
     <div class="panel panel-gold mt4" id="film">
       <h3 class="sec-title">Help us film the alphabet</h3>
-      <p>We want a real signer &mdash; ideally a Deaf ASL user &mdash; to film the 26 letters and the numbers 0 to 10, one short silent clip each, and we want to pay and credit the person who does. If you sign and would like to be part of it, or know a Deaf creator who might, contact Guard.IAN on X at <a href="https://x.com/AgentGuard458" rel="noopener">@AgentGuard458</a>.</p>
+      <p>We want a real signer &mdash; ideally a Deaf ASL user &mdash; to film the 26 letters and the numbers 0 to 10, one short silent clip each, and we want to credit the person who does. If you sign and would like to be part of it, or know a Deaf creator who might, contact Guard.IAN on X at <a href="https://x.com/AgentGuard458" rel="noopener">@AgentGuard458</a>.</p>
       <p>Every clip is checked by a Deaf ASL user before it goes on this page. The footage is a camera recording of a real person and is never used to train or drive a generated signer.</p>
     </div>
   </section>
@@ -474,12 +498,13 @@
       <div class="card">
         <h3>Nothing is watching you</h3>
         <p>No camera, no account, no record of what you look up or practise.</p>
-        <p>The dictionary asks the Internet Archive for one clip at a time. Nothing else leaves your browser.</p>
+        <p>The dictionary asks the Internet Archive for one clip at a time. The alphabet and number videos load from YouTube only when you press Play; YouTube then sees your visit under its own privacy policy. We use YouTube&rsquo;s privacy-enhanced player (youtube-nocookie.com). Nothing else leaves your browser.</p>
       </div>
       <div class="card">
         <h3>Licences respected</h3>
         <p>Most ASL video collections are for research only, because Deaf signers agreed to research and not to somebody&rsquo;s product. Those are not used here, and licence terms are not stretched.</p>
         <p>The dictionary clips are marked public domain by the organisation that recorded them.</p>
+        <p>Every video on this page is a real person. Alphabet and numbers: YouTube videos their creators released under Creative Commons Attribution (CC BY), shown unaltered in YouTube&rsquo;s own player, credited under each video. None of it has been checked by a Deaf reviewer for this page yet. If you sign and spot a mistake, tell us on the <a href="/corrections">corrections page</a>.</p>
       </div>
     </div>
   </section>
