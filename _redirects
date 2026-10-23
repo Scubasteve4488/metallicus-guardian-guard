@@ -23,8 +23,8 @@
 /shields                  /status#parked                302
 /arena                    /status#parked                302
 /xpr-journey              /status#parked                302
-/signguard                /status#parked                302
-/signguard/*              /status#parked                302
+/signguard                /learn/signguard              301
+/signguard/*              /learn/signguard              301
 
 # ── Routes that keep their address but changed content ─────────────────────
 # /, /guard, /creator, /community, /community/ksto, /community/cyphergang and
