@@ -1,0 +1,13 @@
+PopSign ASL v1.0 (Thad Starner et al., Georgia Tech), CC BY 4.0, https://signdata.cc.gatech.edu/view/datasets/popsign_v1_0/ . Test-split clips; re-encoded 360x640, audio and metadata removed, otherwise unaltered. Chosen 2026-10-23 by IAN-CODE for clarity of framing. word <- original file:
+hello <- gtsignstudy4a.8031-hello-2023_01_25_19_17_25.537-0.mp4 64KB
+thankyou <- gtsignstudy4a.8031-thankyou-2023_01_25_18_06_25.399-0.mp4 56KB
+please <- gtsignstudy4a.8031-please-2023_01_25_13_45_56.442-0.mp4 84KB
+yes <- gtsignstudy4a.8037-yes-2023_01_28_13_52_46.389-0.mp4 68KB
+no <- gtsignstudy4a.8036-no-2023_01_23_17_31_07.279-0.mp4 196KB
+mom <- gtsignstudy4a.8031-mom-2023_01_25_19_28_12.668-0.mp4 64KB
+dad <- gtsignstudy4a.8039-dad-2023_01_24_14_05_35.336-0.mp4 100KB
+water <- gtsignstudy4a.8031-water-2023_01_25_14_06_32.992-0.mp4 56KB
+food <- gtsignstudy4a.8031-food-2023_01_25_18_49_24.308-0.mp4 56KB
+happy <- gtsignstudy4a.8031-happy-2023_01_25_19_28_12.668-0.mp4 76KB
+sad <- gtsignstudy4a.8032-sad-2023_01_27_17_23_01.203-0.mp4 132KB
+sleep <- gtsignstudy4a.8039-sleep-2023_01_23_10_59_02.102-0.mp4 84KB
