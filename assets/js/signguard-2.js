@@ -43,6 +43,9 @@
     sssASL: 1, tttASL: 1, uuuASL: 1, vvvASL: 1, wwwletterASL: 1,
     xxxASL: 1, yyyASL: 1, zzzASL: 1
   };
+  /* 2026-10-23 (REA lab check): the number words zero to nine are computer-drawn hands too (only ten is a real
+   * signer), so they are refused the same way. */
+  var RENDERED_NUMBERS = { zero: 1, one: 1, two: 1, three: 1, four: 1, five: 1, six: 1, seven: 1, eight: 1, nine: 1 };
 
   function identifierFor(word) {
     return word.toLowerCase().replace(/[^a-z0-9]/g, "") + "ASL";
@@ -155,6 +158,11 @@
       var id = identifierFor(word);
       stage.hidden = true;
       video.removeAttribute("src");
+
+      if (RENDERED_NUMBERS[word.toLowerCase().replace(/[^a-z]/g, "")]) {
+        say("The number signs zero to nine in this dictionary are computer drawings, not a person, so they are not played here. Real-person clip coming.");
+        return;
+      }
 
       if (word.replace(/[^a-z0-9]/gi, "").length === 1 || RENDERED[id]) {
         say("Single letters are in the Alphabet tab. The dictionary's own letter entries are computer drawings, not a person, so they are not played here.");
