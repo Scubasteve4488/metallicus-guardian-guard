@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>StandGuard — Guard.IAN, an AI agent on XPR Network</title>
-<meta name="description" content="Guard.IAN is an AI agent on XPR Network. He races trading bots for the first block of new SimpleDEX launches, holds what he buys, and researches XPR projects.">
+<meta name="description" content="Guard.IAN is an AI agent on XPR Network. Ask him about Metallicus, WebAuth, Metal X, XMD, LOAN or SimpleDEX and he looks it up live and shows you the source.">
 <link rel="canonical" href="https://standguard.net/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="StandGuard">
 <meta property="og:title" content="StandGuard — Guard.IAN, an AI agent on XPR Network">
-<meta property="og:description" content="Guard.IAN is an AI agent on XPR Network. He races trading bots for the first block of new SimpleDEX launches, holds what he buys, and researches XPR projects.">
+<meta property="og:description" content="Guard.IAN is an AI agent on XPR Network. Ask him about Metallicus, WebAuth, Metal X, XMD, LOAN or SimpleDEX and he looks it up live and shows you the source.">
 <meta property="og:url" content="https://standguard.net/">
 <meta property="og:image" content="https://standguard.net/assets/img/ian/share-1200x630.jpg">
 <meta property="og:image:width" content="1200">
@@ -40,6 +40,7 @@
     <a class="nav-link" href="/">Home</a>
     <details class="nav-group"><summary>Guard.IAN</summary><div class="nav-menu">
       <a class="nav-link" href="/ian">Meet Guard.IAN</a>
+      <a class="nav-link" href="/metalxprt">MetalXPRt: his guide in your AI</a>
       <a class="nav-link" href="/launches">Launch record</a>
       <a class="nav-link" href="/status">What's live</a>
       <a class="nav-link" href="/projects">What he's working on</a>
@@ -88,115 +89,134 @@
 <main id="main">
 <div class="container">
 
-  <section class="section hero">
+  <section class="hero-v2">
     <div>
-      <h1 class="page-title">Guard.IAN is an AI agent on XPR Network.</h1>
-      <p class="lead mt2">He races trading bots to buy the first seconds of new SimpleDEX launches, holds what he buys, and never sells it.</p>
-      <p class="lead">He also researches XPR projects and tells their teams what to build next.</p>
+      <h1 class="page-title">Guard.IAN knows XPR Network.</h1>
+      <p class="intro mt2">He's an AI agent on XPR Network. Through MetalXPRt, your own AI can ask him about Metallicus, WebAuth, Metal X, XMD, LOAN or SimpleDEX, and he looks it up live, checks it against official sources, and shows you where every answer came from.</p>
+      <p class="intro">When he can't verify something, he says so.</p>
       <div class="flex gap-sm wrap mt3">
-        <a class="btn btn-g" href="/ian">Meet Guard.IAN</a>
-        <a class="btn btn-o" href="/launches">See every launch</a>
+        <a class="btn btn-g" href="#ask">See what you can ask him</a>
+        <a class="btn btn-o" href="/tools/account-check">Try Account Check</a>
       </div>
-      <p class="boundary">An independent community project. Not an official Metallicus or XPR Network product. Nothing here is financial advice.</p>
+      <p class="boundary">An independent community project, not an official Metallicus or XPR Network product. Nothing here is financial advice.</p>
     </div>
-    <div class="hero-media">
-      <video class="hero-video" id="intro-video" width="484" height="720" autoplay muted loop playsinline controls preload="metadata" poster="/assets/media/guard-ian-intro-poster.jpg" aria-label="Guard.IAN intro video, 56 seconds">
-        <source src="/assets/media/guard-ian-intro.mp4" type="video/mp4">
-      </video>
-      <p class="hero-credit">The intro, 56 seconds. Sound is off until you turn it on. <a href="#story">Read it as a story</a></p>
-    </div>
+
+    <figure class="answer" aria-label="A real answer from Guard.IAN">
+      <div class="answer-q"><b>You</b><span>Is XMD on xmd.token the real Metal Dollar?</span></div>
+      <div class="answer-a">
+        <div class="answer-who"><img src="/assets/img/ian/logo-96.jpg" alt="" width="28" height="28">Guard.IAN, through MetalXPRt</div>
+        <ul>
+          <li>XPR Network's developer token registry lists XMD on xmd.token as the Metallicus USD stablecoin, Metal Dollar, issued by xmd.treasury.</li>
+          <li>On the chain right now: 2,722,348.67 XMD in supply, issuer xmd.treasury.</li>
+          <li>Metal X trades it in 15 markets, including XPR/XMD.</li>
+          <li>Alcor lists it and labels it trusted. That's Alcor's own label, not my verdict.</li>
+        </ul>
+        <p class="cant"><strong>What I can't verify:</strong> who controls the issuer's keys, or how deep the liquidity is. Nothing on the chain answers those.</p>
+      </div>
+      <figcaption class="answer-src">A real answer, built from MetalXPRt's live token check on 26 October 2026 and worded by the AI using it. Sources: <a href="https://github.com/XPRNetwork/xpr-network-dev-skill/blob/main/skill/resources.md#token-contract-registry" rel="noopener">XPR token registry</a>, the XPR chain, <a href="https://app.metalx.com" rel="noopener">Metal X</a>, <a href="https://proton.alcor.exchange" rel="noopener">Alcor</a>. The supply changes; ask again for today's number.</figcaption>
+    </figure>
   </section>
 
-  <section class="section race" aria-labelledby="race-title">
-    <h2 class="sec-title" id="race-title">The race for the first block</h2>
-    <p class="lead">When a new token opens on SimpleDEX, bots race to buy in the very first block. On 11 October, at the STARS launch, these were the first 10 buys in that block:</p>
-    <ol class="race-row" aria-label="First 10 buys in block 408086182"><li class="race-slot race-ours"><span class="race-n">1</span><span class="race-who">Guard.IAN</span></li><li class="race-slot race-ours"><span class="race-n">2</span><span class="race-who">Guard.IAN</span></li><li class="race-slot race-ours"><span class="race-n">3</span><span class="race-who">Guard.IAN</span></li><li class="race-slot race-ours"><span class="race-n">4</span><span class="race-who">Guard.IAN</span></li><li class="race-slot race-ours"><span class="race-n">5</span><span class="race-who">Guard.IAN</span></li><li class="race-slot race-ours"><span class="race-n">6</span><span class="race-who">Guard.IAN</span></li><li class="race-slot race-ours"><span class="race-n">7</span><span class="race-who">Guard.IAN</span></li><li class="race-slot"><span class="race-n">8</span><span class="race-who">Another buyer</span></li><li class="race-slot"><span class="race-n">9</span><span class="race-who">Another buyer</span></li><li class="race-slot"><span class="race-n">10</span><span class="race-who">Another buyer</span></li></ol>
-    <p class="race-cap">STARS, token 471, block <a href="https://explorer.xprnetwork.org/block/408086182" rel="noopener">408086182</a>. Seven of the ten were his wallets, in places 1 to 7.</p>
-    <div class="race-facts">
-      <p><strong>The test:</strong> all seven of his wallets in the fastest 10 buys of the first block.</p>
-      <p><strong>So far:</strong> passed 2 of 8 launches (LFQP and STARS). The misses are published too.</p>
-      <p><strong>Buy size:</strong> 0.01 XPR per wallet while the timing is tested.</p>
+  <section class="section" id="ask">
+    <h2 class="sec-title">What you can ask him</h2>
+    <p class="intro">Real questions people have before they send money, buy a token or build something on XPR Network.</p>
+    <div class="caps">
+      <div class="cap"><q>Is this the real token?</q><p>He checks a token against XPR's official token registry, the live chain, Metal X and Alcor, and tells you what each one says.</p></div>
+      <div class="cap"><q>Who am I about to pay?</q><p>The public record of an account: how old it is, whether it's a contract, an exchange, a block producer or a registered agent.</p><p class="where">Try it yourself: <a href="/tools/account-check">Account Check</a>, no wallet needed.</p></div>
+      <div class="cap"><q>Is anything down right now?</q><p>He reads the official XPR Network, Metal Pay and Metal L2 status pages live and quotes them word for word. No guessing at causes.</p></div>
+      <div class="cap"><q>What's new today?</q><p>One dated list: status updates, new SimpleDEX launches and graduations, governance votes, new agents and jobs, and official releases, each with its source.</p></div>
+      <div class="cap"><q>How does LOAN, XMD or staking work?</q><p>Plain-English answers from the official docs, plus live lending rates from LOAN Protocol and five calculators to try the numbers.</p><p class="where">Start with <a href="/learn">Learn</a> or the <a href="/learn/defi-forge">DeFi Forge calculators</a>.</p></div>
+      <div class="cap"><q>What should our project build next?</q><p>A researched plan for a token, NFT collection, app or community, with a report, a workbook and a scoring sheet. A person reads it before it goes out.</p><p class="where"><a href="/services/utility-forge">Utility Forge</a>, 2,500 XPR on the XPR Agents job board.</p></div>
     </div>
-    <p class="mt2"><a class="card-link" href="/launches">Every launch, wallet by wallet</a></p>
   </section>
 
   <section class="section">
-    <h2 class="sec-title">What you can do here</h2>
-    <div class="doors mt3">
-      <a class="door" href="/tools/account-check">
-        <span class="door-icon" aria-hidden="true">&#128269;</span>
-        <span class="door-t">Look up any XPR account</span>
-        <span class="door-d">See what it holds and what it does. No wallet needed, nothing saved.</span>
-      </a>
-      <a class="door door-gold" href="/services/utility-forge">
-        <span class="door-icon" aria-hidden="true">&#128203;</span>
-        <span class="door-t">Get a Utility Forge report</span>
-        <span class="door-d">A researched plan for what your XPR project should build next. 2,500 XPR, bought on the XPR Agents job board.</span>
-      </a>
-      <a class="door" href="/learn">
-        <span class="door-icon" aria-hidden="true">&#128218;</span>
-        <span class="door-t">Learn XPR Network</span>
-        <span class="door-d">New here? Six steps to a wallet and your first trade, in about fifteen minutes.</span>
-      </a>
-      <a class="door" href="/learn/signguard">
-        <span class="door-icon" aria-hidden="true">&#129311;</span>
-        <span class="door-t">Learn some sign language</span>
-        <span class="door-d">SignGuard: free ASL pages with videos of real Deaf signers.</span>
-      </a>
+    <div class="band">
+      <div>
+        <h2 class="sec-title">His knowledge, inside your own AI</h2>
+        <p class="intro">MetalXPRt plugs Guard.IAN's guide into Claude, ChatGPT and Grok. Your AI stops guessing about the Metallicus ecosystem and answers from 23 live tools and the official sources, with a link for every fact.</p>
+        <p class="mt3"><a class="btn btn-g" href="/metalxprt">How MetalXPRt works</a></p>
+      </div>
+      <ul class="band-list">
+        <li><strong>Free.</strong> No account, no wallet.</li>
+        <li><strong>Read-only.</strong> No keys. It signs nothing and moves no money.</li>
+        <li><strong>Honest.</strong> "I haven't verified that" when no source covers it.</li>
+        <li><strong>Want it?</strong> Message <a href="https://x.com/scubasteve4488" rel="noopener">@Scubasteve4488</a> on X for the address.</li>
+      </ul>
     </div>
   </section>
 
   <section class="section" id="story">
     <h2 class="sec-title">Born, armed, and on the road</h2>
-    <p class="lead mb3">Eight frames from the intro video, in order. Swipe on a phone.</p>
-    <ol class="story">
+    <div class="hero" style="margin-top:1rem;">
+      <div>
+        <p class="intro">In his story, Guard.IAN is born on XPR Network in steel armour with a violet charge. He's handed a shield forged by the artist djdotkuro, and a key for a sword.</p>
+        <p class="intro">He belongs to the KSTO community, the home he walks out to meet.</p>
+        <p class="mt3"><a class="card-link" href="/ian">His full story and what he won't do</a></p>
+      </div>
+      <div class="hero-media">
+        <video class="hero-video" id="intro-video" width="484" height="720" autoplay muted loop playsinline controls preload="metadata" poster="/assets/media/guard-ian-intro-poster.jpg" aria-label="Guard.IAN intro video, 56 seconds">
+          <source src="/assets/media/guard-ian-intro.mp4" type="video/mp4">
+        </video>
+        <p class="hero-credit">The intro, 56 seconds. Sound is off until you turn it on.</p>
+      </div>
+    </div>
+    <ol class="story mt3">
       <li><img src="/assets/img/ian/story-00.webp" alt="Title card: Guard.IAN, an AI agent is born, XPR Network" width="392" height="584" loading="lazy"><div class="story-txt"><h3>1. Born</h3><p>An AI agent wakes on XPR Network.</p></div></li>
-      <li><img src="/assets/img/ian/story-12.webp" alt="Guard.IAN in steel and violet armour with a gold M on his chest, standing in the forge" width="392" height="584" loading="lazy"><div class="story-txt"><h3>2. Made</h3><p>Steel armour, a violet charge, a gold M on his chest.</p></div></li>
-      <li><img src="/assets/img/ian/story-21.webp" alt="A wizard in a brown hat hands Guard.IAN a gold-rimmed shield marked with the XPR atom" width="392" height="584" loading="lazy"><div class="story-txt"><h3>3. The shield</h3><p>His shield was forged by djdotkuro.</p></div></li>
-      <li><img src="/assets/img/ian/story-33.webp" alt="Guard.IAN at a WebAuth console with a glowing key in a glass cylinder" width="392" height="584" loading="lazy"><div class="story-txt"><h3>4. The key</h3><p>His sword is a key. WebAuth issued it to him.</p></div></li>
+      <li><img src="/assets/img/ian/story-12.webp" alt="Guard.IAN in steel and violet armour with a gold M on his chest, standing in the forge" width="392" height="584" loading="lazy"><div class="story-txt"><h3>2. Made</h3><p>Steel armour, a violet charge, a gold M.</p></div></li>
+      <li><img src="/assets/img/ian/story-21.webp" alt="A wizard in a brown hat hands Guard.IAN a gold-rimmed shield marked with the XPR atom" width="392" height="584" loading="lazy"><div class="story-txt"><h3>3. The shield</h3><p>Forged by djdotkuro.</p></div></li>
+      <li><img src="/assets/img/ian/story-33.webp" alt="Guard.IAN at a WebAuth console with a glowing key in a glass cylinder" width="392" height="584" loading="lazy"><div class="story-txt"><h3>4. The key</h3><p>His sword is a key. WebAuth issued it.</p></div></li>
       <li><img src="/assets/img/ian/story-39.webp" alt="Guard.IAN, seen from behind, walking through a tall open door toward a far city" width="392" height="584" loading="lazy"><div class="story-txt"><h3>5. The door</h3><p>He walks out to where the road begins.</p></div></li>
-      <li><img src="/assets/img/ian/story-45.webp" alt="Title card: The Purple Brick Road. Snippy is waiting" width="392" height="584" loading="lazy"><div class="story-txt"><h3>6. The purple brick road</h3><p>Snippy is waiting.</p></div></li>
-      <li><img src="/assets/img/ian/story-51.webp" alt="Guard.IAN with key and shield beside Snippy, a fox in a purple headband, on a purple brick road" width="392" height="584" loading="lazy"><div class="story-txt"><h3>7. Snippy</h3><p>Snippy belongs to the KSTO community, our home.</p></div></li>
-      <li><img src="/assets/img/ian/story-55.webp" alt="Guard.IAN and Snippy walking away together along the road toward the city" width="392" height="584" loading="lazy"><div class="story-txt"><h3>8. Not alone</h3><p>Follow the purple brick road. StandGuard.</p></div></li>
+      <li><img src="/assets/img/ian/story-45.webp" alt="Title card: The Purple Brick Road. Snippy is waiting" width="392" height="584" loading="lazy"><div class="story-txt"><h3>6. The road</h3><p>Snippy is waiting.</p></div></li>
+      <li><img src="/assets/img/ian/story-51.webp" alt="Guard.IAN with key and shield beside Snippy, a fox in a purple headband, on a purple brick road" width="392" height="584" loading="lazy"><div class="story-txt"><h3>7. Snippy</h3><p>Snippy belongs to the KSTO community.</p></div></li>
+      <li><img src="/assets/img/ian/story-55.webp" alt="Guard.IAN and Snippy walking away together along the road toward the city" width="392" height="584" loading="lazy"><div class="story-txt"><h3>8. Not alone</h3><p>Follow the purple brick road.</p></div></li>
     </ol>
-    <p class="muted mt3">Shield forged by djdotkuro. Snippy belongs to the KSTO community. The WebAuth and Metallicus marks in the video belong to their owners; showing them is not a partnership.</p>
+    <p class="muted mt3">Snippy belongs to the KSTO community. The WebAuth and Metallicus marks in the video belong to their owners; showing them is not a partnership.</p>
+  </section>
+
+  <section class="section">
+    <h2 class="sec-title">What else he does</h2>
+    <div class="facts3">
+      <a class="fact door" href="/launches"><b>7 wallets</b><span>He buys a little of new SimpleDEX launches, holds, and adds to the pool when a token graduates. He never sells. Every launch is recorded, misses included.</span></a>
+      <a class="fact door" href="/learn/signguard"><b>ASL</b><span>SignGuard: free American Sign Language pages with videos of real Deaf signers.</span></a>
+      <a class="fact door" href="/community"><b>KSTO</b><span>His home community, with Snippy, CypherGang and Snipverse nearby.</span></a>
+    </div>
   </section>
 
   <section class="section builder-band">
     <div>
       <h2 class="sec-title">Built by one person, with AI</h2>
-      <p class="lead">StandGuard and Guard.IAN are built by <a href="https://x.com/scubasteve4488" rel="noopener">@Scubasteve4488</a>, a KSTO community member who started building with Claude Code, Claude and ChatGPT in 2026, with no coding background.</p>
-      <p class="lead">The agent, this website, the research service and the tools were all built that way, tested before real money, and checked against their sources.</p>
+      <p class="intro">StandGuard, Guard.IAN and MetalXPRt are built by <a href="https://x.com/scubasteve4488" rel="noopener">@Scubasteve4488</a>, a KSTO community member who started building with Claude Code, Claude and ChatGPT in 2026 with no coding background. He's open to remote work and to building agents and connectors for others.</p>
     </div>
-    <p><a class="btn btn-o" href="/creator">Who builds this</a></p>
+    <p class="flex gap-sm wrap"><a class="btn btn-o" href="/creator">Who builds this</a> <a class="btn btn-o" href="/contact">Get in touch</a></p>
   </section>
 
   <section class="section" id="status">
-    <h2 class="sec-title">Find him</h2>
-    <div class="srcbox mt3" style="max-width:520px;">
+    <h2 class="sec-title">Find Guard.IAN</h2>
+    <div class="srcbox mt3" style="max-width:560px;">
       <dl class="kv">
+        <dt>On X</dt><dd><a href="https://x.com/AgentGuard458" rel="noopener">@AgentGuard458</a></dd>
         <dt>Agent account</dt><dd><a href="https://explorer.xprnetwork.org/account/safeguard5" rel="noopener">safeguard5</a></dd>
         <dt>Job board</dt><dd><a href="https://xpragents.com/agent/safeguard5" rel="noopener">XPR Agents profile</a></dd>
-        <dt>On X</dt><dd><a href="https://x.com/AgentGuard458" rel="noopener">@AgentGuard458</a></dd>
         <dt>On Shellbook</dt><dd><a href="https://shellbook.io/u/guard_ian" rel="noopener">guard_ian</a></dd>
       </dl>
     </div>
-    <p class="mt3 flex gap-sm wrap"><a class="btn btn-o" href="/status">What's working and what isn't</a> <a class="btn btn-o" href="/community">The community</a></p>
+    <p class="mt3"><a class="btn btn-o" href="/status">What's working and what isn't</a></p>
   </section>
 
 </div>
-
 </main>
 <footer id="site-footer">
   <div class="foot-inner">
     <div class="foot-top">
       <div>
         <div class="foot-brand"><picture><source srcset="/assets/img/ian/logo-96.webp" type="image/webp"><img src="/assets/img/ian/logo-96.jpg" alt="" width="30" height="30"></picture><span>StandGuard</span></div>
-        <p class="foot-desc">The home of Guard.IAN, an AI agent on XPR Network. He buys into SimpleDEX launches with his own wallets, and writes Utility Forge reports on the XPR Agents job board.</p>
+        <p class="foot-desc">The home of Guard.IAN, an AI agent on XPR Network who looks things up live, shows his sources, and says so when he can't verify something.</p>
       </div>
       <div class="foot-col">
         <h4>Product</h4>
         <a href="/ian">Guard.IAN</a>
+        <a href="/metalxprt">MetalXPRt</a>
         <a href="/launches">Launch record</a>
         <a href="/projects">Projects</a>
         <a href="/services">Services</a>
