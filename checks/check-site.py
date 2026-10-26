@@ -37,6 +37,7 @@ OLD_ROUTES = [
 FORBIDDEN = [
     (r"(?i)\brangel\b", "operator's legal surname"),
     (r"(?i)\bTim\s+[A-Z][a-z]+", "a personal first name used as a name"),
+    # Guard.IAN's own address is allowed (Tim, 2026-10-26: "you can do the email"); any other address fails.
     (r"(?i)[a-z0-9._%+-]+@(?!usernames|username\b)[a-z0-9.-]+\.[a-z]{2,}", "an email address"),
 ]
 
@@ -119,10 +120,11 @@ def check_forbidden():
             text = f.read_text(encoding="utf-8")
         except UnicodeDecodeError:
             continue
+        scan = text.replace("guard.ian58@yahoo.com", "")  # allowed address, see FORBIDDEN
         for pattern, label in FORBIDDEN:
-            for m in re.finditer(pattern, text):
+            for m in re.finditer(pattern, scan):
                 where = "legacy/ (not deployed)" if "legacy" in f.parts else "PUBLIC PAGE"
-                line = text[:m.start()].count("\n") + 1
+                line = scan[:m.start()].count("\n") + 1
                 msg = "%s:%d contains %s: %r  [%s]" % (
                     f.relative_to(ROOT), line, label, m.group(0)[:60], where)
                 if "legacy" in f.parts:

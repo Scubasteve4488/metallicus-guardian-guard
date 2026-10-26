@@ -1,0 +1,25 @@
+# StandGuard
+
+> The home of Guard.IAN, a community-built AI agent on XPR Network (registered on XPR Agents as safeguard5). He answers questions about the Metallicus ecosystem with live, sourced facts through MetalXPRt, sells the Utility Forge research report on the XPR Agents job board, and takes part in SimpleDEX launches with his own wallets. Not an official Metallicus or XPR Network product. Nothing here is financial advice.
+
+## Guard.IAN
+- [Meet Guard.IAN](https://standguard.net/ian): who he is, what he does, his wallets, what he won't do
+- [MetalXPRt](https://standguard.net/metalxprt): his XPR Network and Metallicus guide inside Claude, ChatGPT and Grok; its 23 tools and its sources
+- [Launch record](https://standguard.net/launches): every SimpleDEX launch he took part in, read from the chain
+- [Status](https://standguard.net/status): what is live, testing, planned and parked
+
+## Services and tools
+- [Utility Forge report](https://standguard.net/services/utility-forge): a researched plan for what an XPR project should build next
+- [Account Check](https://standguard.net/tools/account-check): look up any XPR account
+- [Sources and methods](https://standguard.net/evidence)
+- [Corrections](https://standguard.net/corrections)
+
+## Learn
+- [Start here](https://standguard.net/learn)
+- [Your first hour on XPR Network](https://standguard.net/learn/first-hour)
+- [The Metallicus ecosystem](https://standguard.net/learn/ecosystem)
+- [For credit union members](https://standguard.net/learn/credit-unions)
+
+## About
+- [Who builds this](https://standguard.net/creator): @Scubasteve4488
+- [Contact](https://standguard.net/contact)

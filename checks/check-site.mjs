@@ -40,7 +40,8 @@ for (const f of pages) {
   for (const b of BANNED) if (b.test(t)) fails.push(rel(f) + ': banned line ' + b);
   if (OLDART.test(t)) fails.push(rel(f) + ': old character art ' + t.match(OLDART)[0]);
   if (/\brangel\b/i.test(t)) fails.push(rel(f) + ': legal surname');
-  if (/[a-z0-9._%+-]+@(?!usernames|username\b)[a-z0-9.-]+\.[a-z]{2,}/i.test(t)) fails.push(rel(f) + ': email address');
+  // Guard.IAN's own address is allowed (Tim, 2026-10-26: "you can do the email"). Any other address still fails.
+  if (/[a-z0-9._%+-]+@(?!usernames|username\b)[a-z0-9.-]+\.[a-z]{2,}/i.test(t.replaceAll('guard.ian58@yahoo.com', ''))) fails.push(rel(f) + ': email address');
 }
 if (navs.size > 1) fails.push('nav differs across pages: ' + navs.size);
 if (foots.size > 1) fails.push('footer differs across pages: ' + foots.size);
