@@ -18,6 +18,7 @@
 /guardian-intelligence    /tools/account-check          302
 /faq                      /about#faq                    302
 /vision                   /status                       302
+/health                   /status                       302
 
 # ── Parked features: preserved, not deleted ────────────────────────────────
 /shields                  /status#parked                302
