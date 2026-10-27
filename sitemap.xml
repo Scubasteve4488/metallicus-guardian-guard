@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://standguard.net/</loc><lastmod>2026-10-02</lastmod></url>
+  <url><loc>https://standguard.net/</loc><lastmod>2026-10-26</lastmod></url>
   <url><loc>https://standguard.net/about</loc><lastmod>2026-10-02</lastmod></url>
   <url><loc>https://standguard.net/community</loc><lastmod>2026-10-02</lastmod></url>
   <url><loc>https://standguard.net/contact</loc><lastmod>2026-10-02</lastmod></url>
   <url><loc>https://standguard.net/corrections</loc><lastmod>2026-10-02</lastmod></url>
-  <url><loc>https://standguard.net/creator</loc><lastmod>2026-10-02</lastmod></url>
+  <url><loc>https://standguard.net/creator</loc><lastmod>2026-10-26</lastmod></url>
   <url><loc>https://standguard.net/evidence</loc><lastmod>2026-10-02</lastmod></url>
   <url><loc>https://standguard.net/reports/ian</loc><lastmod>2026-10-02</lastmod></url>
   <url><loc>https://standguard.net/guard</loc><lastmod>2026-10-02</lastmod></url>
@@ -46,4 +46,5 @@
   <url><loc>https://standguard.net/launches/star</loc><lastmod>2026-10-07</lastmod></url>
   <url><loc>https://standguard.net/launches/xoxo</loc><lastmod>2026-10-07</lastmod></url>
   <url><loc>https://standguard.net/launches/kwys</loc><lastmod>2026-10-07</lastmod></url>
+  <url><loc>https://standguard.net/metalxprt</loc><lastmod>2026-10-26</lastmod></url>
 </urlset>
