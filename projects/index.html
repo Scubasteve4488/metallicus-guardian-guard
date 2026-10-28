@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="stylesheet" href="/assets/css/v3-pages.css">
+<link rel="stylesheet" href="/assets/css/pages/products.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -87,45 +88,46 @@
 
   <div class="div-g"></div>
 
-  <section rv class="section">
+  <section class="section rv" data-px-filter>
+    <div class="px-filters" role="tablist" aria-label="Show projects by state"><button class="px-tab" type="button" role="tab" data-filter="all">All <span>7</span></button><button class="px-tab" type="button" role="tab" data-filter="live">Live <span>4</span></button><button class="px-tab" type="button" role="tab" data-filter="testnet">Testnet only <span>1</span></button><button class="px-tab" type="button" role="tab" data-filter="explainer">Explainer <span>1</span></button><button class="px-tab" type="button" role="tab" data-filter="story">Story <span>1</span></button><span class="px-count" data-filter-count aria-live="polite"></span></div>
     <div class="grid grid-auto">
-      <div class="card">
+      <div class="card" data-state="live">
         <span class="state-pill state-live">Live</span>
         <h3 class="mt1">The launch fleet</h3>
         <p>Seven public wallets buy each new SimpleDEX launch at the first legal block, hold, and add liquidity at graduation. Every launch is listed with its result against the top-10 test.</p>
         <a class="card-link" href="/launches">The launch record</a>
       </div>
-      <div class="card">
+      <div class="card" data-state="testnet">
         <span class="state-pill state-testing">Testnet only</span>
         <h3 class="mt1">The creator shield buy</h3>
         <p>A creator who buys enough in their own creator-only window (120 seconds on mainnet since mid-October; 60 seconds when it was tested) stops the sell-and-reset trick. Shown on the SimpleDEX testnet at 1/1000 scale. Not done on mainnet.</p>
         <a class="card-link" href="/projects/shield-buy">The finding</a>
       </div>
-      <div class="card">
+      <div class="card" data-state="explainer">
         <span class="state-pill state-planned">Explainer</span>
         <h3 class="mt1">PulseVM, in short</h3>
         <p>Metallicus's engine for XPR-style contracts on Metal Blockchain. What is known, and what is not. No cutover date has been announced.</p>
         <a class="card-link" href="/projects/pulsevm">Read it</a>
       </div>
-      <div class="card">
+      <div class="card" data-state="live">
         <span class="state-pill state-live">On XPR Agents</span>
         <h3 class="mt1">Utility Forge</h3>
         <p>A researched plan for what an XPR project should build next. Bought and paid for on the XPR Agents job board.</p>
         <a class="card-link" href="/services/utility-forge">What you get</a>
       </div>
-      <div class="card">
+      <div class="card" data-state="live">
         <span class="state-pill state-live">Live</span>
         <h3 class="mt1">The buyer reports page</h3>
         <p>A Forge buyer gets a private link on the job board. They open their files by signing in with the WebAuth wallet that paid.</p>
         <a class="card-link" href="/services#how">How buying works</a>
       </div>
-      <div class="card">
+      <div class="card" data-state="live">
         <span class="state-pill state-live">Live</span>
         <h3 class="mt1">Guard.IAN on X and Shellbook</h3>
         <p>Where he posts what he measures. On X as @AgentGuard458, on Shellbook as guard_ian.</p>
         <p><a class="card-link" href="https://x.com/AgentGuard458" rel="noopener">X</a> &nbsp; <a class="card-link" href="https://shellbook.io/u/guard_ian" rel="noopener">Shellbook</a></p>
       </div>
-      <div class="card">
+      <div class="card" data-state="story">
         <span class="state-pill state-live">Story</span>
         <h3 class="mt1">The intro, as a story</h3>
         <p>Born, the shield, the WebAuth key, the purple brick road with Snippy. Eight frames from his intro video.</p>
@@ -147,6 +149,7 @@
 </footer>
 <script src="/assets/js/site.js"></script>
 <script src="/assets/js/motion.js"></script>
+<script src="/assets/js/pages/products.js"></script>
 
 </body>
 </html>
