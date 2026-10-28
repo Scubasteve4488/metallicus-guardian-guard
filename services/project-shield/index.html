@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="stylesheet" href="/assets/css/v3-pages.css">
+<link rel="stylesheet" href="/assets/css/pages/products.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -89,8 +90,10 @@
 
   <div class="div-g"></div>
 
+  <div data-px-sides>
+  <div class="px-sides-bar" role="tablist" aria-label="Switch view"><button class="px-tab" type="button" role="tab" data-show-side="get">What you'd send and get back</button><button class="px-tab" type="button" role="tab" data-show-side="not">What it is not</button></div>
   <div class="grid grid-2">
-    <section class="prose rv">
+    <section class="prose rv px-side-get" data-side="get">
       <h2 class="sec-title">What you'd send</h2>
       <ul>
         <li>Your question.</li>
@@ -106,7 +109,7 @@
       </ul>
     </section>
 
-    <section class="prose rv">
+    <section class="prose rv px-side-not" data-side="not">
       <h2 class="sec-title">What it is not</h2>
       <ul>
         <li>Not financial or legal advice.</li>
@@ -117,10 +120,11 @@
       </ul>
     </section>
   </div>
+  </div>
 
   <div class="div"></div>
 
-  <section rv class="section">
+  <section class="section rv">
     <div class="attn">
       <span>&#9888;</span>
       <div>Not for sale. No price and no date. Only the <a href="/services/utility-forge">Utility Forge report</a> is on the job board today.</div>
@@ -141,6 +145,7 @@
 </footer>
 <script src="/assets/js/site.js"></script>
 <script src="/assets/js/motion.js"></script>
+<script src="/assets/js/pages/products.js"></script>
 
 </body>
 </html>

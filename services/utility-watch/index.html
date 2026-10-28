@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="stylesheet" href="/assets/css/v3-pages.css">
+<link rel="stylesheet" href="/assets/css/pages/products.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -90,8 +91,10 @@
 
   <div class="div-g"></div>
 
+  <div data-px-sides>
+  <div class="px-sides-bar" role="tablist" aria-label="Switch view"><button class="px-tab" type="button" role="tab" data-show-side="get">What it can watch</button><button class="px-tab" type="button" role="tab" data-show-side="not">What it won't do</button></div>
   <div class="grid grid-2">
-    <section class="prose rv">
+    <section class="prose rv px-side-get" data-side="get">
       <h2 class="sec-title">What it can watch</h2>
       <ul>
         <li>Your token, pools, accounts and collections on XPR Network.</li>
@@ -101,7 +104,7 @@
         <li>Things your plan assumes that stop being true.</li>
       </ul>
     </section>
-    <section class="prose rv">
+    <section class="prose rv px-side-not" data-side="not">
       <h2 class="sec-title">What it won't do</h2>
       <ul>
         <li>Watch everything, forever, vaguely.</li>
@@ -113,10 +116,11 @@
       </ul>
     </section>
   </div>
+  </div>
 
   <div class="div"></div>
 
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">What an alert says</h2>
     <ol class="ac-list" style="max-width:480px;list-style:decimal;">
       <li>What changed</li>
@@ -155,6 +159,7 @@
 </footer>
 <script src="/assets/js/site.js"></script>
 <script src="/assets/js/motion.js"></script>
+<script src="/assets/js/pages/products.js"></script>
 
 </body>
 </html>
