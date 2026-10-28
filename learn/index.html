@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="stylesheet" href="/assets/css/v3-pages.css">
+<link rel="stylesheet" href="/assets/css/pages/learn-hub.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -87,7 +88,54 @@
 
   <div class="div-g"></div>
 
-  <section rv class="section">
+  <section class="section lm" data-lm aria-labelledby="lm-h">
+    <p class="sec-label">Pick a line</p>
+    <h2 class="sec-title" id="lm-h">The learning lines</h2>
+    <p class="lead">Every page here is a stop. Pick the line that sounds like you and follow it in order, or hop off anywhere. The lines are our suggestions, not rules.</p>
+    <div class="lm-lines" role="group" aria-label="Learning lines">
+      <button type="button" class="lm-gold" aria-pressed="true" data-line="gold" data-route="A B C" data-why="For someone who has never used XPR Network: set up, then look around."><i></i>I'm brand new</button>
+      <button type="button" class="lm-green" aria-pressed="false" data-line="green" data-route="E D B#account" data-why="For credit union members and anyone careful with money: the safety answers first, then how the digital dollar works, then a wallet."><i></i>Money and safety first</button>
+      <button type="button" class="lm-violet" aria-pressed="false" data-line="violet" data-route="F G C" data-why="For the curious about DeFi: watch, then play with the numbers where nothing is at risk, then see the real apps."><i></i>DeFi, risk-free</button>
+      <button type="button" class="lm-blue" aria-pressed="false" data-line="blue" data-route="H C B#agents" data-why="For people who came for Guard.IAN: what GUARD is and isn't, the world he works in, then where agents like him are registered."><i></i>Here for Guard.IAN</button>
+      <button type="button" class="lm-pink" aria-pressed="false" data-line="pink" data-route="I" data-why="Not crypto at all: a free American Sign Language starter."><i></i>Side trip: learn ASL</button>
+    </div>
+    <div class="lm-board">
+      <div class="lm-map">
+        <svg viewBox="0 0 1000 520" aria-hidden="true">
+          <path class="lm-line" data-line="gold" stroke="#f2c25b" style="--glow:rgba(242,194,91,.7)" d="M110 90 H220 L360 230 H640"/>
+          <path class="lm-line" data-line="green" stroke="#3ddc97" style="--glow:rgba(61,220,151,.6)" d="M110 430 H360 V230"/>
+          <path class="lm-line" data-line="violet" stroke="#9b5cff" style="--glow:rgba(155,92,255,.7)" d="M900 90 V230 H640"/>
+          <path class="lm-line" data-line="blue" stroke="#5aa9ff" style="--glow:rgba(90,169,255,.6)" d="M640 430 V244 H360"/>
+          <circle class="lm-side" cx="900" cy="430" r="26"/>
+          <circle class="lm-stop" data-st="A" cx="110" cy="90" r="12"/>
+          <rect class="lm-stop" data-st="B" x="346" y="216" width="28" height="42" rx="14"/>
+          <rect class="lm-stop" data-st="C" x="626" y="216" width="28" height="42" rx="14"/>
+          <circle class="lm-stop" data-st="D" cx="360" cy="430" r="12"/>
+          <circle class="lm-stop" data-st="E" cx="110" cy="430" r="12"/>
+          <circle class="lm-stop" data-st="F" cx="900" cy="90" r="12"/>
+          <circle class="lm-stop" data-st="G" cx="900" cy="230" r="12"/>
+          <circle class="lm-stop" data-st="H" cx="640" cy="430" r="12"/>
+          <circle class="lm-stop" data-st="I" cx="900" cy="430" r="12"/>
+        </svg>
+        <a class="lm-st b" data-st="A" href="#new-to-xpr" style="left:11%;top:21.2%" data-what="Six steps to a wallet and your first trade. Free, about fifteen minutes."><b></b><span>New to XPR<small>6 steps, on this page</small></span></a>
+        <a class="lm-st" data-st="B" href="/learn/first-hour" style="left:38.2%;top:50.5%" data-what="Your account, CPU/NET/RAM, launches, the explorer, staking and XPR Agents. Six short stops, each with the official page."><b></b><span>Your first hour<small>interchange</small></span></a>
+        <a class="lm-st a" data-st="C" href="/learn/ecosystem" style="left:64%;top:40.4%" data-what="Every tool explained: WebAuth, Metal X, SimpleDEX, Alcor and the rest."><b></b><span>The ecosystem<small>interchange</small></span></a>
+        <a class="lm-st b" data-st="D" href="/learn/stablecoins-payments" style="left:36%;top:86.5%" data-what="Digital dollars and instant payments, explained simply."><b></b><span>Stablecoins</span></a>
+        <a class="lm-st b" data-st="E" href="/learn/credit-unions" style="left:11%;top:86.5%" data-what="Stablecoins, share insurance, WebAuth keys and scams. Plain answers, every one sourced."><b></b><span>Credit union members</span></a>
+        <a class="lm-st a" data-st="F" href="/learn/academy" style="left:90%;top:13.5%" data-what="Free videos by BloxProd, a block producer on XPR Network."><b></b><span>Video tutorials</span></a>
+        <a class="lm-st b" data-st="G" href="/learn/defi-forge" style="left:90%;top:48.1%" data-what="Play with lending, pools and staking numbers. Nothing real, nothing at risk."><b></b><span>DeFi Forge</span></a>
+        <a class="lm-st b" data-st="H" href="#new-to-guard" style="left:64%;top:86.5%" data-what="What GUARD is, and what it isn't."><b></b><span>New to GUARD<small>on this page</small></span></a>
+        <a class="lm-st b" data-st="I" href="/learn/signguard" style="left:90%;top:86.5%" data-what="Watch a real signer, practise the alphabet, and learn the basics of ASL and Deaf culture. Free, no account."><b></b><span>SignGuard (ASL)<small>side trip</small></span></a>
+      </div>
+      <p class="lm-why" data-lm-why aria-live="polite"></p>
+      <ol class="lm-route" data-lm-route aria-live="polite"></ol>
+    </div>
+    <p class="lm-note">Two stops on these lines go to a particular part of "Your first hour": stop 1 (your wallet) on the money line, stop 6 (XPR Agents) on the Guard.IAN line.</p>
+  </section>
+
+  <div class="div-g"></div>
+
+  <section class="section rv">
     <h2 class="sec-title">Where to go</h2>
     <div class="grid grid-auto mt3">
       <div class="card">
@@ -149,7 +197,7 @@
 
   <div class="div-g"></div>
 
-  <section rv class="section" id="new-to-xpr">
+  <section class="section rv" id="new-to-xpr">
     <h2 class="sec-title">New to XPR Network? Six steps.</h2>
     <p class="page-sub">About fifteen minutes, and free.</p>
 
@@ -236,7 +284,7 @@
 
   <div class="div-g"></div>
 
-  <section rv class="section" id="new-to-guard">
+  <section class="section rv" id="new-to-guard">
     <h2 class="sec-title">New to GUARD</h2>
     <p class="lead">Short version: GUARD is a community meme token and a character. It buys you nothing on this site.</p>
 
@@ -275,6 +323,7 @@
 </footer>
 <script src="/assets/js/site.js"></script>
 <script src="/assets/js/motion.js"></script>
+<script src="/assets/js/pages/learn-hub.js"></script>
 
 </body>
 </html>

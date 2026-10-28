@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="stylesheet" href="/assets/css/v3-pages.css">
+<link rel="stylesheet" href="/assets/css/pages/stablecoins.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -112,6 +113,65 @@
         <a href="https://www.metallicus.com/blog" target="_blank" class="btn btn-o mt2" style="font-size:.78rem;">Metallicus News →</a>
       </div>
     </div>
+
+    <div class="sc-block" data-sc-flow-wrap>
+      <p class="sec-label">Step through it</p>
+      <h2 class="sec-title">Follow one Metal Dollar</h2>
+      <p>Pick a direction, then press Play or step through it yourself. Click any station to jump to it.</p>
+      <div class="sc-tabs" role="group" aria-label="Direction">
+        <button type="button" data-mode="mint" aria-pressed="true">Mint XMD</button>
+        <button type="button" data-mode="redeem" aria-pressed="false">Redeem XMD</button>
+      </div>
+      <div class="sc-flow" data-sc-flow>
+        <span class="sc-rail" aria-hidden="true"></span>
+        <span class="sc-coin" aria-hidden="true">$</span>
+        <button type="button" class="sc-st" data-st="0">
+          <span class="ring"><b>USDC<br>PYUSD<br>USDP</b></span>
+          <span class="t">Your reserve stablecoin</span>
+          <span class="s">A dollar stablecoin from the basket, held on XPR Network as an X-token.</span>
+        </button>
+        <button type="button" class="sc-st" data-st="1">
+          <span class="ring"><img src="/assets/img/eco/metalx.webp" alt="" width="64" height="64" loading="lazy"></span>
+          <span class="t">Metal Dollar treasury</span>
+          <span class="s">Done on Metal X. The treasury is the contract <code>xmd.treasury</code>.</span>
+        </button>
+        <button type="button" class="sc-st" data-st="2">
+          <span class="ring"><img src="/assets/img/eco/xmd.webp" alt="" width="64" height="64" loading="lazy"></span>
+          <span class="t">XMD in your wallet</span>
+          <span class="s">The Metal Dollar token, <code>XMD</code> on the contract <code>xmd.token</code>.</span>
+        </button>
+      </div>
+      <div class="sc-say" data-sc-say aria-live="polite">
+        <p><b>Minting:</b> you deposit a basket stablecoin (USDC, PYUSD or USDP) with the Metal Dollar treasury and receive the same number of XMD, one for one. <b>Redeeming</b> is the same in reverse. Minting is not buying: buying XMD on a market is a separate trade at the market price.</p>
+      </div>
+      <div class="sc-ctl">
+        <button type="button" data-sc-prev>&larr; Back</button>
+        <button type="button" data-sc-next>Next &rarr;</button>
+        <button type="button" data-sc-play>Play</button>
+      </div>
+      <p class="sc-note">Source: the cards above, and Metal Dollar's own "How it works" page (<a href="https://metaldollar.com/how-it-works" rel="noopener">metaldollar.com/how-it-works</a>, checked 25 October 2026 through MetalXPRt). Availability, account verification and network support still apply.</p>
+    </div>
+
+    <div class="sc-block">
+      <p class="sec-label">Live from the chain</p>
+      <h2 class="sec-title">What's in the treasury right now</h2>
+      <p>This reads the public Metal Dollar treasury straight from XPR Network when you scroll here: which reserve stablecoins it takes, how much of each it holds, and how much XMD exists. Nothing is stored or estimated.</p>
+      <div class="sc-live" data-sc-live>
+        <div class="sc-donut" data-sc-donut>
+          <svg viewBox="0 0 100 100" aria-hidden="true"><circle class="bg" cx="50" cy="50" r="42"></circle></svg>
+          <div class="sc-mid" data-sc-mid aria-live="polite"><b>—</b><span>XMD in supply</span></div>
+        </div>
+        <div>
+          <ul class="sc-rows" data-sc-rows aria-live="polite">
+            <li><i></i><span>Turn on JavaScript to read the treasury live, or look it up yourself: contract <code>xmd.treasury</code>, table <code>tokens</code>, on any XPR Network explorer.</span><span></span></li>
+          </ul>
+          <p class="sc-sum" data-sc-sum></p>
+          <button type="button" class="sc-refresh" data-sc-refresh>Read it again</button>
+          <p class="sc-note" data-sc-note>Balances are what the treasury account holds. This page reads them; it does not audit them, and it makes no claim about backing. A cap is the most one reserve may make up of the treasury, as the treasury's own table records it. A failed read says "couldn't read", never zero.</p>
+        </div>
+      </div>
+    </div>
+
     <div class="disc mt3"><span>&#8505;</span><div>standguard.net is an independent community site. It is not affiliated with or endorsed by Metallicus or XPR Network. Education only, not financial advice.</div></div>
   </section>
 </div>
@@ -128,6 +188,7 @@
 </footer>
 <script src="/assets/js/site.js"></script>
 <script src="/assets/js/motion.js"></script>
+<script src="/assets/js/pages/stablecoins.js"></script>
 
 </body>
 </html>
