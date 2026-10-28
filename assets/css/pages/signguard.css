@@ -1,0 +1,19 @@
+/* /learn/signguard (v3 polish, 2026-10-28): reskin only. Loaded after the page's own <style>; signguard-2.js untouched. */
+/* tighter gap between the tab bar and the open panel */
+.sg-panel.section{padding-top:clamp(32px,4.5vw,56px)}
+/* tabs: one swipeable row on phones instead of two wrapped rows */
+.sg-tab{transition:color .2s,border-color .2s}
+.sg-tab:focus-visible{outline:2px solid #f2c25b;outline-offset:-4px}
+@media (max-width:719px){
+  .sg-tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .sg-tabs::-webkit-scrollbar{display:none}
+  .sg-tab{flex:0 0 auto;white-space:nowrap}
+}
+/* the click-to-load video frames */
+.sg-frame{border-radius:20px;border:1px solid var(--line,rgba(255,215,140,.16));box-shadow:0 30px 60px -34px #000}
+.sg-load{background:radial-gradient(circle at 50% 40%,rgba(155,92,255,.28),transparent 60%),linear-gradient(160deg,#221a30,#0f0c15);transition:background .3s}
+.sg-load strong{display:inline-flex;align-items:center;gap:10px;justify-self:center;padding:12px 22px;border-radius:999px;background:linear-gradient(180deg,#ffdf94,#f2c25b);color:#1b1206;font-size:16px;box-shadow:0 0 0 6px rgba(242,194,91,.15),0 14px 30px -12px rgba(242,194,91,.6);transition:transform .25s,box-shadow .25s}
+.sg-load:hover strong,.sg-load:focus-visible strong{transform:scale(1.05);box-shadow:0 0 0 8px rgba(242,194,91,.2),0 0 34px rgba(242,194,91,.55)}
+.sg-load:focus-visible{outline:2px solid #f2c25b;outline-offset:-4px}
+.sg-load span{margin-top:6px;color:var(--mute,#b8aecb);opacity:1}
+html.reduce .sg-load strong,html.reduce .sg-tab{transition:none}
