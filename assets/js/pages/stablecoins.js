@@ -28,7 +28,7 @@
       redeem: [
         { at: 2, xmd: true, t: 'You hold XMD and want dollars-in-crypto back.', s: 'Redeeming is not selling on a market; it goes to the treasury.' },
         { at: 1, xmd: true, t: 'You return the XMD to the Metal Dollar treasury, xmd.treasury.', s: 'The rate is the same fixed one for one.' },
-        { at: 0, xmd: false, t: 'You get an available reserve stablecoin back, one for one.', s: 'Which reserves are available can change; the live readout below shows which ones are open right now.' }
+        { at: 0, xmd: false, t: 'You get an available reserve stablecoin back, one for one.', s: 'Which reserves are available can change; the live readout below shows which ones have minting and redemption switched on in the treasury table.' }
       ]
     };
     var mode = 'mint', step = 0, timer = null;
@@ -161,13 +161,14 @@
         donut.querySelector('svg').appendChild(c);
         acc += share;
       }
-      var flags = (+it.row.isMintEnabled ? 'mint open' : 'mint closed') + ' · ' + (+it.row.isRedeemEnabled ? 'redeem open' : 'redeem closed');
+      // these are the table's switches, not proof that a mint or redemption will go through
+      var flags = (+it.row.isMintEnabled ? 'minting switched on' : 'minting switched off') + ' · ' + (+it.row.isRedeemEnabled ? 'redemption switched on' : 'redemption switched off') + ' (table setting)';
       var mf = parseFloat(it.row.mintFee), rf = parseFloat(it.row.redemptionFee);
       flags += (mf === 0 && rf === 0) ? ' · no mint or redemption fee set' : ' · fees in the table: mint ' + it.row.mintFee + ', redeem ' + it.row.redemptionFee;
       var cap = parseFloat(it.row.maxTreasuryPercent);
       var li = document.createElement('li');
       li.innerHTML = '<i style="background:' + info[2] + '"></i>' +
-        '<span><b>' + esc(info[0]) + '</b> <code>' + esc(key) + '</code><small>' + esc(info[1]) + '</small><small>' + esc(flags) + ' · cap ' + fmt(cap, 0) + '% of the treasury</small></span>' +
+        '<span><b>' + esc(info[0]) + '</b> <code>' + esc(key) + '</code><small>' + esc(info[1]) + '</small><small>' + esc(flags) + ' · configured limit ' + fmt(cap, 0) + '% (a setting; this page can\'t show if or how it is enforced)</small></span>' +
         '<span class="amt">' + (it.ok ? fmt(it.bal, 2) + '<small>' + (total > 0 ? pct(share) + ofWhat : '') + '</small>' : '<span class="sc-bad">couldn\'t read</span>') + '</span>';
       rows.appendChild(li);
     });

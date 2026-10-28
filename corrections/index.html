@@ -125,6 +125,27 @@
     </div>
     <p class="in-empty" data-in-log-empty>Nothing in the log matches that.</p>
 
+    <details class="cor-entry" id="ian-2026-10-28" data-topic="launches" open>
+      <summary>
+        <span class="cor-head">
+          <span class="cor-tag">Corrected</span>
+          <span class="cor-date">28 October 2026</span>
+          <span class="cor-topic">Launch record</span>
+        </span>
+        <h3>The IAN launch report said seven buys in the first block and ours seventh. It was five, and ours fifth.</h3>
+      </summary>
+      <div class="cor-body">
+        <dl>
+          <dt>Old information</dt>
+          <dd>The <a href="/reports/ian">IAN launch report</a> (written 16 September) said seven buys landed in the first legal block, block 403646618, with one Guard.IAN wallet seventh.</dd>
+          <dt>What the evidence shows</dt>
+          <dd>Five buys of XPR to <code>simplelaunch</code> with the memo <code>buy:463</code> are in <a href="https://explorer.xprnetwork.org/block/403646618" rel="noopener">block 403646618</a>; the fifth is our wallet guardgrowth (1,000 XPR). The other transfers in that block are fees, not buys. Source: GUARD's <a href="https://github.com/Scubasteve4488/GUARD-Project/blob/master/docs/FACTS-LOCKED.md" rel="noopener">locked launch record</a> (Hyperion re-check, 8 October) and an independent Hyperion read on 28 October (5 buy transfers, 10 fee transfers). The <a href="/launches/ian">IAN launch page</a> lists all five with their transaction links. The exact packing order is the producer's; the public node no longer serves that block's raw data, so the order shown is the order of the transactions as the history reader returns them.</dd>
+          <dt>What changed</dt>
+          <dd>Two lines in the report now say five and fifth, each marked as corrected. Nothing else in the report was rewritten.</dd>
+        </dl>
+      </div>
+    </details>
+
     <details class="cor-entry" id="stars-2026-10-18" data-topic="launches" open>
       <summary>
         <span class="cor-head">

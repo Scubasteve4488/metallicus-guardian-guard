@@ -84,7 +84,7 @@
     <h1 class="page-title">Privacy</h1>
     <div class="attn mt3">
       <span>&#9888;</span>
-      <div><strong>Updated 28 October 2026</strong>: fonts are now served from this site, so loading a page no longer contacts Google. Earlier update 17 October 2026: visits are now counted (below). Earlier still 27 September 2026, for the first paid service. Written from how things actually work; not reviewed by a lawyer.</div>
+      <div><strong>Updated 28 October 2026</strong>: some pages now read the public XPR chain on their own when you scroll to them, and the first-hour checklist remembers your ticks in your browser (both below). Fonts are now served from this site, so loading a page no longer contacts Google. Earlier update 17 October 2026: visits are now counted (below). Earlier still 27 September 2026, for the first paid service. Written from how things actually work; not reviewed by a lawyer.</div>
     </div>
   </section>
 
@@ -105,14 +105,16 @@
         <h2 class="sec-title">What this website counts</h2>
         <p class="lead">No accounts, no cookies, no ads, and no database behind these pages. We count visits with Cloudflare Web Analytics, so we can see which pages are read and how often.</p>
         <p class="mt1">It sets no cookies and stores nothing in your browser. Cloudflare says it doesn't fingerprint visitors and drops the IP address instead of storing it (<a href="https://developers.cloudflare.com/web-analytics/data-metrics/core-web-vitals/">Cloudflare Web Analytics</a>). We see totals, not people.</p>
+        <p class="mt1"><strong>One thing this site keeps in your browser:</strong> the <a href="/learn/first-hour">first-hour checklist</a> remembers which steps you ticked, in your browser's own storage (<code>localStorage</code>, under the name <code>sg-first-hour-v1</code>). It stays on your device and is never sent to us. Clearing this site's data in your browser removes it; if your browser blocks storage, the ticks last for that visit only.</p>
       </section>
 
       <section id="two-things">
         <h2 class="sec-title">Two things worth knowing</h2>
         <div class="in-grid2 mt3">
           <div class="in-card">
-            <h3>The account lookup runs in your browser</h3>
-            <p>When you press the button, your browser asks public XPR servers directly.</p>
+            <h3>Chain readings run in your browser</h3>
+            <p>When you press an account-lookup button, your browser asks public XPR servers directly.</p>
+            <p>Some pages also read the chain on their own, with no button: the live block ticker and the "Ask him" answers on the <a href="/">home page</a> (the ticker every 3 seconds while it is on screen), the Metal Dollar treasury on <a href="/learn/stablecoins-payments">stablecoins and payments</a>, and the GUARD token supply on <a href="/guard">GUARD</a>. They go to one of four public XPR servers: proton.eosusa.io, api.protonnz.com, proton.cryptolions.io and api-xprnetwork-main.saltant.io.</p>
             <p>Those servers belong to other people. Like any website, they see the request and your IP address, the same as when you use a block explorer.</p>
             <p>The result goes to your browser, not to us.</p>
           </div>
