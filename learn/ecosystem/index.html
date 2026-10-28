@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="stylesheet" href="/assets/css/v3-pages.css">
+<link rel="stylesheet" href="/assets/css/pages/ecosystem.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -84,6 +85,122 @@
     <h1 class="page-title">The Metallicus Ecosystem</h1>
     <p class="page-sub">A short map of the tools and tokens around XPR Network. Each card links to the project's own site. Go there for the full picture before you act on anything.</p>
     <div class="attn"><span>&#9888;</span><div><strong>Re-read against the official sites on 27 September 2026.</strong> Products change. If a card and the official site disagree, the official site is right.</div></div>
+
+    <section class="ex" data-ex aria-labelledby="ex-title">
+      <h2 class="sec-title" id="ex-title">Explore the map</h2>
+      <p class="lead">Metallicus's own products sit on the inner ring, its work for banks and its new chains on the middle ring, and projects the community built on the outer ring. Pick a group, or click any logo to see what it is, who makes it and how Guard.IAN reads it. The lines show what it works with.</p>
+      <div class="ex-filters" role="group" aria-label="Show a group">
+        <button type="button" data-filter="all" aria-pressed="true">Everything</button>
+        <button type="button" data-filter="metallicus" aria-pressed="false">Made by Metallicus</button>
+        <button type="button" data-filter="institutions" aria-pressed="false">For banks and institutions</button>
+        <button type="button" data-filter="defi" aria-pressed="false">Trading and DeFi</button>
+        <button type="button" data-filter="payments" aria-pressed="false">Payments and dollars</button>
+        <button type="button" data-filter="nft" aria-pressed="false">NFTs</button>
+        <button type="button" data-filter="community" aria-pressed="false">Built by the community</button>
+      </div>
+      <p class="ex-count" data-count aria-live="polite"></p>
+      <div class="ex-grid">
+        <div class="ex-stage">
+          <ul class="ex-map" aria-label="Projects in the XPR Network and Metallicus ecosystem">
+            <li class="ex-ring" style="--in:28%" aria-hidden="true"></li>
+            <li class="ex-ring v" style="--in:16.5%" aria-hidden="true"></li>
+            <li class="ex-ring" style="--in:5%" aria-hidden="true"></li>
+            <li class="ex-svgli" aria-hidden="true"><svg class="ex-svg"></svg></li>
+            <li class="ex-coreli"><button type="button" class="ex-core" data-core data-id="metallicus" aria-pressed="false" aria-label="Metallicus"
+          data-name="Metallicus" data-maker="The company" data-status="Live" data-stclass="" data-tags="metallicus" data-links="xpr webauth metalx metalpay xmd loan mb ml2 pilot memberpass vms pulsevm"
+          data-what="The company behind XPR Network, Metal Blockchain, Metal L2, WebAuth, Metal X and Metal Pay. It builds payment, identity and digital-dollar infrastructure for banks and for people."
+          data-tool="whats_new" data-toolwhat="what changed since yesterday, including Metallicus news posts" data-url="https://metallicus.com" data-learn="" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><img src="/assets/img/eco/metallicus.webp" alt="" width="160" height="160"></button></li>
+        <li><button type="button" class="ex-node r1" data-node data-id="xpr" aria-pressed="false"
+          data-name="XPR Network" data-maker="Metallicus" data-status="Live" data-stclass="" data-tags="metallicus" data-links="webauth metalx simpledex xpragents alcor gov pulsevm"
+          data-what="The Layer 1 chain Guard.IAN lives on. No gas fees for users, fast transfers, readable @usernames and on-chain identity." data-tool="xpr_network" data-toolwhat="live chain status and the 21 block producers in the active schedule" data-url="https://xprnetwork.org" data-learn="/learn/first-hour" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/xpr.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">XPR Network</span></button></li>
+        <li><button type="button" class="ex-node r1" data-node data-id="webauth" aria-pressed="false"
+          data-name="WebAuth" data-maker="Metallicus" data-status="Live" data-stclass="" data-tags="metallicus" data-links="xpr gov"
+          data-what="XPR Network&#x27;s own wallet. Your keys stay on your device and you sign with your face or fingerprint." data-tool="xpr_account_check" data-toolwhat="the public record of the account you are about to pay" data-url="https://webauth.com" data-learn="/learn/first-hour#account" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/webauth.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">WebAuth</span></button></li>
+        <li><button type="button" class="ex-node r1" data-node data-id="metalx" aria-pressed="false"
+          data-name="Metal X" data-maker="Metallicus" data-status="Live" data-stclass="" data-tags="metallicus defi" data-links="xpr loan xmd alcor"
+          data-what="Metallicus&#x27;s exchange: an on-chain order book with market and limit orders, pools, farms and lending. Tokens are listed by Metal X, not by anyone who wants to." data-tool="markets" data-toolwhat="Metal X and Alcor market data side by side" data-url="https://metalx.com" data-learn="" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/metalx.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">Metal X</span></button></li>
+        <li><button type="button" class="ex-node r1" data-node data-id="metalpay" aria-pressed="false"
+          data-name="Metal Pay" data-maker="Metallicus" data-status="Live" data-stclass="" data-tags="metallicus payments" data-links="xpr"
+          data-what="Metallicus&#x27;s app for buying crypto with a debit or credit card. Buying XPR there works in the US, Australia and New Zealand." data-tool="metallicus_status" data-toolwhat="the official Metal Pay status page, live" data-url="https://metalpay.com" data-learn="/learn#new-to-xpr" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/metalpay.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">Metal Pay</span></button></li>
+        <li><button type="button" class="ex-node r1" data-node data-id="xmd" aria-pressed="false"
+          data-name="Metal Dollar (XMD)" data-maker="Metallicus" data-status="Live" data-stclass="" data-tags="metallicus defi payments" data-links="metalx loan"
+          data-what="A dollar stablecoin backed by a basket of other stablecoins, such as USDC, PYUSD and USDP. You mint and redeem it 1:1 against the basket. The Metal DAO reviews what goes in the basket." data-tool="xpr_token_check" data-toolwhat="registry, chain, Metal X and Alcor side by side" data-url="https://metaldollar.com" data-learn="/learn/stablecoins-payments" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/xmd.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">XMD</span></button></li>
+        <li><button type="button" class="ex-node r1" data-node data-id="loan" aria-pressed="false"
+          data-name="LOAN Protocol" data-maker="Metallicus" data-status="Live" data-stclass="" data-tags="metallicus defi" data-links="metalx xmd"
+          data-what="The lending protocol behind Metal X lending, and its LOAN token used for governance." data-tool="loan_protocol" data-toolwhat="markets, rates and liquidation rules, live" data-url="https://xprnetwork.org/loan" data-learn="/learn/defi-forge" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/loan.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">LOAN</span></button></li>
+        <li><button type="button" class="ex-node r1" data-node data-id="mb" aria-pressed="false"
+          data-name="Metal Blockchain" data-maker="Metallicus" data-status="Live" data-stclass="" data-tags="metallicus institutions" data-links="vms pulsevm memberpass"
+          data-what="A Layer 0 chain for financial institutions: EVM-compatible, with subnets for banks that need their own network." data-tool="metal_blockchain" data-toolwhat="height, supply, validators and the pegged chains" data-url="https://metalblockchain.org" data-learn="" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/metal-blockchain.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">Metal Blockchain</span></button></li>
+        <li><button type="button" class="ex-node r1" data-node data-id="ml2" aria-pressed="false"
+          data-name="Metal L2" data-maker="Metallicus" data-status="Live" data-stclass="" data-tags="metallicus" data-links=""
+          data-what="Metallicus&#x27;s Ethereum Layer 2, built on the OP Stack." data-tool="evm_chains" data-toolwhat="Metal L2, Ethereum and BNB Chain" data-url="https://metall2.com" data-learn="" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/metal-l2.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">Metal L2</span></button></li>
+        <li><button type="button" class="ex-node r1" data-node data-id="gov" aria-pressed="false"
+          data-name="Staking and governance" data-maker="XPR Network" data-status="Live" data-stclass="" data-tags="metallicus" data-links="xpr webauth"
+          data-what="Stake XPR inside WebAuth to vote for block producers, who are elected by people who stake. Proposals and votes happen on the governance portal." data-tool="xpr_governance" data-toolwhat="governance communities, proposals and votes" data-url="https://gov.xprnetwork.org" data-learn="/learn/first-hour#staking" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><span class="ex-txt">GOV</span></span><span class="ex-lab">Staking</span></button></li>
+        <li><button type="button" class="ex-node r2" data-node data-id="fednow" aria-pressed="false"
+          data-name="FedNow listing" data-maker="Federal Reserve (listing)" data-status="Live" data-stclass="" data-tags="institutions payments" data-links="pilot"
+          data-what="Metallicus is listed in the Federal Reserve&#x27;s FedNow service explorer, the US instant-payment system. A listing is not an endorsement." data-tool="" data-toolwhat="The listing is a public page; MetalXPRt&#x27;s guide links it as a source." data-url="https://explore.fednow.org/explore-the-city?id=10&amp;postId=121&amp;vendor=metallicus-inc" data-learn="/learn/credit-unions" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/fednow.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">FedNow</span></button></li>
+        <li><button type="button" class="ex-node r2" data-node data-id="pilot" aria-pressed="false"
+          data-name="Stablecoin pilot" data-maker="Metallicus" data-status="Live" data-stclass="" data-tags="institutions payments" data-links="fednow memberpass"
+          data-what="Lets a bank or credit union issue and test its own branded stablecoin." data-tool="" data-toolwhat="Described in MetalXPRt&#x27;s guide; there is no chain table to read for it." data-url="https://metallicus.com/institutions/stablecoin-pilot" data-learn="/learn/credit-unions" data-src="MetalXPRt guide, ECOSYSTEM.md, checked at the official source on 25 Oct 2026."><span class="ex-ic"><span class="ex-txt">PILOT</span></span><span class="ex-lab">Pilot</span></button></li>
+        <li><button type="button" class="ex-node r2" data-node data-id="memberpass" aria-pressed="false"
+          data-name="MemberPass" data-maker="Metallicus" data-status="Live" data-stclass="" data-tags="institutions" data-links="pilot mb"
+          data-what="Biometric identity built for credit unions. Metallicus says CULedger (Bonifii) was acquired by Metallicus." data-tool="" data-toolwhat="Described in MetalXPRt&#x27;s guide; there is no chain table to read for it." data-url="https://metallicus.com/memberpass" data-learn="/learn/credit-unions" data-src="MetalXPRt guide, ECOSYSTEM.md, checked at the official source on 25 Oct 2026."><span class="ex-ic"><span class="ex-txt">MP</span></span><span class="ex-lab">MemberPass</span></button></li>
+        <li><button type="button" class="ex-node r2" data-node data-id="vms" aria-pressed="false"
+          data-name="BTCVM · LTCVM · DogecoinVM" data-maker="Metallicus" data-status="Alpha" data-stclass="alpha" data-tags="metallicus institutions" data-links="mb"
+          data-what="Bitcoin, Litecoin and Dogecoin chains on Metal Blockchain, each pegged 1:1 through a bridge. All three are in alpha; DogecoinVM is unaudited and has small caps. They run on Metal Blockchain, not on XPR Network." data-tool="metal_blockchain" data-toolwhat="the pegged chains&#x27; published limits and warnings" data-url="https://metaldoge.com" data-learn="" data-src="Metallicus 2026 Q3 report (5 Oct 2026) and MetalXPRt&#x27;s guide, checked 25 Oct 2026."><span class="ex-ic"><span class="ex-txt">VMs</span></span><span class="ex-lab">BTC·LTC·DOGE</span></button></li>
+        <li><button type="button" class="ex-node r2" data-node data-id="pulsevm" aria-pressed="false"
+          data-name="PulseVM" data-maker="Metallicus" data-status="Code only, not live" data-stclass="code" data-tags="metallicus" data-links="mb xpr"
+          data-what="Metallicus&#x27;s engine for running XPR-style contracts on Metal Blockchain. The code is published; no PulseVM network is live and no cutover date has been announced." data-tool="" data-toolwhat="Nothing to read live yet: there is no PulseVM network." data-url="https://github.com/MetalBlockchain/pulsevm" data-learn="/projects/pulsevm" data-src="This site&#x27;s PulseVM page (from the published code, release v1.0.0, re-checked 2 Oct 2026)."><span class="ex-ic"><span class="ex-txt">PVM</span></span><span class="ex-lab">PulseVM</span></button></li>
+        <li><button type="button" class="ex-node r3" data-node data-id="simpledex" aria-pressed="false"
+          data-name="SimpleDEX" data-maker="Proton NZ (community)" data-status="Live" data-stclass="" data-tags="community defi" data-links="xpr"
+          data-what="The token launchpad and swap built by Proton NZ. New tokens start on a bonding curve and move to a pool when they graduate. GUARD launched there, and Guard.IAN buys there." data-tool="simpledex" data-toolwhat="launches, tokens, pools and graduations" data-url="https://simpledex.fun" data-learn="/launches" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/simpledex.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">SimpleDEX</span></button></li>
+        <li><button type="button" class="ex-node r3" data-node data-id="xpragents" aria-pressed="false"
+          data-name="XPR Agents" data-maker="Proton NZ (community)" data-status="Live" data-stclass="" data-tags="community" data-links="xpr"
+          data-what="An on-chain registry, reputation system and escrow job board for AI agents. Guard.IAN is registered there as safeguard5." data-tool="xpr_agents_directory" data-toolwhat="the agent list, one agent, and jobs" data-url="https://xpragents.com" data-learn="/learn/first-hour#agents" data-src="This site&#x27;s First hour page and MetalXPRt&#x27;s guide (ECOSYSTEM §4), checked 25 Oct 2026."><span class="ex-ic"><span class="ex-txt">XA</span></span><span class="ex-lab">XPR Agents</span></button></li>
+        <li><button type="button" class="ex-node r3" data-node data-id="alcor" aria-pressed="false"
+          data-name="Alcor" data-maker="Alcor (independent)" data-status="Live" data-stclass="" data-tags="community defi" data-links="metalx xpr"
+          data-what="An exchange where anyone can list a token, with limit orders, pools and farms. Its &quot;trusted&quot; labels are its own." data-tool="markets" data-toolwhat="Alcor&#x27;s listings next to Metal X&#x27;s" data-url="https://proton.alcor.exchange" data-learn="" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/alcor.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">Alcor</span></button></li>
+        <li><button type="button" class="ex-node r3" data-node data-id="blastpad" aria-pressed="false"
+          data-name="BlastPad" data-maker="BlastPad (independent)" data-status="Live" data-stclass="" data-tags="community defi" data-links=""
+          data-what="A launchpad and staking platform ($BLPAD): create tokens, run airdrops and set up staking pools." data-tool="" data-toolwhat="No dedicated MetalXPRt tool; any token it launches can be checked with xpr_token_check." data-url="https://blastpad.io" data-learn="" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/blastpad.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">BlastPad</span></button></li>
+        <li><button type="button" class="ex-node r3" data-node data-id="ksto" aria-pressed="false"
+          data-name="KSTO" data-maker="Community" data-status="Guard.IAN&#x27;s community" data-stclass="" data-tags="community culture" data-links="snippy"
+          data-what="Kulture Speaks Truth Onchain. A community with its own token, events, weekly Spaces and its own list of vetted tokens. Guard.IAN belongs to it." data-tool="" data-toolwhat="He belongs to it. MetalXPRt&#x27;s guide has a KSTO file." data-url="https://x.com/Keep_Snipping" data-learn="/community/ksto" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/ksto.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">KSTO</span></button></li>
+        <li><button type="button" class="ex-node r3" data-node data-id="snipverse" aria-pressed="false"
+          data-name="Snipverse" data-maker="Community" data-status="Live" data-stclass="" data-tags="community culture" data-links=""
+          data-what="A social platform for the XPR Network community." data-tool="" data-toolwhat="No chain tool; it is a website." data-url="https://snipverse.com" data-learn="/community/snipverse" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/snipverse.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">Snipverse</span></button></li>
+        <li><button type="button" class="ex-node r3" data-node data-id="cyphergang" aria-pressed="false"
+          data-name="CypherGang" data-maker="Community" data-status="Live" data-stclass="" data-tags="community culture nft" data-links="soonmarket"
+          data-what="One of the longest-running NFT communities on XPR Network, with its own battle game. Its NFTs trade on soon.market." data-tool="xpr_nfts" data-toolwhat="NFT collections, templates and listings" data-url="https://cyphergang.com" data-learn="/community/cyphergang" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/cyphergang.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">CypherGang</span></button></li>
+        <li><button type="button" class="ex-node r3" data-node data-id="snippy" aria-pressed="false"
+          data-name="Snippy" data-maker="KSTO (community)" data-status="Sold out" data-stclass="" data-tags="community culture nft" data-links="ksto soonmarket nftclaimhub"
+          data-what="KSTO&#x27;s mascot and main character, a coy fox. The Snippy NFT collection is sold out." data-tool="xpr_nfts" data-toolwhat="NFT collections, templates and listings" data-url="https://x.com/Keep_Snipping" data-learn="/community/snippy" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/snippy.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">Snippy</span></button></li>
+        <li><button type="button" class="ex-node r3" data-node data-id="soonmarket" aria-pressed="false"
+          data-name="soon.market" data-maker="Community" data-status="Live" data-stclass="" data-tags="community nft" data-links="cyphergang snippy"
+          data-what="An NFT marketplace on XPR Network (AtomicAssets standard). Home to CypherGang, Snippy and more." data-tool="xpr_nfts" data-toolwhat="NFT collections, templates and listings" data-url="https://soon.market" data-learn="" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/soonmarket.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">soon.market</span></button></li>
+        <li><button type="button" class="ex-node r3" data-node data-id="nftclaimhub" aria-pressed="false"
+          data-name="NFT Claim Hub" data-maker="Community" data-status="Live" data-stclass="" data-tags="community nft" data-links="snippy"
+          data-what="Where community NFT rewards, Snippy&#x27;s among them, are claimed." data-tool="xpr_nfts" data-toolwhat="NFT collections, templates and listings" data-url="https://nftclaimhub.io" data-learn="" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/nftclaimhub.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">NFT Claim Hub</span></button></li>
+        <li><button type="button" class="ex-node r3" data-node data-id="nftpacks" aria-pressed="false"
+          data-name="NFT Packs" data-maker="Community" data-status="Live" data-stclass="" data-tags="community nft" data-links=""
+          data-what="An NFT launchpad where each pack mints one random NFT." data-tool="xpr_nfts" data-toolwhat="NFT collections, templates and listings" data-url="https://nftpacks.io" data-learn="" data-src="This page&#x27;s card, re-read against the official site on 27 Sep 2026."><span class="ex-ic"><img src="/assets/img/eco/nftpacks.webp" alt="" width="160" height="160" loading="lazy"></span><span class="ex-lab">NFT Packs</span></button></li>
+          </ul>
+          <ul class="ex-legend" aria-hidden="true"><li><i class="g"></i>Inner ring: Metallicus products</li><li><i class="v"></i>Middle: institutions and new chains</li><li><i class="g"></i>Outer: built by the community</li></ul>
+        </div>
+        <div>
+          <div class="ex-card" data-card aria-live="polite">
+            <p class="ex-who">The company · <span class="ex-st">Live</span></p>
+            <h3>Metallicus</h3>
+            <p>The company behind XPR Network, Metal Blockchain, Metal L2, WebAuth, Metal X and Metal Pay. Every project on the map also has its own card below.</p>
+          </div>
+          <p class="ex-note">Logos belong to their owners. Showing them is not a partnership, and standguard.net is not an official Metallicus or XPR Network site. Descriptions come from the cards below (re-read 27 Sep 2026) and, for the institution projects, from MetalXPRt's guide (checked 25 Oct 2026). Tools named are MetalXPRt's read-only tools.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="div-g"></div>
+    <h2 class="sec-title" style="margin-top:2.2rem">Every project, card by card</h2>
     <!-- ⚒ FOUNDATION -->
     <div style="font-family:'Cinzel',serif;font-size:.92rem;font-weight:700;color:var(--gold-l);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid rgba(139,92,246,0.3);padding-bottom:.5rem;margin:2rem 0 1rem;">⚒ Foundation</div>
     <div class="grid grid-auto mb3">
@@ -161,6 +278,7 @@
 </footer>
 <script src="/assets/js/site.js"></script>
 <script src="/assets/js/motion.js"></script>
+<script src="/assets/js/pages/ecosystem.js"></script>
 
 </body>
 </html>
