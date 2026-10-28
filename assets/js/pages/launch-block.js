@@ -153,7 +153,7 @@
           cache[id] = d;
           if (btn.getAttribute('aria-pressed') === 'true') render(stage, d);
         })
-        .catch(function () { stage.innerHTML = '<p class="lb-note">Couldn\'t load the ' + esc(name) + ' report just now. The table below has every launch, and the <a href="' + esc(src) + '">full report</a> has every buy.</p>'; });
+        .catch(function () { if (btn.getAttribute('aria-pressed') !== 'true') return; /* the visitor already picked another launch */ stage.innerHTML = '<p class="lb-note">Couldn\'t load the ' + esc(name) + ' report just now. The table below has every launch, and the <a href="' + esc(src) + '">full report</a> has every buy.</p>'; });
     };
     for (var q = 0; q < picks.length; q++) {
       (function (i) {

@@ -167,7 +167,7 @@
           </ul>
           <p class="sc-sum" data-sc-sum></p>
           <button type="button" class="sc-refresh" data-sc-refresh>Read it again</button>
-          <p class="sc-note" data-sc-note>Balances are what the treasury account holds. This page reads them; it does not audit them, and it makes no claim about backing. A cap is the most one reserve may make up of the treasury, as the treasury's own table records it. A failed read says "couldn't read", never zero.</p>
+          <p class="sc-note" data-sc-note>Balances are what the treasury account holds. This page reads them; it does not audit them, and it makes no claim about backing. Each reserve row also has a configured limit, <code>maxTreasuryPercent</code>: a setting in the treasury's own table. It is not a measured share, and this page can't show whether or how the contract enforces it. On 28 October 2026 the USDC (XUSDC) row's limit read 60% while XUSDC made up about 96% of the reserve tokens held, so read the balances and the setting as two different things. The switches "minting on" and "redemption on" are table settings too, not proof a transaction will go through. A failed read says "couldn't read", never zero.</p>
         </div>
       </div>
     </div>
