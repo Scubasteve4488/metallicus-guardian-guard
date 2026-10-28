@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="stylesheet" href="/assets/css/v3-pages.css">
+<link rel="stylesheet" href="/assets/css/pages/community.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -77,46 +78,57 @@
   </nav>
 </header>
 <main id="main">
-<div class="container">
+<div class="container cm-sub">
   <p class="breadcrumb"><a href="/community">Community</a> &rsaquo; CypherGang</p>
   <section class="section">
-    <div class="community-hero">
-      <div style="position:absolute;inset:0;background:rgba(10,10,16,0.85);"></div>
-      <div style="position:relative;z-index:1;text-align:center;padding:2.5rem 1.5rem;">
+    <div class="cm-hero">
+      <img src="/assets/img/community/cyphergang.webp" alt="CypherGang" width="200" height="200">
+      <div>
         <p class="sec-label">An original XPR Network NFT community &middot; since 2021</p>
-        <h1 class="page-title" style="margin-bottom:.4rem;">CYPHERGANG</h1>
-        <p class="page-sub" style="margin:0;">Built by ProtonPunk.</p>
+        <h1 class="page-title">CYPHERGANG</h1>
+        <p class="page-sub">Built by ProtonPunk.</p>
       </div>
     </div>
-    <div style="background:rgba(124,58,237,0.05);border:1px solid rgba(124,58,237,0.25);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
-      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem;">
-        <img src="/assets/img/icon_cyphergang.jpg" alt="CypherGang" style="width:44px;height:44px;border-radius:8px;object-fit:contain;flex-shrink:0;">
-        <h2 class="sec-title" style="margin:0;">The collection</h2>
+  </section>
+
+  <section class="section rv" aria-labelledby="cg-how" style="padding-top:0;">
+    <p class="sec-label">How it fits together</p>
+    <h2 class="sec-title" id="cg-how">The fighters, the game and the token</h2>
+    <p class="lead">Pick a step.</p>
+    <div class="cm-flow" data-cm-tabs>
+      <ol class="cm-steps" role="tablist" aria-label="How CypherGang fits together">
+        <li><button type="button" class="cm-step" role="tab" id="ct-1" aria-controls="cp-1" aria-selected="true"><img src="/assets/img/community/cyphergang.webp" alt="" width="54" height="54">The collection<small>1,777 NFTs</small></button></li>
+        <li><button type="button" class="cm-step" role="tab" id="ct-2" aria-controls="cp-2" aria-selected="false"><img src="/assets/img/community/cypherbrawls.webp" alt="" width="54" height="54">CypherBrawls<small>The game</small></button></li>
+        <li><button type="button" class="cm-step" role="tab" id="ct-3" aria-controls="cp-3" aria-selected="false"><img src="/assets/img/community/cyphr.webp" alt="" width="54" height="54">$CYPHR<small>The token</small></button></li>
+        <li><button type="button" class="cm-step" role="tab" id="ct-4" aria-controls="cp-4" aria-selected="false"><span class="cm-num">&#8644;</span>Where they trade<small>Markets</small></button></li>
+      </ol>
+      <div class="cm-fpanel" role="tabpanel" id="cp-1" aria-labelledby="ct-1">
+        <h3>The collection</h3>
+        <p>One of the original NFT projects on XPR Network, launched in 2021 by ProtonPunk. 1,777 hand-made NFTs, each one a fighter.</p>
+        <div class="flex gap-sm wrap">
+          <a href="https://cyphergang.com" rel="noopener" class="btn btn-o">&#128279; cyphergang.com</a>
+          <a href="https://x.com/CypherGangNFT" rel="noopener" class="btn btn-o">&#10005; @CypherGangNFT</a>
+          <a href="https://x.com/ProtonPunk" rel="noopener" class="btn btn-o">&#10005; @ProtonPunk</a>
+        </div>
       </div>
-      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">One of the original NFT projects on XPR Network, launched in 2021 by ProtonPunk. 1,777 hand-made NFTs, each one a fighter.</p>
-      <div class="flex gap-sm wrap">
-        <a href="https://cyphergang.com" rel="noopener" class="btn btn-o" style="font-size:.78rem;">🔗 cyphergang.com</a>
-        <a href="https://x.com/CypherGangNFT" rel="noopener" class="btn btn-o" style="font-size:.78rem;">✕ @CypherGangNFT</a>
-        <a href="https://x.com/ProtonPunk" rel="noopener" class="btn btn-o" style="font-size:.78rem;">✕ @ProtonPunk</a>
+      <div class="cm-fpanel" role="tabpanel" id="cp-2" aria-labelledby="ct-2">
+        <h3>&#9876; CypherBrawls</h3>
+        <p>The on-chain battle game from ProtonPunk and the CypherGang community. Your CypherGang NFT is your fighter.</p>
+      </div>
+      <div class="cm-fpanel" role="tabpanel" id="cp-3" aria-labelledby="ct-3">
+        <h3>$CYPHR</h3>
+        <p>CypherGang's community token. CypherGang says it's earned by holding the NFTs, playing CypherBrawls, and taking part in the community. Their site has the current rules.</p>
+      </div>
+      <div class="cm-fpanel" role="tabpanel" id="cp-4" aria-labelledby="ct-4">
+        <h3>Where the NFTs trade</h3>
+        <p>On soon.market and AtomicHub, on XPR Network.</p>
+        <div class="flex gap-sm wrap">
+          <a href="https://soon.market" rel="noopener" class="btn btn-o">soon.market</a>
+          <a href="https://atomichub.io" rel="noopener" class="btn btn-o">AtomicHub</a>
+        </div>
       </div>
     </div>
-    <div style="background:rgba(139,92,246,0.04);border:1px solid var(--border-acc);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
-      <h2 class="sec-title">⚔ CypherBrawls</h2>
-      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">The on-chain battle game from ProtonPunk and the CypherGang community. Your CypherGang NFT is your fighter.</p>
-    </div>
-    <div style="background:rgba(56,189,248,0.04);border:1px solid rgba(56,189,248,0.22);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
-      <h2 class="sec-title">$CYPHR</h2>
-      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">CypherGang's community token. CypherGang says it's earned by holding the NFTs, playing CypherBrawls, and taking part in the community. Their site has the current rules.</p>
-    </div>
-    <div style="background:rgba(124,58,237,0.04);border:1px solid rgba(124,58,237,0.22);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
-      <h2 class="sec-title">Where the NFTs trade</h2>
-      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">On soon.market and AtomicHub, on XPR Network.</p>
-      <div class="flex gap-sm wrap">
-        <a href="https://soon.market" rel="noopener" class="btn btn-o" style="font-size:.78rem;">soon.market</a>
-        <a href="https://atomichub.io" rel="noopener" class="btn btn-o" style="font-size:.78rem;">AtomicHub</a>
-      </div>
-    </div>
-    <div class="disc"><span>&#8505;</span><div>CypherGang is its own project. StandGuard doesn't run it or speak for it. NFTs and community tokens are a gamble. Nothing here is a reason to buy.</div></div>
+    <div class="disc mt3"><span>&#8505;</span><div>CypherGang is its own project. StandGuard doesn't run it or speak for it. NFTs and community tokens are a gamble. Nothing here is a reason to buy.</div></div>
   </section>
 </div>
 
@@ -132,6 +144,7 @@
 </footer>
 <script src="/assets/js/site.js"></script>
 <script src="/assets/js/motion.js"></script>
+<script src="/assets/js/pages/community.js"></script>
 
 </body>
 </html>

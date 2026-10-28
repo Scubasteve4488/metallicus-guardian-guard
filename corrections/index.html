@@ -23,17 +23,7 @@
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="stylesheet" href="/assets/css/v3-pages.css">
-<style>
-  .cor-entry{border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:1.25rem;margin-top:1rem;background:rgba(255,255,255,.03)}
-  .cor-head{display:flex;flex-wrap:wrap;gap:.5rem;align-items:baseline;justify-content:space-between}
-  .cor-date{font-size:.9rem;opacity:.65;font-variant-numeric:tabular-nums}
-  .cor-tag{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;
-    padding:.2rem .6rem;border-radius:999px;border:1px solid rgba(212,175,55,.6);
-    background:rgba(212,175,55,.14);white-space:nowrap}
-  .cor-entry h3{margin:.35rem 0 .5rem}
-  .cor-entry dt{font-weight:700;margin-top:.9rem;font-size:.95rem}
-  .cor-entry dd{margin:.2rem 0 0}
-</style>
+<link rel="stylesheet" href="/assets/css/pages/info.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -88,18 +78,17 @@
   </nav>
 </header>
 <main id="main">
-<div class="container">
+<div class="container in-page">
   <section class="section">
+    <p class="in-kicker">Corrections</p>
     <h1 class="page-title">If something here is wrong</h1>
     <p class="lead mt2">Point it out. A wrong fact on this site, or in something Guard.IAN published, gets fixed in the open.</p>
     <p class="lead">What has already been fixed is <a href="#log">kept below</a>, including the things nobody reported.</p>
   </section>
 
-  <div class="div-g"></div>
-
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">How it works</h2>
-    <ol class="ac-list" style="max-width:620px;list-style:decimal;">
+    <ol class="in-steps">
       <li><strong>Point at the exact claim.</strong> The sentence or the number, not "this page is wrong".</li>
       <li><strong>It gets rechecked at the source,</strong> the real one, not our own notes about it.</li>
       <li><strong>Old and wrong are kept apart.</strong> A number that was right once and has gone stale is a different problem from one that was never true.</li>
@@ -108,98 +97,118 @@
     </ol>
   </section>
 
-  <div class="div"></div>
-
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">What counts</h2>
-    <div class="grid grid-2 mt3">
-      <div class="card">
+    <div class="in-grid2 mt3">
+      <div class="in-card in-yes">
         <h3>Yes</h3>
         <p>A wrong fact. An old number shown as current. A claim with nothing behind it. Something listed as working that isn't. Art that breaks a project's own story.</p>
       </div>
-      <div class="card">
+      <div class="in-card in-no">
         <h3>Not really</h3>
         <p>Disagreeing with a judgement the facts support. Asking for something accurate to come down. Asking for something added that nothing backs up.</p>
-        <p class="mt1">You'll still get an answer. It goes back to the facts, not to whoever argued hardest.</p>
+        <p>You'll still get an answer. It goes back to the facts, not to whoever argued hardest.</p>
       </div>
     </div>
   </section>
 
-  <div class="div-g"></div>
-
-  <section rv class="section" id="log">
+  <section class="section rv" id="log" data-in-log>
     <h2 class="sec-title">The log</h2>
     <p class="lead">Everything corrected so far, newest first. Things found in-house are logged the same as things somebody reported, because a mistake nobody caught is still a mistake.</p>
 
-    <div class="cor-entry">
-      <div class="cor-head">
-        <span class="cor-tag">Corrected</span>
-        <span class="cor-date">18 October 2026</span>
-      </div>
-      <h3>The launch scoreboard omitted the 11 October STARS top-10 pass.</h3>
-      <dl>
-        <dt>Old information</dt>
-        <dd>The <a href="/launches">launch scoreboard</a> stopped at KWYS 470, said only one of seven participating launches passed, and the <a href="/">home page</a> said only LFQP passed.</dd>
-        <dt>What the evidence shows</dt>
-        <dd>GUARD's <a href="https://github.com/Scubasteve4488/GUARD-Project/blob/master/docs/FACTS-LOCKED.md" rel="noopener">locked launch record</a> includes STARS 471 on 11 October: seven GUARD wallets are recorded at ranks 1&ndash;7 out of 10. <a href="https://explorer.xprnetwork.org/block/408086182" rel="noopener">Mainnet block 408086182</a> independently shows seven 0.01 XPR buys before larger buys, but the privacy-filtered reader does not independently expose all account-to-fleet attribution.</dd>
-        <dt>What changed</dt>
-        <dd>Added STARS to the table; counts are now two passes from eight launches the fleet joined, excluding SUNGF. The buy size remains at 0.01 XPR by the operator's later decision. No complete STARS Launch Watch is claimed to exist.</dd>
-      </dl>
+    <div class="in-tools" data-in-logbar>
+      <label class="vh" for="in-log-q">Search the log</label>
+      <input class="in-search" id="in-log-q" type="search" placeholder="Search the log, e.g. 120" autocomplete="off" data-in-log-search>
+      <span role="group" aria-label="Filter by topic" style="display:contents;" data-in-log-topics></span>
+      <button class="in-btn" type="button" data-in-log-all>Open all</button>
+      <span class="in-count" aria-live="polite" data-in-log-count></span>
     </div>
+    <p class="in-empty" data-in-log-empty>Nothing in the log matches that.</p>
 
-    <div class="cor-entry">
-      <div class="cor-head">
-        <span class="cor-tag">Corrected</span>
-        <span class="cor-date">18 October 2026</span>
+    <details class="cor-entry" id="stars-2026-10-18" data-topic="launches" open>
+      <summary>
+        <span class="cor-head">
+          <span class="cor-tag">Corrected</span>
+          <span class="cor-date">18 October 2026</span>
+          <span class="cor-topic">Launch record</span>
+        </span>
+        <h3>The launch scoreboard omitted the 11 October STARS top-10 pass.</h3>
+      </summary>
+      <div class="cor-body">
+        <dl>
+          <dt>Old information</dt>
+          <dd>The <a href="/launches">launch scoreboard</a> stopped at KWYS 470, said only one of seven participating launches passed, and the <a href="/">home page</a> said only LFQP passed.</dd>
+          <dt>What the evidence shows</dt>
+          <dd>GUARD's <a href="https://github.com/Scubasteve4488/GUARD-Project/blob/master/docs/FACTS-LOCKED.md" rel="noopener">locked launch record</a> includes STARS 471 on 11 October: seven GUARD wallets are recorded at ranks 1&ndash;7 out of 10. <a href="https://explorer.xprnetwork.org/block/408086182" rel="noopener">Mainnet block 408086182</a> independently shows seven 0.01 XPR buys before larger buys, but the privacy-filtered reader does not independently expose all account-to-fleet attribution.</dd>
+          <dt>What changed</dt>
+          <dd>Added STARS to the table; counts are now two passes from eight launches the fleet joined, excluding SUNGF. The buy size remains at 0.01 XPR by the operator's later decision. No complete STARS Launch Watch is claimed to exist.</dd>
+        </dl>
       </div>
-      <h3>SimpleDEX creator-only window was still described as 60 seconds after it changed to 120.</h3>
-      <dl>
-        <dt>Old information</dt>
-        <dd>The current-rule explanations on <a href="/launches">/launches</a>, <a href="/learn/first-hour">/learn/first-hour</a> and <a href="/projects/shield-buy">/projects/shield-buy</a> described a 60-second creator-only period. The launch page also presented the former 59.5-second timing example as current.</dd>
-        <dt>Verified setting</dt>
-        <dd>The live XPR mainnet <code>simplelaunch::antisnipe</code> table now has <code>creatorOnlyPeriodSec = 120</code>, checked 18 October 2026 via <a href="https://explorer.xprnetwork.org/account/simplelaunch" rel="noopener">the SimpleDEX contract</a>. The prior period was 60 seconds; the change occurred in October 2026. The period can change again.</dd>
-        <dt>What changed</dt>
-        <dd>Updated current-rule explanations to 120 seconds and removed the obsolete send-time recommendation. Kept the 2 October testnet experiment's genuine 60-second results, now explicitly marked historical. No historical launch block data was rewritten.</dd>
-      </dl>
-    </div>
+    </details>
 
-    <div class="cor-entry">
-      <div class="cor-head">
-        <span class="cor-tag">Corrected</span>
-        <span class="cor-date">5 October 2026</span>
+    <details class="cor-entry" id="window-2026-10-18" data-topic="launches" open>
+      <summary>
+        <span class="cor-head">
+          <span class="cor-tag">Corrected</span>
+          <span class="cor-date">18 October 2026</span>
+          <span class="cor-topic">Launch record</span>
+        </span>
+        <h3>SimpleDEX creator-only window was still described as 60 seconds after it changed to 120.</h3>
+      </summary>
+      <div class="cor-body">
+        <dl>
+          <dt>Old information</dt>
+          <dd>The current-rule explanations on <a href="/launches">/launches</a>, <a href="/learn/first-hour">/learn/first-hour</a> and <a href="/projects/shield-buy">/projects/shield-buy</a> described a 60-second creator-only period. The launch page also presented the former 59.5-second timing example as current.</dd>
+          <dt>Verified setting</dt>
+          <dd>The live XPR mainnet <code>simplelaunch::antisnipe</code> table now has <code>creatorOnlyPeriodSec = 120</code>, checked 18 October 2026 via <a href="https://explorer.xprnetwork.org/account/simplelaunch" rel="noopener">the SimpleDEX contract</a>. The prior period was 60 seconds; the change occurred in October 2026. The period can change again.</dd>
+          <dt>What changed</dt>
+          <dd>Updated current-rule explanations to 120 seconds and removed the obsolete send-time recommendation. Kept the 2 October testnet experiment's genuine 60-second results, now explicitly marked historical. No historical launch block data was rewritten.</dd>
+        </dl>
       </div>
-      <h3>SignGuard said the ASL alphabet was &ldquo;signed by a real person&rdquo;. It was a 3D model.</h3>
+    </details>
 
-      <dl>
-        <dt>The claim</dt>
-        <dd>A fingerspelling page published that morning at <a href="/learn/signguard">/learn/signguard</a> showed A&ndash;Z and 0&ndash;10 and described the clips as &ldquo;signed by a real person&rdquo;. The Learn index carried the same wording on its card.</dd>
+    <details class="cor-entry" id="signguard-2026-10-05" data-topic="signguard" open>
+      <summary>
+        <span class="cor-head">
+          <span class="cor-tag">Corrected</span>
+          <span class="cor-date">5 October 2026</span>
+          <span class="cor-topic">SignGuard</span>
+        </span>
+        <h3>SignGuard said the ASL alphabet was &ldquo;signed by a real person&rdquo;. It was a 3D model.</h3>
+      </summary>
+      <div class="cor-body">
+        <dl>
+          <dt>The claim</dt>
+          <dd>A fingerspelling page published that morning at <a href="/learn/signguard">/learn/signguard</a> showed A&ndash;Z and 0&ndash;10 and described the clips as &ldquo;signed by a real person&rdquo;. The Learn index carried the same wording on its card.</dd>
 
-        <dt>What was actually true</dt>
-        <dd>The clips came from a public-domain motion-capture archive. The motion had been captured from a human signer, but the video was a 3D character rendered from that data in Blender. Each clip's own documentation file states the Blender version and the model name. There is no human footage in that archive at all.</dd>
+          <dt>What was actually true</dt>
+          <dd>The clips came from a public-domain motion-capture archive. The motion had been captured from a human signer, but the video was a 3D character rendered from that data in Blender. Each clip's own documentation file states the Blender version and the model name. There is no human footage in that archive at all.</dd>
 
-        <dt>How it was found</dt>
-        <dd>Nobody reported it. The site operator opened the page, watched one clip and saw a model. The licence had been checked before publishing; the video itself had not been watched.</dd>
+          <dt>How it was found</dt>
+          <dd>Nobody reported it. The site operator opened the page, watched one clip and saw a model. The licence had been checked before publishing; the video itself had not been watched.</dd>
 
-        <dt>What was done</dt>
-        <dd>The player was pulled the same day, within the hour. The page was replaced with a plain account of what had been published and why it was wrong. The Learn index card was corrected. The page was marked so search engines would not keep the old version.</dd>
+          <dt>What was done</dt>
+          <dd>The player was pulled the same day, within the hour. The page was replaced with a plain account of what had been published and why it was wrong. The Learn index card was corrected. The page was marked so search engines would not keep the old version.</dd>
 
-        <dt>Why it was not simply reworded</dt>
-        <dd>Changing the page to say &ldquo;3D character&rdquo; would have been accurate and still wrong to publish. Fingerspelling is read off a real hand &mdash; the exact shape, and the way it moves between letters. A rendered model smooths out the detail a learner needs, and they would not find out until they tried it with a Deaf person.</dd>
+          <dt>Why it was not simply reworded</dt>
+          <dd>Changing the page to say &ldquo;3D character&rdquo; would have been accurate and still wrong to publish. Fingerspelling is read off a real hand &mdash; the exact shape, and the way it moves between letters. A rendered model smooths out the detail a learner needs, and they would not find out until they tried it with a Deaf person.</dd>
 
-        <dt>What changed because of it</dt>
-        <dd>A standing rule, now written on the page itself: captured motion means footage of a person. A 3D model replaying captured motion is not a person and is not shown to a learner. The alphabet stays empty until there is real footage. The dictionary that replaced it streams public-domain video of real signers recorded by the Center for Accessible Technology in Sign.</dd>
-      </dl>
-    </div>
+          <dt>What changed because of it</dt>
+          <dd>A standing rule, now written on the page itself: captured motion means footage of a person. A 3D model replaying captured motion is not a person and is not shown to a learner. The alphabet stays empty until there is real footage. The dictionary that replaced it streams public-domain video of real signers recorded by the Center for Accessible Technology in Sign.</dd>
+        </dl>
+      </div>
+    </details>
 
     <p class="muted mt3">Nothing before this date is listed because nothing before this date had been logged &mdash; not because nothing was wrong. This page described how corrections work for some time before it carried a single one.</p>
   </section>
 
-  <div class="div"></div>
-
-  <section rv class="section">
-    <h2 class="sec-title">How to raise one</h2>
-    <p class="lead">Use any route on the <a href="/contact">contact page</a>. Say which page, the exact claim, and what you think is right.</p>
-    <p class="lead mt2">If it's about you or your project, say so. Those go first.</p>
+  <section class="section rv">
+    <div class="in-card">
+      <h2>How to raise one</h2>
+      <p>Use any route on the <a href="/contact">contact page</a>. Say which page, the exact claim, and what you think is right.</p>
+      <p>If it's about you or your project, say so. Those go first.</p>
+      <p><a class="btn btn-o" href="/contact">The contact page</a></p>
+    </div>
   </section>
 </div>
 
@@ -215,6 +224,7 @@
 </footer>
 <script src="/assets/js/site.js"></script>
 <script src="/assets/js/motion.js"></script>
+<script src="/assets/js/pages/info.js"></script>
 
 </body>
 </html>
