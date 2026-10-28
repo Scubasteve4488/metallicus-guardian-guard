@@ -1,0 +1,55 @@
+/* /projects/pulsevm (v3, 2026-10-28): status chips and "watch the blocks get made".
+   Without JavaScript the moving diagram is hidden and both fact lists show. */
+.pv-chips{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.pv-chips li{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:999px;border:1px solid var(--line,rgba(255,215,140,.16));background:rgba(255,255,255,.03);font-size:13.5px;color:var(--mute,#b8aecb)}
+.pv-chips li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
+.pv-chips b{color:#fff;font-weight:700}
+.pv-ok{--c:#3ddc97}.pv-no{--c:#ff8a7a}.pv-mid{--c:#f2c25b}
+
+html:not(.js) .pv-tabs,html:not(.js) .pv-stage,html:not(.js) .pv-log,html:not(.js) .pv-ctl{display:none}
+.pv-tabs{display:inline-flex;gap:6px;padding:5px;border-radius:999px;border:1px solid var(--line,rgba(255,215,140,.16));background:rgba(0,0,0,.25);margin:16px 0 18px;flex-wrap:wrap}
+.pv-tabs button{cursor:pointer;padding:9px 16px;border-radius:999px;border:0;background:none;color:var(--mute,#b8aecb);font:700 14px var(--sans,Inter,sans-serif)}
+.pv-tabs button[aria-pressed="true"]{color:#1b1206;background:linear-gradient(180deg,#ffdf94,#f2c25b)}
+.pv-tabs button[data-mode="pulse"][aria-pressed="true"]{color:#fff;background:linear-gradient(180deg,#b386ff,#7b3ff0)}
+.pv-stage{display:grid;grid-template-columns:150px 30px minmax(0,1fr);align-items:stretch;gap:12px;padding:20px;border-radius:22px;border:1px solid var(--line,rgba(255,215,140,.16));background:repeating-linear-gradient(90deg,rgba(255,255,255,.025) 0 1px,transparent 1px 48px),linear-gradient(160deg,#1c1626,#0f0c15);box-shadow:0 40px 80px -40px #000;min-height:190px}
+.pv-cap{margin:0 0 10px;font:600 11.5px var(--mono,monospace);text-transform:uppercase;letter-spacing:.06em;color:var(--dim,#8b819c)}
+.pv-cap span{color:#c7a6ff;text-transform:none;letter-spacing:0;margin-left:6px}
+.pv-q{display:flex;flex-wrap:wrap;align-content:flex-start;gap:7px;min-height:110px;padding:10px;border-radius:14px;border:1px dashed rgba(255,255,255,.18)}
+.pv-tx{width:16px;height:16px;border-radius:50%;background:#ffdf94;box-shadow:0 0 10px rgba(242,194,91,.7);animation:pv-pop .35s ease both}
+.pv-tx.early{background:#ff8a7a;box-shadow:0 0 12px rgba(255,138,122,.8)}
+.pv-tx.gone{animation:pv-drop .8s ease forwards}
+@keyframes pv-pop{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes pv-drop{to{transform:translateY(30px) scale(.4);opacity:0}}
+.pv-arrow{display:grid;place-items:center;font-size:24px;color:var(--dim,#8b819c)}
+.pv-chain{min-width:0;overflow:hidden}
+.pv-track{list-style:none;margin:0;padding:0;display:flex;gap:10px;justify-content:flex-end;min-height:120px;align-items:flex-end}
+.pv-blk{flex:0 0 86px;height:112px;border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:6px;background:linear-gradient(170deg,#2a2036,#151020);border:1px solid rgba(242,194,91,.35);animation:pv-in .45s cubic-bezier(.2,.8,.2,1) both}
+.pv-pulse .pv-blk{border-color:rgba(155,92,255,.5);background:linear-gradient(170deg,#2a1f45,#120d1c)}
+.pv-blk .n{font:700 12px var(--mono,monospace);color:#fff}
+.pv-blk .d{display:flex;flex-wrap:wrap;gap:4px;flex:1;align-content:flex-start}
+.pv-blk .d i{width:10px;height:10px;border-radius:50%;background:#ffdf94}
+.pv-blk .e{font:500 10.5px var(--mono,monospace);color:var(--dim,#8b819c)}
+.pv-blk .w{font:600 10.5px var(--mono,monospace);color:#c7a6ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@keyframes pv-in{from{opacity:0;transform:translateY(-18px) scale(.9)}to{opacity:1;transform:none}}
+html.reduce .pv-blk,html.reduce .pv-tx{animation:none}
+.pv-log{min-height:1.6em;margin:12px 0 0;font:500 13px var(--mono,monospace);color:var(--mute,#b8aecb)}
+.pv-ctl{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.pv-ctl button{cursor:pointer;padding:10px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);color:#fff;font:700 13.5px var(--sans,Inter,sans-serif)}
+.pv-ctl button:hover{border-color:#f2c25b}
+.pv-ctl [data-pv-early]{border-color:rgba(255,138,122,.5)}
+.pv-facts{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.pv-facts>div{padding:18px 20px;border-radius:18px;border:1px solid var(--line,rgba(255,215,140,.16));background:rgba(0,0,0,.25);transition:opacity .3s,border-color .3s}
+.pv-facts h3{margin:0 0 8px;font:700 17px var(--serif,Cinzel,serif);color:#fff}
+.pv-facts>div.is-on{border-color:#f2c25b}
+.pv-facts>div[data-facts="pulse"].is-on{border-color:#9b5cff}
+html.js .pv-facts>div:not(.is-on){opacity:.5}
+.pv-note{margin-top:14px;font-size:12.5px;color:var(--dim,#8b819c)}
+@media (max-width:719px){
+  .pv-tabs{display:flex;flex-wrap:nowrap}
+  .pv-tabs button{flex:1;padding:9px 8px;font-size:13px}
+  .pv-stage{grid-template-columns:1fr;padding:14px}
+  .pv-arrow{transform:rotate(90deg);height:20px}
+  .pv-q{min-height:56px}
+  .pv-blk{flex-basis:74px;height:100px}
+  .pv-facts{grid-template-columns:1fr}
+}
