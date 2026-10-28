@@ -5,7 +5,8 @@
  *
  * TAB 1 — Dictionary. Live lookup against the Internet Archive collection
  * "The ASL Dictionary" by the Center for Accessible Technology in Sign
- * (contributor Harley Hamilton, contact smartsigndictionary@gmail.com). Every
+ * (contributor Harley Hamilton; contact details are on the collection page,
+ * https://archive.org/details/asl-dictionary). Every
  * item checked on 2026-10-05 is marked "Rights: Public Domain" on archive.org,
  * and the operator confirmed by eye that the signer is a real person.
  *
