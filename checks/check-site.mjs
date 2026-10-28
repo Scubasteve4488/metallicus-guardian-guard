@@ -35,16 +35,18 @@ for (const f of pages) {
     const hash = u.split('#')[1];
     if (hash && !fs.readFileSync(target, 'utf8').includes('id="' + hash + '"')) fails.push(rel(f) + ': missing anchor ' + u);
   }
-  const nav = t.match(/<nav id="nav"[\s\S]*?<\/nav>/), foot = t.match(/<footer id="site-footer">[\s\S]*?<\/footer>/);
+  // Two shells while the site moves to v3 (2026-10-28): old nav#nav/footer#site-footer, or v3 header.top/footer.foot (docs/SHELL-V3.html).
+  const nav = t.match(/<header class="top">[\s\S]*?<\/header>/) || t.match(/<nav id="nav"[\s\S]*?<\/nav>/);
+  const foot = t.match(/<footer class="foot">[\s\S]*?<\/footer>/) || t.match(/<footer id="site-footer">[\s\S]*?<\/footer>/);
   if (!nav || !foot) fails.push(rel(f) + ': no shared nav/footer'); else { navs.add(nav[0]); foots.add(foot[0]); }
   for (const b of BANNED) if (b.test(t)) fails.push(rel(f) + ': banned line ' + b);
   if (OLDART.test(t)) fails.push(rel(f) + ': old character art ' + t.match(OLDART)[0]);
   if (/\brangel\b/i.test(t)) fails.push(rel(f) + ': legal surname');
   // Guard.IAN's own address is allowed (Tim, 2026-10-26: "you can do the email"). Any other address still fails.
-  if (/[a-z0-9._%+-]+@(?!usernames|username\b)[a-z0-9.-]+\.[a-z]{2,}/i.test(t.replaceAll('guard.ian58@yahoo.com', ''))) fails.push(rel(f) + ': email address');
+  if (/[a-z0-9._%+-]+@(?!usernames|username\b|[a-z0-9]+\.token\b)[a-z0-9.-]+\.[a-z]{2,}/i.test(t.replaceAll('guard.ian58@yahoo.com', ''))) fails.push(rel(f) + ': email address');
 }
-if (navs.size > 1) fails.push('nav differs across pages: ' + navs.size);
-if (foots.size > 1) fails.push('footer differs across pages: ' + foots.size);
+if (navs.size > 2 || (navs.size === 2 && ![...navs].some(n => n.startsWith('<header class="top">')))) fails.push('nav differs across pages: ' + navs.size);
+if (foots.size > 2 || (foots.size === 2 && ![...foots].some(n => n.startsWith('<footer class="foot">')))) fails.push('footer differs across pages: ' + foots.size);
 for (const line of fs.readFileSync(path.join(ROOT, '_redirects'), 'utf8').split('\n')) {
   const p = line.trim().split(/\s+/);
   if (!line.trim() || line.trim().startsWith('#') || p[0] === '/*') continue;

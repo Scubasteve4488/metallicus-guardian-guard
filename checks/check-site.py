@@ -21,7 +21,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 FAILS = []
 NOTES = []
 
-PAGES = [p for p in ROOT.rglob("*.html") if "legacy" not in p.parts and ".git" not in p.parts and "preview" not in p.parts]  # preview/: temporary design options, own nav by design
+PAGES = [p for p in ROOT.rglob("*.html") if "legacy" not in p.parts and ".git" not in p.parts]
 
 # Routes the pre-rework site served, from its own ROUTES table at 6ff7384.
 OLD_ROUTES = [
@@ -38,7 +38,8 @@ FORBIDDEN = [
     (r"(?i)\brangel\b", "operator's legal surname"),
     (r"(?i)\bTim\s+[A-Z][a-z]+", "a personal first name used as a name"),
     # Guard.IAN's own address is allowed (Tim, 2026-10-26: "you can do the email"); any other address fails.
-    (r"(?i)[a-z0-9._%+-]+@(?!usernames|username\b)[a-z0-9.-]+\.[a-z]{2,}", "an email address"),
+    # XPR token notation such as XMD@xmd.token is not an address (2026-10-28).
+    (r"(?i)[a-z0-9._%+-]+@(?!usernames|username\b|[a-z0-9]+\.token\b)[a-z0-9.-]+\.[a-z]{2,}", "an email address"),
 ]
 
 
@@ -98,16 +99,19 @@ def check_shell():
     navs, foots = collections.defaultdict(list), collections.defaultdict(list)
     for page in PAGES:
         text = page.read_text(encoding="utf-8")
-        nav = re.search(r'<nav id="nav".*?</nav>', text, re.S)
-        foot = re.search(r'<footer id="site-footer">.*?</footer>', text, re.S)
+        # Two shells while the site moves to v3 (2026-10-28): the old one (nav#nav + footer#site-footer)
+        # and the v3 one (header.top + footer.foot, see docs/SHELL-V3.html). Pages are grouped by shell,
+        # and every page within a group must carry it byte-identical.
+        nav = re.search(r'<header class="top">.*?</header>', text, re.S) or re.search(r'<nav id="nav".*?</nav>', text, re.S)
+        foot = re.search(r'<footer class="foot">.*?</footer>', text, re.S) or re.search(r'<footer id="site-footer">.*?</footer>', text, re.S)
         if not nav or not foot:
             FAILS.append("%s: missing shared nav or footer" % page.relative_to(ROOT))
             continue
         navs[nav.group(0)].append(page)
         foots[foot.group(0)].append(page)
-    if len(navs) > 1:
+    if len(navs) > 2 or (len(navs) == 2 and not any('<header class="top">' in k for k in navs)):
         FAILS.append("nav differs across pages (%d variants)" % len(navs))
-    if len(foots) > 1:
+    if len(foots) > 2 or (len(foots) == 2 and not any('<footer class="foot">' in k for k in foots)):
         FAILS.append("footer differs across pages (%d variants)" % len(foots))
 
 

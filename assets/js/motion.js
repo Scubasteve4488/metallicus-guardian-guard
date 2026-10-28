@@ -1,4 +1,4 @@
-/* StandGuard design previews: shared behaviour for /preview/a, /b, /c.
+/* StandGuard v3: shared motion and interaction (reveal on scroll, intro film, pinned story, desk scenes, tabs, chapter index, menu).
    No framework, no CDN, no inline script (the site CSP keeps script-src to 'self').
    Everything here is progressive: with JavaScript off, every page still reads top to bottom. */
 (function () {
@@ -10,7 +10,7 @@
 
   /* Mobile menu */
   var tog = document.querySelector('[data-navtoggle]');
-  var menu = document.getElementById('pv-menu');
+  var menu = document.getElementById('site-menu');
   if (tog && menu) {
     tog.addEventListener('click', function () {
       var open = menu.classList.toggle('open');
@@ -173,4 +173,26 @@
 
   /* Option switcher on every preview */
   var yr = document.getElementById('pv-year'); if (yr) yr.textContent = new Date().getFullYear();
+})();
+
+/* v3 shell: menu drop-downs. One open at a time; Escape or a click elsewhere closes them;
+   the current page is marked in the menu. */
+(function () {
+  'use strict';
+  var groups = document.querySelectorAll('.menu .dd');
+  var close = function (except) { for (var g = 0; g < groups.length; g++) if (groups[g] !== except) groups[g].removeAttribute('open'); };
+  for (var k = 0; k < groups.length; k++) groups[k].addEventListener('toggle', function (ev) { if (ev.target.open) close(ev.target); });
+  document.addEventListener('click', function (e) { if (!e.target.closest || !e.target.closest('.menu .dd')) close(null); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(null); });
+  var path = window.location.pathname.replace(/\/+$/, '') || '/';
+  var links = document.querySelectorAll('.menu a[href^="/"]');
+  var best = null;
+  for (var i = 0; i < links.length; i++) {
+    var href = (links[i].getAttribute('href') || '').split('#')[0].replace(/\/+$/, '') || '/';
+    if (links[i].getAttribute('href').indexOf('#') > -1) continue;
+    if (href === '/' ? path === '/' : (path === href || path.indexOf(href + '/') === 0)) {
+      if (!best || href.length > (best.getAttribute('href') || '').length) best = links[i];
+    }
+  }
+  if (best) best.setAttribute('aria-current', 'page');
 })();
