@@ -21,7 +21,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 FAILS = []
 NOTES = []
 
-PAGES = [p for p in ROOT.rglob("*.html") if "legacy" not in p.parts and ".git" not in p.parts]
+PAGES = [p for p in ROOT.rglob("*.html") if "legacy" not in p.parts and ".git" not in p.parts and "preview" not in p.parts]  # preview/: temporary design options, own nav by design
 
 # Routes the pre-rework site served, from its own ROUTES table at 6ff7384.
 OLD_ROUTES = [
