@@ -102,3 +102,5 @@ body.band-forge main#main::before{--band:url(/assets/img/ian/scene-forge.webp)}
 html:not(.js) .rv{opacity:1;transform:none}
 
 .menu .cta[aria-current]{color:#1b1206}
+/* the shared footer's disclaimer line is not the site.css .disc box (2026-10-28) */
+.foot .disc{display:block;background:none;border:0;border-top:1px solid rgba(255,255,255,.06);border-radius:0;padding:18px 0 0;margin-top:6px;font-size:12.5px;color:var(--dim)}
