@@ -1,0 +1,118 @@
+/* StandGuard v3: community pages (/community and its sub-pages). Loaded after v3-pages.css.
+   Every class here starts with cm- so nothing clashes with site.css. */
+
+/* ---------- the community road map (/community) ----------
+   Guard.IAN on one side, KSTO at the heart, roads out to each project and down to XPR Network.
+   Pick a stop and a light walks the road there; the card says how it relates to KSTO and to Guard.IAN. */
+.cm-road{display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(22px,3.5vw,48px);align-items:start;margin-top:26px}
+.cm-road>*{min-width:0}
+html:not(.js) .cm-road{display:none}
+.cm-stage{position:relative;width:100%;aspect-ratio:1000/660;border-radius:24px;border:1px solid var(--line);overflow:hidden;
+  background:radial-gradient(60% 60% at 42% 38%,rgba(155,92,255,.22),transparent 70%),radial-gradient(40% 40% at 30% 85%,rgba(242,194,91,.10),transparent 70%),linear-gradient(170deg,#141020,#0b0910)}
+.cm-stage.cm-tall{aspect-ratio:400/980}
+.cm-tall .cm-elabel{display:none}
+.cm-tall .cm-elabel.on{display:inline}
+.cm-stage svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.cm-path-base{fill:none;stroke:#2c1b4a;stroke-linecap:round}
+.cm-path-line{fill:none;stroke:rgba(242,194,91,.35);stroke-linecap:round}
+.cm-path-base.on{stroke:#5a2bd0;filter:drop-shadow(0 0 10px rgba(155,92,255,.7))}
+.cm-path-line.on{stroke:#ffdf94}
+.cm-elabel{fill:#b8aecb;font-family:"Inter",system-ui,sans-serif;font-weight:600;paint-order:stroke;stroke:#0b0910;stroke-width:5px;stroke-linejoin:round;pointer-events:none;transition:fill .3s}
+.cm-elabel.on{fill:#ffdf94}
+.cm-spark{fill:#fff6dc;filter:drop-shadow(0 0 8px #f2c25b) drop-shadow(0 0 16px #9b5cff)}
+.cm-stop{position:absolute;transform:translate(-50%,-50%);width:var(--d);height:auto;aspect-ratio:1;padding:0;border-radius:50%;cursor:pointer;
+  border:2px solid rgba(255,255,255,.18);background:#000;transition:border-color .25s,box-shadow .25s,transform .25s}
+.cm-stop img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.cm-stop .cm-txt{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;font:700 clamp(12px,1.8vw,20px) var(--mono);color:#fff;background:linear-gradient(160deg,#2a1f45,#120d1c)}
+.cm-stop .cm-lbl{position:absolute;left:50%;top:calc(100% + 5px);transform:translateX(-50%);white-space:nowrap;font:700 clamp(10.5px,1.15vw,13px)/1.2 var(--sans);color:var(--text);text-shadow:0 1px 6px #000,0 0 2px #000;pointer-events:none}
+.cm-stop:hover,.cm-stop:focus-visible{border-color:var(--gold2);box-shadow:0 0 24px -4px rgba(242,194,91,.8);transform:translate(-50%,-50%) scale(1.06)}
+.cm-stop[aria-pressed="true"]{border-color:var(--gold);box-shadow:0 0 0 4px rgba(242,194,91,.2),0 0 34px rgba(242,194,91,.7)}
+.cm-stop.cm-hub{border-color:rgba(242,194,91,.6);box-shadow:0 0 0 4px rgba(242,194,91,.12),0 0 60px rgba(155,92,255,.6)}
+.cm-stop.cm-hub .cm-lbl{font-family:var(--serif);letter-spacing:.12em;color:var(--gold2)}
+.cm-stop.cm-on-route{border-color:rgba(242,194,91,.75)}
+.cm-zone{position:absolute;font:600 10.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:rgba(199,166,255,.55);pointer-events:none;transform:translate(-50%,-50%);white-space:nowrap}
+.cm-side{display:grid;gap:12px}
+.cm-ctrl{display:flex;flex-wrap:wrap;gap:8px}
+.cm-ctrl button{cursor:pointer;padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);font:600 14px var(--sans)}
+.cm-ctrl button:hover{border-color:var(--gold)}
+.cm-ctrl button[aria-pressed="true"]{color:#1b1206;background:linear-gradient(180deg,var(--gold2),var(--gold));border-color:var(--gold)}
+.cm-card{padding:clamp(20px,2.6vw,28px);border-radius:22px;border:1px solid var(--line);background:linear-gradient(160deg,#1c1626,#0f0c15);box-shadow:0 40px 80px -40px #000}
+.cm-card .cm-route{margin:0;font:500 12px/1.5 var(--mono);letter-spacing:.04em;color:var(--gold)}
+.cm-card h3{margin:6px 0 10px;font:700 clamp(24px,2.6vw,32px)/1.1 var(--serif);color:#fff}
+.cm-card p{color:var(--mute);margin:0 0 12px;line-height:1.65}
+.cm-card dl{margin:0 0 12px;display:grid;gap:8px}
+.cm-card dt{font:600 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
+.cm-card dd{margin:0 0 4px;padding:10px 12px;border-radius:10px;background:rgba(155,92,255,.1);border:1px solid rgba(155,92,255,.25);font-size:14.5px;line-height:1.55;color:#e4d8ff}
+.cm-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.cm-links a{display:inline-flex;align-items:center;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.2);color:var(--text);text-decoration:none;font:600 13.5px var(--sans);background:rgba(255,255,255,.04)}
+.cm-links a:hover{border-color:var(--gold);background:rgba(242,194,91,.08);color:#fff}
+.cm-note{font-size:12.5px;color:var(--dim);margin:0}
+@media (max-width:980px){.cm-road{grid-template-columns:1fr}}
+
+/* ---------- community cards (hub page) ---------- */
+.comm-card{background:linear-gradient(165deg,rgba(32,26,44,.86),rgba(16,12,22,.92))!important;border:1px solid var(--line)!important;border-radius:18px!important;transition:transform .25s,border-color .25s}
+a.comm-card:hover{border-color:rgba(242,194,91,.45)!important;transform:translateY(-3px)}
+.char-avi{border-radius:50%!important;border:2px solid rgba(242,194,91,.45)!important;width:58px!important;height:58px!important}
+.comm-name{font-family:var(--serif);font-weight:700;font-size:20px;color:#fff}
+.comm-role{font:500 12px var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--gold);margin:2px 0 6px}
+
+/* ---------- sub-page hero (KSTO, Snipverse, CypherGang) ---------- */
+.cm-hero{display:flex;align-items:center;gap:clamp(18px,3vw,32px);flex-wrap:wrap;margin:6px 0 26px}
+.cm-hero img{width:clamp(96px,14vw,140px);height:clamp(96px,14vw,140px);border-radius:50%;object-fit:cover;border:3px solid rgba(242,194,91,.6);box-shadow:0 0 50px -6px rgba(155,92,255,.65);flex:0 0 auto}
+.cm-hero .page-title{margin:4px 0 6px}
+.cm-hero .page-sub{margin:0}
+
+/* ---------- sub-pages: tighter section rhythm than the long pages ---------- */
+.cm-sub>.section{padding:clamp(26px,4vw,52px) 0}
+.cm-sub>.section:first-of-type{padding-top:clamp(18px,3vw,36px)}
+
+/* ---------- tabs (KSTO page) ---------- */
+.cm-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 18px}
+.cm-tabs button{cursor:pointer;padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--mute);font:600 14px var(--sans);transition:border-color .2s,color .2s,background .2s}
+.cm-tabs button:hover{color:#fff;border-color:rgba(242,194,91,.45)}
+.cm-tabs button[aria-selected="true"]{color:#1b1206;background:linear-gradient(180deg,var(--gold2),var(--gold));border-color:var(--gold)}
+html:not(.js) .cm-tabs{display:none}
+.cm-panel{padding:clamp(22px,3vw,34px);border-radius:22px;border:1px solid var(--line);background:linear-gradient(160deg,rgba(32,26,44,.86),rgba(16,12,22,.92));box-shadow:0 30px 60px -36px #000;margin-bottom:18px}
+.cm-panel h2,.cm-panel h3{font-family:var(--serif);color:#fff;margin:0 0 10px}
+.cm-panel p{color:var(--mute);line-height:1.75;max-width:66ch}
+.cm-panel .cm-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.cm-panel .cm-row img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid rgba(242,194,91,.5)}
+.cm-panel .flex{margin-top:14px}
+.cm-chiplist{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px;padding:0;list-style:none}
+.cm-chiplist li{padding:6px 12px;border-radius:999px;font:600 13px var(--mono);color:#efe4ff;background:rgba(155,92,255,.14);border:1px solid rgba(155,92,255,.3)}
+.cm-chiplist li.cm-gold{color:#1b1206;background:linear-gradient(180deg,var(--gold2),var(--gold));border-color:var(--gold)}
+.cm-when{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;border:1px solid rgba(242,194,91,.35);background:rgba(242,194,91,.07);font:600 14px var(--mono);color:var(--gold2)}
+
+/* ---------- step flow (Snipverse, CypherGang) ---------- */
+.cm-flow{margin-top:18px}
+.cm-steps{--gap:clamp(14px,3vw,40px);display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:var(--gap);list-style:none;margin:0 0 18px;padding:0}
+.cm-steps li{position:relative;display:flex;min-width:0}
+.cm-steps li+li::before{content:"";position:absolute;right:100%;top:50%;width:var(--gap);height:2px;background:linear-gradient(90deg,rgba(242,194,91,.6),rgba(155,92,255,.6))}
+.cm-step{flex:1;min-width:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 10px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(170deg,rgba(255,255,255,.05),rgba(255,255,255,.01));color:var(--text);font:600 14px/1.3 var(--sans);text-align:center;transition:border-color .2s,transform .2s,box-shadow .2s}
+.cm-step img{width:54px;height:54px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.15)}
+.cm-step .cm-num{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;font:700 18px var(--serif);color:var(--gold2);border:1px solid rgba(242,194,91,.45);background:rgba(242,194,91,.06)}
+.cm-step small{font:500 11.5px var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--dim)}
+.cm-step:hover{border-color:rgba(242,194,91,.5);transform:translateY(-2px)}
+.cm-step[aria-selected="true"]{border-color:var(--gold);box-shadow:0 0 0 3px rgba(242,194,91,.14),0 0 30px -8px rgba(242,194,91,.6)}
+html:not(.js) .cm-steps{display:none}
+.cm-fpanel{padding:clamp(20px,2.6vw,30px);border-radius:20px;border:1px solid var(--line);background:linear-gradient(160deg,#1c1626,#0f0c15);margin-bottom:12px}
+.cm-fpanel h3{margin:0 0 8px;font:700 clamp(22px,2.4vw,28px)/1.15 var(--serif);color:#fff}
+.cm-fpanel p{color:var(--mute);line-height:1.75;margin:0 0 10px;max-width:66ch}
+.cm-props{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.cm-props span{padding:8px 14px;border-radius:12px;border:1px solid rgba(155,92,255,.3);background:rgba(155,92,255,.08);font-size:14px;color:#e4d8ff}
+@media (max-width:700px){
+  .cm-steps{grid-auto-flow:row;gap:10px}
+  .cm-steps li+li::before{display:none}
+  .cm-step{flex-direction:row;justify-content:flex-start;text-align:left;padding:12px 14px}
+  .cm-step img,.cm-step .cm-num{width:42px;height:42px}
+}
+
+/* ---------- Snippy and Vibrr ---------- */
+.cm-portrait{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,48px);align-items:center;margin-top:12px}
+.cm-portrait img{width:clamp(170px,22vw,240px);height:auto;aspect-ratio:500/666;object-fit:cover;border-radius:22px;border:3px solid rgba(242,194,91,.55);box-shadow:0 0 70px -10px rgba(155,92,255,.6)}
+.cm-canon{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}
+.cm-canon li{position:relative;padding:10px 14px 10px 40px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text)}
+.cm-canon li::before{content:"\2713";position:absolute;left:15px;top:10px;color:var(--gold);font-weight:700}
+@media (max-width:700px){.cm-portrait{grid-template-columns:1fr}.cm-portrait img{margin:0 auto}}
+.cm-quote{margin:18px 0 0;padding:clamp(22px,3vw,36px);border-radius:22px;border:1px solid rgba(155,92,255,.35);background:linear-gradient(160deg,rgba(155,92,255,.12),rgba(16,12,22,.9));font:600 clamp(22px,3vw,34px)/1.3 var(--serif);color:#fff}
+.cm-quote footer{margin-top:10px;font:500 13px var(--sans);color:var(--dim)}
