@@ -23,6 +23,8 @@
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="stylesheet" href="/assets/css/v3-pages.css">
+<link rel="stylesheet" href="/assets/css/pages/proof-kit.css">
+<link rel="stylesheet" href="/assets/css/pages/status.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -85,9 +87,25 @@
     <p class="lead mt2">Where each part of the project actually stands. Kept by hand, not a live feed. Last updated 23 October 2026; anything that changes by the day links to where you can read it live.</p>
   </section>
 
+  <section class="section pk-js-only" aria-labelledby="st-board-title" data-st-board>
+    <div class="pk"><div class="pk-panel">
+      <div class="pk-head"><div><p class="pk-kicker">Every part of the project</p><h2 class="pk-title" id="st-board-title">The board</h2></div><p class="pk-muted">Kept by hand. Updated 23 October 2026.</p></div>
+      <div class="st-meter" data-st-meter role="group" aria-label="Parts of the project by state"></div>
+      <div class="st-legend" data-st-legend></div>
+      <div class="pk-chips" role="group" aria-label="Show">
+        <button type="button" class="pk-chip" data-st-filter="all" aria-pressed="true">All <span class="pk-n"></span></button>
+        <button type="button" class="pk-chip" data-st-filter="live" aria-pressed="false"><span class="pk-dot pk-pass"></span>Live <span class="pk-n"></span></button>
+        <button type="button" class="pk-chip" data-st-filter="testing" aria-pressed="false"><span class="pk-dot" style="color:#f0b429"></span>Built, not proven <span class="pk-n"></span></button>
+        <button type="button" class="pk-chip" data-st-filter="off" aria-pressed="false"><span class="pk-dot pk-none"></span>Off for now <span class="pk-n"></span></button>
+        <button type="button" class="pk-chip" data-st-filter="parked" aria-pressed="false"><span class="pk-dot" style="color:#8d7bb8"></span>Parked <span class="pk-n"></span></button>
+      </div>
+      <p class="pk-muted" data-st-summary aria-live="polite"></p>
+    </div></div>
+  </section>
+
   <div class="div-g"></div>
 
-  <section rv class="section" id="live">
+  <section class="section rv" id="live">
     <h2 class="sec-title"><span class="state-pill state-live">Live</span></h2>
     <div class="grid grid-2 mt3">
       <div class="card"><h3>Launch wallets</h3><p>Seven wallets buy every new SimpleDEX launch with 0.01 XPR each, a test size, then hold, claim and add liquidity when the token graduates. XOXO (469) and KWYS (470) ran on the new sender timing: all seven wallets landed in the first legal block both times. At KWYS one wallet was first in the block, and all seven were in the top 11 of 13.</p><p><a class="card-link" href="/launches">The launch record</a></p></div>
@@ -105,7 +123,7 @@
 
   <div class="div"></div>
 
-  <section rv class="section" id="testing">
+  <section class="section rv" id="testing">
     <h2 class="sec-title"><span class="state-pill state-testing">Built, not proven</span></h2>
     <div class="grid grid-2 mt3">
       <div class="card"><h3>Creator shield buy</h3><p>A creator who buys enough in their own creator-only window (120 seconds on mainnet since mid-October; 60 seconds when it was tested) stops the sell-and-reset trick. Shown on the SimpleDEX testnet at 1/1000 scale. Not done on mainnet.</p><p><a class="card-link" href="/projects/shield-buy">The finding</a></p></div>
@@ -118,7 +136,7 @@
 
   <div class="div"></div>
 
-  <section rv class="section" id="off">
+  <section class="section rv" id="off">
     <h2 class="sec-title"><span class="state-pill state-planned">Off for now</span></h2>
     <div class="grid grid-2 mt3">
       <div class="card"><h3>Launch Rehearsal</h3><p>Direction agreed. Nothing built.</p></div>
@@ -127,7 +145,7 @@
 
   <div class="div"></div>
 
-  <section rv class="section" id="parked">
+  <section class="section rv" id="parked">
     <h2 class="sec-title"><span class="state-pill state-parked">Parked</span></h2>
     <div class="disc mb3">
       <span>&#8505;</span>
@@ -156,11 +174,11 @@
 
   <div class="div"></div>
 
-  <section rv class="section" id="known-gaps">
+  <section class="section rv" id="known-gaps">
     <h2 class="sec-title">Known gaps</h2>
     <ul class="ac-list" style="max-width:660px;">
       <li>Old web addresses redirect temporarily until each one is checked.</li>
-      <li>Fonts still load from Google.</li>
+      <li>Fonts now load from this site (since 28 October 2026). The security policy still allows Google's font servers and can drop them.</li>
     </ul>
     <p class="mt3">Spotted something wrong? <a href="/corrections">Tell us</a>.</p>
   </section>
@@ -179,6 +197,7 @@
 </footer>
 <script src="/assets/js/site.js"></script>
 <script src="/assets/js/motion.js"></script>
+<script src="/assets/js/pages/status.js"></script>
 
 </body>
 </html>

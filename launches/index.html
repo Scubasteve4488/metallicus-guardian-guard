@@ -23,6 +23,8 @@
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="stylesheet" href="/assets/css/v3-pages.css">
+<link rel="stylesheet" href="/assets/css/pages/proof-kit.css">
+<link rel="stylesheet" href="/assets/css/pages/launch-block.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -98,7 +100,30 @@
     </div>
   </section>
 
-  <section rv class="section" id="launch-watch">
+  <section class="section rv" id="explore" aria-labelledby="lb-title">
+    <h2 class="sec-title" id="lb-title">Walk through every launch</h2>
+    <p class="lead">Pick a launch and watch its first legal block fill up, buy by buy, in the order the producer packed it. His wallets glow; every other buy is shown as another buyer. Each launch is read from its own report below.</p>
+    <div class="pk lb-explorer" data-lb-explorer>
+      <div class="lb-picks pk-js-only" role="group" aria-label="Choose a launch">
+      <button type="button" class="lb-pick" data-launch="ian" data-name="IAN 463" data-src="/launches/ian/" aria-pressed="false"><b>IAN 463</b><small>1 of 5 in the block</small><span class="lb-pf pk-fail">FAIL</span></button>
+      <button type="button" class="lb-pick" data-launch="gondor" data-name="GONDOR 464" data-src="/launches/gondor/" aria-pressed="false"><b>GONDOR 464</b><small>5 of 5 in the block</small><span class="lb-pf pk-fail">FAIL</span></button>
+      <button type="button" class="lb-pick" data-launch="lfqp" data-name="LFQP 465" data-src="/launches/lfqp/" aria-pressed="false"><b>LFQP 465</b><small>5 of 5 in the block</small><span class="lb-pf pk-pass">PASS</span></button>
+      <button type="button" class="lb-pick" data-launch="stanley" data-name="STANLEY 466" data-src="/launches/stanley/" data-note="All seven of his wallets bought 2 to 4 minutes after this block: 11 buys, 55,000 XPR in total." aria-pressed="false"><b>STANLEY 466</b><small>0 of 7 · all 7 late</small><span class="lb-pf pk-fail">FAIL</span></button>
+      <button type="button" class="lb-pick" data-launch="sungf" data-name="SUNGF 467" data-src="/launches/sungf/" data-note="His fleet was not running at this launch: the old code was retired on 24 September and the rebuilt watcher started after it. Not counted in the test." aria-pressed="false"><b>SUNGF 467</b><small>fleet not running</small><span class="lb-pf pk-none">NOT COUNTED</span></button>
+      <button type="button" class="lb-pick" data-launch="star" data-name="STAR 468" data-src="/launches/star/" aria-pressed="false"><b>STAR 468</b><small>1 of 7 in the block</small><span class="lb-pf pk-fail">FAIL</span></button>
+      <button type="button" class="lb-pick" data-launch="xoxo" data-name="XOXO 469" data-src="/launches/xoxo/" aria-pressed="false"><b>XOXO 469</b><small>7 of 7 in the block</small><span class="lb-pf pk-fail">FAIL</span></button>
+      <button type="button" class="lb-pick" data-launch="kwys" data-name="KWYS 470" data-src="/launches/kwys/" aria-pressed="false"><b>KWYS 470</b><small>7 of 7 in the block</small><span class="lb-pf pk-fail">FAIL</span></button>
+      <button type="button" class="lb-pick" data-launch="stars" data-name="STARS 471" data-inline data-ours="1,2,3,4,5,6,7" data-total="10" data-size="0.01" data-fleet="7" data-test="PASS" data-block="408086182" data-date="11 October 2026" data-note="STARS has no full Launch Watch report yet. These numbers are the ones in the table below: his seven wallets took places 1 to 7 of the first 10 buys in block 408086182, at 0.01 XPR each; sizes of the other buys are not shown here." aria-pressed="false"><b>STARS 471</b><small>7 of 7 · places 1–7</small><span class="lb-pf pk-pass">PASS</span></button>
+      </div>
+      <div class="pk-panel pk-js-only">
+        <div class="pk-head"><div><p class="pk-kicker">The first legal block</p></div><button type="button" class="pk-btn" data-lb-playall>Play every launch in order</button></div>
+        <div class="lb-stage" data-lb-stage aria-live="polite"></div>
+      </div>
+      <noscript><p class="lead">Every launch is in the table under "The first-block top-10 test" below, with a link to its full report.</p></noscript>
+    </div>
+  </section>
+
+  <section class="section rv" id="launch-watch">
     <h2 class="sec-title">Launch Watch</h2>
     <p class="lead">A free report per SimpleDEX launch, read from the chain, starting with IAN (token 463). Each one shows the first legal block: when it was stamped, which producer built it, every buy in it in order with its size, where our wallets sat, and when the token graduated and who sent the graduate transaction.</p>
     <p class="lead">We show account names as the blocks show them. We describe what happened; we do not label anyone.</p>
@@ -107,7 +132,7 @@
 
   <div class="div"></div>
 
-  <section rv class="section" id="test">
+  <section class="section rv" id="test">
     <h2 class="sec-title">The first-block top-10 test</h2>
     <p class="lead"><strong>All of his wallets in the top 10 of the first legal block.</strong> So far: 2 passes of 8 launches taken part in (LFQP and STARS). SUNGF is not counted: the fleet was not running. Guard.IAN kept the 0.01 XPR test buy size after the second pass.</p>
 
@@ -134,7 +159,7 @@
 
   <div class="div"></div>
 
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">What changed along the way</h2>
     <ul class="ac-list" style="max-width:680px;">
       <li><strong>XOXO and KWYS</strong> ran on the new sender timing. Both times all seven wallets got into the first legal block. At KWYS one of them was first in the block.</li>
@@ -145,7 +170,7 @@
 
   <div class="div"></div>
 
-  <section rv class="section" id="fleet">
+  <section class="section rv" id="fleet">
     <h2 class="sec-title">The launch fleet</h2>
     <p class="lead">Seven wallets, all public, so anyone can check what they do. They buy at the first legal block, hold, and when the token graduates they claim, pair into the pool, and send the leftovers to the holding wallet. They never sell a community token and never pull liquidity.</p>
     <div class="srcbox mt3" style="max-width:560px;">
@@ -165,7 +190,7 @@
 
   <div class="div"></div>
 
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">Who else is in that block</h2>
     <p class="lead">Since 3 March (counted 1 October), 3,213 buys have landed in a first legal block. 3,191 of them, 99.3%, came from 32 wallets. His seven are not counted in those numbers.</p>
     <p class="lead">How many people run those 32 wallets cannot be proven from the chain. We describe what the blocks show and name no one.</p>
@@ -173,7 +198,7 @@
 
   <div class="div"></div>
 
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">How the timing works</h2>
     <ul class="ac-list" style="max-width:680px;">
       <li>The contract checks the <strong>block's timestamp</strong>, not the clock.</li>
@@ -185,7 +210,7 @@
 
   <div class="div"></div>
 
-  <section rv class="section" id="rule-watch">
+  <section class="section rv" id="rule-watch">
     <h2 class="sec-title">Rule-change watch</h2>
     <ul class="ac-list" style="max-width:680px;">
       <li>SimpleDEX's settings are changed by <code>simplesetup</code>, a 2-of-4 multisig account.</li>
@@ -215,6 +240,7 @@
 </footer>
 <script src="/assets/js/site.js"></script>
 <script src="/assets/js/motion.js"></script>
+<script src="/assets/js/pages/launch-block.js"></script>
 
 </body>
 </html>
