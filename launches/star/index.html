@@ -23,6 +23,8 @@
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="stylesheet" href="/assets/css/v3-pages.css">
+<link rel="stylesheet" href="/assets/css/pages/proof-kit.css">
+<link rel="stylesheet" href="/assets/css/pages/launch-block.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -99,7 +101,7 @@
 
   <div class="div-g"></div>
 
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">What happened</h2>
     <ul class="ac-list" style="max-width:680px;">
       <li>The creator-only window ended 60 seconds after the token was created. The first block anyone else could buy in was block 405537350, on 26 September 2026, built by the producer cryptolions.</li>
@@ -115,7 +117,15 @@
 
   <div class="div"></div>
 
-  <section rv class="section">
+  <section class="section rv" aria-labelledby="lb-self-title">
+    <h2 class="sec-title" id="lb-self-title">The block, replayed</h2>
+    <p class="lead">The buys in the table below, drawn as squares in the order the producer packed them. His wallets glow; the dashed frame is the fastest 10. Drawn from this page's own table.</p>
+    <div class="pk pk-js-only"><div class="pk-panel"><div class="lb-stage" data-lb-self data-name="STAR 468" aria-live="polite"></div></div></div>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section rv">
     <h2 class="sec-title">Every buy in block 405537350, in order</h2>
     <p class="lead">Order is the order of transactions inside the block, as the producer packed it. Buyers are public accounts; we show their names as the block does. Our wallets are marked.</p>
     <div class="tbl-wrap mt3">
@@ -140,7 +150,7 @@
 
   <div class="div"></div>
 
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">Our wallets</h2>
     <p class="lead">The test: all of our wallets in the top 10 of the first legal block. At this launch the fleet was 7 wallets.</p>
     <div class="srcbox mt3" style="max-width:520px;"><dl class="kv"><dt><a href="https://explorer.xprnetwork.org/account/safeguard5" rel="noopener">safeguard5</a></dt><dd>not in the block</dd><dt><a href="https://explorer.xprnetwork.org/account/safeguard55" rel="noopener">safeguard55</a></dt><dd>9th of 9</dd><dt><a href="https://explorer.xprnetwork.org/account/guard4" rel="noopener">guard4</a></dt><dd>not in the block</dd><dt><a href="https://explorer.xprnetwork.org/account/guardops" rel="noopener">guardops</a></dt><dd>not in the block</dd><dt><a href="https://explorer.xprnetwork.org/account/guardgrowth" rel="noopener">guardgrowth</a></dt><dd>not in the block</dd><dt><a href="https://explorer.xprnetwork.org/account/guardreserve" rel="noopener">guardreserve</a></dt><dd>not in the block</dd><dt><a href="https://explorer.xprnetwork.org/account/guardrewards" rel="noopener">guardrewards</a></dt><dd>not in the block</dd></dl></div>
@@ -169,6 +179,7 @@
 </footer>
 <script src="/assets/js/site.js"></script>
 <script src="/assets/js/motion.js"></script>
+<script src="/assets/js/pages/launch-block.js"></script>
 
 </body>
 </html>

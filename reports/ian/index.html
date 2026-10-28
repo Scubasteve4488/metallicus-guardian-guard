@@ -23,6 +23,8 @@
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="stylesheet" href="/assets/css/v3-pages.css">
+<link rel="stylesheet" href="/assets/css/pages/proof-kit.css">
+<link rel="stylesheet" href="/assets/css/pages/report-ian.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -92,7 +94,7 @@
 
   <div class="div-g"></div>
 
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">The numbers</h2>
     <div class="grid grid-auto">
       <div class="card"><h3>5 of 5</h3><p>Guard.IAN wallets bought, claimed and paired.</p></div>
@@ -105,7 +107,7 @@
 
   <div class="div"></div>
 
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">What we were doing</h2>
     <p class="lead">We needed to see Guard.IAN do the whole job for real: spot a new SimpleDEX token the second it is created, buy in the first block after the 60-second creator window, wait out the graduation cooldown, graduate the token the moment that is allowed, then claim and put the tokens straight into the liquidity pool. So the operator (@Scubasteve4488) created a token called IAN and let the agent loose with five wallets at 1,000 XPR each.</p>
     <p class="lead">Real contract, real rules, real competition. That was the point.</p>
@@ -113,8 +115,20 @@
 
   <div class="div"></div>
 
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">Timeline <span class="state-pill state-live">all times UTC, from the chain</span></h2>
+    <div class="pk pk-js-only" data-rc>
+      <div class="pk-panel">
+        <p class="pk-kicker">The launch clock</p>
+        <p class="pk-muted">Drag the slider or tap a dot to move through the 29 minutes. Every moment below comes from the timeline on this page.</p>
+        <div class="rc-clock" aria-live="polite"><span class="rc-time" data-rc-time>--:--:--</span><span class="rc-t" data-rc-t></span></div>
+        <div class="rc-track" data-rc-track><div class="rc-rail"></div><div class="rc-fill"></div></div>
+        <input type="range" class="rc-range" data-rc-range aria-label="Time during the IAN launch">
+        <div class="rc-ends"><span data-rc-start></span><span data-rc-end></span></div>
+        <div class="rc-card" data-rc-card aria-live="polite"></div>
+        <div class="rc-ctrl"><button type="button" class="pk-btn" data-rc-prev>Earlier</button><button type="button" class="pk-btn" data-rc-next>Later</button><button type="button" class="pk-btn" data-rc-play>Play the launch</button></div>
+      </div>
+    </div>
     <ul class="ac-list" style="max-width:720px;">
       <li><strong>23:03:09 &mdash; Token created.</strong> The 60-second creator-only window opens. The five wallets saw it within a second and decided to buy.</li>
       <li><strong>23:04:05 &mdash; The creator's own buy, at t+56.</strong> Only four seconds of a sixty-second head start were left. Lesson: the creator buys early in the window, not at the end.</li>
@@ -132,7 +146,7 @@
 
   <div class="div"></div>
 
-  <section rv class="section">
+  <section class="section rv">
     <div class="grid grid-auto">
       <div class="card">
         <h3>What worked</h3>
@@ -157,7 +171,7 @@
 
   <div class="div"></div>
 
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">Check it yourself</h2>
     <p class="lead">Everything above is read off the chain: token 463, pool 1883, first legal block 403646618. Look it up on the <a href="https://explorer.xprnetwork.org/" rel="noopener">XPR Network explorer</a>.</p>
     <div class="disc"><span>&#8505;</span><div>A record of what happened. Not financial advice.</div></div>
@@ -176,6 +190,7 @@
 </footer>
 <script src="/assets/js/site.js"></script>
 <script src="/assets/js/motion.js"></script>
+<script src="/assets/js/pages/report-ian.js"></script>
 
 </body>
 </html>

@@ -23,6 +23,8 @@
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="stylesheet" href="/assets/css/v3-pages.css">
+<link rel="stylesheet" href="/assets/css/pages/proof-kit.css">
+<link rel="stylesheet" href="/assets/css/pages/creator.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -85,7 +87,16 @@
     <p class="lead">He started building with AI in early 2026, with no coding background. Before that he worked in hospitals, manufacturing, warehouses, delivery and home care. Everything on this site was built with Claude Code, Claude and ChatGPT, one tested step at a time.</p>
   </section>
 
-  <section rv class="section">
+<section class="section pk-js-only" aria-labelledby="cj-title">
+<h2 class="sec-title" id="cj-title">The road so far</h2>
+<p class="lead">Scroll down the road: from the jobs before, to what came out of it.</p>
+<div class="cj" data-cj>
+<div class="cj-spine" aria-hidden="true"><div class="cj-fill"></div><div class="cj-orb"></div></div>
+<ol class="cj-path" data-cj-path></ol>
+</div>
+</section>
+
+  <section class="section rv">
     <h2 class="sec-title">What he has built</h2>
     <div class="doors mt3">
       <a class="door" href="/ian"><span class="door-icon" aria-hidden="true">&#128737;</span><span class="door-t">Guard.IAN</span><span class="door-d">An AI agent that runs on its own on XPR Network. Launch purchases go through a separate rule-based program with a fixed list of allowed actions, not the AI.</span></a>
@@ -97,7 +108,7 @@
     </div>
   </section>
 
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">How he works</h2>
     <ul class="checklist mt2">
       <li><strong>Test before real money.</strong> The agent ran 53 practice launches on a test copy of the marketplace before it bought anything for real.</li>
@@ -107,7 +118,7 @@
     </ul>
   </section>
 
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">Tools he uses</h2>
     <p class="lead">Claude Code, Claude, ChatGPT, the official XPR Agents toolkit, n8n, MCP connectors, GitHub, Cloudflare (Pages, Workers, Web Analytics), Linux servers, Telegram and X bots. For video and 3D: Runway, Tripo, Blender and Unreal Engine.</p>
   </section>
@@ -133,6 +144,7 @@
 </footer>
 <script src="/assets/js/site.js"></script>
 <script src="/assets/js/motion.js"></script>
+<script src="/assets/js/pages/creator.js"></script>
 
 </body>
 </html>
