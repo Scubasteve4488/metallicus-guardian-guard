@@ -1,0 +1,22 @@
+/* Status board (v3, 2026-10-28): a meter of every part of the project by state, chips to filter the
+   lists below, and the parked items folded to one line each. Prefix st-. */
+.st-meter{display:flex;height:46px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,215,140,.16);background:rgba(0,0,0,.3)}
+.st-seg{display:flex;align-items:center;justify-content:center;gap:6px;min-width:44px;font:700 13px/1 "JetBrains Mono",ui-monospace,monospace;color:#0b0910;cursor:pointer;border:0;transition:filter .2s,flex-grow .6s cubic-bezier(.2,.8,.2,1)}
+.st-seg:hover,.st-seg:focus-visible{filter:brightness(1.12)}
+.st-seg span{white-space:nowrap}
+.st-live{background:linear-gradient(180deg,#5ef0b0,#2fbf82)}
+.st-testing{background:linear-gradient(180deg,#ffd27a,#e9a93a)}
+.st-off{background:linear-gradient(180deg,#b9b1cc,#8b819c)}
+.st-parked{background:linear-gradient(180deg,#8d7bb8,#5c4d86);color:#f3ecff}
+.st-meter.st-zero .st-seg{flex-grow:0!important}
+.st-legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:10px;font-size:13px;color:#b8aecb}
+.st-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.st-hidden{display:none!important}
+/* parked items fold to their name; tap to read the one-line reason */
+.st-fold h3{margin:0}
+.st-fold-btn{display:flex;width:100%;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;background:none;border:0;padding:0;color:#fff;font:700 17px/1.3 "Cinzel",Georgia,serif;text-align:left}
+.st-fold-btn::after{content:"+";font:600 18px/1 "JetBrains Mono",monospace;color:#f2c25b;transition:transform .25s}
+.st-fold-btn[aria-expanded="true"]::after{transform:rotate(45deg)}
+.st-fold .st-body{margin-top:8px}
+.st-fold .st-body[hidden]{display:none}
+@media (max-width:600px){.st-seg{min-width:34px;font-size:12px}.st-seg .st-word{display:none}}
