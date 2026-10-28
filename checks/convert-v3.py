@@ -43,7 +43,8 @@ def convert(path):
         if count[0] == 1:
             return m.group(0)
         cls = m.group(1)
-        return m.group(0) if ' rv' in cls else m.group(0).replace(cls, cls + ' rv', 1)
+        # put rv inside the class value (the old .replace() hit the word "section" in the tag name)
+        return m.group(0) if 'rv' in cls.split() else '<section class="%s rv"' % cls
 
     main = re.sub(r'<section class="([^"]*)"', add_rv, main)
     t = t[:m0] + main + t[m1:]

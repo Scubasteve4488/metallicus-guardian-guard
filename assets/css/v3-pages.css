@@ -100,3 +100,5 @@ body.band-forge main#main::before{--band:url(/assets/img/ian/scene-forge.webp)}
 .rv{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
 .rv.in{opacity:1;transform:none}
 html:not(.js) .rv{opacity:1;transform:none}
+
+.menu .cta[aria-current]{color:#1b1206}

@@ -372,3 +372,5 @@ html.js:not(.reduce) .eco:not(.assembled) .node{transform:rotate(var(--a)) trans
   .dd-m{position:static;min-width:0;border:0;box-shadow:none;background:none;padding:0 0 6px 12px}
 }
 @media (max-width:860px){.menu{background:#0b0910;max-height:calc(100svh - 64px);overflow:auto}}
+
+.menu .cta[aria-current]{color:#1b1206}
