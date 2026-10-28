@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="stylesheet" href="/assets/css/v3-pages.css">
+<link rel="stylesheet" href="/assets/css/pages/pulsevm.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -84,18 +85,24 @@
     <p class="sec-label">Explainer</p>
     <h1 class="page-title">PulseVM, in short</h1>
     <p class="lead mt2">What PulseVM is, what is known, and what is not. Read from the published code and the official sites.</p>
+    <ul class="pv-chips" aria-label="Status at a glance">
+      <li class="pv-ok"><b>Code</b> published, release v1.0.0</li>
+      <li class="pv-no"><b>Live network</b> not yet: nothing measured on one</li>
+      <li class="pv-no"><b>Cutover date</b> none announced</li>
+      <li class="pv-mid"><b>XPR producer applications</b> paused for the transition (xprnetwork.org, 23 September)</li>
+    </ul>
   </section>
 
   <div class="div-g"></div>
 
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">What it is</h2>
     <p class="lead">PulseVM is Metallicus's engine for running XPR-style contracts on Metal Blockchain. It is described as built for payments and banking.</p>
   </section>
 
   <div class="div"></div>
 
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">What is known</h2>
     <ul class="ac-list" style="max-width:680px;">
       <li><strong>No cutover date has been announced,</strong> and there is no official plan for one.</li>
@@ -107,7 +114,7 @@
 
   <div class="div"></div>
 
-  <section rv class="section">
+  <section class="section rv">
     <h2 class="sec-title">How it makes blocks, from the code</h2>
     <ul class="ac-list" style="max-width:680px;">
       <li>Who builds each block is drawn by stake, block by block. There is no public schedule.</li>
@@ -121,7 +128,57 @@
 
   <div class="div"></div>
 
-  <section rv class="section">
+  <section class="section pv" data-pv aria-labelledby="pv-h">
+    <p class="sec-label">See the difference</p>
+    <h2 class="sec-title" id="pv-h">Watch the blocks get made</h2>
+    <p class="lead">Same stream of transactions, two ways of making blocks. Switch between them and watch when blocks appear and who makes them.</p>
+    <div class="pv-tabs" role="group" aria-label="Which chain">
+      <button type="button" data-mode="xpr" aria-pressed="true">XPR Network today</button>
+      <button type="button" data-mode="pulse" aria-pressed="false">PulseVM, from its code</button>
+    </div>
+    <div class="pv-stage">
+      <div class="pv-wait">
+        <p class="pv-cap">Waiting to be included</p>
+        <div class="pv-q" data-pv-q aria-hidden="true"></div>
+      </div>
+      <div class="pv-arrow" aria-hidden="true">&rarr;</div>
+      <div class="pv-chain">
+        <p class="pv-cap">The chain <span data-pv-who></span></p>
+        <ol class="pv-track" data-pv-track aria-hidden="true"></ol>
+      </div>
+    </div>
+    <p class="pv-log" data-pv-log aria-live="polite"></p>
+    <div class="pv-ctl">
+      <button type="button" data-pv-send>Send a transaction</button>
+      <button type="button" data-pv-early>Send a buy too early</button>
+      <button type="button" data-pv-play>Pause</button>
+    </div>
+    <div class="pv-facts">
+      <div data-facts="xpr">
+        <h3>XPR Network today</h3>
+        <ul class="ac-list">
+          <li>A new block every half second.</li>
+          <li>The top 21 producers by votes make the blocks, from the active schedule.</li>
+        </ul>
+        <p class="muted">Sources: this site's <a href="/learn/first-hour#explorer">first-hour guide</a>, stops 4 and 5, written from the official XPR Network developer guide.</p>
+      </div>
+      <div data-facts="pulse">
+        <h3>PulseVM, from the published code (v1.0.0)</h3>
+        <ul class="ac-list">
+          <li>Who builds each block is drawn by stake, block by block. There is no public schedule.</li>
+          <li>Blocks are made only when transactions are waiting.</li>
+          <li>A buy sent too early is accepted into the queue, then dropped. The sender carries a small charge on that node, which fades.</li>
+          <li>The reply to a sent transaction is only its id.</li>
+        </ul>
+        <p class="muted">Source: the section above, read from the pulsevm code, release v1.0.0.</p>
+      </div>
+    </div>
+    <p class="pv-note">An illustration, not a measurement. It is slowed down so you can follow it, and the transactions are made up. Nothing has been measured on a live PulseVM network yet.</p>
+  </section>
+
+  <div class="div"></div>
+
+  <section class="section rv">
     <h2 class="sec-title">What is not known</h2>
     <ul class="ac-list" style="max-width:680px;">
       <li>Finality of "about a second" is the claim on pulsevm.dev. The rehearsal saw a stall of about 50 seconds.</li>
@@ -143,6 +200,7 @@
 </footer>
 <script src="/assets/js/site.js"></script>
 <script src="/assets/js/motion.js"></script>
+<script src="/assets/js/pages/pulsevm.js"></script>
 
 </body>
 </html>
