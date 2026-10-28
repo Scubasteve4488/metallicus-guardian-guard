@@ -84,7 +84,9 @@
           var r2 = line('reading the XPR chain, live, from your browser', 'read'); reveal(r2);
           return rpc('/v1/chain/get_currency_stats', { code: 'xmd.token', symbol: 'XMD' }).then(function (r) {
             var s = r.data && r.data.XMD;
-            return s ? { ok: true, supply: s.supply, issuer: s.issuer, server: r.server } : { ok: false };
+            if (!s) return { ok: false };
+            var parts = String(s.supply).split(' ');
+            return { ok: true, supply: fmt(parseFloat(parts[0]), 2) + ' ' + (parts[1] || 'XMD'), issuer: s.issuer, server: r.server };
           }).catch(function () { return { ok: false }; });
         }).then(function (live) {
           if (!live || run !== playing) return;
@@ -198,14 +200,20 @@
       var name = (input.value || '').trim().toLowerCase();
       if (!NAME_RE.test(name)) { res.innerHTML = '<p class="bad">That isn\'t an XPR account name (a–z, 1–5 and dots, up to 12 characters).</p>'; return; }
       res.innerHTML = '<p class="read on">reading ' + esc(name) + ' from a public XPR server…</p>';
+      var bal = null;
       rpc('/v1/chain/get_account', { account_name: name }).then(function (r) {
         var a = r.data;
         if (!a || !a.account_name) throw new Error('none');
+        return rpc('/v1/chain/get_currency_balance', { code: 'eosio.token', account: name, symbol: 'XPR' })
+          .then(function (b) { bal = Array.isArray(b.data) ? (b.data[0] || '0 XPR') : null; return r; })
+          .catch(function () { bal = null; return r; });
+      }).then(function (r) {
+        var a = r.data;
         var created = a.created ? new Date(a.created + 'Z').toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'unknown';
         var perms = (a.permissions || []).map(function (p) { return p.perm_name; }).join(', ');
         res.innerHTML = '<div class="rows">' +
           '<div>Made <b>' + esc(created) + '</b></div>' +
-          '<div>XPR you can spend <b>' + esc(a.core_liquid_balance || 'none shown') + '</b></div>' +
+          '<div>XPR it holds (not staked) <b>' + (bal === null ? "couldn't read" : esc(bal.replace(/^([0-9.]+)/, function (m) { return fmt(parseFloat(m), 4); }))) + '</b></div>' +
           '<div>Permissions <b>' + esc(perms || 'none') + '</b></div></div>' +
           '<p class="src">Read from ' + esc(host(r.server)) + ' just now. Nothing you type is stored. <a href="/tools/account-check">Full check →</a></p>';
       }).catch(function (err) {
