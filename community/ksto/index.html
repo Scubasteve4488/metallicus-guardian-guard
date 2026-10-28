@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
 <link rel="stylesheet" href="/assets/css/v3-pages.css">
+<link rel="stylesheet" href="/assets/css/pages/community.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -77,66 +78,70 @@
   </nav>
 </header>
 <main id="main">
-<div class="container">
+<div class="container cm-sub">
   <p class="breadcrumb"><a href="/community">Community</a> &rsaquo; KSTO</p>
   <section class="section">
-    <div class="community-hero" style="background-image:url('/assets/img/char_snippy.jpg');">
-      <div style="position:absolute;inset:0;background:rgba(10,10,16,0.85);"></div>
-      <div style="position:relative;z-index:1;text-align:center;padding:2.5rem 1.5rem;">
+    <div class="cm-hero">
+      <img src="/assets/img/community/ksto.webp" alt="KSTO" width="240" height="240">
+      <div>
         <p class="sec-label">The community Guard.IAN belongs to</p>
-        <h1 class="page-title" style="margin-bottom:.4rem;">KSTO</h1>
-        <p class="page-sub" style="margin:0;">Kulture Speaks Truth Onchain.</p>
-      </div>
-    </div>
-    <div style="background:rgba(139,92,246,0.04);border:1px solid var(--border-acc);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
-      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem;">
-        <img src="/assets/img/icon_ksto.jpg" alt="KSTO" style="width:48px;height:48px;border-radius:10px;object-fit:contain;flex-shrink:0;">
-        <h2 class="sec-title" style="margin:0;">The community</h2>
-      </div>
-      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">KSTO is one of the most active communities on XPR Network: builders, educators, traders and holders. It calls itself &ldquo;more than a meme&rdquo; &mdash; a movement, with its own token, staking and DAO governance. Its home is ksto.world.</p>
-      <div class="flex gap-sm wrap">
-        <a href="https://ksto.world" rel="noopener" class="btn btn-o" style="font-size:.78rem;">ksto.world</a>
-        <a href="https://x.com/Keep_Snipping" rel="noopener" class="btn btn-o" style="font-size:.78rem;">✕ @Keep_Snipping</a>
-        <a href="https://t.me/KSTOX" rel="noopener" class="btn btn-o" style="font-size:.78rem;">✈ Telegram</a>
+        <h1 class="page-title">KSTO</h1>
+        <p class="page-sub">Kulture Speaks Truth Onchain.</p>
       </div>
     </div>
 
-    <div style="background:rgba(139,92,246,0.04);border:1px solid var(--border-acc);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
-      <h2 class="sec-title" style="text-align:center;margin-bottom:1rem;">🦊 Snippy</h2>
-      <div style="text-align:center;margin-bottom:1rem;">
-        <img src="/assets/img/char_snippy.jpg" alt="Snippy" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--gold);display:inline-block;">
+    <div data-cm-tabs>
+      <div class="cm-tabs" role="tablist" aria-label="The KSTO world">
+        <button type="button" role="tab" id="kt-community" aria-controls="kp-community" aria-selected="true">The community</button>
+        <button type="button" role="tab" id="kt-snippy" aria-controls="kp-snippy" aria-selected="false">Snippy</button>
+        <button type="button" role="tab" id="kt-funky" aria-controls="kp-funky" aria-selected="false">Funkyverse</button>
+        <button type="button" role="tab" id="kt-spaces" aria-controls="kp-spaces" aria-selected="false">Spaces</button>
+        <button type="button" role="tab" id="kt-tokens" aria-controls="kp-tokens" aria-selected="false">Vetted tokens</button>
       </div>
-      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">Snippy is KSTO's mascot and main character &mdash; a coy fox, and one of the best-known faces on XPR Network. The SNIPPY token was created by hulkwarrior. The Snippy NFTs are sold out.</p>
-      <div class="flex gap-sm wrap">
-        <a href="/community/snippy" class="btn btn-o" style="font-size:.78rem;">More on Snippy</a>
+
+      <div class="cm-panel" role="tabpanel" id="kp-community" aria-labelledby="kt-community">
+        <div class="cm-row"><img src="/assets/img/community/ksto.webp" alt="" width="64" height="64"><h2 class="sec-title" style="margin:0;">The community</h2></div>
+        <p>KSTO is one of the most active communities on XPR Network: builders, educators, traders and holders. It calls itself &ldquo;more than a meme&rdquo; &mdash; a movement, with its own token, staking and DAO governance. Its home is ksto.world.</p>
+        <div class="flex gap-sm wrap">
+          <a href="https://ksto.world" rel="noopener" class="btn btn-o">ksto.world</a>
+          <a href="https://x.com/Keep_Snipping" rel="noopener" class="btn btn-o">&#10005; @Keep_Snipping</a>
+          <a href="https://t.me/KSTOX" rel="noopener" class="btn btn-o">&#9992; Telegram</a>
+        </div>
+      </div>
+
+      <div class="cm-panel" role="tabpanel" id="kp-snippy" aria-labelledby="kt-snippy">
+        <div class="cm-row"><img src="/assets/img/community/snippy.webp" alt="Snippy" width="64" height="64"><h2 class="sec-title" style="margin:0;">Snippy</h2></div>
+        <p>Snippy is KSTO's mascot and main character &mdash; a coy fox, and one of the best-known faces on XPR Network. The SNIPPY token was created by hulkwarrior. The Snippy NFTs are sold out.</p>
+        <div class="flex gap-sm wrap"><a href="/community/snippy" class="btn btn-o">More on Snippy</a></div>
+      </div>
+
+      <div class="cm-panel" role="tabpanel" id="kp-funky" aria-labelledby="kt-funky">
+        <div class="cm-row"><img src="/assets/img/community/funkyverse.webp" alt="Funkyverse" width="64" height="64"><h2 class="sec-title" style="margin:0;">Funkyverse</h2></div>
+        <p>A creative project inside the KSTO world. Funky NFTs are part of the XPR Network NFT family, on nftpacks.io.</p>
+        <div class="flex gap-sm wrap">
+          <a href="https://x.com/funkyfVerse" rel="noopener" class="btn btn-o">&#10005; @funkyfVerse</a>
+          <a href="https://nftpacks.io" rel="noopener" class="btn btn-o">nftpacks.io</a>
+        </div>
+      </div>
+
+      <div class="cm-panel" role="tabpanel" id="kp-spaces" aria-labelledby="kt-spaces">
+        <h2 class="sec-title">KSTO Spaces</h2>
+        <p class="cm-when">&#127897; Every Wednesday &middot; 8 PM EST &middot; on X Spaces</p>
+        <p style="margin-top:14px;">Metallicus updates, XPR Network news, WebAuth tips, NFT projects, community highlights and open talk.</p>
+        <div class="flex gap-sm wrap"><a href="https://x.com/Keep_Snipping" rel="noopener" class="btn btn-o">&#10005; Follow @Keep_Snipping</a></div>
+      </div>
+
+      <div class="cm-panel" role="tabpanel" id="kp-tokens" aria-labelledby="kt-tokens">
+        <h2 class="sec-title">The vetted tokens</h2>
+        <p>KSTO keeps a list of eleven tokens it has vetted, each with its creator. GUARD is one seat among them. It doesn't outrank KSTO or Snippy.</p>
+        <ul class="cm-chiplist" aria-label="The eleven vetted tokens"><li>SNIPPY</li><li>MARSH</li><li>HEAL</li><li>PBR</li><li>LBUG</li><li>SNIP</li><li>LADY</li><li>PAPA</li><li>BENDER</li><li>STRAZ</li><li class="cm-gold">GUARD</li></ul>
+        <div class="flex gap-sm wrap">
+          <a href="/community#tokens" class="btn btn-o">All eleven, with creators</a>
+          <a href="https://ksto.world/vetted_tokens.html" rel="noopener" class="btn btn-o">The list on ksto.world</a>
+        </div>
       </div>
     </div>
 
-    <div style="background:rgba(124,58,237,0.04);border:1px solid rgba(124,58,237,0.22);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
-      <h2 class="sec-title">🎨 Funkyverse</h2>
-      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">A creative project inside the KSTO world. Funky NFTs are part of the XPR Network NFT family, on nftpacks.io.</p>
-      <div class="flex gap-sm wrap">
-        <a href="https://x.com/funkyfVerse" rel="noopener" class="btn btn-o" style="font-size:.78rem;">✕ @funkyfVerse</a>
-        <a href="https://nftpacks.io" rel="noopener" class="btn btn-o" style="font-size:.78rem;">🎁 nftpacks.io</a>
-      </div>
-    </div>
-
-    <div style="background:rgba(56,189,248,0.04);border:1px solid rgba(56,189,248,0.22);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
-      <h2 class="sec-title">🎙 KSTO Spaces &mdash; every Wednesday, 8 PM EST</h2>
-      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">On X Spaces every Wednesday at 8 PM EST: Metallicus updates, XPR Network news, WebAuth tips, NFT projects, community highlights and open talk.</p>
-      <div class="flex gap-sm wrap">
-        <a href="https://x.com/Keep_Snipping" rel="noopener" class="btn btn-o" style="font-size:.78rem;">✕ Follow @Keep_Snipping</a>
-      </div>
-    </div>
-
-    <div style="background:rgba(124,58,237,0.04);border:1px solid rgba(124,58,237,0.22);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.75rem;">
-      <h2 class="sec-title">The vetted tokens</h2>
-      <p style="font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:.9rem;">KSTO keeps a list of eleven tokens it has vetted, each with its creator: SNIPPY, MARSH, HEAL, PBR, LBUG, SNIP, LADY, PAPA, BENDER, STRAZ and GUARD. GUARD is one seat among them. It doesn't outrank KSTO or Snippy.</p>
-      <div class="flex gap-sm wrap">
-        <a href="/community" class="btn btn-o" style="font-size:.78rem;">All eleven, with creators</a>
-        <a href="https://ksto.world/vetted_tokens.html" rel="noopener" class="btn btn-o" style="font-size:.78rem;">The list on ksto.world</a>
-      </div>
-    </div>
     <div class="disc"><span>&#8505;</span><div>KSTO is its own community. StandGuard doesn't run it or speak for it. Nothing here is a reason to buy any token.</div></div>
   </section>
 </div>
@@ -153,6 +158,7 @@
 </footer>
 <script src="/assets/js/site.js"></script>
 <script src="/assets/js/motion.js"></script>
+<script src="/assets/js/pages/community.js"></script>
 
 </body>
 </html>
