@@ -68,3 +68,6 @@ html.reduce .sc-donut .seg{transition:none}
   .sc-rows .amt small{display:inline;margin-left:8px}
   .sc-rows code{white-space:nowrap}
 }
+
+/* official brand SVGs fill the ring box (img.brand-mark in v3-pages.css adds the padding) */
+.sc-st .ring img.brand-mark{width:100%;height:100%}
