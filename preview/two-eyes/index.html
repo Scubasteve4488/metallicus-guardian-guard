@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Guard.IAN checks one claim (prototype) | StandGuard</title>
+<meta name="description" content="Prototype: watch Guard.IAN check whether XMD on xmd.token is the Metal Dollar, using a live chain read and XPR Network's token registry.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0a0a10">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/ian/favicon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/ian/icon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/ian/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/cinzel-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<link rel="stylesheet" href="/assets/css/v3.css">
+<link rel="stylesheet" href="/assets/css/pages/two-eyes.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/"><img src="/assets/img/ian/logo-96.webp" alt="" width="32" height="32">STANDGUARD</a>
+  <button class="navtog" type="button" data-navtoggle aria-expanded="false" aria-controls="site-menu">Menu</button>
+  <nav class="menu" id="site-menu" aria-label="Primary">
+    <details class="dd"><summary>Guard.IAN</summary><div class="dd-m">
+      <a href="/ian">Meet Guard.IAN</a>
+      <a href="/#story">His story</a>
+      <a href="/status">What's live now</a>
+      <a href="/projects">What he's working on</a>
+      <a href="/guard">The GUARD token</a>
+    </div></details>
+    <details class="dd"><summary>What he does</summary><div class="dd-m">
+      <a href="/metalxprt">MetalXPRt: his guide in your AI</a>
+      <a href="/services/utility-forge">Utility Forge report</a>
+      <a href="/tools">Free tools</a>
+      <a href="/tools/account-check">Account Check</a>
+      <a href="/launches">Launch record</a>
+      <a href="/reports/ian">IAN launch report</a>
+      <a href="/services">All services</a>
+    </div></details>
+    <a href="/learn/ecosystem">Ecosystem</a>
+    <details class="dd"><summary>Learn</summary><div class="dd-m">
+      <a href="/learn">Start here</a>
+      <a href="/learn/first-hour">Your first hour on XPR</a>
+      <a href="/learn/academy">Academy</a>
+      <a href="/learn/defi-forge">DeFi Forge calculators</a>
+      <a href="/learn/stablecoins-payments">Stablecoins &amp; payments</a>
+      <a href="/learn/credit-unions">For credit union members</a>
+      <a href="/projects/pulsevm">PulseVM, in short</a>
+      <a href="/learn/signguard">SignGuard: learn ASL</a>
+    </div></details>
+    <details class="dd"><summary>Community</summary><div class="dd-m">
+      <a href="/community">All communities</a>
+      <a href="/community/ksto">KSTO</a>
+      <a href="/community/snippy">Snippy</a>
+      <a href="/community/snipverse">Snipverse</a>
+      <a href="/community/cyphergang">CypherGang</a>
+      <a href="/community/vibrr">Vibrr</a>
+    </div></details>
+    <details class="dd"><summary>About</summary><div class="dd-m">
+      <a href="/creator">Who builds this</a>
+      <a href="/about">About StandGuard</a>
+      <a href="/evidence">Sources and methods</a>
+      <a href="/corrections">Corrections</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </div></details>
+    <a class="cta" href="/contact">Get in touch</a>
+  </nav>
+</header>
+<main id="main">
+<section class="sec te-intro" aria-labelledby="te-h">
+  <div class="wrap">
+    <p class="te-proto">Prototype. Not linked from the site yet.</p>
+    <h1 class="te-h1" id="te-h">How Guard.IAN checks one claim</h1>
+    <p class="sub">One real question, checked in two places that don't depend on each other. He only says yes when both agree, and when one of them is silent he tells you so instead of guessing.</p>
+  </div>
+</section>
+
+<section class="te" aria-label="The check, step by step">
+  <div class="te-grid">
+    <div class="te-col">
+      <div class="te-sticky">
+        <div class="te-stage" data-te-stage data-state="1" aria-hidden="true">
+          <svg class="te-svg" viewBox="0 0 1000 1000" focusable="false">
+            <defs>
+              <filter id="te-blur" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="9"/></filter>
+            </defs>
+            <path class="te-visor" d="M352 336 Q500 296 648 336 L630 424 Q500 452 370 424 Z"/>
+            <path class="te-brow" d="M372 334 L500 362 L628 334"/>
+            <g class="te-eye" data-te-eye="l"><path class="te-glow"/><path class="te-body"/><path class="te-core"/></g>
+            <g class="te-eye" data-te-eye="r"><path class="te-glow"/><path class="te-body"/><path class="te-core"/></g>
+          </svg>
+          <div class="te-xmd te-zone"><img src="/assets/img/brand/XMD_Metal_Dollar-glyph-color.svg" alt="" width="64" height="64"></div>
+          <div class="te-q"><span>Is XMD on xmd.token the real Metal Dollar?</span></div>
+          <div class="te-chain">
+            <div class="te-zone te-xpr"><img src="/assets/img/brand/XPR_Network-glyph-white.svg" alt="" width="46" height="48"></div>
+            <p class="te-lbl">The chain</p>
+            <p class="te-val" data-te-stage-live>reading live…</p>
+          </div>
+          <div class="te-reg">
+            <p class="te-lbl">The registry</p>
+            <p class="te-val">Lists it as the Metallicus USD stablecoin, Metal Dollar, issued by <b>xmd.treasury</b>.</p>
+            <p class="te-silent">No answer</p>
+          </div>
+          <div class="te-ans">
+            <p class="te-ans-h">Yes. Both places agree.</p>
+            <p>Same issuer on the chain and in the registry: <b>xmd.treasury</b>.</p>
+            <p class="te-ans-cant">Can't verify: who controls the issuer's keys, or how deep the liquidity is.</p>
+          </div>
+          <div class="te-mini"><p data-te-mini>Both places answered.</p></div>
+          <div class="te-turn"><p>Your turn</p></div>
+        </div>
+        <div class="te-ctl" data-te-ctl hidden>
+          <button type="button" class="te-btn" data-te-prev>Back</button>
+          <span class="te-pos" data-te-pos aria-live="polite">Step 1 of 5<span class="te-pos-t">: Ask</span></span>
+          <button type="button" class="te-btn" data-te-next>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <ol class="te-steps">
+      <li class="te-step" id="te-1" data-te-step="1">
+        <h2>Ask</h2>
+        <p>You ask him: <q>Is XMD on xmd.token the real Metal Dollar?</q></p>
+        <p>On XPR Network a token is its symbol and the contract that issues it, taken together. The same symbol from a different contract is a different token, so he checks the pair.</p>
+        <p class="te-src">Source: MetalXPRt guide, <a href="https://guide.standguard.net/files/ECOSYSTEM.md#L403" rel="noopener">“Tokens: always symbol + contract”</a>, checked 25 Oct 2026.</p>
+      </li>
+      <li class="te-step" id="te-2" data-te-step="2">
+        <h2>Two places</h2>
+        <p>His two eyes stretch out to two places that don't depend on each other.</p>
+        <div class="te-place">
+          <h3>The chain</h3>
+          <p>Your browser reads the token's own record on XPR Network, live, with <code>get_currency_stats</code> on <code>xmd.token</code>.</p>
+          <p class="te-live" data-te-live aria-live="polite">With JavaScript on, this page reads the supply and issuer live from a public XPR server.</p>
+          <p><button type="button" class="te-btn te-retry" data-te-retry hidden>Read again</button></p>
+        </div>
+        <div class="te-place">
+          <h3>The registry</h3>
+          <p>XPR Network's token registry lists it as the Metallicus USD stablecoin, Metal Dollar, issued by <code>xmd.treasury</code>.</p>
+          <p class="te-src">Source: <a href="https://github.com/XPRNetwork/xpr-network-dev-skill/blob/main/skill/resources.md#token-contract-registry" rel="noopener">XPR Network's developer token registry</a> on GitHub, checked with MetalXPRt's token check on 28 Oct 2026, 23:46 UTC. This line is a dated check, not a live read.</p>
+        </div>
+      </li>
+      <li class="te-step" id="te-3" data-te-step="3">
+        <h2>They agree</h2>
+        <p>When both places name the same issuer, <code>xmd.treasury</code>, the two lines merge into one answer:</p>
+        <div class="te-card">
+          <p class="te-card-h">Yes. XPR Network's token registry lists XMD on xmd.token as the Metal Dollar, and the chain shows the same issuer, xmd.treasury.</p>
+          <ul class="te-card-src">
+            <li><b>The chain:</b> <span data-te-chain-src>read live in your browser with <code>get_currency_stats</code>.</span></li>
+            <li><b>The registry:</b> XPR Network's developer token registry, checked with MetalXPRt's token check on 28 Oct 2026.</li>
+          </ul>
+          <p class="cant"><b>Can't verify:</b> who controls the issuer's keys, or how deep the liquidity is.</p>
+        </div>
+        <p class="te-now" data-te-now aria-live="polite"></p>
+      </li>
+      <li class="te-step" id="te-4" data-te-step="4">
+        <h2>When a place doesn't answer</h2>
+        <p>If either place stays silent, he doesn't fill the gap with a guess. No zero, no yes.</p>
+        <p><button type="button" class="te-btn te-demo" data-te-demo aria-pressed="false" hidden>Demo: a source doesn't answer</button></p>
+        <p class="te-demo-note" data-te-demo-note aria-live="polite"></p>
+        <div class="te-card te-card-off">
+          <p class="te-card-h">Couldn't verify. One place didn't answer, so I won't say yes.</p>
+        </div>
+        <p>You'll see this for real, with no supply number, if your browser can't reach the chain.</p>
+      </li>
+      <li class="te-step" id="te-5" data-te-step="5">
+        <h2>Your turn</h2>
+        <p>Ask him about any XPR token or account in your own AI, or check an account before you pay it.</p>
+        <p class="te-go">
+          <a class="btn btn-gold" href="/metalxprt">Ask him in your own AI</a>
+          <a class="btn btn-ghost" href="/tools/account-check">Check an account</a>
+        </p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec te-about" aria-labelledby="te-logos">
+  <div class="wrap">
+    <h2 class="te-h3" id="te-logos">About the logos on this page</h2>
+    <p>The XMD and XPR Network glyphs are Metallicus's own files, shown unmodified. <a href="/assets/img/brand/PROVENANCE.md">See where they came from.</a> They only move, scale or fade as whole images, and each keeps one glyph width of empty space around it. Metallicus asks that its <a href="https://metallicus.com/company/brand-guidelines" rel="noopener">brand guidelines</a> be followed strictly (their page, read 28 Oct 2026).</p>
+    <p>Guard.IAN's two eyes are StandGuard's own mark, and they're the only thing here that changes shape. StandGuard is independent, not a Metallicus product.</p>
+  </div>
+</section>
+</main>
+<footer class="foot">
+  <div class="foot-in">
+    <div><h4>StandGuard</h4><p>The home of Guard.IAN, an AI agent on XPR Network who looks things up live, shows his sources, and says so when he can't verify something.</p></div>
+    <div><h4>Guard.IAN</h4><a href="/ian">Meet him</a><a href="/metalxprt">MetalXPRt</a><a href="/services">Services</a><a href="/tools">Tools</a><a href="/launches">Launch record</a><a href="/status">Status</a></div>
+    <div><h4>Explore</h4><a href="/learn">Learn</a><a href="/community">Community</a><a href="/guard">GUARD</a><a href="/projects">Projects</a><a href="/evidence">Sources and methods</a></div>
+    <div><h4>Follow · Boundaries</h4><a href="https://x.com/AgentGuard458" rel="noopener">X</a><a href="https://shellbook.io/u/guard_ian" rel="noopener">Shellbook</a><a href="https://xpragents.com/agent/safeguard5" rel="noopener">XPR Agents</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/corrections">Corrections</a><a href="/contact">Contact</a></div>
+    <p class="disc">StandGuard and Guard.IAN are independent community-built projects, not official Metallicus, XPR Network, WebAuth, SimpleDEX or XPR Agents products. Logos belong to their owners. Information here is for learning, not financial, legal, security or investment advice. © <span id="pv-year">2026</span> StandGuard · built by @Scubasteve4488.</p>
+  </div>
+</footer>
+<script src="/assets/js/motion.js"></script>
+<script src="/assets/js/live.js"></script>
+<script src="/assets/js/pages/two-eyes.js"></script>
+</body>
+</html>
