@@ -20,7 +20,7 @@
       funky:     { label: 'Funkyverse',    img: '/assets/img/community/funkyverse.webp',  x: 890, y: 215, d: 80,  tx: 200, ty: 470, td: 70 },
       tokens:    { label: 'Vetted tokens', txt: '11',                                     x: 790, y: 395, d: 80,  tx: 328, ty: 410, td: 70 },
       snipverse: { label: 'Snipverse',     img: '/assets/img/community/snipverse.webp',   x: 575, y: 520, d: 78,  tx: 315, ty: 640, td: 70 },
-      xpr:       { label: 'XPR Network',   img: '/assets/img/eco/xpr.webp',               x: 250, y: 480, d: 90,  tx: 110, ty: 670, td: 82 },
+      xpr:       { label: 'XPR Network',   img: '/assets/img/brand/XPR_Network-glyph-white.svg', x: 250, y: 480, d: 90,  tx: 110, ty: 670, td: 82 },
       cypher:    { label: 'CypherGang',    img: '/assets/img/community/cyphergang.webp',  x: 85,  y: 575, d: 76,  tx: 72,  ty: 875, td: 66 },
       vibrr:     { label: 'Vibrr',         txt: 'V',                                      x: 385, y: 585, d: 66,  tx: 250, ty: 885, td: 62 }
     };
@@ -58,7 +58,7 @@
       b.className = 'cm-stop' + (n.hub ? ' cm-hub' : '');
       b.setAttribute('aria-pressed', 'false');
       b.setAttribute('aria-label', n.label);
-      b.innerHTML = (n.img ? '<img src="' + n.img + '" alt="" width="160" height="160">' : '<span class="cm-txt">' + n.txt + '</span>') +
+      b.innerHTML = (n.img ? '<img' + (n.img.indexOf('/brand/') > -1 ? ' class="brand-mark' + (n.img.indexOf('XPR_') > -1 ? ' cs-xpr' : '') + '"' : '') + ' src="' + n.img + '" alt="" width="160" height="160">' : '<span class="cm-txt">' + n.txt + '</span>') +
         '<span class="cm-lbl" aria-hidden="true">' + n.label + '</span>';
       b.addEventListener('click', function () { stopTour(); pick(id, true); });
       stage.appendChild(b);
