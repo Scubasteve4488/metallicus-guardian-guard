@@ -1,0 +1,73 @@
+/* /learn/stablecoins-payments (v3, 2026-10-28): follow one Metal Dollar, and the live treasury. */
+.sc-block{margin-top:clamp(40px,6vw,72px)}
+.sc-tabs{display:inline-flex;gap:6px;padding:5px;border-radius:999px;border:1px solid var(--line,rgba(255,215,140,.16));background:rgba(0,0,0,.25);margin:14px 0 22px}
+.sc-tabs button{cursor:pointer;padding:9px 18px;border-radius:999px;border:0;background:none;color:var(--mute,#b8aecb);font:700 14px var(--sans,Inter,sans-serif)}
+.sc-tabs button[aria-pressed="true"]{color:#1b1206;background:linear-gradient(180deg,#ffdf94,#f2c25b)}
+
+/* the flow: three stations on a rail, a coin travels between them */
+.sc-flow{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,3vw,40px);padding:26px 0 8px}
+.sc-rail{position:absolute;left:16.6%;right:16.6%;top:76px;height:2px;background:linear-gradient(90deg,rgba(242,194,91,.6),rgba(155,92,255,.6));border-radius:2px}
+.sc-coin{position:absolute;top:58px;left:calc(16.6% - 19px);width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font:800 13px var(--mono,monospace);color:#1b1206;
+  background:radial-gradient(circle at 35% 30%,#fff3c8,#f2c25b 55%,#a8691a);box-shadow:0 0 22px rgba(242,194,91,.8);transition:left .9s cubic-bezier(.45,.05,.3,1),background .4s}
+.sc-coin.xmd{background:radial-gradient(circle at 35% 30%,#efe4ff,#9b5cff 60%,#4b2391);color:#fff;box-shadow:0 0 22px rgba(155,92,255,.85)}
+html.reduce .sc-coin{transition:none}
+.sc-st{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;cursor:pointer;border:0;background:none;color:inherit;padding:0;font:inherit}
+.sc-st .ring{width:104px;height:104px;border-radius:50%;display:grid;place-items:center;background:#0f0c15;border:2px solid rgba(255,255,255,.12);box-shadow:0 20px 40px -20px #000;transition:border-color .3s,box-shadow .3s}
+.sc-st .ring img{width:62%;height:auto}
+.sc-st .ring b{font:800 15px var(--mono,monospace);color:#fff}
+.sc-st[aria-current="step"] .ring{border-color:#f2c25b;box-shadow:0 0 0 5px rgba(242,194,91,.14),0 0 34px rgba(242,194,91,.55)}
+.sc-st .t{font:700 17px/1.25 var(--serif,Cinzel,serif);color:#fff;max-width:16em}
+.sc-st .s{font-size:13.5px;color:var(--dim,#8b819c);max-width:20em}
+.sc-say{margin-top:18px;padding:18px 20px;border-radius:16px;border:1px solid var(--line,rgba(255,215,140,.16));background:linear-gradient(165deg,rgba(32,26,44,.86),rgba(16,12,22,.92));min-height:96px}
+.sc-say p{margin:0;color:var(--text,#efe9f7)}
+.sc-say small{display:block;margin-top:8px;color:var(--dim,#8b819c);font-size:12.5px}
+.sc-ctl{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.sc-ctl button{cursor:pointer;padding:10px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);color:#fff;font:700 13.5px var(--sans,Inter,sans-serif)}
+.sc-ctl button:hover{border-color:#f2c25b}
+.sc-ctl button[disabled]{opacity:.4;cursor:default}
+@media (max-width:700px){
+  .sc-flow{grid-template-columns:1fr;gap:18px;padding-left:56px}
+  .sc-rail{left:26px;right:auto;top:20px;bottom:20px;width:2px;height:auto;background:linear-gradient(180deg,rgba(242,194,91,.6),rgba(155,92,255,.6))}
+  .sc-coin{left:7px!important;top:var(--cy,10px);transition:top .9s cubic-bezier(.45,.05,.3,1)}
+  .sc-st{display:grid;grid-template-columns:64px 1fr;column-gap:14px;row-gap:2px;text-align:left;align-items:start}
+  .sc-st .ring{width:64px;height:64px;grid-row:span 2}
+  .sc-st .ring b{font-size:10.5px}
+  .sc-st .t{align-self:end;font-size:16px;max-width:none}
+  .sc-st .s{max-width:none}
+}
+
+/* live treasury */
+.sc-live{display:grid;grid-template-columns:300px 1fr;gap:clamp(20px,4vw,48px);align-items:center;margin-top:24px;padding:clamp(20px,3vw,32px);border-radius:22px;border:1px solid var(--line,rgba(255,215,140,.16));background:linear-gradient(160deg,#1c1626,#0f0c15);box-shadow:0 40px 80px -40px #000}
+.sc-donut{position:relative;width:100%;max-width:300px;aspect-ratio:1;margin:0 auto}
+.sc-donut svg{width:100%;height:100%;transform:rotate(-90deg)}
+.sc-donut circle{fill:none;stroke-width:15}
+.sc-donut .bg{stroke:rgba(255,255,255,.06)}
+.sc-donut .seg{transition:stroke-dasharray .9s ease,stroke-dashoffset .9s ease}
+html.reduce .sc-donut .seg{transition:none}
+.sc-mid{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.sc-mid b{font:700 clamp(20px,2.6vw,28px)/1.1 var(--mono,monospace);color:#fff}
+.sc-mid span{font-size:12.5px;color:var(--dim,#8b819c);margin-top:4px}
+.sc-rows{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.sc-rows li{display:grid;grid-template-columns:14px 1fr auto;gap:10px;align-items:start;padding:11px 13px;border-radius:12px;background:rgba(0,0,0,.28);border:1px solid var(--line,rgba(255,215,140,.16))}
+.sc-rows i{width:12px;height:12px;border-radius:3px;margin-top:4px}
+.sc-rows b{color:#fff}
+.sc-rows small{display:block;color:var(--dim,#8b819c);font-size:12.5px;line-height:1.45}
+.sc-rows .amt{font:600 14px var(--mono,monospace);color:#ffdf94;text-align:right;white-space:nowrap}
+.sc-rows .amt small{color:var(--dim,#8b819c);font-family:var(--sans,Inter,sans-serif)}
+.sc-sum{display:flex;flex-wrap:wrap;gap:10px 22px;margin:16px 0 0;font-size:14px;color:var(--mute,#b8aecb)}
+.sc-sum b{font-family:var(--mono,monospace);color:#fff}
+.sc-live-tag{display:inline-block;font:700 10.5px/1 var(--mono,monospace);letter-spacing:.08em;color:#062a1b;background:#3ddc97;padding:3px 6px;border-radius:5px;margin-right:6px;vertical-align:1px}
+.sc-bad{color:#ffb27a}
+.sc-note{margin-top:14px;font-size:12.5px;color:var(--dim,#8b819c)}
+.sc-refresh{cursor:pointer;margin-top:12px;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);color:#fff;font:700 13px var(--sans,Inter,sans-serif)}
+@media (max-width:860px){.sc-live{grid-template-columns:1fr}.sc-donut{max-width:240px}}
+@media (max-width:560px){
+  .sc-live{padding:16px}
+  .sc-rows li{grid-template-columns:14px 1fr}
+  .sc-rows .amt{grid-column:2;text-align:left}
+  .sc-rows .amt small{display:inline;margin-left:8px}
+  .sc-rows code{white-space:nowrap}
+}
+
+/* official brand SVGs fill the ring box (img.brand-mark in v3-pages.css adds the padding) */
+.sc-st .ring img.brand-mark{width:100%;height:100%}

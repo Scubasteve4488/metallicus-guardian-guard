@@ -1,0 +1,55 @@
+/* /learn/credit-unions (v3, 2026-10-28): "where your dollar sits" comparison and the warning-sign checker.
+   Without JavaScript every answer and every sign is shown; credit-unions.js turns them into a question picker and a checklist. */
+
+/* --- where your dollar sits --- */
+.cu-qs{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 22px}
+.cu-qs button{cursor:pointer;padding:10px 16px;border-radius:999px;border:1px solid var(--line,rgba(255,215,140,.16));background:rgba(255,255,255,.03);color:var(--mute,#b8aecb);font:600 14px/1.2 var(--sans,Inter,sans-serif);transition:border-color .2s,color .2s,background .2s}
+.cu-qs button:hover{color:#fff;border-color:rgba(242,194,91,.5)}
+.cu-qs button[aria-pressed="true"]{color:#1b1206;background:linear-gradient(180deg,#ffdf94,#f2c25b);border-color:#f2c25b}
+html:not(.js) .cu-qs{display:none}
+.cu-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,22px)}
+.cu-col{position:relative;padding:clamp(18px,2.4vw,26px);border-radius:20px;border:1px solid var(--line,rgba(255,215,140,.16));background:linear-gradient(165deg,#1c1626,#0f0c15);box-shadow:0 30px 60px -36px #000;overflow:hidden}
+.cu-col::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:var(--cu-c,#f2c25b)}
+.cu-a{--cu-c:#3ddc97}.cu-b{--cu-c:#f2c25b}.cu-c{--cu-c:#9b5cff}
+.cu-col header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.cu-ic{flex:0 0 44px;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:24px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);overflow:hidden}
+.cu-ic img{width:100%;height:100%;object-fit:cover}
+.cu-col h3{margin:0;font:700 17px/1.3 var(--serif,Cinzel,serif);color:#fff}
+.cu-col dl{margin:0}
+.cu-col dl>div{padding:12px 0;border-top:1px solid rgba(255,255,255,.07)}
+.cu-col dt{font:600 11.5px var(--mono,monospace);text-transform:uppercase;letter-spacing:.05em;color:var(--dim,#8b819c);margin-bottom:6px}
+.cu-col dd{margin:0;color:var(--mute,#b8aecb);font-size:15px;line-height:1.55}
+.cu-col dd a{font:600 12.5px var(--mono,monospace);color:#ffdf94;white-space:nowrap}
+.cu-v{display:block;margin-bottom:4px;font:700 clamp(20px,2vw,26px)/1.15 var(--serif,Cinzel,serif)}
+.cu-v.yes{color:#3ddc97}.cu-v.no{color:#ff8a7a}.cu-v.mid{color:#ffdf94}
+/* question-picker mode (JS) */
+.cu-on .cu-col dl>div{display:none;border-top:0;padding:4px 0 0}
+.cu-on .cu-col dl>div.is-on{display:block;animation:cu-in .5s cubic-bezier(.2,.8,.2,1) both}
+.cu-on .cu-col dt{display:none}
+.cu-on .cu-b dl>div.is-on{animation-delay:.08s}.cu-on .cu-c dl>div.is-on{animation-delay:.16s}
+@keyframes cu-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+html.reduce .cu-on .cu-col dl>div.is-on{animation:none}
+@media (max-width:860px){.cu-cols{grid-template-columns:1fr}}
+
+/* --- warning-sign checker --- */
+.cu-flags{list-style:none;margin:22px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.cu-flag{width:100%;height:100%;cursor:pointer;display:flex;align-items:flex-start;gap:12px;text-align:left;padding:14px 16px;border-radius:14px;border:1px solid var(--line,rgba(255,215,140,.16));background:rgba(255,255,255,.03);color:var(--text,#efe9f7);font:500 15px/1.4 var(--sans,Inter,sans-serif);transition:border-color .2s,background .2s,transform .2s}
+.cu-flag::before{content:"";flex:0 0 20px;width:20px;height:20px;margin-top:1px;border-radius:6px;border:2px solid rgba(255,255,255,.3);display:grid;place-items:center;font:900 13px/1 var(--sans,Inter,sans-serif);color:#1b0806;transition:all .2s}
+.cu-flag:hover{border-color:rgba(242,194,91,.5)}
+.cu-flag[aria-pressed="true"]{border-color:#ff8a7a;background:rgba(255,120,100,.09)}
+.cu-flag[aria-pressed="true"]::before{content:"\2713";border-color:#ff8a7a;background:#ff8a7a}
+html:not(.js) .cu-flag{cursor:default}
+html:not(.js) .cu-flag::before{display:none}
+.cu-out{margin-top:18px;padding:20px 22px;border-radius:18px;border:1px solid var(--line,rgba(255,215,140,.16));background:linear-gradient(165deg,rgba(32,26,44,.86),rgba(16,12,22,.92));transition:border-color .3s,box-shadow .3s}
+.cu-out.hot{border-color:rgba(255,138,122,.6);box-shadow:0 0 0 4px rgba(255,138,122,.08),0 20px 50px -30px rgba(255,100,80,.6)}
+.cu-score{margin:0;color:var(--text,#efe9f7);font-size:16px}
+.cu-meter{display:flex;gap:4px;margin:12px 0 14px}
+.cu-meter i{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.08);transition:background .3s}
+.cu-meter i.on{background:#ff8a7a}
+.cu-says{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:6px}
+.cu-says li{padding-left:14px;border-left:2px solid rgba(255,138,122,.6);color:var(--mute,#b8aecb);font-size:14.5px}
+.cu-says a{font:600 12.5px var(--mono,monospace);color:#ffdf94;margin-left:6px;white-space:nowrap}
+.cu-do{margin:0;padding-left:20px;color:var(--text,#efe9f7)}
+.cu-do li{margin:4px 0}
+.cu-out h3{margin:0 0 6px;font:700 18px var(--serif,Cinzel,serif);color:#fff}
+.cu-reset{cursor:pointer;margin-top:12px;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);color:#fff;font:700 13px var(--sans,Inter,sans-serif)}

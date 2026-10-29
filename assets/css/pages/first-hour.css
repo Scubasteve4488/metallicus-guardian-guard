@@ -1,0 +1,44 @@
+/* /learn/first-hour (v3, 2026-10-28): the six stops as a trail you walk.
+   Without JavaScript the trail is a plain list of links to the six stops.
+   first-hour.js makes it sticky, lights the stop you're reading, and adds "done" ticks kept in this browser only. */
+.fh-trail{margin:8px 0 6px;padding:16px clamp(14px,2vw,22px) 14px;border-radius:20px;border:1px solid var(--line,rgba(255,215,140,.16));background:linear-gradient(165deg,rgba(28,22,38,.94),rgba(15,12,21,.96));box-shadow:0 24px 50px -34px #000}
+html.js .fh-trail{position:sticky;top:58px;z-index:20;backdrop-filter:blur(10px)}
+.fh-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.fh-count{margin:0;font:600 13px var(--mono,monospace);color:var(--dim,#8b819c)}
+.fh-count b{color:#ffdf94}
+.fh-now{margin:0;font:700 15px var(--serif,Cinzel,serif);color:#fff}
+.fh-track{position:relative}
+.fh-stops{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+.fh-track::before{content:"";position:absolute;left:calc(100% / 12);right:calc(100% / 12);top:17px;height:2px;background:rgba(255,255,255,.1)}
+.fh-fill{position:absolute;left:calc(100% / 12);top:17px;height:2px;width:0;max-width:calc(100% - 100% / 6);background:linear-gradient(90deg,#f2c25b,#9b5cff);box-shadow:0 0 12px rgba(242,194,91,.7);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+html.reduce .fh-fill{transition:none}
+.fh-stops li{position:relative;z-index:1}
+html:not(.js) .fh-fill{display:none}
+.fh-stops a{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;text-decoration:none;color:var(--mute,#b8aecb);font:600 12.5px/1.25 var(--sans,Inter,sans-serif)}
+.fh-dot{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font:700 14px var(--mono,monospace);color:#fff;background:#0f0c15;border:2px solid rgba(255,255,255,.18);transition:border-color .3s,box-shadow .3s,background .3s,color .3s}
+.fh-stops a:hover .fh-dot,.fh-stops a:focus-visible .fh-dot{border-color:#ffdf94}
+.fh-stops a.is-now{color:#ffdf94}
+.fh-stops a.is-now .fh-dot{border-color:#f2c25b;box-shadow:0 0 0 5px rgba(242,194,91,.15),0 0 26px rgba(242,194,91,.6)}
+.fh-stops a.is-done .fh-dot{background:linear-gradient(180deg,#ffdf94,#f2c25b);border-color:#f2c25b;color:#1b1206}
+.fh-reset{cursor:pointer;padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:none;color:var(--dim,#8b819c);font:600 12px var(--sans,Inter,sans-serif)}
+.fh-reset:hover{color:#fff;border-color:#f2c25b}
+/* the per-stop controls added by JS */
+.fh-done{cursor:pointer;display:inline-flex;align-items:center;gap:10px;margin:4px 0 14px;padding:10px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);color:#fff;font:700 14px var(--sans,Inter,sans-serif);transition:all .2s}
+.fh-done::before{content:"";width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.35);display:grid;place-items:center;font:900 11px/1 var(--sans,Inter,sans-serif);color:#1b1206}
+.fh-done:hover{border-color:#f2c25b}
+.fh-done[aria-pressed="true"]{border-color:#f2c25b;background:rgba(242,194,91,.12);color:#ffdf94}
+.fh-done[aria-pressed="true"]::before{content:"\2713";background:#f2c25b;border-color:#f2c25b}
+.fh-next{display:inline-flex;align-items:center;gap:8px;margin-left:12px;font:600 14px var(--sans,Inter,sans-serif);color:#c7a6ff}
+.fh-next:hover{color:#fff}
+.fh-finish{margin-top:10px;padding:14px 18px;border-radius:14px;border:1px solid rgba(242,194,91,.4);background:rgba(242,194,91,.08);color:#ffdf94;font-weight:600}
+main section[id]{scroll-margin-top:190px}
+@media (max-width:719px){
+  html.js .fh-trail{top:56px;padding:12px 12px 10px;border-radius:16px}
+  .fh-stops a .fh-l{display:none}
+  .fh-dot{width:30px;height:30px;font-size:12.5px}
+  .fh-track::before,.fh-fill{top:14px}
+  .fh-top{margin-bottom:8px}
+  .fh-now{font-size:13.5px}
+  main section[id]{scroll-margin-top:150px}
+}
+html:not(.js) .fh-reset,html:not(.js) .fh-now{display:none}

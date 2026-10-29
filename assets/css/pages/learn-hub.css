@@ -1,0 +1,50 @@
+/* /learn (v3, 2026-10-28): the learning lines, drawn like a transit map.
+   Each line is one suggested route through the learn pages. On phones the map steps aside and the route shows as a list.
+   Without JavaScript this whole block is hidden; the cards below it carry every destination. */
+html:not(.js) .lm{display:none}
+.lm-lines{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 20px}
+.lm-lines button{cursor:pointer;display:inline-flex;align-items:center;gap:9px;padding:9px 15px 9px 11px;border-radius:999px;border:1px solid var(--line,rgba(255,215,140,.16));background:rgba(255,255,255,.03);color:var(--mute,#b8aecb);font:600 14px/1.2 var(--sans,Inter,sans-serif);transition:border-color .2s,color .2s,background .2s}
+.lm-lines button i{width:22px;height:6px;border-radius:3px;background:var(--lc)}
+.lm-lines button:hover{color:#fff;border-color:var(--lc)}
+.lm-lines button[aria-pressed="true"]{color:#fff;border-color:var(--lc);background:color-mix(in srgb,var(--lc) 16%,transparent)}
+.lm-gold{--lc:#f2c25b}.lm-green{--lc:#3ddc97}.lm-violet{--lc:#9b5cff}.lm-blue{--lc:#5aa9ff}.lm-pink{--lc:#f0a6c0}
+.lm-board{position:relative;padding:clamp(14px,2vw,24px);border-radius:24px;border:1px solid var(--line,rgba(255,215,140,.16));background:
+  radial-gradient(ellipse at 20% 0%,rgba(155,92,255,.12),transparent 60%),
+  repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 40px),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.025) 0 1px,transparent 1px 40px),
+  linear-gradient(160deg,#1a1424,#0e0b14);box-shadow:0 40px 80px -40px #000}
+.lm-map{position:relative;width:100%;aspect-ratio:1000/520}
+.lm-map svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.lm-line{fill:none;stroke-width:9;stroke-linecap:round;stroke-linejoin:round;opacity:.22;transition:opacity .4s}
+.lm-line.on{opacity:1;filter:drop-shadow(0 0 8px var(--glow))}
+.lm-line.draw{animation:lm-draw 1.1s cubic-bezier(.4,.1,.2,1) both}
+@keyframes lm-draw{from{stroke-dashoffset:var(--len)}to{stroke-dashoffset:0}}
+html.reduce .lm-line.draw{animation:none}
+.lm-stop{fill:#0e0b14;stroke:#fff;stroke-width:4;transition:opacity .3s}
+.lm-stop.off{opacity:.35}
+.lm-side{fill:none;stroke:#f0a6c0;stroke-width:3;stroke-dasharray:4 6;opacity:.5}
+.lm-st{position:absolute;display:inline-flex;align-items:center;gap:7px;max-width:13em;padding:4px 8px;border-radius:8px;text-decoration:none;color:#fff;font:700 13.5px/1.25 var(--sans,Inter,sans-serif);background:rgba(14,11,20,.78);transition:opacity .3s,color .3s,transform .3s}
+.lm-st small{display:block;font:500 11px var(--mono,monospace);color:var(--dim,#8b819c)}
+.lm-st:hover,.lm-st:focus-visible{color:#ffdf94}
+.lm-st.off{opacity:.38}
+.lm-st b{flex:0 0 22px;width:22px;height:22px;border-radius:50%;display:none;place-items:center;font:800 12px var(--mono,monospace);color:#120e18;background:var(--lc,#f2c25b)}
+.lm-st.on b{display:grid}
+.lm-st{white-space:nowrap}
+.lm-st.b{transform:translate(-50%,0);text-align:center}.lm-st.a{transform:translate(-50%,-100%);text-align:center}.lm-st.r{transform:translate(0,-50%)}
+@media (max-width:1000px){.lm-st{font-size:12.5px}.lm-st small{display:none}}
+.lm-route{margin:18px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.lm-route li{position:relative;padding:16px 16px 14px 16px;border-radius:16px;border:1px solid var(--line,rgba(255,215,140,.16));background:rgba(0,0,0,.28);animation:lm-in .45s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--k) * 90ms)}
+.lm-route li::before{content:attr(data-n);position:absolute;top:-11px;left:14px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:800 12px var(--mono,monospace);color:#120e18;background:var(--lc,#f2c25b)}
+.lm-route h3{margin:6px 0 6px;font:700 17px/1.25 var(--serif,Cinzel,serif);color:#fff}
+.lm-route p{margin:0 0 10px;color:var(--mute,#b8aecb);font-size:14.5px}
+.lm-route a{font-weight:700;color:#ffdf94}
+@keyframes lm-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+html.reduce .lm-route li{animation:none}
+.lm-why{margin:14px 0 0;color:var(--mute,#b8aecb)}
+.lm-why b{color:#fff}
+.lm-note{margin-top:12px;font-size:12.5px;color:var(--dim,#8b819c)}
+@media (max-width:719px){
+  .lm-map{display:none}
+  .lm-board{padding:16px}
+  .lm-route{grid-template-columns:1fr;gap:16px;margin-top:14px}
+}

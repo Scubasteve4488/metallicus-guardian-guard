@@ -1,0 +1,21 @@
+/* IAN report: the launch clock (v3, 2026-10-28). Scrub 29 minutes of the IAN launch; each moment from the
+   page's own timeline lights up on the track. Prefix rc-. */
+.rc-clock{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin-bottom:12px}
+.rc-time{font:700 clamp(30px,5vw,48px)/1 "JetBrains Mono",ui-monospace,monospace;color:#ffdf94;letter-spacing:.02em}
+.rc-t{font:600 14px/1 "JetBrains Mono",ui-monospace,monospace;color:#c7a6ff}
+.rc-track{position:relative;height:64px;margin:18px 6px 6px}
+.rc-rail{position:absolute;left:0;right:0;top:28px;height:8px;border-radius:8px;background:rgba(255,255,255,.08)}
+.rc-fill{position:absolute;left:0;top:28px;height:8px;border-radius:8px;background:linear-gradient(90deg,#9b5cff,#f2c25b);width:0;transition:width .35s ease}
+.rc-band{position:absolute;top:20px;height:24px;border-radius:6px;background:repeating-linear-gradient(135deg,rgba(255,178,122,.28) 0 6px,rgba(255,178,122,.08) 6px 12px);border:1px solid rgba(255,178,122,.5)}
+.rc-band span{position:absolute;top:-18px;left:0;white-space:nowrap;font:700 10.5px/1 "JetBrains Mono",ui-monospace,monospace;color:#ffb27a;letter-spacing:.06em;text-transform:uppercase}
+.rc-mark{position:absolute;top:22px;width:20px;height:20px;margin-left:-10px;border-radius:50%;cursor:pointer;border:2px solid rgba(255,255,255,.3);background:#140f1c;padding:0;transition:transform .2s,border-color .2s,background .2s}
+.rc-mark:hover,.rc-mark:focus-visible{transform:scale(1.2);border-color:#ffdf94}
+.rc-mark.past{background:#9b5cff;border-color:#c7a6ff}
+.rc-mark[aria-pressed="true"]{background:#f2c25b;border-color:#fff;box-shadow:0 0 18px rgba(242,194,91,.8)}
+.rc-range{width:100%;margin:6px 0 0;accent-color:#f2c25b}
+.rc-ends{display:flex;justify-content:space-between;font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#8b819c}
+.rc-card{margin-top:18px;min-height:110px;padding:18px 20px;border-radius:16px;border:1px solid rgba(255,215,140,.16);background:rgba(0,0,0,.28)}
+.rc-card h3{margin:0 0 6px;font:700 20px/1.2 "Cinzel",Georgia,serif;color:#fff}
+.rc-card p{margin:0;color:#b8aecb}
+.rc-ctrl{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+@media (max-width:600px){.rc-mark{width:16px;height:16px;margin-left:-8px;top:24px}.rc-band span{font-size:9.5px}}

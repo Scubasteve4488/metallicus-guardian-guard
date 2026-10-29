@@ -1,0 +1,16 @@
+/* /learn/defi-forge (v3 polish, 2026-10-28): reskin only. defi-forge.js and the calculators are untouched. */
+.dl-tabs{gap:8px;padding:6px;border-radius:999px;border:1px solid var(--line,rgba(255,215,140,.16));background:rgba(0,0,0,.25);display:inline-flex;max-width:100%}
+.dl-tab-btn{border-radius:999px;border-color:transparent;background:none;padding:10px 18px;font:600 14px/1.2 var(--sans,Inter,sans-serif);color:var(--mute,#b8aecb)}
+.dl-tab-btn:hover:not(.dl-tab-active){background:rgba(255,255,255,.05);color:#fff}
+.dl-tab-btn.dl-tab-active{background:linear-gradient(180deg,#ffdf94,#f2c25b);border-color:#f2c25b;color:#1b1206;font-weight:700;box-shadow:0 8px 24px -10px rgba(242,194,91,.7)}
+.dl-tab-btn:focus-visible{outline:2px solid #f2c25b;outline-offset:2px}
+.dl-result-box{border-radius:18px;border-color:rgba(242,194,91,.4);background:radial-gradient(ellipse at 50% 0%,rgba(242,194,91,.12),transparent 70%),linear-gradient(165deg,#1c1626,#0f0c15);box-shadow:0 30px 60px -36px #000}
+.dl-result-num{font-family:var(--mono,"JetBrains Mono",monospace);font-size:clamp(26px,3vw,36px);letter-spacing:-.01em;color:#ffdf94;text-shadow:0 0 24px rgba(242,194,91,.35)}
+.dl-result-label{font:600 11.5px var(--mono,monospace);letter-spacing:.08em}
+.dl-growth{font-size:14px;color:#3ddc97}
+.dl-row{font-size:14px;padding:8px 0}
+.dl-row-val{font:600 13.5px var(--mono,monospace);color:#fff}
+@media (max-width:719px){
+  .dl-tabs{display:flex;border-radius:18px}
+  .dl-tab-btn{flex:1 1 auto}
+}
