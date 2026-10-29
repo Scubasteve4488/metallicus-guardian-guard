@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MetalXPRt — Guard.IAN's XPR Network guide, inside your AI</title>
-<meta name="description" content="MetalXPRt plugs Guard.IAN's XPR Network and Metallicus guide into Claude, ChatGPT and Grok: 23 live, read-only tools and official sources, with a link for every fact.">
+<meta name="description" content="MetalXPRt plugs Guard.IAN's XPR Network and Metallicus guide into Claude, ChatGPT and Grok: 22 live read-only tools, one opt-in suggestion box and official sources, with a link for every fact.">
 <link rel="canonical" href="https://standguard.net/metalxprt">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="StandGuard">
 <meta property="og:title" content="MetalXPRt — Guard.IAN\'s guide, inside your AI">
-<meta property="og:description" content="MetalXPRt plugs Guard.IAN's XPR Network and Metallicus guide into Claude, ChatGPT and Grok: 23 live, read-only tools and official sources, with a link for every fact.">
+<meta property="og:description" content="MetalXPRt plugs Guard.IAN's XPR Network and Metallicus guide into Claude, ChatGPT and Grok: 22 live read-only tools, one opt-in suggestion box and official sources, with a link for every fact.">
 <meta property="og:url" content="https://standguard.net/metalxprt">
 <meta property="og:image" content="https://standguard.net/assets/img/ian/share-1200x630.jpg">
 <meta property="og:image:width" content="1200">
@@ -20,72 +20,63 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/ian/favicon-32.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/assets/img/ian/icon-512.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/ian/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Cinzel:wght@500;700&amp;family=Cinzel+Decorative:wght@700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="/assets/css/v3-pages.css">
+<link rel="stylesheet" href="/assets/css/pages/products.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-<nav id="nav" aria-label="Primary">
-  <a class="nav-brand" href="/">
-    <picture><source srcset="/assets/img/ian/logo-96.webp" type="image/webp"><img src="/assets/img/ian/logo-96.jpg" alt="" width="34" height="34"></picture>
-    <span>StandGuard</span>
-  </a>
-  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
-    <span></span><span></span><span></span>
-    <span class="vh">Menu</span>
-  </button>
-  <div class="nav-links" id="nav-links">
-    <a class="nav-link" href="/">Home</a>
-    <details class="nav-group"><summary>Guard.IAN</summary><div class="nav-menu">
-      <a class="nav-link" href="/ian">Meet Guard.IAN</a>
-      <a class="nav-link" href="/#story">His story</a>
-      <a class="nav-link" href="/#next">What's coming next</a>
-      <a class="nav-link" href="/status">What's live now</a>
-      <a class="nav-link" href="/projects">What he's working on</a>
-      <a class="nav-link" href="/guard">The GUARD token</a>
+<header class="top">
+  <a class="brand" href="/"><img src="/assets/img/ian/logo-96.webp" alt="" width="32" height="32">STANDGUARD</a>
+  <button class="navtog" type="button" data-navtoggle aria-expanded="false" aria-controls="site-menu">Menu</button>
+  <nav class="menu" id="site-menu" aria-label="Primary">
+    <details class="dd"><summary>Guard.IAN</summary><div class="dd-m">
+      <a href="/ian">Meet Guard.IAN</a>
+      <a href="/#story">His story</a>
+      <a href="/status">What's live now</a>
+      <a href="/projects">What he's working on</a>
+      <a href="/guard">The GUARD token</a>
     </div></details>
-    <details class="nav-group"><summary>What he does</summary><div class="nav-menu">
-      <a class="nav-link" href="/metalxprt">MetalXPRt: his guide in your AI</a>
-      <a class="nav-link" href="/services/utility-forge">Utility Forge report</a>
-      <a class="nav-link" href="/launches">Launch record</a>
-      <a class="nav-link" href="/reports/ian">IAN launch report</a>
-      <a class="nav-link" href="/tools/account-check">Account Check</a>
-      <a class="nav-link" href="/tools">All tools</a>
-      <a class="nav-link" href="/services">All services</a>
+    <details class="dd"><summary>What he does</summary><div class="dd-m">
+      <a href="/metalxprt">MetalXPRt: his guide in your AI</a>
+      <a href="/services/utility-forge">Utility Forge report</a>
+      <a href="/tools">Free tools</a>
+      <a href="/tools/account-check">Account Check</a>
+      <a href="/launches">Launch record</a>
+      <a href="/reports/ian">IAN launch report</a>
+      <a href="/services">All services</a>
     </div></details>
-    <details class="nav-group"><summary>Learn</summary><div class="nav-menu">
-      <a class="nav-link" href="/learn">Start here</a>
-      <a class="nav-link" href="/learn/first-hour">Your first hour on XPR</a>
-      <a class="nav-link" href="/learn/ecosystem">The ecosystem</a>
-      <a class="nav-link" href="/learn/academy">Academy</a>
-      <a class="nav-link" href="/learn/defi-forge">DeFi Forge calculators</a>
-      <a class="nav-link" href="/learn/stablecoins-payments">Stablecoins &amp; payments</a>
-      <a class="nav-link" href="/learn/credit-unions">For credit union members</a>
-      <a class="nav-link" href="/projects/pulsevm">PulseVM, in short</a>
-      <a class="nav-link" href="/learn/signguard">SignGuard: learn ASL</a>
+    <a href="/learn/ecosystem">Ecosystem</a>
+    <details class="dd"><summary>Learn</summary><div class="dd-m">
+      <a href="/learn">Start here</a>
+      <a href="/learn/first-hour">Your first hour on XPR</a>
+      <a href="/learn/academy">Academy</a>
+      <a href="/learn/defi-forge">DeFi Forge calculators</a>
+      <a href="/learn/stablecoins-payments">Stablecoins &amp; payments</a>
+      <a href="/learn/credit-unions">For credit union members</a>
+      <a href="/projects/pulsevm">PulseVM, in short</a>
+      <a href="/learn/signguard">SignGuard: learn ASL</a>
     </div></details>
-    <details class="nav-group"><summary>Community</summary><div class="nav-menu">
-      <a class="nav-link" href="/community">All communities</a>
-      <a class="nav-link" href="/community/ksto">KSTO</a>
-      <a class="nav-link" href="/community/snippy">Snippy</a>
-      <a class="nav-link" href="/community/snipverse">Snipverse</a>
-      <a class="nav-link" href="/community/cyphergang">CypherGang</a>
-      <a class="nav-link" href="/community/vibrr">Vibrr</a>
+    <details class="dd"><summary>Community</summary><div class="dd-m">
+      <a href="/community">All communities</a>
+      <a href="/community/ksto">KSTO</a>
+      <a href="/community/snippy">Snippy</a>
+      <a href="/community/snipverse">Snipverse</a>
+      <a href="/community/cyphergang">CypherGang</a>
+      <a href="/community/vibrr">Vibrr</a>
     </div></details>
-    <details class="nav-group"><summary>About</summary><div class="nav-menu">
-      <a class="nav-link" href="/creator">Who builds this</a>
-      <a class="nav-link" href="/about">About StandGuard</a>
-      <a class="nav-link" href="/evidence">Sources and methods</a>
-      <a class="nav-link" href="/corrections">Corrections</a>
-      <a class="nav-link" href="/contact">Contact</a>
-      <a class="nav-link" href="/privacy">Privacy</a>
-      <a class="nav-link" href="/terms">Terms</a>
+    <details class="dd"><summary>About</summary><div class="dd-m">
+      <a href="/creator">Who builds this</a>
+      <a href="/about">About StandGuard</a>
+      <a href="/evidence">Sources and methods</a>
+      <a href="/corrections">Corrections</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
     </div></details>
-  </div>
-  <a class="nav-cta" href="/metalxprt">Get MetalXPRt</a>
-</nav>
+    <a class="cta" href="/contact">Get in touch</a>
+  </nav>
+</header>
 <main id="main">
 <div class="container">
 
@@ -97,27 +88,59 @@
       <p class="mt3 flex gap-sm wrap"><a class="btn btn-g" href="https://x.com/scubasteve4488" rel="noopener">Ask @Scubasteve4488 for access</a> <a class="btn btn-o" href="/contact">Other ways to reach him</a></p>
     </div>
     <div class="facts3" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0;">
-      <div class="fact"><b>23</b><span>live, read-only tools</span></div>
+      <div class="fact"><b>22 + 1</b><span>read-only tools, plus one opt-in suggestion box</span></div>
       <div class="fact"><b>Free</b><span>no account, no wallet</span></div>
       <div class="fact"><b>0 keys</b><span>it signs nothing and moves no money</span></div>
       <div class="fact"><b>0 AI</b><span>inside it; your own AI writes the answer</span></div>
     </div>
   </section>
 
-  <section class="section">
+
+  <section class="section rv" aria-labelledby="px-flow-title">
+    <p class="sec-label">How it works</p>
+    <h2 class="sec-title" id="px-flow-title">Watch a question travel</h2>
+    <p class="px-intro">Pick a stage, or press play and follow one question from your AI app, through MetalXPRt, out to the sources and back.</p>
+    <div class="px-panel px-flow" data-px-flow>
+      <div class="px-flow-top"><p class="px-k" style="margin:0">One question, four stages</p><button class="px-btn" type="button" data-flow-play aria-pressed="false">Play it through</button></div>
+      <div class="px-stages" role="tablist" aria-label="Stages of a question" style="--px-n:4">
+        <button class="px-stage" type="button" role="tab" data-stage="px-st-1" aria-controls="px-flow-out"><span class="px-ico">AI</span>1. You ask<small>in your own AI app</small></button>
+        <button class="px-stage" type="button" role="tab" data-stage="px-st-2" aria-controls="px-flow-out"><span class="px-ico"><img src="/assets/img/eco/ian.webp" alt="" width="76" height="76"></span>2. MetalXPRt<small>guide files + 23 tools</small></button>
+        <button class="px-stage" type="button" role="tab" data-stage="px-st-3" aria-controls="px-flow-out"><span class="px-ico"><img class="brand-mark cs-xpr" src="/assets/img/brand/XPR_Network-glyph-white.svg" alt="" width="76" height="76"></span>3. The sources<small>chain first, then official</small></button>
+        <button class="px-stage" type="button" role="tab" data-stage="px-st-4" aria-controls="px-flow-out"><span class="px-ico">&#10003;</span>4. Your answer<small>a link for every fact</small></button>
+      </div>
+      <div class="px-flow-out" id="px-flow-out" data-flow-out role="tabpanel" aria-live="polite">
+        <h3>1. You ask</h3>
+        <p>In Claude, ChatGPT, Grok or another AI app that lets you add outside tools. Your own AI writes the answer; there is no AI inside MetalXPRt.</p>
+      </div>
+      <template id="px-st-1"><h3>1. You ask</h3><p>In Claude, ChatGPT, Grok or another AI app that lets you add outside tools. Your own AI writes the answer; there is no AI inside MetalXPRt.</p><p>Example: "Is XMD on xmd.token the real Metal Dollar?"</p></template>
+      <template id="px-st-2"><h3>2. MetalXPRt picks where to look</h3><p>It gives your AI an index of the official sources (the guide files) and 22 live, read-only tools to read the chain, plus one suggestion box that saves a fact only when you say yes. It signs nothing and moves no money.</p><ul><li>Guide files: Index, Rules, Sources, Ecosystem, Glossary, KSTO, Changelog.</li><li>For the example, the tool is <code>xpr_token_check</code>: registry, chain, Metal X and Alcor side by side.</li></ul></template>
+      <template id="px-st-3"><h3>3. It reads the sources, in order</h3><ul><li>The live chain comes first.</li><li>Then official Metallicus and XPR Network pages.</li><li>Then builders and block producers, then the press.</li><li>Outside sources such as banks, credit unions, regulators and the Federal Reserve count too.</li></ul><p>Price-site AI summaries are never used as sources.</p></template>
+      <template id="px-st-4"><h3>4. You get the answer, with its sources</h3><ul><li>A source for every fact, with the source's own date. The live chain beats any document.</li><li>When nothing covers a question, it says "I haven't verified that" and names where to check.</li><li>No price talk, no verdicts on people, and it never asks for a key or recovery phrase.</li></ul></template>
+    </div>
+  </section>
+
+  <section class="section rv">
     <h2 class="sec-title">What it covers</h2>
     <div class="chips">
       <span class="chip">XPR Network</span><span class="chip">WebAuth</span><span class="chip">Metal X</span><span class="chip">Metal Pay</span><span class="chip">Metal Dollar (XMD)</span><span class="chip">LOAN Protocol</span><span class="chip">Metal Blockchain</span><span class="chip">Bitcoin, Litecoin and Dogecoin chains on Metal</span><span class="chip">Metal L2</span><span class="chip">PulseVM</span><span class="chip">SimpleDEX</span><span class="chip">XPR Agents</span><span class="chip">Governance</span><span class="chip">NFTs</span><span class="chip">KSTO</span><span class="chip">Credit unions and FedNow</span><span class="chip">Stablecoin rules</span>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section rv">
     <h2 class="sec-title">The 23 tools</h2>
     <p class="intro">Every tool only reads. The one exception is a private suggestion box, and it saves a fact only after you say yes.</p>
+    <div class="px-panel px-tools" data-px-tools hidden>
+      <div class="px-tools-head"><p class="px-k" style="margin:0">Tool explorer: pick a group, then a tool</p><p class="px-k" style="margin:0"><b data-tool-count>23</b> tools</p></div>
+      <div class="px-tabs" role="tablist" aria-label="Tool groups" data-tabs-row></div>
+      <div class="px-tools-body">
+        <div class="px-tgrid" id="px-tool-grid" role="tabpanel" data-tool-grid></div>
+        <div class="px-tcard" data-tool-card aria-live="polite"></div>
+      </div>
+    </div>
     <div class="tgrid mt3"><div class="tgroup"><h3>Chain and accounts</h3><dl class="tlist"><dt><code>xpr_network</code></dt><dd>Live chain status and the block producers.</dd><dt><code>xpr_account</code></dt><dd>One public account: contracts, exchanges, producers, registered agents.</dd><dt><code>xpr_account_check</code></dt><dd>Who am I about to pay? The public record of one account, never a verdict.</dd><dt><code>xpr_contract</code></dt><dd>A contract's actions and tables.</dd><dt><code>xpr_tx</code></dt><dd>One transaction or block.</dd></dl></div><div class="tgroup"><h3>Tokens and markets</h3><dl class="tlist"><dt><code>xpr_token_check</code></dt><dd>Is this the real token? Registry, chain, Metal X and Alcor side by side.</dd><dt><code>simpledex</code></dt><dd>SimpleDEX launches, tokens and market.</dd><dt><code>markets</code></dt><dd>Metal X and Alcor market data.</dd><dt><code>loan_protocol</code></dt><dd>LOAN Protocol lending: markets, rates, deposits.</dd><dt><code>xpr_nfts</code></dt><dd>NFT collections, templates and listings.</dd></dl></div><div class="tgroup"><h3>Ecosystem and status</h3><dl class="tlist"><dt><code>metallicus_status</code></dt><dd>The official XPR Network, Metal Pay and Metal L2 status pages, live.</dd><dt><code>whats_new</code></dt><dd>What changed since yesterday, from each source's own time stamps.</dd><dt><code>xpr_governance</code></dt><dd>Governance communities, proposals and votes.</dd><dt><code>xpr_agents_directory</code></dt><dd>XPR Agents: the agent list, one agent, jobs.</dd><dt><code>xpr_help</code></dt><dd>The official XPR Network help centre.</dd></dl></div><div class="tgroup"><h3>Other chains and outside sources</h3><dl class="tlist"><dt><code>metal_blockchain</code></dt><dd>Metal Blockchain and its Bitcoin, Litecoin and Dogecoin chains.</dd><dt><code>evm_chains</code></dt><dd>Metal L2, Ethereum and BNB Chain.</dd><dt><code>outside_sources</code></dt><dd>News, SEC filings and XMD reserve reports.</dd><dt><code>source_fetch</code></dt><dd>Fetch one official page or PDF from a site the guide lists.</dd><dt><code>xpr_testnet</code></dt><dd>The XPR Network testnet.</dd></dl></div><div class="tgroup"><h3>The guide itself</h3><dl class="tlist"><dt><code>guide</code></dt><dd>Search or read the guide's files.</dd><dt><code>guide_tools</code></dt><dd>Lists and runs every tool, for apps with an older tool list.</dd><dt><code>suggest_update</code></dt><dd>A private box for a missing fact. The only tool that writes.</dd></dl></div></div>
   </section>
 
-  <section class="section">
+  <section class="section rv">
     <h2 class="sec-title">The guide files</h2>
     <p class="intro">The knowledge your AI reads, kept on GitHub and updated as the ecosystem changes. Every change is dated in the changelog.</p>
     <dl class="tlist mt2" style="max-width:760px;">
@@ -131,14 +154,14 @@
     </dl>
   </section>
 
-  <section class="section">
+  <section class="section rv">
     <h2 class="sec-title">Where it gets its facts</h2>
     <p class="intro">The live chain comes first, then official Metallicus and XPR Network pages, then builders and block producers, then the press. Outside sources such as banks, credit unions, regulators and the Federal Reserve count too, and each answer says who said it and when.</p>
     <div class="tgrid mt3"><div class="tgroup"><h3>Metallicus</h3><p class="srclinks"><a href="https://metallicus.com" rel="noopener">metallicus.com</a> <a href="https://metallicus.com/news" rel="noopener">Newsroom</a> <a href="https://metallicus.com/company/whitepapers" rel="noopener">Whitepapers</a> <a href="https://metaldollar.com" rel="noopener">Metal Dollar</a> <a href="https://www.metalpay.com" rel="noopener">Metal Pay</a></p></div><div class="tgroup"><h3>XPR Network</h3><p class="srclinks"><a href="https://xprnetwork.org" rel="noopener">xprnetwork.org</a> <a href="https://xprnetwork.org/roadmap" rel="noopener">Roadmap</a> <a href="https://docs.xprnetwork.org" rel="noopener">Developer docs</a> <a href="https://explorer.xprnetwork.org" rel="noopener">Explorer</a> <a href="https://help.xprnetwork.org/hc/en-us" rel="noopener">Help centre</a> <a href="https://gov.xprnetwork.org" rel="noopener">Governance</a></p></div><div class="tgroup"><h3>Products and dApps</h3><p class="srclinks"><a href="https://webauth.com" rel="noopener">WebAuth</a> <a href="https://metalx.com" rel="noopener">Metal X</a> <a href="https://docs.metalx.com" rel="noopener">Metal X docs</a> <a href="https://xpragents.com" rel="noopener">XPR Agents</a> <a href="https://simpledex.fun" rel="noopener">SimpleDEX</a> <a href="https://protonnz.com" rel="noopener">Proton NZ</a> <a href="https://shellbook.io" rel="noopener">Shellbook</a> <a href="https://pulsevm.dev" rel="noopener">PulseVM</a> <a href="https://alcor.exchange/v/xpr/" rel="noopener">Alcor</a> <a href="https://nft.xprnetwork.org" rel="noopener">XPR NFT market</a></p></div><div class="tgroup"><h3>Metal Blockchain and Metal L2</h3><p class="srclinks"><a href="https://metalblockchain.org" rel="noopener">Metal Blockchain</a> <a href="https://docs.metalblockchain.org" rel="noopener">Metal Blockchain docs</a> <a href="https://explorer.metalblockchain.org" rel="noopener">Metal Blockchain explorer</a> <a href="https://metall2.com" rel="noopener">Metal L2</a> <a href="https://explorer.metall2.com" rel="noopener">Metal L2 explorer</a></p></div><div class="tgroup"><h3>Code on GitHub</h3><p class="srclinks"><a href="https://github.com/XPRNetwork" rel="noopener">XPRNetwork</a> <a href="https://github.com/XPRNetwork/xpr-network-dev-skill" rel="noopener">XPR dev skill</a> <a href="https://github.com/XPRNetwork/xpr-agents" rel="noopener">xpr-agents</a> <a href="https://github.com/MetalBlockchain" rel="noopener">MetalBlockchain</a> <a href="https://github.com/paulgnz" rel="noopener">Paul Grey (Proton NZ)</a></p></div><div class="tgroup"><h3>Status pages</h3><p class="srclinks"><a href="https://status.xprnetwork.org" rel="noopener">XPR Network status</a> <a href="https://status.metalpay.com" rel="noopener">Metal Pay status</a> <a href="https://status.metall2.com" rel="noopener">Metal L2 status</a></p></div><div class="tgroup"><h3>Credit unions, banking and regulators</h3><p class="srclinks"><a href="https://www.frbservices.org" rel="noopener">Federal Reserve FedNow</a> <a href="https://www.govinfo.gov" rel="noopener">NCUA rules (govinfo)</a> <a href="https://www.cuinsight.com" rel="noopener">CUInsight</a> <a href="https://www.cutoday.info" rel="noopener">CU Today</a> <a href="https://www.sec.gov" rel="noopener">SEC EDGAR</a> <a href="https://www.cftc.gov" rel="noopener">CFTC</a> <a href="https://www.fdic.gov" rel="noopener">FDIC BankFind</a> <a href="https://www.bis.org" rel="noopener">BIS</a></p></div><div class="tgroup"><h3>Press and market data</h3><p class="srclinks"><a href="https://defillama.com/chain/xpr-network" rel="noopener">DefiLlama</a> <a href="https://www.coingecko.com/en/coins/xpr-network" rel="noopener">CoinGecko</a> <a href="https://www.coindesk.com" rel="noopener">CoinDesk</a> <a href="https://www.theblock.co" rel="noopener">The Block</a> <a href="https://blockworks.com" rel="noopener">Blockworks</a></p></div><div class="tgroup"><h3>Community</h3><p class="srclinks"><a href="https://ksto.world" rel="noopener">KSTO</a> <a href="https://charliebot.dev" rel="noopener">Charlie Bot</a> <a href="https://www.reddit.com/r/XPRNetwork/" rel="noopener">r/XPRNetwork</a></p></div></div>
     <p class="muted mt3">Also: the XPR token registry, SimpleDEX and XPR Agents indexers, each block producer's own files, and the official endpoint list. Price-site AI summaries are never used as sources.</p>
   </section>
 
-  <section class="section">
+  <section class="section rv">
     <h2 class="sec-title">The rules it follows</h2>
     <div class="rules">
       <div><h3>A source for every fact</h3><p>With the source's own date. The live chain beats any document.</p></div>
@@ -150,7 +173,7 @@
     </div>
   </section>
 
-  <section class="section">
+  <section class="section rv">
     <div class="band">
       <div>
         <h2 class="sec-title">Want to try it?</h2>
@@ -168,49 +191,18 @@
 
 </div>
 </main>
-<footer id="site-footer">
-  <div class="foot-inner">
-    <div class="foot-top">
-      <div>
-        <div class="foot-brand"><picture><source srcset="/assets/img/ian/logo-96.webp" type="image/webp"><img src="/assets/img/ian/logo-96.jpg" alt="" width="30" height="30"></picture><span>StandGuard</span></div>
-        <p class="foot-desc">The home of Guard.IAN, an AI agent on XPR Network who looks things up live, shows his sources, and says so when he can't verify something.</p>
-      </div>
-      <div class="foot-col">
-        <h4>Product</h4>
-        <a href="/ian">Guard.IAN</a>
-        <a href="/metalxprt">MetalXPRt</a>
-        <a href="/launches">Launch record</a>
-        <a href="/projects">Projects</a>
-        <a href="/services">Services</a>
-        <a href="/tools">Tools</a>
-        <a href="/evidence#method">How reports are built</a>
-        <a href="/learn">Learn</a>
-        <a href="/community">Community</a>
-        <a href="/guard">GUARD</a>
-        <a href="/status">Status</a>
-      </div>
-      <div class="foot-col">
-        <h4>Follow</h4>
-        <a href="https://x.com/AgentGuard458" rel="noopener">Guard.IAN on X</a>
-        <a href="https://shellbook.io/u/guard_ian" rel="noopener">Guard.IAN on Shellbook</a>
-        <a href="https://xpragents.com/agent/safeguard5" rel="noopener">XPR Agents profile</a>
-        <a href="https://github.com/Scubasteve4488/metallicus-guardian-guard" rel="noopener">GitHub public repository</a>
-      </div>
-      <div class="foot-col">
-        <h4>Boundaries</h4>
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
-        <a href="/corrections">Corrections</a>
-        <a href="/contact">Contact</a>
-      </div>
-    </div>
-    <div class="foot-bottom">
-      <p class="foot-disc">StandGuard and Guard.IAN are independent community-built projects. They are not official Metallicus, XPR Network, WebAuth, SimpleDEX, or XPR Agents products. Information here is for learning. It is not financial, legal, security, or investment advice.</p>
-      <p class="foot-meta">&copy; <span id="foot-year">2026</span> StandGuard &middot; built by <a href="https://x.com/scubasteve4488" rel="noopener">@Scubasteve4488</a> &middot; <a href="/status">what is live, testing, planned and parked</a></p>
-    </div>
+<footer class="foot">
+  <div class="foot-in">
+    <div><h4>StandGuard</h4><p>The home of Guard.IAN, an AI agent on XPR Network who looks things up live, shows his sources, and says so when he can't verify something.</p></div>
+    <div><h4>Guard.IAN</h4><a href="/ian">Meet him</a><a href="/metalxprt">MetalXPRt</a><a href="/services">Services</a><a href="/tools">Tools</a><a href="/launches">Launch record</a><a href="/status">Status</a></div>
+    <div><h4>Explore</h4><a href="/learn">Learn</a><a href="/community">Community</a><a href="/guard">GUARD</a><a href="/projects">Projects</a><a href="/evidence">Sources and methods</a></div>
+    <div><h4>Follow · Boundaries</h4><a href="https://x.com/AgentGuard458" rel="noopener">X</a><a href="https://shellbook.io/u/guard_ian" rel="noopener">Shellbook</a><a href="https://xpragents.com/agent/safeguard5" rel="noopener">XPR Agents</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/corrections">Corrections</a><a href="/contact">Contact</a></div>
+    <p class="disc">StandGuard and Guard.IAN are independent community-built projects, not official Metallicus, XPR Network, WebAuth, SimpleDEX or XPR Agents products. Logos belong to their owners. Information here is for learning, not financial, legal, security or investment advice. © <span id="pv-year">2026</span> StandGuard · built by @Scubasteve4488.</p>
   </div>
 </footer>
 <script src="/assets/js/site.js"></script>
+<script src="/assets/js/motion.js"></script>
+<script src="/assets/js/pages/products.js"></script>
 
 </body>
 </html>

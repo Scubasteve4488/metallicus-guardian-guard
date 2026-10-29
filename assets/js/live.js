@@ -195,8 +195,10 @@
   var mini = $('[data-mini-check]');
   if (mini) {
     var input = $('input', mini), res = $('[data-mini-out]', mini);
+    var gen = 0; // only the newest lookup may write its answer
     mini.addEventListener('submit', function (e) {
       e.preventDefault();
+      var my = ++gen;
       var name = (input.value || '').trim().toLowerCase();
       if (!NAME_RE.test(name)) { res.innerHTML = '<p class="bad">That isn\'t an XPR account name (a–z, 1–5 and dots, up to 12 characters).</p>'; return; }
       res.innerHTML = '<p class="read on">reading ' + esc(name) + ' from a public XPR server…</p>';
@@ -208,15 +210,17 @@
           .then(function (b) { bal = Array.isArray(b.data) ? (b.data[0] || '0 XPR') : null; return r; })
           .catch(function () { bal = null; return r; });
       }).then(function (r) {
+        if (my !== gen) return;
         var a = r.data;
         var created = a.created ? new Date(a.created + 'Z').toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'unknown';
         var perms = (a.permissions || []).map(function (p) { return p.perm_name; }).join(', ');
         res.innerHTML = '<div class="rows">' +
           '<div>Made <b>' + esc(created) + '</b></div>' +
           '<div>XPR it holds (not staked) <b>' + (bal === null ? "couldn't read" : esc(bal.replace(/^([0-9.]+)/, function (m) { return fmt(parseFloat(m), 4); }))) + '</b></div>' +
-          '<div>Permissions <b>' + esc(perms || 'none') + '</b></div></div>' +
+          '<div>Permission levels <b>' + esc(perms || 'none') + '</b></div></div>' +
           '<p class="src">Read from ' + esc(host(r.server)) + ' just now. Nothing you type is stored. <a href="/tools/account-check">Full check →</a></p>';
       }).catch(function (err) {
+        if (my !== gen) return;
         res.innerHTML = '<p class="bad">' + (String(err && err.message) === 'none' ? 'No account with that name.' : 'Couldn\'t read it just now. That\'s a failed read, not a "no".') + '</p>';
       });
     });

@@ -1,0 +1,24 @@
+/* Creator: the build journey (v3, 2026-10-28). A vertical road that lights up as you scroll, from the jobs
+   before 2026 to what came out of it. Every word is read from this page's own sections. Prefix cj-. */
+.cj{position:relative;margin-top:28px;padding-left:64px}
+.cj-spine{position:absolute;left:22px;top:6px;bottom:6px;width:4px;border-radius:4px;background:rgba(255,255,255,.08)}
+.cj-fill{position:absolute;left:0;top:0;width:100%;height:0;border-radius:4px;background:linear-gradient(180deg,#9b5cff,#f2c25b)}
+.cj-orb{position:absolute;left:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:#ffdf94;box-shadow:0 0 0 4px rgba(242,194,91,.18),0 0 24px rgba(242,194,91,.9);top:0}
+.cj-path{list-style:none;margin:0;padding:0;display:grid;gap:clamp(26px,5vw,44px)}
+.cj-stop{position:relative;opacity:.38;transform:translateY(14px);transition:opacity .5s,transform .5s}
+.cj-stop.lit{opacity:1;transform:none}
+.cj-stop::before{content:"";position:absolute;left:-50px;top:6px;width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.25);background:#140f1c;transition:background .4s,border-color .4s,box-shadow .4s}
+.cj-stop.lit::before{background:#f2c25b;border-color:#fff;box-shadow:0 0 18px rgba(242,194,91,.7)}
+.cj-when{display:block;font:700 12px/1 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;color:#c7a6ff;margin-bottom:6px}
+.cj-stop h3{margin:0 0 8px;font:700 clamp(20px,2.6vw,26px)/1.2 "Cinzel",Georgia,serif;color:#fff}
+.cj-stop p{margin:0 0 10px;color:#b8aecb;max-width:640px}
+.cj-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.cj-chips li,.cj-chips a{display:inline-block;padding:7px 12px;border-radius:999px;border:1px solid rgba(255,215,140,.22);background:rgba(255,255,255,.03);color:#e9e2f5;font-size:14px;text-decoration:none;opacity:.45;transform:translateY(8px);transition:opacity .4s,transform .4s,border-color .2s}
+.cj-chips a{padding:0;border:0;background:none}
+.cj-chips li a{opacity:1;transform:none;color:#ffdf94}
+.cj-chips li:has(a):hover{border-color:#f2c25b}
+.cj-stop.lit .cj-chips li{opacity:1;transform:none}
+.cj-stop.cj-next .cj-chips li{border-color:#f2c25b;background:rgba(242,194,91,.1)}
+html.reduce .cj-stop,html.reduce .cj-chips li{transition:none;opacity:1;transform:none}
+html.reduce .cj-fill{height:100%!important}
+@media (max-width:600px){.cj{padding-left:48px}.cj-spine{left:14px}.cj-stop::before{left:-42px}}

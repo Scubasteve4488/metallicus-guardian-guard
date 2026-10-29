@@ -69,6 +69,7 @@ html.reduce .hero-bg{animation:none}
 @keyframes pulse{50%{opacity:.6;transform:scale(.96)}}
 html.reduce .portal-glow{animation:none}
 .portal-cap{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;font-size:13px;color:var(--mute)}
+.film-text{margin-top:10px;font-size:13px;color:var(--mute)}.film-text summary{cursor:pointer;color:var(--text);width:max-content}.film-text ol{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px;max-width:484px}.film-text b{color:var(--gold);font-variant-numeric:tabular-nums;margin-right:6px}
 .chip{white-space:nowrap;border:1px solid var(--line);background:rgba(0,0,0,.35);color:var(--text);border-radius:999px;padding:7px 14px;font:600 13px var(--sans);cursor:pointer}
 .scrollcue{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);font:600 11px/1 var(--sans);letter-spacing:.3em;color:var(--dim);text-transform:uppercase}
 @media (max-width:900px){
@@ -372,3 +373,13 @@ html.js:not(.reduce) .eco:not(.assembled) .node{transform:rotate(var(--a)) trans
   .dd-m{position:static;min-width:0;border:0;box-shadow:none;background:none;padding:0 0 6px 12px}
 }
 @media (max-width:860px){.menu{background:#0b0910;max-height:calc(100svh - 64px);overflow:auto}}
+
+.menu .cta[aria-current]{color:#1b1206}
+
+/* Official brand marks (assets/img/brand/, unmodified Metallicus files, see PROVENANCE.md; IAN-CODE 2026-10-29).
+   Shown whole: fitted, never cropped, rounded or ringed. XPR Network keeps its clear space (one glyph width all round,
+   Metallicus brand guidelines, XPR section) even inside a round frame. */
+img.brand-mark{object-fit:contain!important;border-radius:0!important;padding:20%!important;background:none!important;box-shadow:none!important}
+img.brand-mark.cs-xpr{padding:33.333%!important}
+/* the frame around XPR becomes plain page colour (no ring) so its clear space holds nothing; selection glows stay outside */
+.node:has(>img.cs-xpr),.ex-ic:has(>img.cs-xpr),.px-ico:has(>img.cs-xpr),.cm-stop:has(>img.cs-xpr){border-color:transparent!important;background:var(--ink,#0b0910)!important}

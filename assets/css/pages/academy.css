@@ -1,0 +1,33 @@
+/* /learn/academy (v3 polish, 2026-10-28): reskin only. No content changes. */
+/* the "Daily Question" card has never had a script filling it; hide it while it's empty (markup kept) */
+.section > div:has(> #quiz-card-body:empty){display:none}
+
+.track-section{margin-bottom:clamp(26px,4vw,40px)}
+.track-hdr{padding:14px 18px;border-radius:18px 18px 0 0}
+.track-label{font:700 14.5px/1.2 var(--serif,Cinzel,serif);letter-spacing:.06em}
+.track-body{padding:clamp(14px,2vw,22px);border-radius:0 0 18px 18px;background:linear-gradient(180deg,rgba(255,255,255,.02),transparent 60%)}
+.track-desc{font-size:15px;color:var(--mute,#b8aecb);margin-bottom:16px}
+
+.vid-card{border-radius:18px;background:linear-gradient(165deg,#1c1626,#0f0c15);border:1px solid var(--line,rgba(255,215,140,.16));box-shadow:0 24px 50px -34px #000;transition:border-color .25s,transform .25s,box-shadow .25s}
+.vid-card:hover,.vid-card:focus-visible{border-color:rgba(242,194,91,.6);transform:translateY(-4px);box-shadow:0 30px 60px -30px rgba(0,0,0,.9),0 0 0 1px rgba(242,194,91,.2)}
+.vthumb img{transition:transform .5s cubic-bezier(.2,.8,.2,1),filter .3s}
+.vid-card:hover .vthumb img{transform:scale(1.05);filter:brightness(1.08)}
+.vplay{width:56px;height:56px;background:linear-gradient(180deg,#ffdf94,#f2c25b);color:#1b1206;box-shadow:0 0 0 6px rgba(242,194,91,.18),0 10px 30px rgba(0,0,0,.6);transition:transform .25s,box-shadow .25s}
+.vid-card:hover .vplay{transform:translate(-50%,-50%) scale(1.1);box-shadow:0 0 0 8px rgba(242,194,91,.22),0 0 30px rgba(242,194,91,.6)}
+.vid-body{padding:16px 18px 18px}
+.vid-title{font-size:15.5px;font-weight:700;color:#fff}
+.vid-desc{font-size:14px;color:var(--mute,#b8aecb)}
+.vid-credit{font-size:12.5px}
+/* when a YouTube thumbnail can't load, show a calm card instead of a broken image */
+.vthumb.off{background:radial-gradient(circle at 30% 20%,rgba(155,92,255,.35),transparent 60%),linear-gradient(160deg,#2a1f45,#120d1c)}
+.vthumb.off img{visibility:hidden}
+.vthumb.off::after{content:"Watch on YouTube";position:absolute;left:0;right:0;bottom:12px;text-align:center;font:600 12px var(--mono,monospace);color:var(--dim,#8b819c)}
+html.reduce .vid-card,html.reduce .vthumb img,html.reduce .vplay{transition:none}
+
+.gg-list{gap:10px}
+.gg-item{border-radius:14px;border-color:var(--line,rgba(255,215,140,.16));background:linear-gradient(165deg,rgba(28,22,38,.7),rgba(15,12,21,.7));transition:border-color .2s}
+.gg-item:hover{border-color:rgba(242,194,91,.4)}
+.gg-item[open]{border-color:rgba(242,194,91,.55);box-shadow:0 20px 40px -30px #000}
+.gg-summary{padding:16px 18px;font-size:16px}
+.gg-summary:focus-visible{outline:2px solid #f2c25b;outline-offset:-2px;border-radius:14px}
+.gg-body{padding:6px 18px 18px}
