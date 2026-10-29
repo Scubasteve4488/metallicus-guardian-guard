@@ -31,6 +31,10 @@
       })();
     });
   }
+  /* Shared with page scripts (e.g. /preview/two-eyes) so every live read uses this one fallback. */
+  window.SG = window.SG || {};
+  window.SG.rpc = rpc;
+  window.SG.host = host;
 
   /* ---------- 1. Live chain ticker (hero) ---------- */
   var tick = $('[data-live-chain]');
