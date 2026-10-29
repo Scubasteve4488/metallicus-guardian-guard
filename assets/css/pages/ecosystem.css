@@ -83,3 +83,7 @@ html.reduce .ex-node,html.reduce .ex-node .ex-ic,html.reduce .ex-svg line{transi
 .ex-con>span{font:600 11px var(--mono,monospace);text-transform:uppercase;letter-spacing:.06em;color:var(--dim,#8b819c);margin-right:4px}
 .ex-jump{cursor:pointer;padding:5px 10px;border-radius:999px;border:1px solid rgba(155,92,255,.35);background:rgba(155,92,255,.1);color:#e4d8ff;font:600 12.5px var(--sans,Inter,sans-serif)}
 .ex-jump:hover,.ex-jump:focus-visible{border-color:#f2c25b;color:#fff}
+
+/* official Metallicus mark at the centre (IAN-CODE 2026-10-29): a solid disc hides where the lines meet, and the glow ring moves from the mark to the disc */
+.ex-orbit-on .ex-core:has(>img.brand-mark){background:#0b0910;box-shadow:0 0 0 2px rgba(242,194,91,.55),0 0 46px rgba(155,92,255,.75)}
+.ex-orbit-on .ex-core[aria-pressed="true"]:has(>img.brand-mark){box-shadow:0 0 0 3px #f2c25b,0 0 50px rgba(242,194,91,.75)}
