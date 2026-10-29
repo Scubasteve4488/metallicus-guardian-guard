@@ -104,3 +104,11 @@ html:not(.js) .rv{opacity:1;transform:none}
 .menu .cta[aria-current]{color:#1b1206}
 /* the shared footer's disclaimer line is not the site.css .disc box (2026-10-28) */
 .foot .disc{display:block;background:none;border:0;border-top:1px solid rgba(255,255,255,.06);border-radius:0;padding:18px 0 0;margin-top:6px;font-size:12.5px;color:var(--dim)}
+
+/* Official brand marks (assets/img/brand/, unmodified Metallicus files, see PROVENANCE.md; IAN-CODE 2026-10-29).
+   Shown whole: fitted, never cropped, rounded or ringed. XPR Network keeps its clear space (one glyph width all round,
+   Metallicus brand guidelines, XPR section) even inside a round frame. */
+img.brand-mark{object-fit:contain!important;border-radius:0!important;padding:20%!important;background:none!important;box-shadow:none!important}
+img.brand-mark.cs-xpr{padding:33.333%!important}
+/* the frame around XPR becomes plain page colour (no ring) so its clear space holds nothing; selection glows stay outside */
+.node:has(>img.cs-xpr),.ex-ic:has(>img.cs-xpr),.px-ico:has(>img.cs-xpr),.cm-stop:has(>img.cs-xpr){border-color:transparent!important;background:var(--ink,#0b0910)!important}
