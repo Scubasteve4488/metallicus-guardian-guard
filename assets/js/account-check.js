@@ -210,7 +210,9 @@
               var auth = p.required_auth || {};
               (auth.accounts || []).forEach(function (a) {
                 if (a.permission && a.permission.actor && a.permission.actor !== account) {
-                  delegated.push(a.permission.actor + '@' + a.permission.permission + ' → ' + p.perm_name);
+                  /* Never name an individual's account (MetalXPRt rule 8; Deploy A 2026-11-09). System accounts stay. */
+                  var who = /^eosio(\.|$)/.test(a.permission.actor) ? a.permission.actor : '[private account]';
+                  delegated.push(who + '@' + a.permission.permission + ' → ' + p.perm_name);
                 }
               });
             });
@@ -308,7 +310,7 @@
         h.push('<div class="ac-row"><span>' + esc(row[0]) + '</span><span>' + esc(row[1]) + '</span></div>');
       });
     } else {
-      h.push('<p class="muted">Nothing could be verified — see "Could not verify" below.</p>');
+      h.push('<p class="muted">Nothing could be verified — see "What could not be verified" below.</p>');
     }
     h.push('</div>');
 
@@ -318,7 +320,7 @@
       attention.forEach(function (a) { h.push('<li>' + esc(a) + '</li>'); });
       h.push('</ul>');
     } else {
-      h.push('<p class="muted">Nothing in the reads above raised an attention item. That is not the same as "this account is safe" — see the limits below.</p>');
+      h.push('<p class="muted">Nothing in the reads above raised an attention item. That does not clear the account; see the limits below.</p>');
     }
     h.push('</div>');
 
@@ -345,7 +347,7 @@
     h.push('<p class="muted mt2">Nodes tried, in order: ' + RPCS.map(esc).join(', ') + '.</p>');
     h.push('</div>');
 
-    h.push('<div class="boundary">This report describes public on-chain state. It is not a safety rating, a verdict about any person, or financial advice. GUARD never says safe — GUARD gives clarity.</div>');
+    h.push('<div class="boundary">This report describes public on-chain state. It is not a safety rating, a verdict about any person, or financial advice.</div>');
 
     el('ac-results').innerHTML = h.join('');
   }

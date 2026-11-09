@@ -27,6 +27,15 @@
 /signguard                /learn/signguard              301
 /signguard/*              /learn/signguard              301
 
+# ── Never served (Deploy A, 2026-11-09; MASTER-standguard Now 1) ───────────
+# legacy/ left the repo (private archive in GUARD-Project). docs/ and checks/ stay
+# in the repo for convert-v3.py and check-site, but must never be served: .cfignore
+# is not read by Pages, which served all three until now. Redirects are followed
+# even when a file matches, on standguard.net and the pages.dev alias alike.
+/legacy/*                 /                             302
+/docs/*                   /                             302
+/checks/*                 /                             302
+
 # ── Routes that keep their address but changed content ─────────────────────
 # /, /guard, /creator, /community, /community/ksto, /community/cyphergang and
 # /community/snipverse are real pages at the same paths and need no rule.
