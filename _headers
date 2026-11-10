@@ -97,3 +97,15 @@
 # document; this keeps content current without refetching on every navigation.
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
+
+# The Utility Forge sample cover is shown on XPR Agents (xpragents.com/services/13). The site-wide
+# Cross-Origin-Resource-Policy: same-origin above blocks that embed, so this one folder allows it
+# (MASTER-standguard Now 7; detach syntax: developers.cloudflare.com/pages/configuration/headers/).
+/assets/samples/*
+  ! Cross-Origin-Resource-Policy
+  Cross-Origin-Resource-Policy: cross-origin
+
+# Keep the pages.dev copy of the site out of search results; standguard.net is the real address
+# (MASTER-standguard Now 7; pattern from the same Cloudflare page).
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
