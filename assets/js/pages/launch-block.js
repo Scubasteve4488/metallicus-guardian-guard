@@ -68,7 +68,7 @@
     }
     lane += '</ol></div>';
     var verdict = '<div class="lb-verdict">' +
-      '<div><b>' + (none ? 'Not taking part' : ours.length + ' of ' + f.fleet) + '</b>his wallets in this block</div>' +
+      '<div><b>' + (none ? 'Not taking part' : ours.length + ' of ' + f.fleet) + '</b>test wallets in this block</div>' +
       (none ? '' : '<div><b>' + in10 + ' of ' + f.fleet + '</b>inside the fastest 10</div>') +
       '<div class="' + (none ? '' : pass ? 'lb-pass' : 'lb-fail') + '"><b>' + esc(test || '—') + '</b>the top-10 test</div>' +
       (sizes ? '<div><b>' + esc(sizes.split(' ')[0]) + ' XPR</b>per wallet in this block</div>' : '') +

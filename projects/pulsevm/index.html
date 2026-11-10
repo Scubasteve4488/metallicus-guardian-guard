@@ -111,7 +111,7 @@
       <li>A buy sent too early is accepted into the queue, then dropped. The sender carries a small charge on that node, which fades.</li>
       <li>The reply to a sent transaction is only its id.</li>
     </ul>
-    <p class="muted mt2">From the published pulsevm code, release v1.0.0. Checked again on 2 October: later changes fix a timestamp format and update testing; none of them change how blocks are made.</p>
+    <p class="muted mt2">From the published pulsevm code as read on 2 October, before release v1.0.0 came out on 13 October 2026. Changes up to 2 October: later changes fix a timestamp format and update testing; none of them change how blocks are made.</p>
   </section>
 
   <div class="div"></div>
@@ -151,14 +151,14 @@
         <p class="muted">Sources: this site's <a href="/learn/first-hour#explorer">first-hour guide</a>, stops 4 and 5, written from the official XPR Network developer guide.</p>
       </div>
       <div data-facts="pulse">
-        <h3>PulseVM, from the published code (v1.0.0)</h3>
+        <h3>PulseVM, from the published code (read 2 October)</h3>
         <ul class="ac-list">
           <li>Who builds each block is drawn by stake, block by block. There is no public schedule.</li>
           <li>Blocks are made only when transactions are waiting.</li>
           <li>A buy sent too early is accepted into the queue, then dropped. The sender carries a small charge on that node, which fades.</li>
           <li>The reply to a sent transaction is only its id.</li>
         </ul>
-        <p class="muted">Source: the section above, read from the pulsevm code, release v1.0.0.</p>
+        <p class="muted">Source: the section above, read from the pulsevm code on 2 October, before release v1.0.0 (13 October 2026).</p>
       </div>
     </div>
     <p class="pv-note">An illustration, not a measurement. It is slowed down so you can follow it, and the transactions are made up. Nothing has been measured on a live PulseVM network yet.</p>
@@ -169,7 +169,7 @@
   <section class="section rv">
     <h2 class="sec-title">What is not known</h2>
     <ul class="ac-list" style="max-width:680px;">
-      <li>Finality of "about a second" is the claim on pulsevm.dev. The rehearsal saw a stall of about 50 seconds.</li>
+      <li>Finality of "about a second" is the claim on pulsevm.dev. A community cutover rehearsal on a small test network saw a stall of about 50 seconds right after going live, and write gaps of about 70 to 74 seconds (the pulse-cutover project&rsquo;s own rehearsal notes, docs/EVIDENCE.md). That was a rehearsal, not a live network.</li>
       <li>Nothing has been measured on a live PulseVM network yet. We will say what we measure when there is one.</li>
     </ul>
     <div class="disc mt3"><span>&#8505;</span><div>An explainer, not an announcement. For anything official, go to Metallicus and XPR Network themselves.</div></div>
