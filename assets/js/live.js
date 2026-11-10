@@ -147,6 +147,8 @@
       answers[id](run);
     };
     chips.forEach(function (c) { c.addEventListener('click', function () { play(c.getAttribute('data-q')); }); });
+    /* Complete at rest: the first answer is already on screen instead of an empty box (2026-11-09). */
+    if (chips.length) play(chips[0].getAttribute('data-q'));
     if ('IntersectionObserver' in window) {
       var once = false;
       new IntersectionObserver(function (es) { if (es[0].isIntersecting && !once) { once = true; play('xmd'); } }, { threshold: 0.3 }).observe(ask);
@@ -241,4 +243,16 @@
     [amt, apr, days].forEach(function (x) { x.addEventListener('input', upd); });
     upd();
   }
+})();
+
+/* Home page Check box: go straight to the result. The name goes in the #fragment, which never reaches a server. */
+(function () {
+  var f = document.querySelector('[data-door-check]');
+  if (!f) return;
+  f.addEventListener('submit', function (e) {
+    var v = String(f.account.value || '').trim().toLowerCase().replace(/^@/, '');
+    if (!/^[a-z1-5.]{1,13}$/.test(v)) return; /* let the browser show its own message for an empty box */
+    e.preventDefault();
+    location.href = '/tools/account-check#' + encodeURIComponent(v);
+  });
 })();
