@@ -375,4 +375,14 @@
     }
     run(raw);
   });
+
+  /* Opened from the home page's Check box: /tools/account-check#eosio.token (a fragment never reaches a server)
+     or ?account= when JavaScript was off on the home page. Same validation as typing it here. */
+  var passed = '';
+  try { passed = decodeURIComponent((location.hash || '').slice(1)) || new URLSearchParams(location.search).get('account') || ''; } catch (e) { passed = ''; }
+  passed = String(passed).trim().toLowerCase().replace(/^@/, '');
+  if (passed && NAME_RE.test(passed)) {
+    el('ac-account').value = passed;
+    form.requestSubmit ? form.requestSubmit() : run(passed);
+  }
 })();
