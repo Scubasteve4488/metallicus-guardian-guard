@@ -13,7 +13,7 @@
 .ev-ctrl{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
 .ev-sheet{position:relative;min-height:420px;padding:26px 24px 30px;border-radius:8px;background:linear-gradient(180deg,#f6f1e7,#ebe3d4);color:#2a2236;box-shadow:0 40px 80px -30px #000,0 0 0 1px rgba(255,215,140,.3);transform:rotate(-.6deg)}
 .ev-sheet h4{margin:0 0 4px;font:700 18px/1.2 "Cinzel",Georgia,serif;color:#1d1828}
-.ev-sheet .ev-sub{margin:0 0 18px;font:500 11.5px/1 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:#7a6f86}
+.ev-sheet .ev-sub{margin:0 0 18px;font:500 11.5px/1 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
 .ev-layer{position:relative;margin:0 0 12px;padding:10px 12px 10px 14px;border-left:3px solid #c99428;background:rgba(255,255,255,.55);border-radius:4px;opacity:0;transform:translateX(18px);transition:opacity .45s,transform .45s}
 .ev-layer.on{opacity:1;transform:none}
 .ev-layer b{display:block;font-size:14px;color:#1d1828}

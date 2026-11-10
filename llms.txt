@@ -23,3 +23,10 @@
 ## About
 - [Who builds this](https://standguard.net/creator): @Scubasteve4488
 - [Contact](https://standguard.net/contact)
+
+## Real StandGuard addresses
+- Websites: standguard.net, agent.standguard.net, guide.standguard.net
+- X: @Scubasteve4488, @AgentGuard458
+- Shellbook: guard_ian
+- XPR Network: safeguard5 (registered on XPR Agents)
+- StandGuard never asks for a seed phrase or key. StandGuard offers no recovery service and never charges a recovery fee.

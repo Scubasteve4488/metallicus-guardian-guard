@@ -78,7 +78,7 @@ a.card:hover{transform:translateY(-3px)}
 .btn-g:hover{background:linear-gradient(180deg,#fff0c4,var(--gold2));color:#1b1206!important}
 .btn-o{border:1px solid rgba(255,255,255,.22);color:var(--text)!important;background:rgba(255,255,255,.04)}
 .btn-o:hover{border-color:var(--gold);background:rgba(242,194,91,.08)}
-.breadcrumb{font-size:13px;letter-spacing:.04em;color:var(--dim);padding-top:22px}
+.breadcrumb{font-size:13px;letter-spacing:.04em;color:var(--mute);padding-top:22px}
 .breadcrumb a{color:var(--mute)}.breadcrumb a:hover{color:var(--gold2)}
 .badge{border-radius:999px}
 .div-g{height:1px;background:linear-gradient(90deg,transparent,rgba(242,194,91,.35),rgba(155,92,255,.35),transparent);border:0}
@@ -112,3 +112,31 @@ img.brand-mark{object-fit:contain!important;border-radius:0!important;padding:20
 img.brand-mark.cs-xpr{padding:33.333%!important}
 /* the frame around XPR becomes plain page colour (no ring) so its clear space holds nothing; selection glows stay outside */
 .node:has(>img.cs-xpr),.ex-ic:has(>img.cs-xpr),.px-ico:has(>img.cs-xpr),.cm-stop:has(>img.cs-xpr){border-color:transparent!important;background:var(--ink,#0b0910)!important}
+
+/* ---- Accessibility pass, existing tokens only (2026-11-09; MASTER-standguard SG-35..38, audit C4/C5) ---- */
+/* Links in running text are underlined, not shown by colour alone (WCAG 1.4.1, audit H8). Buttons and cards have a class. */
+main :is(p,li,dd,td,figcaption,blockquote) a:not([class]):not([role]){text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.18em}
+main :is(p,li,dd,td,figcaption,blockquote) a:not([class]):not([role]):hover{text-decoration-thickness:2px}
+/* Inputs at 16px or more, so iPhone Safari doesn't zoom (audit M11) */
+:is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=submit]):not([type=button]),select,textarea){font-size:max(16px,1rem)}
+/* The menu group holding the current page is marked (audit L1) */
+.menu .dd:has(a[aria-current])>summary{color:var(--gold2)}
+/* The last dropdown opens to the left so it isn't cut off at the right edge (audit L9) */
+@media (min-width:861px){.menu .dd:last-of-type .dd-m{left:auto;right:0}}
+/* Headings break evenly instead of leaving one word alone (audit L10) */
+h1,h2,h3{text-wrap:balance}
+/* Real StandGuard addresses (MASTER-standguard Now 6): always in the footer, never a banner */
+.foot .addr{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.06);padding-top:18px}
+.foot .addr p{margin:0 0 6px;line-height:1.6}
+.foot .addr a{display:inline;padding:0;color:var(--mute);text-decoration:underline;text-underline-offset:.18em}
+.foot .addr a:hover{color:var(--gold2)}
+.foot .addr-rule{color:var(--mute);font-weight:600}
+/* Windows high-contrast mode keeps edges on controls and pills (audit L7) */
+@media (forced-colors:active){
+  :is(.btn,.door,.navtog,.state-pill,.live,.dl-tab-btn,[role=tab],.seal,.card,.addr-box){border:1px solid CanvasText}
+  :is(a,button,input,select,textarea,summary):focus-visible{outline:2px solid Highlight;outline-offset:2px}
+}
+/* DeFi Forge: a visible focus ring on its controls (audit H9; site.css:289 removed it) */
+.dl-input:focus-visible,.dl-select:focus-visible,.dl-tab-btn:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
+.dl-input,.dl-select{border-color:var(--dim)}
+.breadcrumb [aria-current],.breadcrumb span{color:var(--mute)}

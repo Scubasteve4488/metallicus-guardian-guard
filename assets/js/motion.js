@@ -12,12 +12,18 @@
   var tog = document.querySelector('[data-navtoggle]');
   var menu = document.getElementById('site-menu');
   if (tog && menu) {
-    tog.addEventListener('click', function () {
-      var open = menu.classList.toggle('open');
+    // 2026-11-09 accessibility pass (audit C5): the button says what it will do, and Escape closes the menu.
+    var setOpen = function (open) {
+      menu.classList.toggle('open', open);
       tog.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
+      tog.textContent = open ? 'Close' : 'Menu';
+    };
+    tog.addEventListener('click', function () { setOpen(!menu.classList.contains('open')); });
     menu.addEventListener('click', function (e) {
-      if (e.target.closest('a')) { menu.classList.remove('open'); tog.setAttribute('aria-expanded', 'false'); }
+      if (e.target.closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menu.classList.contains('open')) { setOpen(false); tog.focus(); }
     });
   }
 

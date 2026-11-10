@@ -81,15 +81,15 @@
     </div>
 
     <!-- Instrument selector — structured for future expansion -->
-    <div class="dl-tabs">
-      <button class="dl-tab-btn dl-tab-active" data-instrument="lending" data-fx="dlSetInstrument" data-arg="lending">📈 Lending</button>
-      <button class="dl-tab-btn" data-instrument="lp" data-fx="dlSetInstrument" data-arg="lp">🔄 Liquidity Pools</button>
-      <button class="dl-tab-btn" data-instrument="farming" data-fx="dlSetInstrument" data-arg="farming">🌾 Farming</button>
-      <button class="dl-tab-btn" data-instrument="borrowing" data-fx="dlSetInstrument" data-arg="borrowing">📉 Borrowing</button>
-      <button class="dl-tab-btn" data-instrument="staking" data-fx="dlSetInstrument" data-arg="staking">🔒 Staking</button>
+    <div class="dl-tabs" role="tablist" aria-label="Calculators">
+      <button class="dl-tab-btn dl-tab-active" type="button" role="tab" id="dl-tab-lending" aria-controls="dl-panel-lending" aria-selected="true" tabindex="0" data-instrument="lending" data-fx="dlSetInstrument" data-arg="lending"><span aria-hidden="true">📈</span> Lending</button>
+      <button class="dl-tab-btn" type="button" role="tab" id="dl-tab-lp" aria-controls="dl-panel-lp" aria-selected="false" tabindex="-1" data-instrument="lp" data-fx="dlSetInstrument" data-arg="lp"><span aria-hidden="true">🔄</span> Liquidity Pools</button>
+      <button class="dl-tab-btn" type="button" role="tab" id="dl-tab-farming" aria-controls="dl-panel-farming" aria-selected="false" tabindex="-1" data-instrument="farming" data-fx="dlSetInstrument" data-arg="farming"><span aria-hidden="true">🌾</span> Farming</button>
+      <button class="dl-tab-btn" type="button" role="tab" id="dl-tab-borrowing" aria-controls="dl-panel-borrowing" aria-selected="false" tabindex="-1" data-instrument="borrowing" data-fx="dlSetInstrument" data-arg="borrowing"><span aria-hidden="true">📉</span> Borrowing</button>
+      <button class="dl-tab-btn" type="button" role="tab" id="dl-tab-staking" aria-controls="dl-panel-staking" aria-selected="false" tabindex="-1" data-instrument="staking" data-fx="dlSetInstrument" data-arg="staking"><span aria-hidden="true">🔒</span> Staking</button>
     </div>
 
-    <div id="dl-panel-lending">
+    <div id="dl-panel-lending" role="tabpanel" aria-labelledby="dl-tab-lending">
     <!-- Educational explainer -->
     <div class="card" style="max-width:720px;margin:0 auto 2rem;border-color:rgba(124,58,237,0.25);background:rgba(124,58,237,0.04);">
       <div class="sec-label" style="justify-content:flex-start;margin-bottom:.6rem;">How Lending Works</div>
@@ -118,8 +118,8 @@
         <div class="dl-field">
           <label class="dl-label">APY type</label>
           <div class="dl-toggle">
-            <button class="active dl-mode-btn" data-mode="fixed" data-fx="dlSetMode" data-arg="fixed">Fixed APY</button>
-            <button class="dl-mode-btn" data-mode="variable" data-fx="dlSetMode" data-arg="variable">Variable (segments)</button>
+            <button class="active dl-mode-btn" type="button" aria-pressed="true" data-mode="fixed" data-fx="dlSetMode" data-arg="fixed">Fixed APY</button>
+            <button class="dl-mode-btn" type="button" aria-pressed="false" data-mode="variable" data-fx="dlSetMode" data-arg="variable">Variable (segments)</button>
           </div>
           <div style="font-size:.7rem;color:var(--text3);margin-top:.25rem;" id="dl-mode-hint">One constant APY for the whole period.</div>
         </div>
@@ -144,7 +144,7 @@
           <label for="dl-dur-val" class="dl-label">Total time period</label>
           <div style="display:flex;gap:.5rem;">
             <input id="dl-dur-val" class="dl-input" type="number" value="12" min="0.001" step="any" placeholder="e.g. 12" style="flex:1;width:auto;">
-            <select id="dl-dur-unit" class="dl-select">
+            <select id="dl-dur-unit" class="dl-select" aria-label="Time period unit">
               <option value="days">days</option>
               <option value="weeks">weeks</option>
               <option value="months" selected>months</option>
@@ -154,7 +154,7 @@
         </div>
 
         <div class="dl-field">
-          <label class="dl-label">Compounding frequency</label>
+          <label class="dl-label" for="dl-freq">Compounding frequency</label>
           <select id="dl-freq" class="dl-select" style="width:100%;">
             <option value="daily" selected>Daily (365×/yr) — most DeFi protocols</option>
             <option value="weekly">Weekly (52×/yr)</option>
@@ -211,8 +211,8 @@
             <div class="sec-label" style="justify-content:flex-start;margin-bottom:.5rem;font-size:.65rem;">⏱ Time Jump</div>
             <p style="font-size:.78rem;color:var(--text3);margin:0 0 .75rem;line-height:1.65;">See your projected balance at any point in time — within or beyond your defined period.</p>
             <div style="display:flex;gap:.5rem;margin-bottom:.6rem;">
-              <input id="dl-jump-val" class="dl-input" type="number" value="3" min="0.001" step="any" style="flex:1;width:auto;" aria-label="dl jump val">
-              <select id="dl-jump-unit" class="dl-select">
+              <input id="dl-jump-val" class="dl-input" type="number" value="3" min="0.001" step="any" style="flex:1;width:auto;" aria-label="Jump ahead by">
+              <select id="dl-jump-unit" class="dl-select" aria-label="Jump-ahead unit">
                 <option value="days">days</option>
                 <option value="weeks">weeks</option>
                 <option value="months" selected>months</option>
@@ -228,7 +228,7 @@
     </div><!-- end dl-panel-lending -->
 
     <!-- ── LP INSTRUMENT PANEL ── -->
-    <div id="dl-panel-lp" style="display:none;">
+    <div id="dl-panel-lp" role="tabpanel" aria-labelledby="dl-tab-lp" style="display:none;">
 
       <!-- LP educational explainer -->
       <div class="card" style="max-width:720px;margin:0 auto 2rem;border-color:rgba(124,58,237,0.25);background:rgba(124,58,237,0.04);">
@@ -311,7 +311,7 @@
               <label for="lp-fee-dur" class="dl-label">Time in pool</label>
               <div style="display:flex;gap:.5rem;">
                 <input id="lp-fee-dur" class="dl-input" type="number" value="12" min="0.001" step="any" style="flex:1;width:auto;">
-                <select id="lp-fee-unit" class="dl-select">
+                <select id="lp-fee-unit" class="dl-select" aria-label="Time in pool unit">
                   <option value="days">days</option>
                   <option value="weeks">weeks</option>
                   <option value="months" selected>months</option>
@@ -393,7 +393,7 @@
     </div><!-- end dl-panel-lp -->
 
     <!-- ── FARMING INSTRUMENT PANEL ── -->
-    <div id="dl-panel-farming" style="display:none;">
+    <div id="dl-panel-farming" role="tabpanel" aria-labelledby="dl-tab-farming" style="display:none;">
 
       <!-- Farming educational explainer -->
       <div class="card" style="max-width:720px;margin:0 auto 2rem;border-color:rgba(124,58,237,0.25);background:rgba(124,58,237,0.04);">
@@ -475,7 +475,7 @@
             <label for="farm-dur-val" class="dl-label">Time period</label>
             <div style="display:flex;gap:.5rem;">
               <input id="farm-dur-val" class="dl-input" type="number" value="12" min="0.001" step="any" style="flex:1;width:auto;" placeholder="e.g. 12">
-              <select id="farm-dur-unit" class="dl-select">
+              <select id="farm-dur-unit" class="dl-select" aria-label="Time period unit">
                 <option value="days">days</option>
                 <option value="weeks">weeks</option>
                 <option value="months" selected>months</option>
@@ -579,7 +579,7 @@
     </div><!-- end dl-panel-farming -->
 
     <!-- ── BORROWING INSTRUMENT PANEL ── -->
-    <div id="dl-panel-borrowing" style="display:none;">
+    <div id="dl-panel-borrowing" role="tabpanel" aria-labelledby="dl-tab-borrowing" style="display:none;">
 
       <!-- Borrowing educational explainer -->
       <div class="card" style="max-width:720px;margin:0 auto 2rem;border-color:rgba(124,58,237,0.25);background:rgba(124,58,237,0.04);">
@@ -629,7 +629,7 @@
             <label for="borrow-dur-val" class="dl-label">Time period (for interest calculation)</label>
             <div style="display:flex;gap:.5rem;">
               <input id="borrow-dur-val" class="dl-input" type="number" value="12" min="0.001" step="any" style="flex:1;width:auto;">
-              <select id="borrow-dur-unit" class="dl-select">
+              <select id="borrow-dur-unit" class="dl-select" aria-label="Time period unit">
                 <option value="days">days</option>
                 <option value="weeks">weeks</option>
                 <option value="months" selected>months</option>
@@ -720,7 +720,7 @@
     </div><!-- end dl-panel-borrowing -->
 
     <!-- ── STAKING INSTRUMENT PANEL ── -->
-    <div id="dl-panel-staking" style="display:none;">
+    <div id="dl-panel-staking" role="tabpanel" aria-labelledby="dl-tab-staking" style="display:none;">
 
       <!-- Educational explainer -->
       <div class="card" style="max-width:720px;margin:0 auto 2rem;border-color:rgba(139,92,246,0.25);background:rgba(139,92,246,0.03);">
@@ -765,7 +765,7 @@
 
           <!-- Compound frequency (visible in compound mode only) -->
           <div class="dl-field" id="stake-freq-wrap">
-            <label class="dl-label">Compounding frequency</label>
+            <label class="dl-label" for="stake-freq">Compounding frequency</label>
             <select id="stake-freq" class="dl-select" style="width:100%;">
               <option value="daily" selected>Daily (365×/yr) — matches XPR's 24h claim cycle</option>
               <option value="weekly">Weekly (52×/yr)</option>
@@ -778,7 +778,7 @@
             <label for="stake-dur-val" class="dl-label">Time period</label>
             <div style="display:flex;gap:.5rem;">
               <input id="stake-dur-val" class="dl-input" type="number" value="12" min="0.001" step="any" style="flex:1;width:auto;">
-              <select id="stake-dur-unit" class="dl-select">
+              <select id="stake-dur-unit" class="dl-select" aria-label="Time period unit">
                 <option value="days">days</option>
                 <option value="weeks">weeks</option>
                 <option value="months" selected>months</option>
@@ -868,6 +868,7 @@
     <div><h4>Guard.IAN</h4><a href="/ian">Meet Guard.IAN</a><a href="/metalxprt">MetalXPRt</a><a href="/services">Services</a><a href="/tools">Tools</a><a href="/launches">Launch record</a><a href="/status">Status</a></div>
     <div><h4>Explore</h4><a href="/learn">Learn</a><a href="/community">Community</a><a href="/guard">GUARD</a><a href="/projects">Projects</a><a href="/evidence">Sources and methods</a></div>
     <div><h4>Follow · Boundaries</h4><a href="https://x.com/AgentGuard458" rel="noopener">X</a><a href="https://shellbook.io/u/guard_ian" rel="noopener">Shellbook</a><a href="https://xpragents.com/agent/safeguard5" rel="noopener">XPR Agents</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/corrections">Corrections</a><a href="/contact">Contact</a></div>
+    <div class="addr" id="real-addresses"><h4>Real StandGuard addresses</h4><p>Websites: <a href="https://standguard.net">standguard.net</a>, <a href="https://agent.standguard.net">agent.standguard.net</a> and <a href="https://guide.standguard.net">guide.standguard.net</a>. X: <a href="https://x.com/Scubasteve4488" rel="noopener">@Scubasteve4488</a> and <a href="https://x.com/AgentGuard458" rel="noopener">@AgentGuard458</a>. Shellbook: <a href="https://shellbook.io/u/guard_ian" rel="noopener">guard_ian</a>. XPR Network: <a href="https://xpragents.com/agent/safeguard5" rel="noopener">safeguard5</a>.</p><p class="addr-rule">StandGuard never asks for a seed phrase or key. StandGuard offers no recovery service and never charges a recovery fee.</p></div>
     <p class="disc">StandGuard and Guard.IAN are independent community-built projects, not official Metallicus, XPR Network, WebAuth, SimpleDEX or XPR Agents products. Logos belong to their owners. Information here is for learning, not financial, legal, security or investment advice. © <span id="pv-year">2026</span> StandGuard · built by @Scubasteve4488.</p>
   </div>
 </footer>
