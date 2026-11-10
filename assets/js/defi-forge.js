@@ -69,7 +69,9 @@ function dlSetMode(m) {
     ? 'One constant APY for the whole period.'
     : 'Define up to 6 time segments, each with a different APY.';
   document.querySelectorAll('.dl-mode-btn').forEach(function(b) {
-    b.classList.toggle('active', b.getAttribute('data-mode') === m);
+    var on = b.getAttribute('data-mode') === m;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false'); // the chosen mode is said in words (audit H9)
   });
   if (!isFixed) dlRenderSegments();
 }
@@ -81,21 +83,33 @@ function dlRenderSegments() {
     html += '<div class="dl-seg">';
     html += '<div style="flex:0 0 auto;font-size:.7rem;color:var(--text3);font-weight:600;min-width:44px;padding-top:.4rem;">Seg&nbsp;' + (i + 1) + '</div>';
     html += '<div style="flex:1;display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;">';
-    html += '<input type="number" class="dl-input" style="width:68px;" placeholder="APY%" value="' + s.apy + '" min="0" max="9999" step="0.1" oninput="_DL.segments[' + i + '].apy=this.value" aria-label="APY%">';
+    html += '<input type="number" class="dl-input" style="width:68px;" placeholder="APY%" value="' + s.apy + '" min="0" max="9999" step="0.1" data-seg="' + i + '" data-key="apy" aria-label="Segment ' + (i + 1) + ' APY, percent">';
     html += '<span style="font-size:.72rem;color:var(--text3);flex-shrink:0;">%&nbsp;for</span>';
-    html += '<input type="number" class="dl-input" style="width:64px;" placeholder="Dur" value="' + s.duration + '" min="0.001" step="any" oninput="_DL.segments[' + i + '].duration=this.value" aria-label="Dur">';
-    html += '<select class="dl-select" style="flex:1;min-width:70px;" oninput="_DL.segments[' + i + '].unit=this.value">';
+    html += '<input type="number" class="dl-input" style="width:64px;" placeholder="Dur" value="' + s.duration + '" min="0.001" step="any" data-seg="' + i + '" data-key="duration" aria-label="Segment ' + (i + 1) + ' length">';
+    html += '<select class="dl-select" style="flex:1;min-width:70px;" data-seg="' + i + '" data-key="unit" aria-label="Segment ' + (i + 1) + ' length unit">';
     ['days','weeks','months','years'].forEach(function(u) {
       html += '<option value="' + u + '"' + (s.unit === u ? ' selected' : '') + '>' + u + '</option>';
     });
     html += '</select>';
     if (_DL.segments.length > 1) {
-      html += '<button data-fx="dlRemoveSeg" data-arg="' + i + '" style="background:none;border:1px solid rgba(239,68,68,0.3);color:#f87171;border-radius:5px;padding:.2rem .5rem;cursor:pointer;font-size:.7rem;flex-shrink:0;">✕</button>';
+      html += '<button type="button" aria-label="Remove segment ' + (i + 1) + '" data-fx="dlRemoveSeg" data-arg="' + i + '" style="background:none;border:1px solid rgba(239,68,68,0.3);color:#f87171;border-radius:5px;padding:.2rem .5rem;cursor:pointer;font-size:.7rem;flex-shrink:0;">✕</button>';
     }
     html += '</div></div>';
   });
   document.getElementById('dl-segs').innerHTML = html;
 }
+
+// Segment edits (2026-11-09, plan SG-32 / audit H4): the site CSP blocks inline oninput handlers, so edits used to be
+// lost and every run used the default 5%. The file's own delegation pattern instead, scoped to the segment panel.
+function dlSegEdit(e) {
+  var t = e.target;
+  if (!t || !t.closest || !t.closest('#dl-segs') || !t.hasAttribute('data-seg')) return;
+  var seg = _DL.segments[parseInt(t.getAttribute('data-seg'), 10)];
+  var key = t.getAttribute('data-key');
+  if (seg && (key === 'apy' || key === 'duration' || key === 'unit')) seg[key] = t.value;
+}
+document.addEventListener('input', dlSegEdit);
+document.addEventListener('change', dlSegEdit);
 
 function dlAddSeg() {
   if (_DL.segments.length >= 6) return;
@@ -249,9 +263,27 @@ function dlSetInstrument(name) {
     if (el) el.style.display = (id === name) ? '' : 'none';
   });
   document.querySelectorAll('.dl-tab-btn').forEach(function(b) {
-    b.classList.toggle('dl-tab-active', b.getAttribute('data-instrument') === name);
+    var on = b.getAttribute('data-instrument') === name;
+    b.classList.toggle('dl-tab-active', on);
+    // 2026-11-09 accessibility pass (audit H9): the selected calculator is said in words, not shown by colour only.
+    b.setAttribute('aria-selected', on ? 'true' : 'false');
+    b.tabIndex = on ? 0 : -1;
   });
 }
+
+// Arrow keys move between calculators: the same keys as motion.js's [data-tabs] (WAI-ARIA APG Tabs).
+document.addEventListener('keydown', function (e) {
+  var b = e.target && e.target.closest ? e.target.closest('.dl-tab-btn') : null;
+  if (!b) return;
+  var all = Array.prototype.slice.call(document.querySelectorAll('.dl-tab-btn'));
+  var i = all.indexOf(b), n = null;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') n = all[(i + 1) % all.length];
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = all[(i - 1 + all.length) % all.length];
+  if (!n) return;
+  e.preventDefault();
+  dlSetInstrument(n.getAttribute('data-instrument'));
+  n.focus();
+});
 
 // ── DEFI LAB: LP (Liquidity Pool) Instrument ──────────────────────────────
 function lpToggleFee(on) {

@@ -59,7 +59,7 @@ html.reduce .hero-bg{animation:none}
 .btn-gold{color:#1b1206;background:linear-gradient(180deg,var(--gold2),var(--gold));box-shadow:0 10px 30px -8px rgba(242,194,91,.6)}
 .btn-ghost{color:var(--text);border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.04)}
 .btn:hover{transform:translateY(-2px)}
-.fine{margin-top:22px;font-size:13px;color:var(--dim);max-width:36em}
+.fine{margin-top:22px;font-size:13px;color:var(--mute);max-width:36em}
 
 /* video portal: an arched window into the forge */
 .portal{position:relative;justify-self:center;width:min(380px,100%)}
@@ -152,7 +152,7 @@ html:not(.js) .rv{opacity:1;transform:none}
 .seal{display:flex;flex-direction:column;gap:6px;padding:24px 20px;border-radius:18px;text-decoration:none;color:var(--mute);border:1px solid var(--line);background:rgba(255,255,255,.02);transition:background .25s,border-color .25s}
 .seal:hover{background:rgba(242,194,91,.06);border-color:rgba(242,194,91,.4)}
 .seal b{font:700 clamp(24px,2.6vw,34px)/1.05 var(--serif);color:var(--gold2)}
-@media (max-width:860px){.seals{grid-template-columns:1fr 1fr}}
+@media (max-width:860px){.seals{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 
 /* road ahead */
 .road{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:40px;position:relative}
@@ -241,7 +241,7 @@ html.reduce .live-dot.ok{animation:none}
 .al.a ul{margin:10px 0 0;padding-left:18px}.al.a li{margin-bottom:7px}
 .al .who{display:inline-block;flex:0 0 auto;font:600 11px/1 var(--mono);text-transform:uppercase;letter-spacing:.06em;padding:6px 8px;border-radius:6px;background:rgba(255,255,255,.07);color:var(--mute);margin-right:8px}
 .al .who.ian{background:rgba(155,92,255,.2);color:var(--violet2)}
-.live{display:inline-block;font:700 10.5px/1 var(--mono);letter-spacing:.08em;color:#062a1b;background:var(--live);padding:3px 6px;border-radius:5px;margin-right:6px;vertical-align:1px}
+.live{display:inline-block;font:700 12px/1 var(--mono);letter-spacing:.08em;color:#062a1b;background:var(--live);padding:3px 6px;border-radius:5px;margin-right:6px;vertical-align:1px}
 .al .cant{margin:12px 0 0}
 .src{margin:12px 0 0;font-size:12.5px;color:var(--dim)}
 .bad{color:var(--warn);margin:0}
@@ -279,7 +279,7 @@ html.reduce .scene.on .tools span{animation:none}
 .sample ul{margin:0;padding-left:18px;color:var(--mute)}
 .mini{display:grid;gap:12px;max-width:460px}
 .mini .in{display:flex;gap:8px}
-.mini input{flex:1;min-width:0;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.35);color:#fff;font:500 15px var(--mono)}
+.mini input{flex:1;min-width:0;padding:12px 14px;border-radius:10px;border:1px solid var(--dim);background:rgba(0,0,0,.35);color:#fff;font:500 16px var(--mono)}
 .mini input:focus{outline:2px solid var(--gold);outline-offset:1px}
 .mini button,.calc-go{padding:12px 16px;border-radius:10px;border:0;cursor:pointer;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1b1206;font:700 14px var(--sans)}
 .rows{display:grid;gap:8px}
@@ -403,3 +403,41 @@ img.brand-mark.cs-xpr{padding:33.333%!important}
 @media (max-width:560px){.doors{margin-top:18px}.door{padding:12px 14px}.door-form{padding:14px}}
 @media (prefers-reduced-motion:reduce){.door,.door-go{transition:none}.door-link:hover{transform:none}}
 ::selection{background:rgba(242,194,91,.35);color:#fff}
+
+/* ---- Accessibility pass, existing tokens only (2026-11-09; MASTER-standguard SG-35..38, audit C4/C5) ---- */
+/* Links in running text are underlined, not shown by colour alone (WCAG 1.4.1, audit H8). Buttons and cards have a class. */
+main :is(p,li,dd,td,figcaption,blockquote) a:not([class]):not([role]){text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.18em}
+main :is(p,li,dd,td,figcaption,blockquote) a:not([class]):not([role]):hover{text-decoration-thickness:2px}
+/* Inputs at 16px or more, so iPhone Safari doesn't zoom (audit M11) */
+:is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=submit]):not([type=button]),select,textarea){font-size:max(16px,1rem)}
+/* The menu group holding the current page is marked (audit L1) */
+.menu .dd:has(a[aria-current])>summary{color:var(--gold2)}
+/* The last dropdown opens to the left so it isn't cut off at the right edge (audit L9) */
+@media (min-width:861px){.menu .dd:last-of-type .dd-m{left:auto;right:0}}
+/* Headings break evenly instead of leaving one word alone (audit L10) */
+h1,h2,h3{text-wrap:balance}
+/* Real StandGuard addresses (MASTER-standguard Now 6): always in the footer, never a banner */
+.foot .addr{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.06);padding-top:18px}
+.foot .addr p{margin:0 0 6px;line-height:1.6}
+.foot .addr a{display:inline;padding:0;color:var(--mute);text-decoration:underline;text-underline-offset:.18em}
+.foot .addr a:hover{color:var(--gold2)}
+.foot .addr-rule{color:var(--mute);font-weight:600}
+/* Windows high-contrast mode keeps edges on controls and pills (audit L7) */
+@media (forced-colors:active){
+  :is(.btn,.door,.navtog,.state-pill,.live,.dl-tab-btn,[role=tab],.seal,.card,.addr-box){border:1px solid CanvasText}
+  :is(a,button,input,select,textarea,summary):focus-visible{outline:2px solid Highlight;outline-offset:2px}
+}
+:root{color-scheme:dark}
+/* Reduced motion without waiting for JavaScript: the same rules as html.reduce (audit L12) */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .hero-bg,.portal-glow,.live-dot.ok,.scene.on .tools span,.scene.on .block span.me{animation:none}
+}
+/* Phones: step headings stay readable, the TRUST line doesn't strand a word, no 320px clipping (audit L10, M9) */
+@media (max-width:900px){.step h3{color:#fff}}
+@media (max-width:600px){.title small{letter-spacing:.14em}}
+.seals>*{min-width:0;overflow-wrap:break-word}
+/* The small "staying safe" box at the end of the home page */
+.addr-box{width:min(1180px,calc(100% - 32px));margin:0 auto 48px;padding:16px 18px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--mute);font-size:15px}
+.addr-box p{margin:0}.addr-box b{color:var(--text)}
+.addr-box a{color:var(--gold2);text-decoration:underline;text-underline-offset:.18em}

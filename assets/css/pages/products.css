@@ -145,7 +145,7 @@ html.reduce .px-gauge-bar{transition:none}
 .px-scene{padding:22px}
 .px-mini{display:grid;gap:12px}
 .px-mini .px-in{display:flex;gap:8px}
-.px-mini input{flex:1;min-width:0;padding:12px 14px;border-radius:10px;border:1px solid var(--px-line);background:rgba(0,0,0,.35);color:#fff;font:500 15px var(--px-mono)}
+.px-mini input{flex:1;min-width:0;padding:12px 14px;border-radius:10px;border:1px solid var(--dim);background:rgba(0,0,0,.35);color:#fff;font:500 16px var(--px-mono)}
 .px-mini input:focus{outline:2px solid var(--px-gold);outline-offset:1px}
 .px-go{cursor:pointer;padding:12px 16px;border-radius:10px;border:0;background:linear-gradient(180deg,var(--px-gold2),var(--px-gold));color:#1b1206;font:700 14px var(--sans,Inter,sans-serif)}
 .px-calc{display:grid;gap:14px}
@@ -179,6 +179,6 @@ html.reduce .px-gauge-bar{transition:none}
 /* ---------- Account Check page polish ---------- */
 .ac-form{display:flex;gap:10px;align-items:end;flex-wrap:wrap;padding:18px;border-radius:18px;border:1px solid var(--px-line);background:var(--px-panel);max-width:640px}
 .ac-field{flex:1;min-width:220px}
-.ac-input{width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--px-line)!important;background:rgba(0,0,0,.35)!important;color:#fff!important;font:500 16px var(--px-mono)!important}
+.ac-input{width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--dim)!important;background:rgba(0,0,0,.35)!important;color:#fff!important;font:500 16px var(--px-mono)!important}
 .ac-input:focus{outline:2px solid var(--px-gold);outline-offset:1px}
 .ac-label{font:500 12px var(--px-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim,#8b819c)}
