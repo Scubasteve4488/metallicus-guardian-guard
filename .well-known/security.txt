@@ -1,0 +1,6 @@
+# StandGuard security contact (RFC 9116). For a security problem with standguard.net,
+# agent.standguard.net or guide.standguard.net. Never send a private key or a seed phrase.
+Contact: https://standguard.net/contact
+Expires: 2027-05-10T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://standguard.net/.well-known/security.txt
