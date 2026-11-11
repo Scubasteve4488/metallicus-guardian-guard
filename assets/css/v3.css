@@ -441,3 +441,12 @@ h1,h2,h3{text-wrap:balance}
 .addr-box{width:min(1180px,calc(100% - 32px));margin:0 auto 48px;padding:16px 18px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--mute);font-size:15px}
 .addr-box p{margin:0}.addr-box b{color:var(--text)}
 .addr-box a{color:var(--gold2);text-decoration:underline;text-underline-offset:.18em}
+
+/* Phone-size scene images (SG-39, 2026-11-10). The two 1092 px scenes are 302 kB and 298 kB and were the
+   largest paint on a phone (LCP 7.5 s on a throttled 390 px test). Under 900 px the same scenes load at
+   900 px: AVIF (70 kB) where image-set() with type() is understood, otherwise WebP (152 kB). Desktop keeps
+   the originals; nothing else about the look changes. */
+@media (max-width:900px){
+  .hero-bg{background-image:url(/assets/img/ian/scene-forge-900.webp);background-image:image-set(url(/assets/img/ian/scene-forge-900.avif) type("image/avif"),url(/assets/img/ian/scene-forge-900.webp) type("image/webp"))}
+  .does::before,.story-par{background-image:url(/assets/img/ian/scene-road-900.webp);background-image:image-set(url(/assets/img/ian/scene-road-900.avif) type("image/avif"),url(/assets/img/ian/scene-road-900.webp) type("image/webp"))}
+}

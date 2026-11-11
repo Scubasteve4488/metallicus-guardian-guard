@@ -22,6 +22,8 @@
 <link rel="icon" type="image/png" sizes="512x512" href="/assets/img/ian/icon-512.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/ian/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/cinzel-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="/assets/img/ian/scene-forge-900.avif" type="image/avif" media="(max-width: 900px)" fetchpriority="high">
+<link rel="preload" as="image" href="/assets/img/ian/scene-forge.webp" media="(min-width: 900.1px)" fetchpriority="high">
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/v3.css">
 </head>
@@ -130,7 +132,7 @@
       <p class="sub">Eight frames from the intro film. Keep scrolling and walk the road with them.</p>
     </div>
     <ol class="track" data-track>
-      <li class="frame"><img src="/assets/img/ian/story-00.webp" alt="Title card: Guard.IAN, an AI agent is born, XPR Network" width="392" height="584"><div><span class="n">01</span><h3>Born</h3><p>An AI agent wakes on XPR Network.</p></div></li>
+      <li class="frame"><img src="/assets/img/ian/story-00.webp" alt="Title card: Guard.IAN, an AI agent is born, XPR Network" width="392" height="584" loading="lazy"><div><span class="n">01</span><h3>Born</h3><p>An AI agent wakes on XPR Network.</p></div></li>
       <li class="frame"><img src="/assets/img/ian/story-12.webp" alt="Guard.IAN in steel and violet armour with a gold M on his chest, standing in the forge" width="392" height="584" loading="lazy"><div><span class="n">02</span><h3>Made</h3><p>Steel armour, a violet charge, a gold M.</p></div></li>
       <li class="frame"><img src="/assets/img/ian/story-21.webp" alt="A wizard in a brown hat hands Guard.IAN a gold-rimmed shield marked with the XPR atom" width="392" height="584" loading="lazy"><div><span class="n">03</span><h3>The shield</h3><p>Forged by djdotkuro.</p></div></li>
       <li class="frame"><img src="/assets/img/ian/story-33.webp" alt="Guard.IAN at a WebAuth console with a glowing key in a glass cylinder" width="392" height="584" loading="lazy"><div><span class="n">04</span><h3>The key</h3><p>His sword is a key. WebAuth issued it.</p></div></li>
@@ -249,54 +251,54 @@
         <div class="ring" style="--inset:21%" aria-hidden="true"></div>
         <div class="ring r2" style="--inset:7%" aria-hidden="true"></div>
         <svg aria-hidden="true"><defs><linearGradient id="beamg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9b5cff"/><stop offset="1" stop-color="#f2c25b"/></linearGradient></defs><line data-beam x1="0" y1="0" x2="0" y2="0"/></svg>
-        <div class="core"><img src="/assets/img/eco/ian.webp" alt="Guard.IAN" width="240" height="240"><span>GUARD.IAN</span></div>
+        <div class="core"><img src="/assets/img/eco/ian.webp" alt="Guard.IAN" width="240" height="240" loading="lazy"><span>GUARD.IAN</span></div>
 
         <button type="button" class="node n1" style="--a:-90deg;--i:0" data-node aria-pressed="false" aria-label="XPR Network"
           data-name="XPR Network" data-maker="Metallicus" data-status="Live" data-stclass="live"
           data-what="The chain Guard.IAN lives on. Users pay no gas fees, and a new block is made every half second."
           data-tool="xpr_network" data-toolwhat="live chain status and the block producers"
-          data-url="https://xprnetwork.org" data-learn="/learn/ecosystem"><img class="brand-mark cs-xpr" src="/assets/img/brand/XPR_Network-glyph-white.svg" alt="" width="160" height="160"><span class="node-l">XPR Network</span></button>
+          data-url="https://xprnetwork.org" data-learn="/learn/ecosystem"><img class="brand-mark cs-xpr" src="/assets/img/brand/XPR_Network-glyph-white.svg" alt="" width="160" height="160" loading="lazy"><span class="node-l">XPR Network</span></button>
         <button type="button" class="node n1" style="--a:-45deg;--i:1" data-node aria-pressed="false" aria-label="WebAuth"
           data-name="WebAuth" data-maker="Metallicus" data-status="Live" data-stclass="live"
           data-what="The official XPR Network wallet. You hold your own keys, sign with your face or fingerprint, and can stake and vote."
           data-tool="xpr_account_check" data-toolwhat="the public record of the account you're about to pay"
-          data-url="https://webauth.com" data-learn="/learn/first-hour"><img class="brand-mark" src="/assets/img/brand/WebAuth-glyph-white.svg" alt="" width="160" height="160"><span class="node-l">WebAuth</span></button>
+          data-url="https://webauth.com" data-learn="/learn/first-hour"><img class="brand-mark" src="/assets/img/brand/WebAuth-glyph-white.svg" alt="" width="160" height="160" loading="lazy"><span class="node-l">WebAuth</span></button>
         <button type="button" class="node n1" style="--a:0deg;--i:2" data-node aria-pressed="false" aria-label="Metal X"
           data-name="Metal X" data-maker="Metallicus" data-status="Live" data-stclass="live"
           data-what="Metallicus's gas-free exchange: order book, swaps, pools, farms, lending and staking. New listings are by application only."
           data-tool="markets" data-toolwhat="Metal X and Alcor market data"
-          data-url="https://metalx.com" data-learn="/learn/ecosystem"><img class="brand-mark" src="/assets/img/brand/Metal_X-glyph-color.svg" alt="" width="160" height="160"><span class="node-l">Metal X</span></button>
+          data-url="https://metalx.com" data-learn="/learn/ecosystem"><img class="brand-mark" src="/assets/img/brand/Metal_X-glyph-color.svg" alt="" width="160" height="160" loading="lazy"><span class="node-l">Metal X</span></button>
         <button type="button" class="node n1" style="--a:45deg;--i:3" data-node aria-pressed="false" aria-label="Metal Pay"
           data-name="Metal Pay" data-maker="Metallicus" data-status="Live" data-stclass="live"
           data-what="A card on-ramp to buy crypto, including XPR, in the US, Australia and New Zealand."
           data-tool="metallicus_status" data-toolwhat="the official Metal Pay status page, live"
-          data-url="https://www.metalpay.com" data-learn="/learn/first-hour"><img class="brand-mark" src="/assets/img/brand/Metal_Pay-glyph-color.svg" alt="" width="160" height="160"><span class="node-l">Metal Pay</span></button>
+          data-url="https://www.metalpay.com" data-learn="/learn/first-hour"><img class="brand-mark" src="/assets/img/brand/Metal_Pay-glyph-color.svg" alt="" width="160" height="160" loading="lazy"><span class="node-l">Metal Pay</span></button>
         <button type="button" class="node n1" style="--a:90deg;--i:4" data-node aria-pressed="false" aria-label="Metal Dollar (XMD)"
           data-name="Metal Dollar (XMD)" data-maker="Metallicus" data-status="Live" data-stclass="live"
           data-what="A dollar stablecoin, minted and redeemed 1:1 against a basket of reserve stablecoins. On XPR it is XMD@xmd.token."
           data-tool="xpr_token_check" data-toolwhat="registry, chain, Metal X and Alcor side by side"
-          data-url="https://metaldollar.com" data-learn="/learn/stablecoins-payments"><img class="brand-mark" src="/assets/img/brand/XMD_Metal_Dollar-glyph-color.svg" alt="" width="160" height="160"><span class="node-l">XMD</span></button>
+          data-url="https://metaldollar.com" data-learn="/learn/stablecoins-payments"><img class="brand-mark" src="/assets/img/brand/XMD_Metal_Dollar-glyph-color.svg" alt="" width="160" height="160" loading="lazy"><span class="node-l">XMD</span></button>
         <button type="button" class="node n1" style="--a:135deg;--i:5" data-node aria-pressed="false" aria-label="LOAN Protocol"
           data-name="LOAN Protocol" data-maker="Metallicus" data-status="Live" data-stclass="live"
           data-what="Over-collateralised lending and borrowing inside Metal X. LOAN is its governance and rewards token."
           data-tool="loan_protocol" data-toolwhat="markets, rates and liquidation rules, live"
-          data-url="https://metallicus.com/loan-protocol" data-learn="/learn/defi-forge"><img class="brand-mark" src="/assets/img/brand/LOAN_Protocol-glyph-color.svg" alt="" width="160" height="160"><span class="node-l">LOAN</span></button>
+          data-url="https://metallicus.com/loan-protocol" data-learn="/learn/defi-forge"><img class="brand-mark" src="/assets/img/brand/LOAN_Protocol-glyph-color.svg" alt="" width="160" height="160" loading="lazy"><span class="node-l">LOAN</span></button>
         <button type="button" class="node n1" style="--a:180deg;--i:6" data-node aria-pressed="false" aria-label="Metal Blockchain"
           data-name="Metal Blockchain" data-maker="Metallicus" data-status="Live" data-stclass="live"
           data-what="Metallicus's layer 0 for institutions: smart contracts, subnets and proof-of-stake validators. Bitcoin, Litecoin and Dogecoin chains on it are in alpha."
           data-tool="metal_blockchain" data-toolwhat="height, supply, validators and the pegged chains"
-          data-url="https://metalblockchain.org" data-learn="/learn/ecosystem"><img class="brand-mark" src="/assets/img/brand/Metal_Blockchain-glyph-color.svg" alt="" width="160" height="160"><span class="node-l">Metal Blockchain</span></button>
+          data-url="https://metalblockchain.org" data-learn="/learn/ecosystem"><img class="brand-mark" src="/assets/img/brand/Metal_Blockchain-glyph-color.svg" alt="" width="160" height="160" loading="lazy"><span class="node-l">Metal Blockchain</span></button>
         <button type="button" class="node n1" style="--a:225deg;--i:7" data-node aria-pressed="false" aria-label="Metal L2"
           data-name="Metal L2" data-maker="Metallicus" data-status="Live" data-stclass="live"
           data-what="An Ethereum layer 2 built on the OP Stack."
           data-tool="evm_chains" data-toolwhat="Metal L2, Ethereum and BNB Chain"
-          data-url="https://metall2.com" data-learn="/learn/ecosystem"><img class="brand-mark" src="/assets/img/brand/Metal_L2-glyph-color.svg" alt="" width="160" height="160"><span class="node-l">Metal L2</span></button>
+          data-url="https://metall2.com" data-learn="/learn/ecosystem"><img class="brand-mark" src="/assets/img/brand/Metal_L2-glyph-color.svg" alt="" width="160" height="160" loading="lazy"><span class="node-l">Metal L2</span></button>
 
         <button type="button" class="node n2" style="--a:-22.5deg;--i:8" data-node aria-pressed="false" aria-label="SimpleDEX"
           data-name="SimpleDEX" data-maker="Proton NZ (community)" data-status="Live" data-stclass="live"
           data-what="Token launches on a bonding curve, then swaps and pools. Run by Proton NZ, not Metallicus. Guard.IAN's wallets back new launches here."
           data-tool="simpledex" data-toolwhat="launches, tokens, pools and graduations"
-          data-url="https://simpledex.fun" data-learn="/launches"><img src="/assets/img/eco/simpledex.webp" alt="" width="160" height="160"><span class="node-l">SimpleDEX</span></button>
+          data-url="https://simpledex.fun" data-learn="/launches"><img src="/assets/img/eco/simpledex.webp" alt="" width="160" height="160" loading="lazy"><span class="node-l">SimpleDEX</span></button>
         <button type="button" class="node n2" style="--a:67.5deg;--i:9" data-node aria-pressed="false" aria-label="XPR Agents"
           data-name="XPR Agents" data-maker="Proton NZ (community)" data-status="Live" data-stclass="live"
           data-what="The on-chain registry for AI agents: identity, reviews and paid jobs. Guard.IAN is registered there as safeguard5."
@@ -306,12 +308,12 @@
           data-name="Alcor" data-maker="Alcor (independent)" data-status="Live" data-stclass="live"
           data-what="An independent exchange that also runs on XPR Network. Its 'trusted' labels are its own, not a verdict."
           data-tool="markets" data-toolwhat="Alcor's listings next to Metal X's"
-          data-url="https://proton.alcor.exchange" data-learn=""><img src="/assets/img/eco/alcor.webp" alt="" width="160" height="160"><span class="node-l">Alcor</span></button>
+          data-url="https://proton.alcor.exchange" data-learn=""><img src="/assets/img/eco/alcor.webp" alt="" width="160" height="160" loading="lazy"><span class="node-l">Alcor</span></button>
         <button type="button" class="node n2" style="--a:247.5deg;--i:11" data-node aria-pressed="false" aria-label="KSTO"
           data-name="KSTO" data-maker="Community" data-status="Home community" data-stclass="live"
           data-what="Guard.IAN's community. KSTO comes first, then Snippy and KSTO's vetted tokens. Other people's projects; StandGuard doesn't speak for them."
           data-tool="" data-toolwhat="He belongs to it."
-          data-url="https://t.me/KSTOX" data-learn="/community/ksto"><img src="/assets/img/eco/ksto.webp" alt="" width="160" height="160"><span class="node-l">KSTO</span></button>
+          data-url="https://t.me/KSTOX" data-learn="/community/ksto"><img src="/assets/img/eco/ksto.webp" alt="" width="160" height="160" loading="lazy"><span class="node-l">KSTO</span></button>
       </div>
       <div>
         <div class="eco-card rv" data-eco-card aria-live="polite"></div>

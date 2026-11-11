@@ -95,6 +95,16 @@ main#main::before{content:"";position:absolute;left:0;right:0;top:0;height:min(5
              radial-gradient(60% 80% at 75% 20%,rgba(155,92,255,.30),transparent 70%),
              var(--band,url(/assets/img/ian/scene-road.webp)) center 40%/cover no-repeat;opacity:.55}
 body.band-forge main#main::before{--band:url(/assets/img/ian/scene-forge.webp)}
+/* Phone-size band (SG-39, 2026-11-10): the same scenes at 900 px under 900 px wide; AVIF where image-set()
+   with type() is understood (inside @supports so an older browser keeps a valid background), else WebP. */
+@media (max-width:900px){
+  main#main::before{--band:url(/assets/img/ian/scene-road-900.webp)}
+  body.band-forge main#main::before{--band:url(/assets/img/ian/scene-forge-900.webp)}
+  @supports (background-image:image-set(url("x.avif") type("image/avif"))){
+    main#main::before{--band:image-set(url(/assets/img/ian/scene-road-900.avif) type("image/avif"),url(/assets/img/ian/scene-road-900.webp) type("image/webp"))}
+    body.band-forge main#main::before{--band:image-set(url(/assets/img/ian/scene-forge-900.avif) type("image/avif"),url(/assets/img/ian/scene-forge-900.webp) type("image/webp"))}
+  }
+}
 
 /* reveal on scroll (motion.js adds .in) */
 .rv{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
