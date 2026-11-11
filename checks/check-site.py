@@ -7,11 +7,13 @@ as-is and never runs this. It checks four things that are easy to break:
   1. every internal link and every redirect destination resolves to a real file
   2. every old route in the redirect map has a rule
   3. the shared nav and footer are byte-identical across every page
-  4. no page carries the operator's legal name, a bare personal first name used
-     as a name, or a personal email address
+  4. no page carries a private name (the pattern is read from a private setting,
+     never written here), a bare personal first name used as a name, or a
+     personal email address
 
 Exit code 1 if anything fails.
 """
+import os
 import re
 import sys
 import pathlib
@@ -35,12 +37,29 @@ OLD_ROUTES = [
 # Patterns that must not appear on any public page. Kept as regexes so a
 # word-boundary match does not trip on "verbatim" or similar.
 FORBIDDEN = [
-    (r"(?i)\brangel\b", "operator's legal surname"),
     (r"(?i)\bTim\s+[A-Z][a-z]+", "a personal first name used as a name"),
     # Guard.IAN's own address is allowed (Tim, 2026-10-26: "you can do the email"); any other address fails.
     # XPR token notation such as XMD@xmd.token is not an address (2026-10-28).
     (r"(?i)[a-z0-9._%+-]+@(?!usernames|username\b|[a-z0-9]+\.token\b)[a-z0-9.-]+\.[a-z]{2,}", "an email address"),
 ]
+
+
+def private_patterns():
+    """Private name patterns (MASTER-standguard decision 4, 2026-11-10) are never written in this
+    public file. One regex per line, case-insensitive, from the SITE_PRIVATE_PATTERNS environment
+    variable (the CI workflow passes a repository secret) and from checks/private-patterns.txt
+    (untracked, gitignored, for a local run)."""
+    out = []
+    sources = [os.environ.get("SITE_PRIVATE_PATTERNS", "")]
+    local = ROOT / "checks" / "private-patterns.txt"
+    if local.exists():
+        sources.append(local.read_text(encoding="utf-8"))
+    for src in sources:
+        for line in src.splitlines():
+            line = line.strip()
+            if line and not line.startswith("#"):
+                out.append(("(?i)" + line, "a private name pattern"))
+    return out
 
 
 def route_exists(route):
@@ -116,8 +135,12 @@ def check_shell():
 
 
 def check_forbidden():
+    patterns = FORBIDDEN + private_patterns()
+    if len(patterns) == len(FORBIDDEN):
+        NOTES.append("no private name pattern set (SITE_PRIVATE_PATTERNS or checks/private-patterns.txt), so that scan was skipped")
     targets = [p for p in ROOT.rglob("*") if p.is_file()
                and ".git" not in p.parts
+               and "checks" not in p.parts  # the private pattern file lives here
                and p.suffix in (".html", ".css", ".js", ".xml", ".txt", ".json", ".md")]
     for f in targets:
         try:
@@ -125,7 +148,7 @@ def check_forbidden():
         except UnicodeDecodeError:
             continue
         scan = text.replace("guard.ian58@yahoo.com", "")  # allowed address, see FORBIDDEN
-        for pattern, label in FORBIDDEN:
+        for pattern, label in patterns:
             for m in re.finditer(pattern, scan):
                 where = "legacy/ (not deployed)" if "legacy" in f.parts else "PUBLIC PAGE"
                 line = scan[:m.start()].count("\n") + 1

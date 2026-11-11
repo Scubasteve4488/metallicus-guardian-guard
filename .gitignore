@@ -40,3 +40,6 @@ Agent-backups-*/
 # Secrets and environment
 *.env
 .env*
+
+# Private name patterns for checks/ (MASTER-standguard decision 4, 2026-11-10): local only, never committed.
+checks/private-patterns.txt
