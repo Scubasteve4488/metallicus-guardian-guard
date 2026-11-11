@@ -1,0 +1,48 @@
+name: Site checks
+
+# Runs the repository's own checkers on every push and pull request (MASTER-standguard NEXT-1, SG-18,
+# 2026-11-10). Cloudflare Pages deploys the committed files as they are; nothing here builds anything.
+#
+# The private name pattern (decision 4) is not in any tracked file. Add it as the repository secret
+# SITE_PRIVATE_PATTERNS (one regular expression per line). Until it exists this job prints a warning and
+# the rest of the checks still run.
+#
+# Actions are pinned to full commit SHAs, the same ones GUARD-Project's workflows use.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '24'
+
+      - name: Private name pattern present?
+        env:
+          SITE_PRIVATE_PATTERNS: ${{ secrets.SITE_PRIVATE_PATTERNS }}
+        run: |
+          if [ -z "$SITE_PRIVATE_PATTERNS" ]; then
+            echo "::warning::The SITE_PRIVATE_PATTERNS secret is not set, so the private-name scan did not run (MASTER-standguard decision 4)."
+          else
+            echo "private name pattern: set"
+          fi
+
+      - name: check-site.mjs (links, anchors, assets, shell, banned lines, names)
+        env:
+          SITE_PRIVATE_PATTERNS: ${{ secrets.SITE_PRIVATE_PATTERNS }}
+        run: node checks/check-site.mjs .
+
+      - name: check-site.py (links, redirects, shell, names)
+        env:
+          SITE_PRIVATE_PATTERNS: ${{ secrets.SITE_PRIVATE_PATTERNS }}
+        run: python3 -I checks/check-site.py

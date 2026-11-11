@@ -22,6 +22,14 @@ function routeFile(r) {
   return null;
 }
 const navs = new Set(), foots = new Set();
+// Private name patterns (MASTER-standguard decision 4, 2026-11-10) are never written in this public file.
+// They come from the SITE_PRIVATE_PATTERNS environment variable (one regex per line; the CI workflow passes a
+// repository secret) and from checks/private-patterns.txt (untracked, gitignored, for a local run). Case-insensitive.
+const PRIVATE = [];
+const privFile = path.join(ROOT, 'checks', 'private-patterns.txt');
+for (const src of [process.env.SITE_PRIVATE_PATTERNS || '', fs.existsSync(privFile) ? fs.readFileSync(privFile, 'utf8') : ''])
+  for (const line of src.split(/\r?\n/)) if (line.trim() && !line.trim().startsWith('#')) PRIVATE.push(new RegExp(line.trim(), 'i'));
+if (!PRIVATE.length) console.log('note: no private name pattern set (SITE_PRIVATE_PATTERNS or checks/private-patterns.txt), so that scan was skipped');
 const BANNED = [/never says safe/i, /gives clarity/i, /before you sign, let me look/i, /what I checked and what I couldn/i, /earn your shield/i,
   /delegat\w* (your|a member|customer)/i];
 const OLDART = /img_coin|guard-card-v6|g_token|g_guardian|g_forge|g_path|g_marshall|g_snipverse|g_cypher|img_guard_dark|img_poster/;
@@ -41,7 +49,7 @@ for (const f of pages) {
   if (!nav || !foot) fails.push(rel(f) + ': no shared nav/footer'); else { navs.add(nav[0]); foots.add(foot[0]); }
   for (const b of BANNED) if (b.test(t)) fails.push(rel(f) + ': banned line ' + b);
   if (OLDART.test(t)) fails.push(rel(f) + ': old character art ' + t.match(OLDART)[0]);
-  if (/\brangel\b/i.test(t)) fails.push(rel(f) + ': legal surname');
+  for (const p of PRIVATE) if (p.test(t)) fails.push(rel(f) + ': private name pattern matched');
   // Guard.IAN's own address is allowed (Tim, 2026-10-26: "you can do the email"). Any other address still fails.
   if (/[a-z0-9._%+-]+@(?!usernames|username\b|[a-z0-9]+\.token\b)[a-z0-9.-]+\.[a-z]{2,}/i.test(t.replaceAll('guard.ian58@yahoo.com', ''))) fails.push(rel(f) + ': email address');
 }
