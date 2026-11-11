@@ -82,6 +82,11 @@
   Strict-Transport-Security: max-age=31536000
   ! Access-Control-Allow-Origin
 
+# Home page only (SG-39, 2026-11-10): the browser learns about the stylesheet and the title font from
+# this header, before it has parsed any HTML; with Early Hints on, Cloudflare sends it as a 103.
+/
+  Link: </assets/css/v3.css>; rel=preload; as=style, </assets/fonts/cinzel-latin-700-normal.woff2>; rel=preload; as=font; crossorigin
+
 # Hashed-forever assets do not exist yet, so styles and scripts get a short
 # cache with revalidation rather than a long one that strands a fix.
 /assets/css/*
