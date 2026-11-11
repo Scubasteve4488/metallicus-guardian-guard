@@ -182,8 +182,10 @@
         .then(function (data) {
           var files = (data && data.files) || [];
           if (!files.length) {
-            say("No video for “" + word + "” in this collection. " +
-                "It holds single words, so try a plain one — “run” rather than “running quickly”.");
+            /* 2026-11-10 (SG-63): say plainly that this collection lacks the word; a plain word such as
+             * "hello" can be missing too, so do not tell people their word was the problem. */
+            say("This collection has no clip for “" + word + "”. It holds single words and not every word is in it. " +
+                "Try another word, or look it up at Lifeprint (lifeprint.com), a Deaf instructor's free ASL dictionary.");
             return;
           }
           var file = pickVideo(files);

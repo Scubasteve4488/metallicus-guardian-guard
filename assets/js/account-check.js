@@ -300,6 +300,10 @@
     var h = [];
 
     h.push('<h2 class="sec-title">Report for <code>' + esc(account) + '</code></h2>');
+    // SG-34 (2026-11-10): the count line comes first, early in reading order. Counts of the rows below,
+    // never a verdict word; "couldn't be read" is the reads every node failed.
+    h.push('<p class="muted" data-ac-count>' + verified.length + ' facts read \u00b7 ' + attention.length + ' to look at \u00b7 ' +
+      unverified.length + ' couldn\u2019t be read \u00b7 read at ' + esc(started.toISOString().slice(11, 16)) + ' UTC</p>');
     h.push('<p class="muted mb3">Read ' + esc(started.toISOString()) +
       ' — finished ' + esc(finished.toISOString()) +
       '. Every figure below came from a public XPR Network node at that moment and may have changed since.</p>');
