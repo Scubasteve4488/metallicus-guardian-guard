@@ -245,14 +245,16 @@
   }
 })();
 
-/* Home page Check box: go straight to the result. The name goes in the #fragment, which never reaches a server. */
+/* Home page Check box: go straight to the result. What was typed or pasted goes in the #fragment, which never
+   reaches a server. A name is checked as it is; a pasted link or post is searched for an account name there. */
 (function () {
   var f = document.querySelector('[data-door-check]');
   if (!f) return;
   f.addEventListener('submit', function (e) {
-    var v = String(f.account.value || '').trim().toLowerCase().replace(/^@/, '');
-    if (!/^[a-z1-5.]{1,13}$/.test(v)) return; /* let the browser show its own message for an empty box */
+    var v = String(f.account.value || '').trim();
+    if (!v) return; /* let the browser show its own message for an empty box */
     e.preventDefault();
-    location.href = '/tools/account-check#' + encodeURIComponent(v);
+    var name = v.toLowerCase().replace(/^@/, '');
+    location.href = '/tools/account-check#' + encodeURIComponent(/^[a-z1-5.]{1,12}$/.test(name) ? name : v);
   });
 })();
