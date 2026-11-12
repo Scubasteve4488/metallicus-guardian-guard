@@ -121,6 +121,12 @@
   Cross-Origin-Resource-Policy: cross-origin
   Cache-Control: public, max-age=2592000
 
+# The web app manifest (2026-11-11, "share to StandGuard"): served as the manifest type MDN and the W3C
+# Web App Manifest spec name, so a phone can add the site to its home screen and list it in the Share sheet.
+# The site-wide policy above already carries manifest-src 'self', so nothing else changes.
+/manifest.webmanifest
+  Content-Type: application/manifest+json
+
 # Keep the pages.dev copy of the site out of search results; standguard.net is the real address
 # (MASTER-standguard Now 7; pattern from the same Cloudflare page).
 https://:project.pages.dev/*

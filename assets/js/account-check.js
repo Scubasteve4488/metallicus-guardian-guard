@@ -380,13 +380,109 @@
     run(raw);
   });
 
+  /* Fill the box and check, exactly as if the name had been typed and "Check it" pressed. */
+  function checkName(name) {
+    el('ac-account').value = name;
+    form.requestSubmit ? form.requestSubmit() : run(name);
+  }
+
+  /* ── Shared from a phone's Share sheet ─────────────────────────────────────
+     /manifest.webmanifest declares this page as a Web Share Target (method GET), so an installed copy of the
+     site opens /tools/account-check/?title=…&text=…&url=… (MDN share_target; developer.chrome.com "Receiving
+     shared data with the Web Share Target API"). Android usually puts a shared link in text, not url, so all
+     three are read the same way. The values are read once, then taken out of the address bar
+     (history.replaceState), so a reload, a bookmark or a link followed from here does not carry them. This file
+     sends them nowhere: only a name picked from them is looked up, the same as a typed one. */
+  var URL_RE = /https?:\/\/[^\s<>"']+/gi;
+  var PATH_KEYS = ['account', 'accounts', 'agent'];
+
+  /* A name in an explorer link: the path segment after /account/ (or /agent/), or ?account=. */
+  function namesFromLink(link, add) {
+    var u;
+    try { u = new URL(link.replace(/[).,;:!?]+$/, '')); } catch (e) { return; }
+    var segs = u.pathname.split('/');
+    for (var i = 0; i < segs.length - 1; i++) {
+      if (PATH_KEYS.indexOf(segs[i].toLowerCase()) > -1) {
+        try { add(decodeURIComponent(segs[i + 1])); } catch (e) { /* malformed escape: skip */ }
+      }
+    }
+    var q = u.searchParams.get('account');
+    if (q) add(q);
+  }
+
+  /* Names in free text. Plain words such as "look" are valid XPR names too, so a word only counts when it is
+     written as @name, or has a dot or a digit 1-5 next to letters (eosio.token, safeguard5). When no link
+     gave a name and the whole share is one word, that word counts as it is. */
+  function namesFromText(text, add, aloneCounts) {
+    var words = String(text).toLowerCase().split(/[^a-z0-9.@]+/).filter(Boolean);
+    words.forEach(function (w) {
+      var at = w.charAt(0) === '@';
+      w = w.replace(/^@/, '').replace(/^\.+|\.+$/g, '');
+      if (!w || w.indexOf('@') > -1 || !NAME_RE.test(w)) return;
+      if (at || (aloneCounts && words.length === 1) || (/[a-z]/.test(w) && /[.1-5]/.test(w))) add(w);
+    });
+  }
+
+  function sharedCandidates(shared) {
+    var found = [];
+    function add(n) {
+      n = String(n).trim().toLowerCase().replace(/^@/, '');
+      if (NAME_RE.test(n) && found.indexOf(n) < 0) found.push(n);
+    }
+    var all = [shared.url, shared.text, shared.title];
+    all.forEach(function (s) { (s.match(URL_RE) || []).forEach(function (l) { namesFromLink(l, add); }); });
+    namesFromText(all.map(function (s) { return s.replace(URL_RE, ' '); }).join('\n'), add, found.length === 0);
+    return found;
+  }
+
+  function showPicks(names) {
+    var results = el('ac-results');
+    results.hidden = false;
+    results.innerHTML = '<h2 class="sec-title">Which account?</h2>' +
+      '<p class="muted">These look like account names in what you shared. Pick one to check it.</p>' +
+      '<div class="chips ac-picks">' + names.map(function (n) {
+        return '<button class="btn btn-o" type="button" data-ac-pick="' + esc(n) + '">' + esc(n) + '</button>';
+      }).join('') + '</div>';
+    results.addEventListener('click', function pick(e) {
+      var b = e.target.closest ? e.target.closest('[data-ac-pick]') : null;
+      if (!b) return;
+      results.removeEventListener('click', pick);
+      checkName(b.getAttribute('data-ac-pick'));
+    });
+  }
+
+  function showNoName(sharedText) {
+    var results = el('ac-results');
+    results.hidden = false;
+    results.innerHTML = '<h2 class="sec-title">No account name found in what you shared</h2>' +
+      '<p class="muted">If a name is in there, copy it into the box above. What you shared:</p>' +
+      '<pre class="ac-shared"></pre>';
+    results.querySelector('.ac-shared').textContent = sharedText;
+  }
+
+  var shared = { title: '', text: '', url: '' };
+  try {
+    var sp = new URLSearchParams(location.search);
+    shared.title = sp.get('title') || '';
+    shared.text = sp.get('text') || '';
+    shared.url = sp.get('url') || '';
+  } catch (e) { /* no query string support: nothing was shared */ }
+  var sharedText = [shared.title, shared.text, shared.url].filter(Boolean).join('\n');
+
+  if (sharedText) {
+    var names = sharedCandidates(shared);
+    /* One name: keep it in the #fragment (never sent to a server) so a reload checks it again. */
+    try { history.replaceState(null, '', location.pathname + (names.length === 1 ? '#' + encodeURIComponent(names[0]) : '')); } catch (e) { /* keep going */ }
+    if (names.length === 1) checkName(names[0]);
+    else if (names.length > 1) showPicks(names);
+    else showNoName(sharedText);
+    return;
+  }
+
   /* Opened from the home page's Check box: /tools/account-check#eosio.token (a fragment never reaches a server)
      or ?account= when JavaScript was off on the home page. Same validation as typing it here. */
   var passed = '';
   try { passed = decodeURIComponent((location.hash || '').slice(1)) || new URLSearchParams(location.search).get('account') || ''; } catch (e) { passed = ''; }
   passed = String(passed).trim().toLowerCase().replace(/^@/, '');
-  if (passed && NAME_RE.test(passed)) {
-    el('ac-account').value = passed;
-    form.requestSubmit ? form.requestSubmit() : run(passed);
-  }
+  if (passed && NAME_RE.test(passed)) checkName(passed);
 })();

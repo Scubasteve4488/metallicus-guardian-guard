@@ -182,3 +182,5 @@ html.reduce .px-gauge-bar{transition:none}
 .ac-input{width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--dim)!important;background:rgba(0,0,0,.35)!important;color:#fff!important;font:500 16px var(--px-mono)!important}
 .ac-input:focus{outline:2px solid var(--px-gold);outline-offset:1px}
 .ac-label{font:500 12px var(--px-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim,#8b819c)}
+/* What was shared from a phone's Share sheet when no account name was found in it (2026-11-11) */
+.ac-shared{white-space:pre-wrap;overflow-wrap:anywhere;max-width:640px;margin:12px 0 0;padding:14px 16px;border-radius:12px;border:1px solid var(--px-line);background:rgba(0,0,0,.35);color:var(--text,#efe9f7);font:400 14px/1.5 var(--px-mono)}
