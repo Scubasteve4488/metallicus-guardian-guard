@@ -86,12 +86,12 @@
         <label class="ac-label" for="ac-account">Account name</label>
         <input class="ac-input" id="ac-account" name="account" type="text" inputmode="text"
                autocomplete="off" autocapitalize="none" spellcheck="false"
-               maxlength="13" placeholder="e.g. safeguard5"
+               maxlength="300" placeholder="Account name or link"
                aria-describedby="ac-hint ac-error">
       </div>
       <button class="btn btn-g" type="submit">Check it</button>
     </form>
-    <p class="ac-hint" id="ac-hint">Letters a&ndash;z, digits 1&ndash;5, and dots. A leading @ is fine.</p>
+    <p class="ac-hint" id="ac-hint">Letters a&ndash;z, digits 1&ndash;5, and dots. A leading @ is fine, and so is a pasted explorer link or post.</p>
     <p class="ac-err" id="ac-error" role="alert" aria-live="polite"></p>
 
     <div class="ac-results" id="ac-results" aria-live="polite" hidden></div>

@@ -364,7 +364,8 @@
     e.preventDefault();
     var input = el('ac-account');
     var errBox = el('ac-error');
-    var raw = String(input.value || '').trim().toLowerCase().replace(/^@/, '');
+    var typed = String(input.value || '').trim();
+    var raw = typed.toLowerCase().replace(/^@/, '');
     errBox.textContent = '';
 
     if (!raw) {
@@ -373,7 +374,12 @@
       return;
     }
     if (!NAME_RE.test(raw)) {
-      errBox.textContent = 'That is not a valid XPR Network account name. Names are 1–12 characters using a–z, digits 1–5, and "." only.';
+      /* A pasted explorer link or post: look for an account name in it, the same way as a shared one. */
+      var names = sharedCandidates({ title: '', text: typed, url: '' });
+      if (names.length === 1) { input.value = names[0]; run(names[0]); return; }
+      if (names.length > 1) { showPicks(names); return; }
+      errBox.textContent = (/\s|:\/\//.test(typed) ? 'No account name found in what you entered.' : 'That is not a valid XPR Network account name.') +
+        ' Names are 1–12 characters using a–z, digits 1–5, and "." only.';
       input.focus();
       return;
     }
@@ -451,13 +457,24 @@
     });
   }
 
-  function showNoName(sharedText) {
+  /* how: "shared" (Share sheet) or "entered" (pasted into a Check box). */
+  function showNoName(text, how) {
     var results = el('ac-results');
     results.hidden = false;
-    results.innerHTML = '<h2 class="sec-title">No account name found in what you shared</h2>' +
-      '<p class="muted">If a name is in there, copy it into the box above. What you shared:</p>' +
+    results.innerHTML = '<h2 class="sec-title">No account name found in what you ' + how + '</h2>' +
+      '<p class="muted">If a name is in there, copy it into the box above. What you ' + how + ':</p>' +
       '<pre class="ac-shared"></pre>';
-    results.querySelector('.ac-shared').textContent = sharedText;
+    results.querySelector('.ac-shared').textContent = text;
+  }
+
+  /* One name: check it. Several: buttons to pick from. None: say so and show the text. The text is then taken
+     out of the address bar; one name is kept in the #fragment (never sent to a server) so a reload checks it. */
+  function checkFound(fields, text, how) {
+    var names = sharedCandidates(fields);
+    try { history.replaceState(null, '', location.pathname + (names.length === 1 ? '#' + encodeURIComponent(names[0]) : '')); } catch (e) { /* keep going */ }
+    if (names.length === 1) checkName(names[0]);
+    else if (names.length > 1) showPicks(names);
+    else showNoName(text, how);
   }
 
   var shared = { title: '', text: '', url: '' };
@@ -470,19 +487,17 @@
   var sharedText = [shared.title, shared.text, shared.url].filter(Boolean).join('\n');
 
   if (sharedText) {
-    var names = sharedCandidates(shared);
-    /* One name: keep it in the #fragment (never sent to a server) so a reload checks it again. */
-    try { history.replaceState(null, '', location.pathname + (names.length === 1 ? '#' + encodeURIComponent(names[0]) : '')); } catch (e) { /* keep going */ }
-    if (names.length === 1) checkName(names[0]);
-    else if (names.length > 1) showPicks(names);
-    else showNoName(sharedText);
+    checkFound(shared, sharedText, 'shared');
     return;
   }
 
   /* Opened from the home page's Check box: /tools/account-check#eosio.token (a fragment never reaches a server)
-     or ?account= when JavaScript was off on the home page. Same validation as typing it here. */
-  var passed = '';
-  try { passed = decodeURIComponent((location.hash || '').slice(1)) || new URLSearchParams(location.search).get('account') || ''; } catch (e) { passed = ''; }
-  passed = String(passed).trim().toLowerCase().replace(/^@/, '');
+     or ?account= when JavaScript was off on the home page. A valid name is checked as it is; anything else (a
+     pasted explorer link or post) is searched for a name the same way as a shared one. */
+  var passedRaw = '';
+  try { passedRaw = decodeURIComponent((location.hash || '').slice(1)) || new URLSearchParams(location.search).get('account') || ''; } catch (e) { passedRaw = ''; }
+  passedRaw = String(passedRaw).trim();
+  var passed = passedRaw.toLowerCase().replace(/^@/, '');
   if (passed && NAME_RE.test(passed)) checkName(passed);
+  else if (passedRaw && !document.getElementById(passedRaw)) checkFound({ title: '', text: passedRaw, url: '' }, passedRaw, 'entered');
 })();

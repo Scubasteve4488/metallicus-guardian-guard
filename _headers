@@ -116,6 +116,10 @@
 # The Utility Forge sample cover is shown on XPR Agents (xpragents.com/services/13). The site-wide
 # Cross-Origin-Resource-Policy: same-origin above blocks that embed, so this one folder allows it
 # (MASTER-standguard Now 7; detach syntax: developers.cloudflare.com/pages/configuration/headers/).
+# 2026-11-11 (REA Lab job 10): this rule works. pages.dev and a cache-busted standguard.net URL both send
+# cross-origin, but standguard.net kept serving a copy of the cover cached before the rule went live
+# (cf-cache-status: HIT, same-origin). A header change on a cached file reaches visitors only after that
+# file is purged from the Cloudflare cache or its cached copy expires.
 /assets/samples/*
   ! Cross-Origin-Resource-Policy
   Cross-Origin-Resource-Policy: cross-origin
