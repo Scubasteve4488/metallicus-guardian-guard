@@ -1,0 +1,25 @@
+{
+  "id": "/",
+  "name": "StandGuard",
+  "short_name": "StandGuard",
+  "description": "Free read-only checks for XPR Network accounts. Share a link, post or account name to StandGuard to check it.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0b0910",
+  "theme_color": "#0a0a10",
+  "icons": [
+    { "src": "/assets/img/ian/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/img/ian/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+  ],
+  "share_target": {
+    "action": "/tools/account-check/",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}
